@@ -14,7 +14,7 @@ export function LegalLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-base min-h-screen text-ink">
+    <div className="bg-canvas min-h-screen text-ink">
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-20 pt-28">
         <Link

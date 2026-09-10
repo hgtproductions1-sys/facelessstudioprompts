@@ -63,7 +63,7 @@
 
 
 @theme inline {
-  --color-base: var(--bg-base);
+  --color-canvas: var(--bg-base);
   --color-elevated: var(--bg-elevated);
   --color-surface: var(--surface);
   --color-surface2: var(--surface-2);
