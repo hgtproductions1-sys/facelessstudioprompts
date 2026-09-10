@@ -71,7 +71,58 @@ export const Route = createFileRoute("/")({
     if (typeof search["topic"] === "string") out.topic = search["topic"];
     return out;
   },
-  head: () => pageHead({ path: "/", title: TITLE, description: DESC, type: "website" }),
+  head: () => {
+    const base = pageHead({ path: "/", title: TITLE, description: DESC, type: "website" });
+    return {
+      ...base,
+      meta: [
+        ...base.meta,
+        { property: "og:video:type", content: "text/html" },
+        { name: "medium", content: "video" },
+        {
+          name: "keywords",
+          content:
+            "faceless YouTube automation, short-form video prompt generator, Midjourney character consistency prompts, ElevenLabs viral voiceover scripts, faceless TikTok niche ideas, YouTube Short automation",
+        },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            name: "Faceless Video Blueprint Generator — YouTube Shorts & TikTok Automation",
+            description:
+              "How to generate a complete faceless video blueprint: recurring character profile, Midjourney character consistency prompts, Google Flow and Leonardo style prompts, shot-by-shot camera motion, and ElevenLabs viral voiceover scripts for YouTube Short automation and TikTok.",
+            uploadDate: "2026-01-15T09:00:00+00:00",
+            contentUrl: `${SITE_URL}/`,
+            embedUrl: `${SITE_URL}/`,
+            genre: ["Faceless YouTube automation", "Short-form video", "AI video generation"],
+            keywords:
+              "faceless YouTube automation, short-form video prompt generator, Midjourney character consistency prompts, ElevenLabs viral voiceover scripts, faceless TikTok niche ideas, YouTube Short automation",
+            publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to make a faceless YouTube Short with AI prompts",
+            description:
+              "Pick a faceless TikTok niche, lock a recurring character, generate Midjourney character consistency prompts, animate the shots, and narrate with ElevenLabs.",
+            step: [
+              { "@type": "HowToStep", name: "Choose a faceless niche and topic" },
+              { "@type": "HowToStep", name: "Lock a recurring character profile and seed" },
+              { "@type": "HowToStep", name: "Generate image prompts for Midjourney or Leonardo" },
+              { "@type": "HowToStep", name: "Animate the keyframes with Veo, Runway, or Kling" },
+              { "@type": "HowToStep", name: "Narrate the script with ElevenLabs voice settings" },
+            ],
+          }),
+        },
+      ],
+    };
+  },
   component: Index,
 });
 
