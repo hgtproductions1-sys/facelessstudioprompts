@@ -7,13 +7,13 @@ export function Playbook() {
           The <span className="gradient-text">Faceless Creator Playbook</span>
         </h2>
         <p className="mt-2 text-sm text-ink-muted">
-          How short-form automation actually works, from niche selection to a repeatable daily
-          publishing loop.
+          How faceless YouTube automation actually works, from niche selection to a repeatable daily
+          publishing loop — and how to use a short-form video prompt generator to run it.
         </p>
 
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-ink-dim md:text-base">
           <h3 className="text-lg font-semibold text-ink">
-            Why a Blueprint Beats Inspiration
+            Faceless YouTube Automation: Why a Blueprint Beats Inspiration
           </h3>
           <p>
             A faceless channel is a production line, not a personality. The creators who publish
@@ -22,10 +22,12 @@ export function Playbook() {
             colour palette never moves, and their shot grammar is a template rather than a choice.
             That is why a blueprint matters more than inspiration: once the archetype, wardrobe,
             palette, and pacing are written down, the only variable left each day is the topic, and
-            a topic takes ninety seconds to pick.
+            a topic takes ninety seconds to pick. A short-form video prompt generator turns that
+            fixed blueprint into a full YouTube Shorts automation kit — script, stills, motion, and
+            narration — in a single pass.
           </p>
           <h3 className="text-lg font-semibold text-ink">
-            The Four-Stage Production Workflow
+            The Four-Stage Short-Form Video Prompt Generator Workflow
           </h3>
           <p>
             The workflow itself splits into four stages that map cleanly onto four tools. First,
