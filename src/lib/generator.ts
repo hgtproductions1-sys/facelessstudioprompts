@@ -538,7 +538,7 @@ export function generatePackage({
     {
       timestamp: "0:35",
       line: `Which leaves one ${desc2} explanation.`,
-      cue: `[${profile.voice["Signature Pause"]}, full stop]`,
+      cue: `[${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop]`,
     },
     {
       timestamp: "0:41",
