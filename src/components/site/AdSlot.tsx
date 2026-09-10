@@ -18,7 +18,7 @@ export const ADSENSE_SLOTS = {
 function pushAd(ref: React.RefObject<HTMLModElement | null>) {
   useEffect(() => {
     const el = ref.current;
-    if (!el || el.dataset.adStatus === "done") return;
+    if (!el || el.dataset["adStatus"] === "done") return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
