@@ -35,6 +35,8 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
     ``,
     `MIDJOURNEY PROMPT\n${v.midjourneyPrompt}`,
     ``,
+    `GOOGLE FLOW (VEO 3) PROMPT\n${v.googleFlowPrompt}`,
+    ``,
     `CONSISTENCY TOKEN: ${token}`,
     ``,
     v.negativeLibrary.map((n) => `- ${n}`).join("\n"),
@@ -45,7 +47,7 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
       icon={Palette}
       step="STEP 02"
       title="Visual Style Prompts"
-      subtitle="Copy-paste prompts for Leonardo.ai & Midjourney."
+      subtitle="Copy-paste prompts for Leonardo.ai, Midjourney & Google Flow."
       copyAllValue={allText}
       rail="cp"
     >
@@ -83,6 +85,13 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
           Midjourney Prompt
         </BlockLabel>
         <MonoBlock>{v.midjourneyPrompt}</MonoBlock>
+      </div>
+
+      <div>
+        <BlockLabel action={<CopyButton value={v.googleFlowPrompt} />}>
+          Google Flow (Veo 3) Prompt
+        </BlockLabel>
+        <MonoBlock>{v.googleFlowPrompt}</MonoBlock>
       </div>
 
       <div>
