@@ -58,6 +58,47 @@ function stem(w: string): string {
  * Removes words from the start of `topic` that the sentence before `{topic}`
  * already says, so templates never read "This bear cooks bear cooks ramen".
  */
+const ACTION_VERBS = new Set([
+  "cook",
+  "make",
+  "build",
+  "craft",
+  "bake",
+  "fight",
+  "review",
+  "clean",
+  "restore",
+  "unbox",
+  "explain",
+  "rank",
+  "sing",
+  "play",
+  "eat",
+  "try",
+  "test",
+  "carve",
+  "wash",
+  "paint",
+  "draw",
+  "tell",
+  "survive",
+]);
+
+/**
+ * Reduces a topic to its object phrase so sentences that already contain the
+ * subject and verb don't repeat them: "bear cooks campfire ramen" → "campfire ramen".
+ */
+export function topicPhrase(topic: string): string {
+  const words = sanitizeTopic(topic).split(" ").filter(Boolean);
+  if (words.length >= 3) {
+    const second = stem(normalizeWord(words[1] ?? ""));
+    if (ACTION_VERBS.has(second)) return words.slice(2).join(" ");
+  }
+  const first = stem(normalizeWord(words[0] ?? ""));
+  if (words.length >= 2 && ACTION_VERBS.has(first)) return words.slice(1).join(" ");
+  return words.join(" ");
+}
+
 export function fitTopicToTemplate(template: string, topic: string): string {
   const before = template.split("{topic}")[0] ?? "";
   const ctx = new Set(
