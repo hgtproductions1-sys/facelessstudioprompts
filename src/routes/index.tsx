@@ -46,10 +46,12 @@ const DESC =
   "Free generator that turns a niche and a topic into a full faceless video production package: character profile, Leonardo & Midjourney prompts, and a shot-by-shot camera plan.";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    niche: typeof search.niche === "string" ? search.niche : undefined,
-    topic: typeof search.topic === "string" ? search.topic : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>) => {
+    const out: { niche?: string; topic?: string } = {};
+    if (typeof search["niche"] === "string") out.niche = search["niche"];
+    if (typeof search["topic"] === "string") out.topic = search["topic"];
+    return out;
+  },
   head: () => ({
     meta: [
       { title: TITLE },
