@@ -333,6 +333,15 @@ export const Route = createFileRoute("/api/generate")({
 
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const gatewayKey = process.env["LOVABLE_API_KEY"];
+        const glmKey = process.env["GLM_API_KEY"];
+        if (glmKey) {
+          const pkg = await generateWithGlm(niche, topic, glmKey);
+          if (pkg) return Response.json({ package: pkg, source: "glm" });
+        } else {
+          console.warn("[generate] GLM_API_KEY is not set");
+        }
+
+        const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
           const result = await generateWithLovableAi(niche, topic, gatewayKey, initialRunId);
           if (result) {
@@ -349,11 +358,7 @@ export const Route = createFileRoute("/api/generate")({
           console.warn("[generate] LOVABLE_API_KEY is not set");
         }
 
-        const glmKey = process.env["GLM_API_KEY"];
-        if (!glmKey) console.warn("[generate] GLM_API_KEY is not set");
-        const pkg = glmKey ? await generateWithGlm(niche, topic, glmKey) : null;
-        const result = pkg ?? fallbackPackage(niche, topic);
-        return Response.json({ package: result, source: pkg ? "glm" : "local" });
+        return Response.json({ package: fallbackPackage(niche, topic), source: "local" });
       },
     },
   },
