@@ -1,6 +1,6 @@
 import { CheckCircle2, Download } from "lucide-react";
 
-const BLUEPRINT_URL = "https://example.com/faceless-video-blueprint.pdf";
+const BLUEPRINT_URL = "/faceless-video-blueprint.pdf";
 
 const CHECKLIST = [
   "47-page PDF blueprint",
