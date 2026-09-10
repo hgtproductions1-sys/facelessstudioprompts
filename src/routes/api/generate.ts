@@ -16,6 +16,10 @@ const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
 const TIMEOUT_MS = 60_000;
 
+const GATEWAY_RESPONSES_ENDPOINT = "https://ai.gateway.lovable.dev/v1/responses";
+const LOVABLE_MODEL = "openai/gpt-6-astra";
+const RUN_ID_HEADER = "X-Lovable-AIG-Run-ID";
+
 const SCHEMA_SHAPE = `{
   "niche": string,
   "topic": string,
@@ -53,8 +57,47 @@ const SCHEMA_SHAPE = `{
   }
 }`;
 
+const PRODUCTION_RULES = [
+  "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+  "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
+  "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
+  "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
+  "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
+  "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
+  "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
+  "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
+  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+  "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
+  "Face never visible in any prompt.",
+];
+
 function fallbackPackage(niche: string, topic: string): ProductionPackage {
   return generatePackage({ niche, topic, seed: hashSeed(`${niche}::${topic}`) });
+}
+
+function referenceBlock(niche: string): string {
+  return getTopPromptsForNiche(niche, 3)
+    .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
+    .join("\n\n");
+}
+
+function userInstruction(niche: string, topic: string): string {
+  return `Niche: ${niche}\nTopic: ${topic}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
+}
+
+/** Parses model output that may be wrapped in prose or code fences. */
+function parseJsonLoose(text: string): unknown | null {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      return null;
+    }
+  }
 }
 
 function normalizePackage(raw: unknown, niche: string, topic: string): ProductionPackage | null {
@@ -125,14 +168,108 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
   };
 }
 
+/** Streams a production package out of the Lovable AI gateway Responses API. */
+async function generateWithLovableAi(
+  niche: string,
+  topic: string,
+  apiKey: string,
+  initialRunId?: string,
+): Promise<{ pkg: ProductionPackage; runId?: string } | null> {
+  try {
+    const res = await fetch(GATEWAY_RESPONSES_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Lovable-API-Key": apiKey,
+        "X-Lovable-AIG-SDK": "fetch",
+        ...(initialRunId ? { [RUN_ID_HEADER]: initialRunId } : {}),
+      },
+      body: JSON.stringify({
+        model: LOVABLE_MODEL,
+        store: false,
+        stream: true,
+        reasoning: { effort: "low" },
+        text: { format: { type: "json_object" } },
+        input: [
+          {
+            role: "system",
+            content: [
+              ...PRODUCTION_RULES,
+              `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
+            ].join(" "),
+          },
+          { role: "user", content: userInstruction(niche, topic) },
+        ],
+      }),
+    });
+
+    const runId = res.headers.get(RUN_ID_HEADER) ?? initialRunId;
+    if (!res.ok) {
+      console.warn(`[generate] Lovable AI responded with HTTP ${res.status}`);
+      return null;
+    }
+    if (!res.body) {
+      console.warn("[generate] Lovable AI response had no body");
+      return null;
+    }
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let streamed = "";
+    let completed = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const events = buffer.split("\n\n");
+      buffer = events.pop() ?? "";
+      for (const event of events) {
+        for (const line of event.split("\n")) {
+          if (!line.startsWith("data:")) continue;
+          const payload = line.slice(5).trim();
+          if (!payload || payload === "[DONE]") continue;
+          try {
+            const parsed = JSON.parse(payload) as {
+              type?: string;
+              delta?: string;
+              response?: { output_text?: string };
+            };
+            if (parsed.type === "response.output_text.delta" && typeof parsed.delta === "string") {
+              streamed += parsed.delta;
+            } else if (parsed.type === "response.completed") {
+              completed = parsed.response?.output_text ?? "";
+            }
+          } catch {
+            // Keep-alive or comment line — nothing to extract.
+          }
+        }
+      }
+    }
+
+    const finalText = streamed || completed;
+    if (!finalText) {
+      console.warn("[generate] Lovable AI stream returned no text");
+      return null;
+    }
+    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic);
+    if (!pkg) {
+      console.warn("[generate] Lovable AI output did not match the ProductionPackage shape");
+      return null;
+    }
+    return { pkg, runId };
+  } catch (err) {
+    console.warn(`[generate] Lovable AI call failed: ${err instanceof Error ? err.name : "unknown"}`);
+    return null;
+  }
+}
+
 async function generateWithGlm(
   niche: string,
   topic: string,
   apiKey: string,
 ): Promise<ProductionPackage | null> {
-  const references = getTopPromptsForNiche(niche, 3)
-    .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
-    .join("\n\n");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -151,24 +288,11 @@ async function generateWithGlm(
           {
             role: "system",
             content: [
-              "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
-              `Reference style examples from successful creators:\n${references}`,
-              "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
-              "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
-              "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
-              "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
-              "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-              "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
-              "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
-              "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
-              "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
-              "Face never visible in any prompt.",
+              ...PRODUCTION_RULES,
+              `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          {
-            role: "user",
-            content: `Niche: ${niche}\nTopic: ${topic}\n\nReturn a single JSON object matching exactly this shape:\n${SCHEMA_SHAPE}`,
-          },
+          { role: "user", content: userInstruction(niche, topic) },
         ],
       }),
     });
@@ -182,7 +306,7 @@ async function generateWithGlm(
       console.warn("[generate] GLM response had no message content");
       return null;
     }
-    return normalizePackage(JSON.parse(content), niche, topic);
+    return normalizePackage(parseJsonLoose(content), niche, topic);
   } catch (err) {
     console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
     return null;
@@ -207,9 +331,27 @@ export const Route = createFileRoute("/api/generate")({
           return Response.json({ error: "niche and topic are required" }, { status: 400 });
         }
 
-        const apiKey = process.env["GLM_API_KEY"];
-        if (!apiKey) console.warn("[generate] GLM_API_KEY is not set");
-        const pkg = apiKey ? await generateWithGlm(niche, topic, apiKey) : null;
+        const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
+        const gatewayKey = process.env["LOVABLE_API_KEY"];
+        if (gatewayKey) {
+          const result = await generateWithLovableAi(niche, topic, gatewayKey, initialRunId);
+          if (result) {
+            return Response.json(
+              { package: result.pkg, source: "lovable" },
+              {
+                headers: result.runId
+                  ? { [RUN_ID_HEADER]: result.runId, "Access-Control-Expose-Headers": RUN_ID_HEADER }
+                  : undefined,
+              },
+            );
+          }
+        } else {
+          console.warn("[generate] LOVABLE_API_KEY is not set");
+        }
+
+        const glmKey = process.env["GLM_API_KEY"];
+        if (!glmKey) console.warn("[generate] GLM_API_KEY is not set");
+        const pkg = glmKey ? await generateWithGlm(niche, topic, glmKey) : null;
         const result = pkg ?? fallbackPackage(niche, topic);
         return Response.json({ package: result, source: pkg ? "glm" : "local" });
       },
