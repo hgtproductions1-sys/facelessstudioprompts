@@ -7,3 +7,4 @@
 - [x] Routes /, /privacy, /terms, /affiliate-disclosure all return 200 with correct headings
 - [x] CPA content locker fully removed: playabledownloads scripts, LockerCard.tsx, and locker.ts deleted; no references remain
 - [x] Zero console/page errors across all routes
+- [x] Restored plain download section: DownloadCard.tsx (no locker/gating) below results; placeholder PDF URL needs replacing with real hosted link
