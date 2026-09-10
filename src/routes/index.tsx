@@ -34,6 +34,7 @@ import { CameraCard } from "@/components/site/CameraCard";
 import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
+import { DownloadCard } from "@/components/site/DownloadCard";
 
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
@@ -310,6 +311,11 @@ function Index() {
                 </div>
               </>
             ) : null}
+          </div>
+
+          {/* BONUS DOWNLOAD */}
+          <div className="relative z-10 mx-auto mt-14 max-w-4xl px-4">
+            <DownloadCard />
           </div>
 
           <HowItWorks />
