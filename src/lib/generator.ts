@@ -25,6 +25,7 @@ export interface ProductionPackage {
     negativePrompt: string;
     leonardoPrompt: string;
     midjourneyPrompt: string;
+    googleFlowPrompt: string;
     consistencyToken: string;
     negativeLibrary: string[];
   };
@@ -618,6 +619,16 @@ export function generatePackage({
     `--ar 9:16 --v 6.1 --stylize 250 --chaos 12 --no text, watermark, extra limbs`,
   ].join(" ");
 
+  const googleFlowPrompt = [
+    `Google Flow (Veo 3) scene prompt — paste into Flow's "Text to Video" box:`,
+    `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme: ${lowTopic}.`,
+    `Face hidden by shadow and framing; ${(profile.wardrobe[0] ?? "").toLowerCase()} wardrobe, hands in focus.`,
+    `Camera: slow push-in with subtle parallax on foreground atmosphere.`,
+    `Lighting: single hard key with deep falloff, volumetric haze, palette of ${profile.palette}.`,
+    `Style: ${profile.styleDNA.join(", ")}, 35mm film grain, photoreal texture.`,
+    `Negative: no visible face, no text, no watermark, no warped hands.`,
+  ].join(" ");
+
   const shotMotions = [
     "Slow push-in, 5% scale over 4s",
     "Lateral dolly right, 3% drift with parallax",
@@ -690,6 +701,7 @@ export function generatePackage({
       negativePrompt,
       leonardoPrompt,
       midjourneyPrompt,
+      googleFlowPrompt,
       consistencyToken: tokenFrom(s, cleanTopic),
       negativeLibrary: [
         "no visible face, no eye contact, no portrait framing",
@@ -732,7 +744,7 @@ export function packageToText(pkg: ProductionPackage): string {
       )}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\nVOICEOVER CUE SHEET\n${c.cueSheet
       .map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`)
       .join("\n")}\n\nRETENTION BEATS\n${c.retentionBeats.map((b) => `- ${b}`).join("\n")}`,
-    `CARD 2 — VISUAL STYLE PROMPTS\nStyle DNA: ${v.styleDNA.join(", ")}\nAspect Ratio: ${v.aspectRatio}\nResolution: ${v.resolution}\nModel: ${v.model}\nStylize: ${v.stylize}\nChaos: ${v.chaos}\nSeed: ${v.seedValue}\nNegative Prompt: ${v.negativePrompt}\n\nLEONARDO.AI PROMPT\n${v.leonardoPrompt}\n\nMIDJOURNEY PROMPT\n${v.midjourneyPrompt}\n\nCHARACTER CONSISTENCY TOKEN\n${v.consistencyToken}\n\nNEGATIVE PROMPT LIBRARY\n${v.negativeLibrary.map((n) => `- ${n}`).join("\n")}`,
+    `CARD 2 — VISUAL STYLE PROMPTS\nStyle DNA: ${v.styleDNA.join(", ")}\nAspect Ratio: ${v.aspectRatio}\nResolution: ${v.resolution}\nModel: ${v.model}\nStylize: ${v.stylize}\nChaos: ${v.chaos}\nSeed: ${v.seedValue}\nNegative Prompt: ${v.negativePrompt}\n\nLEONARDO.AI PROMPT\n${v.leonardoPrompt}\n\nMIDJOURNEY PROMPT\n${v.midjourneyPrompt}\n\nGOOGLE FLOW (VEO 3) PROMPT\n${v.googleFlowPrompt}\n\nCHARACTER CONSISTENCY TOKEN\n${v.consistencyToken}\n\nNEGATIVE PROMPT LIBRARY\n${v.negativeLibrary.map((n) => `- ${n}`).join("\n")}`,
     `CARD 3 — CAMERA MOTION PLAN\n${Object.entries(cam.overview)
       .map(([k, val]) => `${k}: ${val}`)
       .join("\n")}\n\nSHOT LIST\n${cam.shots
