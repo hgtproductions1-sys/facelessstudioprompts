@@ -3,7 +3,7 @@ import { generatePackage, hashSeed, type ProductionPackage } from "@/lib/generat
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
-const TIMEOUT_MS = 10_000;
+const TIMEOUT_MS = 60_000;
 
 const SCHEMA_SHAPE = `{
   "niche": string,
