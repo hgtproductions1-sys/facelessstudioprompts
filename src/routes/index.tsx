@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { MotionConfig, motion } from "framer-motion";
 import {
   Brain,
   Briefcase,
@@ -33,6 +33,8 @@ import { VisualCard } from "@/components/site/VisualCard";
 import { CameraCard } from "@/components/site/CameraCard";
 import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
+import { EmptyState } from "@/components/site/EmptyState";
+import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
 import { NICHES, packageToText, slugify } from "@/lib/generator";
@@ -129,6 +131,7 @@ function Index() {
   const disabled = !niche || topic.trim().length < 3 || loading;
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="bg-base relative min-h-screen overflow-x-hidden text-ink">
       <div className="ambient-glow pointer-events-none absolute inset-x-0 top-0 z-0 h-[60vh]" />
       <div className="grid-overlay pointer-events-none absolute inset-x-0 top-0 z-0 h-[70vh]" />
@@ -220,7 +223,9 @@ function Index() {
                 disabled={disabled}
                 className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
               >
-                {loading ? (
+                {!loading && !pkg ? <EmptyState /> : null}
+
+          {loading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                     Generating…
@@ -253,6 +258,8 @@ function Index() {
 
         {/* RESULTS */}
         <div ref={resultsRef} id="results" aria-live="polite" className="scroll-mt-24 px-4">
+          {!loading && !pkg ? <EmptyState /> : null}
+
           {loading ? (
             <>
               <ProgressStepper step={step} totalMs={totalMs} />
@@ -262,7 +269,7 @@ function Index() {
 
           {!loading && pkg ? (
             <>
-              <div className="mx-auto flex max-w-7xl flex-wrap justify-end gap-2">
+              <div className="mx-auto flex max-w-7xl flex-col flex-wrap justify-end gap-2 sm:flex-row">
                 <SecondaryButton
                   className="w-full sm:w-auto"
                   onClick={() =>
@@ -307,6 +314,8 @@ function Index() {
       </main>
 
       <Footer />
+      <ScrollToTopButton />
     </div>
+    </MotionConfig>
   );
 }
