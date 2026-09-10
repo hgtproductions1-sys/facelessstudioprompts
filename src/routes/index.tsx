@@ -310,7 +310,6 @@ function Index() {
                 </div>
               </>
             ) : null}
-
           </div>
 
           <HowItWorks />
