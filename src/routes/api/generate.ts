@@ -123,6 +123,7 @@ export const Route = createFileRoute("/api/generate")({
         }
 
         const apiKey = process.env["GLM_API_KEY"];
+        if (!apiKey) console.warn("[generate] GLM_API_KEY is not set");
         const pkg = apiKey ? await generateWithGlm(niche, topic, apiKey) : null;
         const result = pkg ?? fallbackPackage(niche, topic);
         return Response.json({ package: result, source: pkg ? "glm" : "local" });
