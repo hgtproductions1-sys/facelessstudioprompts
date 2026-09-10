@@ -14,6 +14,7 @@ import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AiToolsHubRouteImport } from './routes/ai-tools-hub'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FacelessYoutubeAutomationRouteImport } from './routes/faceless-youtube-automation'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -46,6 +47,12 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FacelessYoutubeAutomationRoute =
+  FacelessYoutubeAutomationRouteImport.update({
+    id: '/faceless-youtube-automation',
+    path: '/faceless-youtube-automation',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -84,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -97,6 +105,7 @@ export interface FileRoutesByTo {
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -111,6 +120,7 @@ export interface FileRoutesById {
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/faceless-youtube-automation'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/faceless-youtube-automation'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -152,6 +164,7 @@ export interface FileRouteTypes {
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/faceless-youtube-automation'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -166,6 +179,7 @@ export interface RootRouteChildren {
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   AiToolsHubRoute: typeof AiToolsHubRoute
   ContactRoute: typeof ContactRoute
+  FacelessYoutubeAutomationRoute: typeof FacelessYoutubeAutomationRoute
   LibraryRoute: typeof LibraryRoute
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -209,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faceless-youtube-automation': {
+      id: '/faceless-youtube-automation'
+      path: '/faceless-youtube-automation'
+      fullPath: '/faceless-youtube-automation'
+      preLoaderRoute: typeof FacelessYoutubeAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -262,6 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   AiToolsHubRoute: AiToolsHubRoute,
   ContactRoute: ContactRoute,
+  FacelessYoutubeAutomationRoute: FacelessYoutubeAutomationRoute,
   LibraryRoute: LibraryRoute,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
