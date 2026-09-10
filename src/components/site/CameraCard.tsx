@@ -55,14 +55,12 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
                   </p>
                   <CopyButton value={shotText(s)} label="" className="px-1" />
                 </div>
-                <p className="mt-1.5 text-xs text-ink-dim">
-                  <span className="text-cyan">Motion:</span> {s.motion}
+                <p className="border-line bg-surface2 mt-1.5 rounded-md border p-2 font-mono text-[11px] leading-relaxed text-ink-dim">
+                  {s.prompt}
                 </p>
-                <p className="mt-1 text-xs text-ink-dim">
-                  <span className="text-cyan">Transition:</span> {s.transition}
-                </p>
-                <p className="mt-1 text-xs text-ink-dim">
-                  <span className="text-cyan">Animation Cue:</span> {s.animationCue}
+                <p className="mt-1.5 text-[11px] text-ink-muted">
+                  <span className="text-cyan">Edit point (NLE only):</span> {s.transition} ·{" "}
+                  {s.animationCue}
                 </p>
               </div>
             </li>
