@@ -1179,46 +1179,60 @@ export function generatePackage({
 
   const hooks = profile.hooks.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: h.replace("{topic}", lowTopic),
+    text: renderTemplate(h, cleanTopic),
   }));
 
-  const cueSheet = [
+  const rawCueSheet = [
     {
       timestamp: "0:00",
       line: hooks[0]?.text ?? "",
-      cue: "[cold open, no music, dry close-mic]",
+      cue: "cold open, no music, dry close-mic",
     },
     {
       timestamp: "0:04",
       line: `Everything you were told about ${lowTopic} came from one source.`,
-      cue: "[pause 0.5s, drop pitch]",
+      cue: "pause 0.5s, drop pitch",
     },
     {
       timestamp: "0:11",
       line: `Here is what the ${desc} record actually shows.`,
-      cue: "[bed track enters, lift energy 10%]",
+      cue: "bed track enters, lift energy 10%",
     },
     {
       timestamp: "0:19",
       line: `Detail one: ${lowTopic} does not behave the way the story requires.`,
-      cue: "[accelerate, build tension]",
+      cue: "accelerate, build tension",
     },
     {
       timestamp: "0:27",
       line: `Detail two: the timeline only works if someone is lying.`,
-      cue: "[clip consonants, forward placement]",
+      cue: "clip consonants, forward placement",
     },
     {
       timestamp: "0:35",
       line: `Which leaves one ${desc2} explanation.`,
-      cue: `[${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop]`,
+      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop`,
     },
     {
       timestamp: "0:41",
       line: `Follow for part two on ${lowTopic}.`,
-      cue: "[drop to intimate volume, music out]",
+      cue: "drop to intimate volume, music out",
     },
   ];
+
+  // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
+  const cueSheet = rawCueSheet.map((r) => ({
+    timestamp: r.timestamp,
+    line: dedupePhrases(r.line),
+    cue: toElevenLabsCue(r.cue),
+  }));
+
+  const mixCues = rawCueSheet
+    .map((r) => {
+      const mix = extractMixDirective(r.cue);
+      return mix ? `${r.timestamp} — ${mix}` : null;
+    })
+    .filter((x): x is string => Boolean(x));
 
   const negativePrompt =
     "blurry, lowres, deformed hands, extra fingers, visible face, text, watermark, logo, cartoon, oversaturated";
