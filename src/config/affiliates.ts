@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { trackClick } from "@/lib/track";
 
 /**
  * Every CTA destination in the app lives here.
