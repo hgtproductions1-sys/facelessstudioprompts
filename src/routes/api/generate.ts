@@ -125,7 +125,11 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
   };
 }
 
-async function generateWithGlm(niche: string, topic: string, apiKey: string): Promise<ProductionPackage | null> {
+async function generateWithGlm(
+  niche: string,
+  topic: string,
+  apiKey: string,
+): Promise<ProductionPackage | null> {
   const references = getTopPromptsForNiche(niche, 3)
     .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
     .join("\n\n");
@@ -146,21 +150,20 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
         messages: [
           {
             role: "system",
-            content:
-              [
-                "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
-                `Reference style examples from successful creators:\n${references}`,
-                "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
-                "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
-                "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
-                "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
-                "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-                "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
-                "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
-                "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
-                "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
-                "Face never visible in any prompt.",
-              ].join(" "),
+            content: [
+              "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+              `Reference style examples from successful creators:\n${references}`,
+              "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
+              "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
+              "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
+              "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
+              "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
+              "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
+              "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
+              "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+              "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
+              "Face never visible in any prompt.",
+            ].join(" "),
           },
           {
             role: "user",

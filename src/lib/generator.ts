@@ -1328,10 +1328,7 @@ export function generatePackage({
     `faceless ${archetypeNoun} stepping forward, head out of frame`,
     `hands lifting the key prop tied to ${lowTopic}`,
   ];
-  const environmentLighting = [
-    `${env}, ${lightingLine}`,
-    `${env2}, ${lightingLine}`,
-  ];
+  const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
 
   const shotCount = 6 + (s % 2);
   const shots = Array.from({ length: shotCount }, (_, i) => {

@@ -151,10 +151,15 @@ export function sanitizeMidjourneyPrompt(prompt: string, seed: number): string {
 
 /** Trims a paragraph to a maximum word count without cutting mid-sentence badly. */
 export function clampWords(text: string, max = 95): string {
-  const clean = dedupePhrases(text).replace(/\s{2,}/g, " ").trim();
+  const clean = dedupePhrases(text)
+    .replace(/\s{2,}/g, " ")
+    .trim();
   const words = clean.split(" ");
   if (words.length <= max) return clean;
-  return `${words.slice(0, max).join(" ").replace(/[\s,;:.]+$/, "")}.`;
+  return `${words
+    .slice(0, max)
+    .join(" ")
+    .replace(/[\s,;:.]+$/, "")}.`;
 }
 
 /** Joins prompt fragments into ONE coherent paragraph with no duplicated blocks. */
@@ -162,7 +167,10 @@ export function buildParagraph(parts: (string | undefined)[], max = 95): string 
   const seen = new Set<string>();
   const kept: string[] = [];
   for (const raw of parts) {
-    const part = (raw ?? "").replace(/\s+/g, " ").trim().replace(/[.,;]+$/, "");
+    const part = (raw ?? "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/[.,;]+$/, "");
     if (!part) continue;
     const key = part.toLowerCase();
     if (seen.has(key)) continue;
