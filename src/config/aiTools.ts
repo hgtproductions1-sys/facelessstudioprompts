@@ -1,4 +1,5 @@
 import type { ProductionPackage } from "@/lib/generator";
+import { buildParagraph, sanitizeMidjourneyPrompt, stripPromptFlags } from "@/lib/prompt-sanitize";
 
 export type EngineCategory = "image" | "video" | "audio";
 
@@ -13,9 +14,7 @@ export interface AiTool {
 }
 
 const shots = (pkg: ProductionPackage) =>
-  pkg.camera.shots
-    .map((s) => `${s.timecode} — ${s.motion}; ${s.transition}; ${s.animationCue}`)
-    .join("\n");
+  pkg.camera.shots.map((s) => `${s.timecode} — ${s.prompt}`).join("\n");
 
 const subject = (pkg: ProductionPackage) =>
   `${pkg.character.archetype}, ${pkg.character.physicalDescription}`;
@@ -29,8 +28,7 @@ export const AI_TOOLS: AiTool[] = [
     category: "image",
     blurb: "Best-in-class stylised stills with strong character consistency.",
     url: "https://www.midjourney.com",
-    build: (pkg) =>
-      `${pkg.visual.midjourneyPrompt} --v 6 --style raw --ar ${pkg.visual.aspectRatio} --s ${pkg.visual.stylize} --c ${pkg.visual.chaos} --seed ${pkg.visual.seedValue} --no ${pkg.visual.negativePrompt}`,
+    build: (pkg) => sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt, pkg.visual.seedValue),
   },
   {
     id: "leonardo",
