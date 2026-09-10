@@ -36,5 +36,6 @@ export function openContentLocker(): boolean {
     return true;
   }
 
+  console.warn("[CPA Locker] call_locker() not available yet.");
   return false;
 }
