@@ -34,7 +34,7 @@ import { CameraCard } from "@/components/site/CameraCard";
 import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
-import { LockerCard } from "@/components/site/LockerCard";
+
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
@@ -310,11 +310,6 @@ function Index() {
                 </div>
               </>
             ) : null}
-
-            {/* CPA CONTENT LOCKER */}
-            <section aria-label="Bonus blueprint download" className="mx-auto mt-10 max-w-7xl">
-              <LockerCard />
-            </section>
           </div>
 
           <HowItWorks />
