@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Clapperboard, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useState } from "react";
+import logoMark from "@/assets/logo-mark.png";
 import { AFFILIATES } from "@/config/affiliates";
 import { AffiliateCta } from "./primitives";
 
@@ -14,9 +15,7 @@ const NAV_LINKS = [
 export function LogoLockup() {
   return (
     <Link to="/" className="flex items-center gap-2.5" aria-label="Faceless Studio Pro home">
-      <span className="from-purple to-cyan flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br">
-        <Clapperboard className="h-4 w-4 text-[#0a0a0c]" aria-hidden />
-      </span>
+      <img src={logoMark} alt="Faceless Studio Pro logo" width={28} height={28} className="h-7 w-7 rounded-lg" />
       <span className="text-[15px] font-bold text-white">
         Faceless <span className="gradient-text">Studio Pro</span>
       </span>
