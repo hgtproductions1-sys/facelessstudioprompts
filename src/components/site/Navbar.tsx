@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Clapperboard, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useState } from "react";
+import logoMark from "@/assets/logo-mark.png";
 import { AFFILIATES } from "@/config/affiliates";
 import { AffiliateCta } from "./primitives";
 
