@@ -1,8 +1,8 @@
 import { Video, Zap } from "lucide-react";
 import type { ProductionPackage } from "@/lib/generator";
-import { handleCtaClick } from "@/config/affiliates";
+import { AFFILIATES } from "@/config/affiliates";
 import { CardShell } from "./CardShell";
-import { BlockLabel, CopyButton, FooterCta, PrimaryButton, SpecGrid } from "./primitives";
+import { AffiliateCta, BlockLabel, CopyButton, FooterCta, SpecGrid } from "./primitives";
 
 export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
   const cam = pkg.camera;
@@ -71,10 +71,10 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
         </ol>
       </div>
 
-      <PrimaryButton className="w-full" onClick={() => handleCtaClick("card3-animate-shots")}>
-        <Zap className="h-4 w-4" aria-hidden />
-        Animate These Shots in One Click
-      </PrimaryButton>
+      <AffiliateCta ctaKey="card3Mid" className="w-full">
+        <Zap className="h-4 w-4 shrink-0" aria-hidden />
+        {AFFILIATES.card3Mid.label}
+      </AffiliateCta>
 
       <div>
         <BlockLabel>Camera Rig Cheat Sheet</BlockLabel>
@@ -101,10 +101,9 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <FooterCta
-        id="card3-animation-engine"
+        ctaKey="card3Foot"
         headline="Static images don't retain. Motion does."
         copy="Test the AI animation engine top faceless channels are quietly using."
-        button="Try the Animation Engine"
       />
     </CardShell>
   );

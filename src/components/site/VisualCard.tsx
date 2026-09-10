@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Palette, RefreshCw, Sparkles } from "lucide-react";
 import type { ProductionPackage } from "@/lib/generator";
-import { handleCtaClick } from "@/config/affiliates";
+import { AFFILIATES } from "@/config/affiliates";
 import { CardShell } from "./CardShell";
-import { BlockLabel, CopyButton, FooterCta, MonoBlock, PrimaryButton, SpecGrid } from "./primitives";
+import { AffiliateCta, BlockLabel, CopyButton, FooterCta, MonoBlock, SpecGrid } from "./primitives";
 
 function rerollToken(token: string) {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -68,10 +68,10 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
         <SpecGrid rows={specRows} copyable />
       </div>
 
-      <PrimaryButton className="w-full" onClick={() => handleCtaClick("card2-leonardo-credits")}>
-        <Sparkles className="h-4 w-4" aria-hidden />
-        Generate These Visuals in Leonardo.ai — Free Credits
-      </PrimaryButton>
+      <AffiliateCta ctaKey="card2Mid" className="w-full">
+        <Sparkles className="h-4 w-4 shrink-0" aria-hidden />
+        {AFFILIATES.card2Mid.label}
+      </AffiliateCta>
 
       <div>
         <BlockLabel action={<CopyButton value={v.leonardoPrompt} />}>Leonardo.ai Prompt</BlockLabel>
@@ -122,10 +122,9 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <FooterCta
-        id="card2-prompt-pack"
+        ctaKey="card2Foot"
         headline="Stop fighting inconsistent AI images."
         copy="Grab our 40-prompt consistency pack plus the exact seed settings."
-        button="Download the Prompt Pack"
       />
     </CardShell>
   );

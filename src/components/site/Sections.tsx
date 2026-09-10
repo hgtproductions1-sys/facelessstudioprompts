@@ -1,6 +1,6 @@
 import { Compass, Layers, Rocket, Star } from "lucide-react";
-import { handleCtaClick } from "@/config/affiliates";
-import { PrimaryButton, SecondaryButton } from "./primitives";
+
+import { AffiliateCta } from "./primitives";
 
 const STEPS = [
   {
@@ -113,18 +113,7 @@ export function FinalCta() {
             offers that monetise the traffic.
           </p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <PrimaryButton
-              className="w-full px-7 py-3.5 sm:w-auto"
-              onClick={() => handleCtaClick("final-creator-stack")}
-            >
-              Get the Complete Creator Stack
-            </PrimaryButton>
-            <SecondaryButton
-              className="w-full sm:w-auto"
-              onClick={() => handleCtaClick("final-free-resources")}
-            >
-              Browse Free Resources
-            </SecondaryButton>
+            <AffiliateCta ctaKey="finalBanner" className="w-full px-7 py-3.5 sm:w-auto" />
           </div>
           <p className="mt-4 text-xs text-ink-muted">
             Free tier available · No credit card required.
