@@ -219,3 +219,22 @@
     scroll-behavior: auto !important;
   }
 }
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+.shimmer-sweep {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14),
+    transparent
+  );
+  width: 60%;
+}
