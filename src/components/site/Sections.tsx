@@ -1,5 +1,7 @@
-import { Compass, Layers, Rocket, Star } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Compass, ImageIcon, Layers, Mic, Rocket, Sparkles, Video } from "lucide-react";
 
+import { NICHES } from "@/lib/generator";
 import { AffiliateCta } from "./primitives";
 
 const STEPS = [
@@ -20,32 +22,27 @@ const STEPS = [
   },
 ];
 
-const STATS = [
-  ["128,400+", "Blueprints Generated"],
-  ["3,900+", "Faceless Creators"],
-  ["12", "Niches Supported"],
-  ["4.9/5", "Avg. Creator Rating"],
-];
-
-const TESTIMONIALS = [
-  [
-    "Dana R.",
-    "@quietcasefiles",
-    "First blueprint hit 410k views. The hook options alone are worth it.",
-  ],
-  ["Milo T.", "@stoicdaily", "My character finally looks the same in every single frame."],
-  [
-    "Priya N.",
-    "@passivepriya",
-    "The cue sheet cut my scripting time from two hours to twelve minutes.",
-  ],
-  [
-    "Jonas K.",
-    "@deepfieldshorts",
-    "Camera plan is the part every other tool skips. This one nails it.",
-  ],
-  ["Ava L.", "@darkpsychnotes", "Pasted the Midjourney prompt straight in. Zero edits needed."],
-  ["Ben O.", "@offgridben", "Ran nine videos off one package. Retention went up 22%."],
+const FEATURES = [
+  {
+    title: "Recurring character profile",
+    copy: "Archetype, physical description, wardrobe and voice spec written once so you can paste the same block into every prompt and stop the character drifting between shots.",
+    Icon: Sparkles,
+  },
+  {
+    title: "Image prompts for four engines",
+    copy: "Leonardo, Midjourney, Google Flow and Flux-ready copy, each carrying the same seed and consistency token rather than four different descriptions of the same scene.",
+    Icon: ImageIcon,
+  },
+  {
+    title: "Shot list with camera motion",
+    copy: "Timecoded shots written engine-ready for Veo, Runway, Kling or Luma — the camera movement is stated in the prompt instead of left to the model to invent.",
+    Icon: Video,
+  },
+  {
+    title: "Narration cue sheet, plus sound design",
+    copy: "Spoken lines with pacing and emotional tags for your voice tool, kept separate from the music beds and mix notes your editor works from.",
+    Icon: Mic,
+  },
 ];
 
 export function HowItWorks() {
