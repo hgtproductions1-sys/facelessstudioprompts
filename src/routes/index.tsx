@@ -1,24 +1,312 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { motion } from "framer-motion";
+import {
+  Brain,
+  Briefcase,
+  Columns3,
+  Crown,
+  Download,
+  HeartPulse,
+  Landmark,
+  Loader2,
+  type LucideIcon,
+  Rocket,
+  RefreshCw,
+  Search,
+  Tent,
+  TrendingUp,
+  Wand2,
+} from "lucide-react";
+import { useRef, useState, type FormEvent } from "react";
+import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { CharacterCard } from "@/components/site/CharacterCard";
+import { VisualCard } from "@/components/site/VisualCard";
+import { CameraCard } from "@/components/site/CameraCard";
+import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
+import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
+import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
+import { usePackageGenerator } from "@/hooks/usePackageGenerator";
+import { NICHES, packageToText, slugify } from "@/lib/generator";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITLE = "Faceless Studio Pro — AI Video Blueprints for Faceless Creators";
+const DESC =
+  "Free generator that turns a niche and a topic into a full faceless video production package: character profile, Leonardo & Midjourney prompts, and a shot-by-shot camera plan.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const NICHE_ICONS: Record<string, LucideIcon> = {
+  "True Crime & Unsolved Mysteries": Search,
+  "Stoic Philosophy & Discipline": Columns3,
+  "Wealth, Finance & Passive Income": TrendingUp,
+  "Dark Psychology & Human Behavior": Brain,
+  "Ancient History & Lost Civilizations": Landmark,
+  "Space, Science & the Unknown": Rocket,
+  "Stoicism for Entrepreneurs": Briefcase,
+  "Survival & Prepper Skills": Tent,
+  "Luxury Lifestyle & Success Mindset": Crown,
+  "Health, Longevity & Biohacking": HeartPulse,
+};
+
+const QUICK_STARTS: { topic: string; niche: string }[] = [
+  { topic: "The Dyatlov Pass Incident", niche: NICHES[0] },
+  { topic: "Marcus Aurelius on Anger", niche: NICHES[1] },
+  { topic: "How the Rich Avoid Taxes", niche: NICHES[2] },
+  { topic: "The Dark Side of Dopamine", niche: NICHES[3] },
+];
+
 function Index() {
+  const [niche, setNiche] = useState("");
+  const [topic, setTopic] = useState("");
+  const [error, setError] = useState("");
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const { pkg, loading, step, run, regenerate, totalMs } = usePackageGenerator();
+
+  const scrollToResults = () => {
+    setTimeout(
+      () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      50,
+    );
+  };
+
+  const submit = (e?: FormEvent) => {
+    e?.preventDefault();
+    if (!niche) {
+      setError("Pick a niche before generating.");
+      toast.error("Pick a niche before generating.");
+      return;
+    }
+    if (topic.trim().length < 3) {
+      setError("Add a topic of at least 3 characters.");
+      toast.error("Add a topic of at least 3 characters.");
+      return;
+    }
+    setError("");
+    run(niche, topic);
+    scrollToResults();
+  };
+
+  const quickStart = (q: (typeof QUICK_STARTS)[number]) => {
+    setNiche(q.niche);
+    setTopic(q.topic);
+    setError("");
+    run(q.niche, q.topic);
+    scrollToResults();
+  };
+
+  const exportTxt = () => {
+    if (!pkg) return;
+    const blob = new Blob([packageToText(pkg)], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `faceless-studio-pro-${slugify(pkg.topic)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Package exported as .txt");
+  };
+
+  const disabled = !niche || topic.trim().length < 3 || loading;
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="bg-base relative min-h-screen overflow-x-hidden text-ink">
+      <div className="ambient-glow pointer-events-none absolute inset-x-0 top-0 z-0 h-[60vh]" />
+      <div className="grid-overlay pointer-events-none absolute inset-x-0 top-0 z-0 h-[70vh]" />
+
+      <Navbar />
+
+      <main className="relative z-10">
+        {/* HERO + GENERATOR */}
+        <section id="generator" className="px-4 pt-32 pb-10">
+          <div className="mx-auto max-w-4xl text-center">
+            <span className="border-line-hover bg-surface2 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs text-ink-dim">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan" aria-hidden />
+              100% Free · No signup required · Unlimited generations
+            </span>
+            <h1 className="mt-6 text-4xl font-extrabold tracking-tight md:text-6xl">
+              Build <span className="gradient-text">Faceless Video Blueprints</span> That Actually
+              Convert
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-dim">
+              Generate a complete AI production package — recurring character profile, Leonardo &amp;
+              Midjourney style prompts, and shot-by-shot camera motion — in one click. Built for
+              creators running CPA traffic.
+            </p>
+          </div>
+
+          <form
+            onSubmit={submit}
+            className="glass-card top-rail-pc relative mx-auto mt-10 max-w-3xl overflow-hidden p-6 md:p-8"
+          >
+            <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-[1fr_1.4fr_auto]">
+              <div>
+                <label
+                  htmlFor="niche"
+                  className="mb-2 block text-xs font-medium tracking-widest text-ink-dim uppercase"
+                >
+                  Niche
+                </label>
+                <Select value={niche} onValueChange={(v) => setNiche(v)}>
+                  <SelectTrigger
+                    id="niche"
+                    className="bg-surface2 border-line-hover !h-12 w-full rounded-xl text-sm focus:ring-2 focus:ring-purple"
+                  >
+                    <SelectValue placeholder="Select a niche…" />
+                  </SelectTrigger>
+                  <SelectContent className="border-line bg-surface">
+                    {NICHES.map((n) => {
+                      const Icon = NICHE_ICONS[n] ?? Search;
+                      return (
+                        <SelectItem key={n} value={n} className="text-sm">
+                          <span className="flex items-center gap-2">
+                            <Icon className="h-4 w-4 text-purple-bright" aria-hidden />
+                            {n}
+                          </span>
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="topic"
+                  className="mb-2 block text-xs font-medium tracking-widest text-ink-dim uppercase"
+                >
+                  Topic or Video Angle
+                </label>
+                <div className="relative">
+                  <input
+                    id="topic"
+                    value={topic}
+                    maxLength={140}
+                    onChange={(e) => setTopic(e.target.value)}
+                    placeholder="e.g., The man who faked his own death for insurance money"
+                    className="bg-surface2 border-line-hover h-12 w-full rounded-xl border px-3 pr-14 text-sm text-ink placeholder:text-ink-muted focus:border-purple focus:ring-2 focus:ring-purple focus:outline-none"
+                  />
+                  <span
+                    className={`pointer-events-none absolute right-3 bottom-1.5 text-[10px] ${
+                      topic.length > 120 ? "text-warning" : "text-ink-muted"
+                    }`}
+                  >
+                    {topic.length}/140
+                  </span>
+                </div>
+              </div>
+
+              <PrimaryButton
+                type="submit"
+                disabled={disabled}
+                className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                    Generating…
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-4 w-4" aria-hidden />
+                    Generate Package
+                  </>
+                )}
+              </PrimaryButton>
+            </div>
+
+            {error ? <p className="mt-2 text-xs text-warning">{error}</p> : null}
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {QUICK_STARTS.map((q) => (
+                <button
+                  key={q.topic}
+                  type="button"
+                  onClick={() => quickStart(q)}
+                  className="border-line bg-surface2 hover:border-purple cursor-pointer rounded-full border px-3 py-1.5 text-xs text-ink-dim transition-colors hover:text-white"
+                >
+                  {q.topic}
+                </button>
+              ))}
+            </div>
+          </form>
+        </section>
+
+        {/* RESULTS */}
+        <div ref={resultsRef} id="results" aria-live="polite" className="scroll-mt-24 px-4">
+          {loading ? (
+            <>
+              <ProgressStepper step={step} totalMs={totalMs} />
+              <SkeletonCards />
+            </>
+          ) : null}
+
+          {!loading && pkg ? (
+            <>
+              <div className="mx-auto flex max-w-7xl flex-wrap justify-end gap-2">
+                <SecondaryButton
+                  className="w-full sm:w-auto"
+                  onClick={() =>
+                    copyText(packageToText(pkg), "Full package copied to clipboard")
+                  }
+                >
+                  Copy Full Package
+                </SecondaryButton>
+                <SecondaryButton className="w-full sm:w-auto" onClick={regenerate}>
+                  <RefreshCw className="h-4 w-4" aria-hidden />
+                  Regenerate
+                </SecondaryButton>
+                <SecondaryButton className="w-full sm:w-auto" onClick={exportTxt}>
+                  <Download className="h-4 w-4" aria-hidden />
+                  Export as .txt
+                </SecondaryButton>
+              </div>
+
+              <div className="mx-auto mt-6 grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-3">
+                {[
+                  <CharacterCard key="c1" pkg={pkg} />,
+                  <VisualCard key="c2" pkg={pkg} />,
+                  <CameraCard key="c3" pkg={pkg} />,
+                ].map((card, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: i * 0.12 }}
+                  >
+                    {card}
+                  </motion.div>
+                ))}
+              </div>
+            </>
+          ) : null}
+        </div>
+
+        <HowItWorks />
+        <TrustStrip />
+        <FinalCta />
+      </main>
+
+      <Footer />
     </div>
   );
 }
