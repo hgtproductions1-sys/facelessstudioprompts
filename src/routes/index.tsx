@@ -311,6 +311,9 @@ function Index() {
             </form>
           </section>
 
+          {/* LEADERBOARD AD */}
+          <LeaderboardAd className="mt-2 mb-4" />
+
           {/* RESULTS */}
           <div
             ref={resultsRef}
