@@ -37,10 +37,11 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   ].join("\n");
 
   const prompt3 = cam.shots
-    .map(
-      (sh) =>
-        `${String(sh.index).padStart(2, "0")} | ${sh.timecode} | ${sh.motion} | ${sh.transition} | ${sh.animationCue}`,
-    )
+    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.timecode}\n${sh.prompt}`)
+    .join("\n\n");
+
+  const editPoints = cam.shots
+    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.transition} | ${sh.animationCue}`)
     .join("\n");
 
   return [
