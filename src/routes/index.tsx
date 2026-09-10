@@ -39,7 +39,8 @@ import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/prim
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
 import { NICHES, packageToText, slugify } from "@/lib/generator";
 
-const TITLE = "Faceless Studio Pro — AI Video Blueprints for Faceless Creators";
+const TITLE =
+  "Faceless Studio Pro — Free AI Video Blueprint Generator for Faceless Creators";
 const DESC =
   "Free generator that turns a niche and a topic into a full faceless video production package: character profile, Leonardo & Midjourney prompts, and a shot-by-shot camera plan.";
 
