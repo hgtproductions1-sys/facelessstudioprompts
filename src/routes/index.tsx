@@ -224,7 +224,7 @@ function Index() {
                   disabled={disabled}
                   className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
                 >
-                  {!loading && !pkg ? <EmptyState /> : null}
+
 
                   {loading ? (
                     <>
@@ -258,7 +258,12 @@ function Index() {
           </section>
 
           {/* RESULTS */}
-          <div ref={resultsRef} id="results" aria-live="polite" className="scroll-mt-24 px-4">
+          <div
+            ref={resultsRef}
+            id="results"
+            aria-live="polite"
+            className="relative z-10 mt-8 scroll-mt-24 px-4 md:mt-12"
+          >
             {!loading && !pkg ? <EmptyState /> : null}
 
             {loading ? (
