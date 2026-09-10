@@ -553,7 +553,7 @@ export function generatePackage({
   const leonardoPrompt = [
     `Cinematic vertical still of a faceless ${profile.archetype.toLowerCase()} in a ${env},`,
     `theme: ${lowTopic}. Face fully obscured by shadow and framing, shot from behind at chest height.`,
-    `${profile.wardrobe[0].toLowerCase()}, ${profile.wardrobe[1].toLowerCase()}.`,
+    `${(profile.wardrobe[0] ?? "").toLowerCase()}, ${(profile.wardrobe[1] ?? "").toLowerCase()}.`,
     `Palette of ${profile.palette}. ${profile.styleDNA.join(", ")}.`,
     `Single hard key light with deep falloff, atmospheric haze, fine film grain, shallow depth of field,`,
     `photoreal texture on fabric and skin, negative space reserved at the top third for caption text.`,
