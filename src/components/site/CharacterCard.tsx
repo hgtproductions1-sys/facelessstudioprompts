@@ -1,8 +1,8 @@
+import { AFFILIATES } from "@/config/affiliates";
 import { ArrowRight, UserRound } from "lucide-react";
 import type { ProductionPackage } from "@/lib/generator";
-import { handleCtaClick } from "@/config/affiliates";
 import { CardShell } from "./CardShell";
-import { BlockLabel, CopyButton, FooterCta, MonoBlock, PrimaryButton, SpecGrid } from "./primitives";
+import { AffiliateCta, BlockLabel, CopyButton, FooterCta, MonoBlock, SpecGrid } from "./primitives";
 
 export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
   const c = pkg.character;
@@ -84,13 +84,10 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
         </ul>
       </div>
 
-      <PrimaryButton
-        className="w-full"
-        onClick={() => handleCtaClick("card1-voiceover-scripts")}
-      >
-        Get 5,000+ Done-For-You Voiceover Scripts
-        <ArrowRight className="h-4 w-4" aria-hidden />
-      </PrimaryButton>
+      <AffiliateCta ctaKey="card1Mid" className="w-full">
+        {AFFILIATES.card1Mid.label}
+        <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+      </AffiliateCta>
 
       <div>
         <BlockLabel>Voice &amp; Delivery Profile</BlockLabel>
@@ -142,10 +139,9 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <FooterCta
-        id="card1-voice-studio"
+        ctaKey="card1Foot"
         headline="Your voice is the only asset you can't fake."
         copy="Clone a broadcast-quality AI voice in under 3 minutes — free tier inside."
-        button="Unlock AI Voice Studio"
       />
     </CardShell>
   );

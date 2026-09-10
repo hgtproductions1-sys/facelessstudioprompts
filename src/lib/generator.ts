@@ -126,7 +126,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Composed conviction",
       "Signature Pause": "1.0s after every maxim",
     },
-    styleDNA: ["Marble Chiaroscuro", "Golden Hour Shafts", "Muted Stone", "Fine Grain", "Sculptural"],
+    styleDNA: [
+      "Marble Chiaroscuro",
+      "Golden Hour Shafts",
+      "Muted Stone",
+      "Fine Grain",
+      "Sculptural",
+    ],
     palette: "bone white, warm amber, deep umber shadow",
     environments: [
       "colonnaded stone courtyard at dawn",
@@ -163,7 +169,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Assured, faintly amused",
       "Signature Pause": "0.5s before every number",
     },
-    styleDNA: ["Executive Minimal", "Glass Reflections", "Cool Steel & Gold", "Shallow Depth", "Ultra Clean"],
+    styleDNA: [
+      "Executive Minimal",
+      "Glass Reflections",
+      "Cool Steel & Gold",
+      "Shallow Depth",
+      "Ultra Clean",
+    ],
     palette: "graphite grey, brushed gold, night-blue glass",
     environments: [
       "glass boardroom above a night skyline",
@@ -200,7 +212,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Detached fascination",
       "Signature Pause": "0.7s after each accusation",
     },
-    styleDNA: ["Clinical Noir", "Hard Rim Light", "Cold Cyan Wash", "Micro-Contrast", "Surgical Detail"],
+    styleDNA: [
+      "Clinical Noir",
+      "Hard Rim Light",
+      "Cold Cyan Wash",
+      "Micro-Contrast",
+      "Surgical Detail",
+    ],
     palette: "cold cyan, clinical white, black negative space",
     environments: [
       "observation room behind one-way glass",
@@ -237,7 +255,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Awed restraint",
       "Signature Pause": "0.9s before each date",
     },
-    styleDNA: ["Epic Documentary", "Dust Shafts", "Ochre & Sandstone", "Anamorphic Flare", "Weathered Texture"],
+    styleDNA: [
+      "Epic Documentary",
+      "Dust Shafts",
+      "Ochre & Sandstone",
+      "Anamorphic Flare",
+      "Weathered Texture",
+    ],
     palette: "ochre, sandstone, deep temple shadow",
     environments: [
       "half-buried stone chamber lit by a shaft of sun",
@@ -274,7 +298,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Quiet awe",
       "Signature Pause": "1.1s on scale reveals",
     },
-    styleDNA: ["Hard Sci-Fi Realism", "Volumetric Starlight", "Cyan & Deep Violet", "Lens Bloom", "8K Detail"],
+    styleDNA: [
+      "Hard Sci-Fi Realism",
+      "Volumetric Starlight",
+      "Cyan & Deep Violet",
+      "Lens Bloom",
+      "8K Detail",
+    ],
     palette: "void black, plasma cyan, violet nebula bloom",
     environments: [
       "observation deck facing a gas giant",
@@ -348,7 +378,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Controlled urgency",
       "Signature Pause": "0.4s between steps",
     },
-    styleDNA: ["Rugged Realism", "Overcast Diffusion", "Olive & Rust", "Heavy Texture", "Documentary Grit"],
+    styleDNA: [
+      "Rugged Realism",
+      "Overcast Diffusion",
+      "Olive & Rust",
+      "Heavy Texture",
+      "Documentary Grit",
+    ],
     palette: "olive drab, rust orange, wet slate",
     environments: [
       "treeline camp under low cloud and drizzle",
@@ -385,7 +421,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Effortless certainty",
       "Signature Pause": "0.6s before each flex",
     },
-    styleDNA: ["Luxe Editorial", "Golden Reflection", "Champagne & Onyx", "Silky Bokeh", "Magazine Finish"],
+    styleDNA: [
+      "Luxe Editorial",
+      "Golden Reflection",
+      "Champagne & Onyx",
+      "Silky Bokeh",
+      "Magazine Finish",
+    ],
     palette: "champagne gold, onyx black, marble white",
     environments: [
       "penthouse terrace over a lit skyline",
@@ -422,7 +464,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Precise enthusiasm",
       "Signature Pause": "0.5s before each metric",
     },
-    styleDNA: ["Clinical Futurism", "Soft Daylight", "Ice White & Mint", "Clean Gradient", "Macro Detail"],
+    styleDNA: [
+      "Clinical Futurism",
+      "Soft Daylight",
+      "Ice White & Mint",
+      "Clean Gradient",
+      "Macro Detail",
+    ],
     palette: "ice white, mint green, cool chrome",
     environments: [
       "sunrise lab bench with glassware and data",
@@ -675,9 +723,13 @@ export function packageToText(pkg: ProductionPackage): string {
   const div = "\n\n===============================\n\n";
   return [
     `FACELESS STUDIO PRO — PRODUCTION PACKAGE\nNiche: ${pkg.niche}\nTopic: ${pkg.topic}\nSeed: ${pkg.seed}\nGenerated: ${pkg.generatedAt}`,
-    `CARD 1 — MASTER CHARACTER PROFILE\nArchetype: ${c.archetype}\nTone: ${c.toneTags.join(", ")}\nConsistency Score: ${c.consistencyScore}/100\n\nPHYSICAL DESCRIPTION\n${c.physicalDescription}\n\nWARDROBE & PROPS\n${c.wardrobe.map((w) => `- ${w}`).join("\n")}\n\nVOICE & DELIVERY\n${Object.entries(c.voiceSpec)
+    `CARD 1 — MASTER CHARACTER PROFILE\nArchetype: ${c.archetype}\nTone: ${c.toneTags.join(", ")}\nConsistency Score: ${c.consistencyScore}/100\n\nPHYSICAL DESCRIPTION\n${c.physicalDescription}\n\nWARDROBE & PROPS\n${c.wardrobe.map((w) => `- ${w}`).join("\n")}\n\nVOICE & DELIVERY\n${Object.entries(
+      c.voiceSpec,
+    )
       .map(([k, val]) => `${k}: ${val}`)
-      .join("\n")}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\nVOICEOVER CUE SHEET\n${c.cueSheet
+      .join(
+        "\n",
+      )}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\nVOICEOVER CUE SHEET\n${c.cueSheet
       .map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`)
       .join("\n")}\n\nRETENTION BEATS\n${c.retentionBeats.map((b) => `- ${b}`).join("\n")}`,
     `CARD 2 — VISUAL STYLE PROMPTS\nStyle DNA: ${v.styleDNA.join(", ")}\nAspect Ratio: ${v.aspectRatio}\nResolution: ${v.resolution}\nModel: ${v.model}\nStylize: ${v.stylize}\nChaos: ${v.chaos}\nSeed: ${v.seedValue}\nNegative Prompt: ${v.negativePrompt}\n\nLEONARDO.AI PROMPT\n${v.leonardoPrompt}\n\nMIDJOURNEY PROMPT\n${v.midjourneyPrompt}\n\nCHARACTER CONSISTENCY TOKEN\n${v.consistencyToken}\n\nNEGATIVE PROMPT LIBRARY\n${v.negativeLibrary.map((n) => `- ${n}`).join("\n")}`,
@@ -688,6 +740,8 @@ export function packageToText(pkg: ProductionPackage): string {
         (sh) =>
           `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Motion: ${sh.motion}\n  Transition: ${sh.transition}\n  Animation Cue: ${sh.animationCue}`,
       )
-      .join("\n")}\n\nCAMERA RIG CHEAT SHEET\n${cam.rigCheatSheet.map((r) => `- ${r}`).join("\n")}\n\nSOUND DESIGN LAYER\n${cam.soundDesign.map((r) => `- ${r}`).join("\n")}`,
+      .join(
+        "\n",
+      )}\n\nCAMERA RIG CHEAT SHEET\n${cam.rigCheatSheet.map((r) => `- ${r}`).join("\n")}\n\nSOUND DESIGN LAYER\n${cam.soundDesign.map((r) => `- ${r}`).join("\n")}`,
   ].join(div);
 }

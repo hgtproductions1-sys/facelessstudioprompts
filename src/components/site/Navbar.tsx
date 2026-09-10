@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Clapperboard, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { handleCtaClick } from "@/config/affiliates";
-import { PrimaryButton } from "./primitives";
+import { AFFILIATES } from "@/config/affiliates";
+import { AffiliateCta } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Generator", href: "/#generator" },
@@ -46,14 +46,14 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => handleCtaClick("navbar-creator-stack")}
-            className="bg-surface2 border-line-hover hover:border-purple hidden items-center gap-1.5 rounded-xl border px-4 py-2 text-sm text-ink transition-colors hover:text-white sm:inline-flex"
+          <AffiliateCta
+            ctaKey="navbarCreatorStack"
+            variant="secondary"
+            className="hidden py-2 sm:inline-flex"
           >
-            Get the Creator Stack
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </button>
+            {AFFILIATES.navbarCreatorStack.label}
+            <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden />
+          </AffiliateCta>
           <button
             type="button"
             className="border-line bg-surface2 rounded-lg border p-2 text-ink-dim md:hidden"
@@ -92,16 +92,10 @@ export function Navbar() {
               </a>
             ))}
           </nav>
-          <PrimaryButton
-            className="mt-4 w-full"
-            onClick={() => {
-              setOpen(false);
-              handleCtaClick("navbar-creator-stack");
-            }}
-          >
-            Get the Creator Stack
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </PrimaryButton>
+          <AffiliateCta ctaKey="navbarCreatorStack" className="mt-4 w-full">
+            {AFFILIATES.navbarCreatorStack.label}
+            <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden />
+          </AffiliateCta>
         </div>
       ) : null}
     </header>

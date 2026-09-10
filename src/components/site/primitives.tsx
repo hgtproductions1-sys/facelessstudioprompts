@@ -2,7 +2,7 @@ import { Check, Copy } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { handleCtaClick } from "@/config/affiliates";
+import { AFFILIATES, handleCtaClick, type AffiliateKey } from "@/config/affiliates";
 
 export async function copyText(text: string, label = "Copied to clipboard") {
   try {
@@ -47,13 +47,7 @@ export function CopyButton({
   );
 }
 
-export function BlockLabel({
-  children,
-  action,
-}: {
-  children: ReactNode;
-  action?: ReactNode;
-}) {
+export function BlockLabel({ children, action }: { children: ReactNode; action?: ReactNode }) {
   return (
     <div className="mb-2 flex items-center justify-between gap-2">
       <h4 className="text-[11px] font-medium tracking-widest text-ink-dim uppercase">{children}</h4>
@@ -151,24 +145,54 @@ export function SecondaryButton({
   );
 }
 
+const ctaBase =
+  "inline-flex items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:ring-2 focus-visible:ring-purple-bright focus-visible:ring-offset-2 focus-visible:ring-offset-base focus-visible:outline-none active:scale-[0.98]";
+
+export function AffiliateCta({
+  ctaKey,
+  className,
+  variant = "primary",
+  children,
+}: {
+  ctaKey: AffiliateKey;
+  className?: string;
+  variant?: "primary" | "secondary";
+  children?: ReactNode;
+}) {
+  const cta = AFFILIATES[ctaKey];
+  return (
+    <a
+      href={cta.url}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      onClick={() => handleCtaClick(cta.id)}
+      className={cn(
+        ctaBase,
+        variant === "primary"
+          ? "from-purple to-cyan bg-gradient-to-r px-5 py-3 text-[#0a0a0c] hover:brightness-110 hover:shadow-[0_0_28px_-4px_rgba(139,92,246,0.65)]"
+          : "bg-surface2 border-line-hover hover:border-purple border px-4 py-2.5 font-normal text-ink hover:text-white",
+        className,
+      )}
+    >
+      {children ?? cta.label}
+    </a>
+  );
+}
+
 export function FooterCta({
-  id,
+  ctaKey,
   headline,
   copy,
-  button,
 }: {
-  id: string;
+  ctaKey: AffiliateKey;
   headline: string;
   copy: string;
-  button: string;
 }) {
   return (
     <div className="border-purple/30 from-purple/10 to-cyan/5 rounded-xl border bg-gradient-to-br p-4">
       <p className="text-sm font-bold text-ink">{headline}</p>
       <p className="mt-1 text-xs text-ink-dim">{copy}</p>
-      <PrimaryButton onClick={() => handleCtaClick(id)} className="mt-3 w-full">
-        {button}
-      </PrimaryButton>
+      <AffiliateCta ctaKey={ctaKey} className="mt-3 w-full" />
       <p className="mt-2 text-[10px] text-ink-muted">
         Affiliate link — we may earn a commission at no cost to you.
       </p>

@@ -23,7 +23,7 @@ export function CardShell({
   return (
     <section
       className={cn(
-        "glass-card hover:shadow-[0_0_46px_-18px_rgba(139,92,246,0.75)] relative overflow-hidden p-5 transition-shadow",
+        "glass-card hover:shadow-[0_0_46px_-18px_rgba(139,92,246,0.75)] relative overflow-hidden p-5 transition-shadow xl:p-7",
         rail === "pc" ? "top-rail-pc" : "top-rail-cp",
       )}
       aria-label={title}
