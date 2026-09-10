@@ -27,8 +27,8 @@ export function DownloadCard() {
 
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-dim md:text-base">
           The 47-page playbook covering niche selection, persona locking, prompt stacking, camera
-          motion templates, and the exact funnel structure top faceless channels use to convert
-          cold traffic.
+          motion templates, and the exact funnel structure top faceless channels use to convert cold
+          traffic.
         </p>
 
         <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">

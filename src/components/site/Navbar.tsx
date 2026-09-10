@@ -6,10 +6,9 @@ import { AffiliateCta } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Generator", href: "/#generator" },
-  { label: "Library", href: "/library" },
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Prompt Library", href: "/#library" },
-  { label: "Resources", href: "/#resources" },
+  { label: "AI Tools Hub", href: "/ai-tools-hub" },
+  { label: "Playbook", href: "/#playbook" },
+  { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
 ];
 
 export function LogoLockup() {

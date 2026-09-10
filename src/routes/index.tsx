@@ -50,6 +50,9 @@ import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
 import { DownloadCard } from "@/components/site/DownloadCard";
+import { EnginePrompts } from "@/components/site/EnginePrompts";
+import { LeaderboardAd, NativeAd } from "@/components/site/AdSlot";
+import { Playbook } from "@/components/site/Playbook";
 
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
@@ -308,6 +311,9 @@ function Index() {
             </form>
           </section>
 
+          {/* LEADERBOARD AD */}
+          <LeaderboardAd className="mt-2 mb-4" />
+
           {/* RESULTS */}
           <div
             ref={resultsRef}
@@ -359,15 +365,23 @@ function Index() {
                     </motion.div>
                   ))}
                 </div>
+
+                <div className="mx-auto mt-6 max-w-7xl">
+                  <EnginePrompts pkg={pkg} />
+                </div>
               </>
             ) : null}
           </div>
+
+          {/* NATIVE AD — between generator output and educational content */}
+          <NativeAd className="mt-14" />
 
           {/* BONUS DOWNLOAD */}
           <div className="relative z-10 mx-auto mt-14 max-w-4xl px-4">
             <DownloadCard />
           </div>
 
+          <Playbook />
           <HowItWorks />
           <TrustStrip />
           <FinalCta />

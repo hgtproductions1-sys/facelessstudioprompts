@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
+import { Route as AiToolsHubRouteImport } from './routes/ai-tools-hub'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -24,6 +26,16 @@ const IndexRoute = IndexRouteImport.update({
 const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
   id: '/affiliate-disclosure',
   path: '/affiliate-disclosure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiToolsHubRoute = AiToolsHubRouteImport.update({
+  id: '/ai-tools-hub',
+  path: '/ai-tools-hub',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -50,6 +62,8 @@ const ApiGenerateRoute = ApiGenerateRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/ai-tools-hub': typeof AiToolsHubRoute
+  '/contact': typeof ContactRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -58,6 +72,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/ai-tools-hub': typeof AiToolsHubRoute
+  '/contact': typeof ContactRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -67,6 +83,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/ai-tools-hub': typeof AiToolsHubRoute
+  '/contact': typeof ContactRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
@@ -77,6 +95,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/affiliate-disclosure'
+    | '/ai-tools-hub'
+    | '/contact'
     | '/library'
     | '/privacy'
     | '/terms'
@@ -85,6 +105,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/affiliate-disclosure'
+    | '/ai-tools-hub'
+    | '/contact'
     | '/library'
     | '/privacy'
     | '/terms'
@@ -93,6 +115,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/affiliate-disclosure'
+    | '/ai-tools-hub'
+    | '/contact'
     | '/library'
     | '/privacy'
     | '/terms'
@@ -102,6 +126,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
+  AiToolsHubRoute: typeof AiToolsHubRoute
+  ContactRoute: typeof ContactRoute
   LibraryRoute: typeof LibraryRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
@@ -122,6 +148,20 @@ declare module '@tanstack/react-router' {
       path: '/affiliate-disclosure'
       fullPath: '/affiliate-disclosure'
       preLoaderRoute: typeof AffiliateDisclosureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-tools-hub': {
+      id: '/ai-tools-hub'
+      path: '/ai-tools-hub'
+      fullPath: '/ai-tools-hub'
+      preLoaderRoute: typeof AiToolsHubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -158,6 +198,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
+  AiToolsHubRoute: AiToolsHubRoute,
+  ContactRoute: ContactRoute,
   LibraryRoute: LibraryRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,

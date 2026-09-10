@@ -4,18 +4,16 @@ import { LogoLockup } from "./Navbar";
 
 const PRODUCT = [
   { label: "Generator", href: "/#generator" },
-  { label: "How It Works", href: "/#how-it-works" },
+  { label: "AI Tools Hub", href: "/ai-tools-hub" },
+  { label: "Playbook", href: "/#playbook" },
   { label: "Prompt Library", href: "/library" },
-  { label: "Creator Stack", href: "/#resources" },
-  { label: "Changelog", href: "/#resources" },
 ];
 
 const RESOURCES = [
-  { label: "Blog", href: "/#resources" },
-  { label: "Niche Playbooks", href: "/#library" },
-  { label: "Voiceover Scripts", href: "/#resources" },
-  { label: "AI Tool Reviews", href: "/#resources" },
-  { label: "Contact", href: "/#resources" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Image Generators", href: "/ai-tools-hub" },
+  { label: "Video Animators", href: "/ai-tools-hub" },
+  { label: "Voice & Audio", href: "/ai-tools-hub" },
 ];
 
 const SOCIALS = [
@@ -71,9 +69,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/#resources" className="text-ink-dim hover:text-white">
-                  Cookie Preferences
-                </a>
+                <Link to="/contact" className="text-ink-dim hover:text-white">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>
