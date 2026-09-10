@@ -1432,7 +1432,7 @@ export function packageToText(pkg: ProductionPackage): string {
       .join("\n")}\n\nSHOT LIST\n${cam.shots
       .map(
         (sh) =>
-          `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Motion: ${sh.motion}\n  Transition: ${sh.transition}\n  Animation Cue: ${sh.animationCue}`,
+          `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Prompt: ${sh.prompt}\n  Animation Cue: ${sh.animationCue}\n  Edit point (NLE only): ${sh.transition}`,
       )
       .join(
         "\n",
