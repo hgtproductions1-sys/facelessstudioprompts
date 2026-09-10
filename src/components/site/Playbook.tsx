@@ -1,3 +1,13 @@
+import { Link } from "@tanstack/react-router";
+import consistencyImg from "@/assets/playbook-consistency.jpg";
+import nichesImg from "@/assets/playbook-niches.jpg";
+import workflowImg from "@/assets/playbook-workflow.jpg";
+
+const figure = "mt-8 overflow-hidden rounded-2xl border border-line bg-surface2";
+const img = "h-auto w-full";
+const caption = "border-line border-t px-4 py-3 text-xs text-ink-muted";
+const link = "text-cyan underline underline-offset-2 hover:text-white";
+
 export function Playbook() {
   return (
     <section id="playbook" className="border-line mt-20 border-t">
@@ -38,8 +48,26 @@ export function Playbook() {
             drifting between frames. Third, motion: an animator such as Runway, Kling, Luma, or Veo
             turns those keyframes into shots with deliberate camera movement instead of random
             wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
-            stability and similarity settings so episode twelve sounds exactly like episode one.
+            stability and similarity settings so episode twelve sounds exactly like episode one. See{" "}
+            <Link to="/ai-tools-hub" className={link}>
+              which AI image, video and voice engines fit each stage
+            </Link>{" "}
+            before you commit to a toolchain.
           </p>
+          <figure className={figure}>
+            <img
+              src={workflowImg}
+              alt="Four-stage faceless video workflow: script page, AI keyframe, camera motion, then voiceover waveform"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              The four-stage faceless workflow: script and hook, still keyframes, camera motion, then
+              narration.
+            </figcaption>
+          </figure>
           <h3 className="text-lg font-semibold text-ink">
             Midjourney Character Consistency Prompts and ElevenLabs Viral Voiceover Scripts
           </h3>
@@ -55,8 +83,26 @@ export function Playbook() {
             value per character, and reusing a shot list of five to seven beats: hook frame, context
             wide, escalation push-in, turn, payoff close-up, and a final hold long enough for a
             comment to form. Retention graphs improve far more from removing dead air at second
-            three than from any change in visual quality.
+            three than from any change in visual quality. Our{" "}
+            <Link to="/library" className={link}>
+              copy-and-paste library of character consistency prompts
+            </Link>{" "}
+            has the exact seed and negative-prompt wording to start from.
           </p>
+          <figure className={figure}>
+            <img
+              src={consistencyImg}
+              alt="Four frames of the same hooded faceless character with identical wardrobe and lighting, showing character consistency"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              One locked seed and one character token keep the same face, wardrobe and lighting across
+              every frame.
+            </figcaption>
+          </figure>
           <h3 className="text-lg font-semibold text-ink">
             Monetisation: Ads for Reach, Affiliates for Intent
           </h3>
@@ -81,8 +127,30 @@ export function Playbook() {
             Shorts, TikTok, and Reels the same morning. Pick one niche, generate thirty blueprints in
             a sitting, batch the stills, batch the voiceovers, and schedule a week at a time; that
             batching loop, not raw creativity, is what separates channels that survive month three
-            from the ones that stall at video nine.
+            from the ones that stall at video nine. Read the full{" "}
+            <Link to="/faceless-youtube-automation" className={link}>
+              step-by-step guide to starting a faceless YouTube automation channel
+            </Link>
+            , or{" "}
+            <Link to="/" hash="generator" className={link}>
+              generate a blueprint for one of the 24 niches
+            </Link>{" "}
+            right now.
           </p>
+          <figure className={figure}>
+            <img
+              src={nichesImg}
+              alt="Grid of vertical phone screens representing faceless niches: pet stories, cooking, ASMR restoration, miniature builds, horror and countdowns"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              Repeatable visual gimmicks — pet stories, cooking, ASMR restoration, miniature builds,
+              analog horror and countdowns — travel best on Shorts, TikTok and Reels.
+            </figcaption>
+          </figure>
         </div>
       </article>
     </section>
