@@ -174,7 +174,7 @@ async function generateWithLovableAi(
   topic: string,
   apiKey: string,
   initialRunId?: string,
-): Promise<{ pkg: ProductionPackage; runId?: string } | null> {
+): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
   try {
     const res = await fetch(GATEWAY_RESPONSES_ENDPOINT, {
       method: "POST",
@@ -341,7 +341,7 @@ export const Route = createFileRoute("/api/generate")({
               {
                 headers: result.runId
                   ? { [RUN_ID_HEADER]: result.runId, "Access-Control-Expose-Headers": RUN_ID_HEADER }
-                  : undefined,
+                  : {},
               },
             );
           }
