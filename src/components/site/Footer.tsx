@@ -78,7 +78,7 @@ export function Footer() {
         </div>
 
         <p className="mt-6 max-w-3xl text-[11px] leading-relaxed text-ink-muted">
-          Faceless Studio Pro is an independent creative tool and is not affiliated with, endorsed
+          The Faceless Prompts is an independent creative tool and is not affiliated with, endorsed
           by, or sponsored by Leonardo.ai, Midjourney, TikTok, YouTube, Instagram, or any
           third-party platform referenced on this site. Some links on this page are affiliate links,
           and we may earn a commission if you make a purchase through them — at no additional cost
@@ -87,7 +87,7 @@ export function Footer() {
         </p>
 
         <div className="border-line mt-12 flex flex-col justify-between gap-3 border-t pt-6 text-xs text-ink-muted md:flex-row">
-          <span>© 2025 Faceless Studio Pro. All rights reserved.</span>
+          <span>© 2025 The Faceless Prompts. All rights reserved.</span>
           <span>Built for creators who'd rather stay behind the camera.</span>
         </div>
       </div>

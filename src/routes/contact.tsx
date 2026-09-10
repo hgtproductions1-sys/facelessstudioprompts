@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Contact Us — Faceless Studio Pro";
+const TITLE = "Contact Us — The Faceless Prompts";
 const DESC =
-  "Get in touch with the Faceless Studio Pro team about the generator, partnerships, advertising, or privacy requests.";
+  "Get in touch with the The Faceless Prompts team about the generator, partnerships, advertising, or privacy requests.";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({

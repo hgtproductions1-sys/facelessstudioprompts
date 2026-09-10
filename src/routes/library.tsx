@@ -9,7 +9,7 @@ import { PROMPTS, PROMPT_CATEGORIES, type PromptCategory } from "@/data/promptLi
 import { NICHES } from "@/lib/generator";
 import { cn } from "@/lib/utils";
 
-const TITLE = "Prompt Library — 60+ Faceless AI Video Prompts | Faceless Studio Pro";
+const TITLE = "Prompt Library — 60+ Faceless AI Video Prompts | The Faceless Prompts";
 const DESC =
   "A searchable library of 60+ copy-paste prompts for faceless AI video creators: image generation, video generation, SEO, character consistency and niche playbooks.";
 

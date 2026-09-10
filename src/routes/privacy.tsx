@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Privacy Policy — Faceless Studio Pro";
+const TITLE = "Privacy Policy — The Faceless Prompts";
 const DESC =
-  "How Faceless Studio Pro handles your data: client-side processing, cookies, affiliate networks, and your GDPR and CCPA rights.";
+  "How The Faceless Prompts handles your data: client-side processing, cookies, affiliate networks, and your GDPR and CCPA rights.";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -24,7 +24,7 @@ function PrivacyPage() {
     <LegalLayout title="Privacy Policy" updated="1 January 2025">
       <LegalSection heading="1. Data We Collect">
         <p>
-          Faceless Studio Pro is a client-side tool. The niche and topic you enter into the
+          The Faceless Prompts is a client-side tool. The niche and topic you enter into the
           generator are processed entirely in your browser — they are never transmitted to our
           servers, stored in a database, or shared with a third party. Closing the tab discards
           them.
