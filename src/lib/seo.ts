@@ -29,6 +29,7 @@ export function pageHead({ path, title, description, type = "website" }: PageHea
 
 export const SITE_ROUTES = [
   "/",
+  "/faceless-youtube-automation",
   "/library",
   "/ai-tools-hub",
   "/contact",

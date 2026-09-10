@@ -11,6 +11,7 @@ const PRODUCT = [
 
 const RESOURCES = [
   { label: "How It Works", href: "/#how-it-works" },
+  { label: "Faceless YouTube Automation", href: "/faceless-youtube-automation" },
   { label: "Image Generators", href: "/ai-tools-hub" },
   { label: "Video Animators", href: "/ai-tools-hub" },
   { label: "Voice & Audio", href: "/ai-tools-hub" },
