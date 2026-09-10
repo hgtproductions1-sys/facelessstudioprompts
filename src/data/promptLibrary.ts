@@ -1245,3 +1245,19 @@ Be concrete about numbers and honest about ranges. No hype.`,
 ];
 
 export const PROMPT_COUNT = PROMPTS.length;
+
+function byReactions(a: Prompt, b: Prompt) {
+  return (b.reactions ?? 0) - (a.reactions ?? 0);
+}
+
+export function getTopPromptsForNiche(niche: string, count: number): Prompt[] {
+  const needle = niche.trim().toLowerCase();
+  const matches = needle
+    ? PROMPTS.filter((p) => {
+        const haystack = `${p.niche ?? ""} ${p.title}`.toLowerCase();
+        return haystack.includes(needle) || (!!p.niche && needle.includes(p.niche.toLowerCase()));
+      })
+    : [];
+  const pool = matches.length > 0 ? matches : PROMPTS;
+  return [...pool].sort(byReactions).slice(0, Math.max(0, count));
+}

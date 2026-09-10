@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { generatePackage, hashSeed, type ProductionPackage } from "@/lib/generator";
+import { getTopPromptsForNiche } from "@/data/promptLibrary";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
@@ -61,6 +62,9 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
 }
 
 async function generateWithGlm(niche: string, topic: string, apiKey: string): Promise<ProductionPackage | null> {
+  const references = getTopPromptsForNiche(niche, 3)
+    .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
+    .join("\n\n");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -81,6 +85,8 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
             content:
               [
                 "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+                `Reference style examples from successful creators:\n${references}`,
+                "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
                 "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
                 "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
                 "hooks must be scroll-stopping spoken lines under 12 words. cueSheet lines must be real voiceover script sentences with delivery cues.",
