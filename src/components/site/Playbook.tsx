@@ -48,8 +48,26 @@ export function Playbook() {
             drifting between frames. Third, motion: an animator such as Runway, Kling, Luma, or Veo
             turns those keyframes into shots with deliberate camera movement instead of random
             wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
-            stability and similarity settings so episode twelve sounds exactly like episode one.
+            stability and similarity settings so episode twelve sounds exactly like episode one. See{" "}
+            <Link to="/ai-tools-hub" className={link}>
+              which AI image, video and voice engines fit each stage
+            </Link>{" "}
+            before you commit to a toolchain.
           </p>
+          <figure className={figure}>
+            <img
+              src={workflowImg}
+              alt="Four-stage faceless video workflow: script page, AI keyframe, camera motion, then voiceover waveform"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              The four-stage faceless workflow: script and hook, still keyframes, camera motion, then
+              narration.
+            </figcaption>
+          </figure>
           <h3 className="text-lg font-semibold text-ink">
             Midjourney Character Consistency Prompts and ElevenLabs Viral Voiceover Scripts
           </h3>
