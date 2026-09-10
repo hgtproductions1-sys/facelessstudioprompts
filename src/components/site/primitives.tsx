@@ -160,12 +160,12 @@ export function AffiliateCta({
   children?: ReactNode;
 }) {
   const cta = AFFILIATES[ctaKey];
+  const internal = cta.internal;
   return (
     <a
       href={cta.url}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
-      onClick={() => handleCtaClick(cta.id)}
+      {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer sponsored" })}
+      onClick={() => handleCtaClick(cta.id, internal)}
       className={cn(
         ctaBase,
         variant === "primary"
@@ -193,9 +193,11 @@ export function FooterCta({
       <p className="text-sm font-bold text-ink">{headline}</p>
       <p className="mt-1 text-xs text-ink-dim">{copy}</p>
       <AffiliateCta ctaKey={ctaKey} className="mt-3 w-full" />
-      <p className="mt-2 text-[10px] text-ink-muted">
-        Affiliate link — we may earn a commission at no cost to you.
-      </p>
+      {AFFILIATES[ctaKey].internal ? null : (
+        <p className="mt-2 text-[10px] text-ink-muted">
+          Affiliate link — we may earn a commission at no cost to you.
+        </p>
+      )}
     </div>
   );
 }

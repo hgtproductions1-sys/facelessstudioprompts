@@ -57,7 +57,11 @@ export const AFFILIATES = {
 
 export type AffiliateKey = keyof typeof AFFILIATES;
 
-export function handleCtaClick(_id: string) {
+export function handleCtaClick(_id: string, internal = false) {
+  if (internal) {
+    toast.success("Opening…");
+    return;
+  }
   toast.success("Opening partner offer…", {
     description: "Affiliate link — we may earn a commission at no cost to you.",
   });
