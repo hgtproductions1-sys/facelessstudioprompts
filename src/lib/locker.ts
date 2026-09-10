@@ -30,16 +30,10 @@ declare global {
 export function openContentLocker(): boolean {
   if (typeof window === "undefined") return false;
 
-  // ── EDIT HERE ─────────────────────────────────────────────
-  // Replace the block below with your network's trigger call,
-  // e.g.: window.og_load(); return true;
-  // ──────────────────────────────────────────────────────────
-  const candidates = [window.og_load, window.CPABuildLock, window.call_locker];
-  for (const fn of candidates) {
-    if (typeof fn === "function") {
-      fn();
-      return true;
-    }
+  // Trigger the installed CPA content locker (playabledownloads.com).
+  if (typeof window.call_locker === "function") {
+    window.call_locker();
+    return true;
   }
 
   return false;

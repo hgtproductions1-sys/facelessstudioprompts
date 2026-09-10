@@ -94,6 +94,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
+    scripts: [
+      { children: "var lck = 'false';" },
+      {
+        type: "text/javascript",
+        src: "https://playabledownloads.com/script_include.php?id=1912707",
+      },
+      {
+        children:
+          "if(!lck){top.location = 'https://playabledownloads.com/help/ablk.php?lkt=1'; }",
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
