@@ -365,15 +365,23 @@ function Index() {
                     </motion.div>
                   ))}
                 </div>
+
+                <div className="mx-auto mt-6 max-w-7xl">
+                  <EnginePrompts pkg={pkg} />
+                </div>
               </>
             ) : null}
           </div>
+
+          {/* NATIVE AD — between generator output and educational content */}
+          <NativeAd className="mt-14" />
 
           {/* BONUS DOWNLOAD */}
           <div className="relative z-10 mx-auto mt-14 max-w-4xl px-4">
             <DownloadCard />
           </div>
 
+          <Playbook />
           <HowItWorks />
           <TrustStrip />
           <FinalCta />
