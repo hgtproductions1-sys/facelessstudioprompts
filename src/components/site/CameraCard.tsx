@@ -86,7 +86,7 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <div>
-        <BlockLabel>Sound Design Layer</BlockLabel>
+        <BlockLabel>Sound Design &amp; Music Cues</BlockLabel>
         <ul className="space-y-1.5 text-sm text-ink-dim">
           {cam.soundDesign.map((r) => (
             <li key={r} className="flex gap-2">
