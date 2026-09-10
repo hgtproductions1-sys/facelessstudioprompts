@@ -5,7 +5,7 @@ import { LogoLockup } from "./Navbar";
 const PRODUCT = [
   { label: "Generator", href: "/#generator" },
   { label: "How It Works", href: "/#how-it-works" },
-  { label: "Prompt Library", href: "/#library" },
+  { label: "Prompt Library", href: "/library" },
   { label: "Creator Stack", href: "/#resources" },
   { label: "Changelog", href: "/#resources" },
 ];
