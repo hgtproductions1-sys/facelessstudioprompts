@@ -104,7 +104,7 @@ export function fitTopicToTemplate(template: string, topic: string): string {
   const ctx = new Set(
     (before.toLowerCase().match(/[a-z0-9']+/g) ?? []).flatMap((w) => [w, stem(w)]),
   );
-  const words = sanitizeTopic(topic).split(" ").filter(Boolean);
+  const words = topicPhrase(topic).split(" ").filter(Boolean);
   let i = 0;
   while (i < words.length - 1) {
     const w = normalizeWord(words[i] ?? "");
