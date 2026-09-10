@@ -20,7 +20,7 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
     ``,
     c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n"),
     ``,
-    c.cueSheet.map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`).join("\n"),
+    c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n"),
     ``,
     c.retentionBeats.map((b) => `- ${b}`).join("\n"),
   ].join("\n");
