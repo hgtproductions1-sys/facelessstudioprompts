@@ -1162,7 +1162,7 @@ export function generatePackage({
 }): ProductionPackage {
   const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
   const s = seed ?? hashSeed(`${niche}::${topic}`);
-  const cleanTopic = topic.trim().replace(/\.$/, "");
+  const cleanTopic = sanitizeTopic(topic);
   const lowTopic = cleanTopic.charAt(0).toLowerCase() + cleanTopic.slice(1);
   const env = pick(profile.environments, s);
   const env2 = pick(profile.environments, s, 1);
