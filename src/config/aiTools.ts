@@ -7,7 +7,7 @@ export interface AiTool {
   name: string;
   category: EngineCategory;
   blurb: string;
-  /** TODO: replace with your real affiliate / referral link. */
+  /** Official destination; swap in a tracking link once the program approves. */
   url: string;
   build: (pkg: ProductionPackage) => string;
 }
@@ -28,7 +28,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Midjourney v6",
     category: "image",
     blurb: "Best-in-class stylised stills with strong character consistency.",
-    url: "https://example.com/midjourney",
+    url: "https://www.midjourney.com",
     build: (pkg) =>
       `${pkg.visual.midjourneyPrompt} --v 6 --style raw --ar ${pkg.visual.aspectRatio} --s ${pkg.visual.stylize} --c ${pkg.visual.chaos} --seed ${pkg.visual.seedValue} --no ${pkg.visual.negativePrompt}`,
   },
@@ -37,7 +37,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Leonardo.ai",
     category: "image",
     blurb: "Fast batch generation with reusable character references.",
-    url: "https://example.com/leonardo",
+    url: "https://leonardo.ai",
     build: (pkg) =>
       [
         `Prompt: ${pkg.visual.leonardoPrompt}`,
@@ -52,7 +52,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Flux.1",
     category: "image",
     blurb: "Sharp prompt adherence and clean text rendering.",
-    url: "https://example.com/flux",
+    url: "https://blackforestlabs.ai",
     build: (pkg) =>
       [
         `${subject(pkg)}. ${style(pkg)}. ${pkg.visual.leonardoPrompt}`,
@@ -66,7 +66,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Google Imagen / ImageFX",
     category: "image",
     blurb: "Photoreal lighting and natural-language prompting.",
-    url: "https://example.com/imagefx",
+    url: "https://labs.google/fx/tools/image-fx",
     build: (pkg) =>
       [
         `A ${pkg.visual.aspectRatio} cinematic frame of ${subject(pkg)}.`,
@@ -80,7 +80,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Runway Gen-3",
     category: "video",
     blurb: "Image-to-video with precise camera motion control.",
-    url: "https://example.com/runway",
+    url: "https://runwayml.com",
     build: (pkg) =>
       [
         `[camera] ${pkg.camera.overview["Camera Style"] ?? "cinematic handheld"}`,
@@ -97,7 +97,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Kling AI",
     category: "video",
     blurb: "Long-duration clips with strong physical motion.",
-    url: "https://example.com/kling",
+    url: "https://klingai.com",
     build: (pkg) =>
       [
         `Prompt: ${subject(pkg)} — ${pkg.camera.shots[0]?.animationCue ?? "subtle idle motion"}. ${style(pkg)}.`,
@@ -111,7 +111,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Luma Dream Machine",
     category: "video",
     blurb: "Natural, physics-aware motion from a single frame.",
-    url: "https://example.com/luma",
+    url: "https://lumalabs.ai/dream-machine",
     build: (pkg) =>
       [
         `${subject(pkg)}. ${pkg.camera.shots[0]?.motion ?? "slow push in"}, ${style(pkg)}.`,
@@ -124,7 +124,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "Google Veo",
     category: "video",
     blurb: "Cinematic shots with synced ambience and dialogue.",
-    url: "https://example.com/veo",
+    url: "https://labs.google/fx/tools/flow",
     build: (pkg) =>
       [
         pkg.visual.googleFlowPrompt,
@@ -138,7 +138,7 @@ export const AI_TOOLS: AiTool[] = [
     name: "ElevenLabs",
     category: "audio",
     blurb: "Voice cloning and narration with emotion tags.",
-    url: "https://example.com/elevenlabs",
+    url: "https://try.elevenlabs.io/la852vd4qv68",
     build: (pkg) => {
       const v = pkg.character.voiceSpec;
       const specs = Object.entries(v)
