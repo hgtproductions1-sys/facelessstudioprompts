@@ -83,8 +83,26 @@ export function Playbook() {
             value per character, and reusing a shot list of five to seven beats: hook frame, context
             wide, escalation push-in, turn, payoff close-up, and a final hold long enough for a
             comment to form. Retention graphs improve far more from removing dead air at second
-            three than from any change in visual quality.
+            three than from any change in visual quality. Our{" "}
+            <Link to="/library" className={link}>
+              copy-and-paste library of character consistency prompts
+            </Link>{" "}
+            has the exact seed and negative-prompt wording to start from.
           </p>
+          <figure className={figure}>
+            <img
+              src={consistencyImg}
+              alt="Four frames of the same hooded faceless character with identical wardrobe and lighting, showing character consistency"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              One locked seed and one character token keep the same face, wardrobe and lighting across
+              every frame.
+            </figcaption>
+          </figure>
           <h3 className="text-lg font-semibold text-ink">
             Monetisation: Ads for Reach, Affiliates for Intent
           </h3>
