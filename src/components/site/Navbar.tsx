@@ -1,0 +1,109 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowUpRight, Clapperboard, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { handleCtaClick } from "@/config/affiliates";
+import { PrimaryButton } from "./primitives";
+
+const NAV_LINKS = [
+  { label: "Generator", href: "/#generator" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Prompt Library", href: "/#library" },
+  { label: "Resources", href: "/#resources" },
+];
+
+export function LogoLockup() {
+  return (
+    <Link to="/" className="flex items-center gap-2.5" aria-label="Faceless Studio Pro home">
+      <span className="from-purple to-cyan flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br">
+        <Clapperboard className="h-4 w-4 text-[#0a0a0c]" aria-hidden />
+      </span>
+      <span className="text-[15px] font-bold text-white">
+        Faceless <span className="gradient-text">Studio Pro</span>
+      </span>
+    </Link>
+  );
+}
+
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <header className="border-line bg-elevated/80 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+        <LogoLockup />
+
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              className="group relative text-sm text-ink-dim transition-colors hover:text-white"
+            >
+              {l.label}
+              <span className="from-purple to-cyan absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r transition-all duration-200 group-hover:w-full" />
+            </a>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => handleCtaClick("navbar-creator-stack")}
+            className="bg-surface2 border-line-hover hover:border-purple hidden items-center gap-1.5 rounded-xl border px-4 py-2 text-sm text-ink transition-colors hover:text-white sm:inline-flex"
+          >
+            Get the Creator Stack
+            <ArrowUpRight className="h-4 w-4" aria-hidden />
+          </button>
+          <button
+            type="button"
+            className="border-line bg-surface2 rounded-lg border p-2 text-ink-dim md:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <Menu className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      <div className="via-purple/40 h-px bg-gradient-to-r from-transparent to-transparent" />
+
+      {open ? (
+        <div className="border-line bg-elevated/95 border-b px-4 pt-2 pb-5 backdrop-blur-xl md:hidden">
+          <div className="mb-3 flex justify-end">
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+              className="text-ink-dim"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <nav className="flex flex-col gap-3" aria-label="Mobile">
+            {NAV_LINKS.map((l) => (
+              <a
+                key={l.label}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="text-sm text-ink-dim hover:text-white"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+          <PrimaryButton
+            className="mt-4 w-full"
+            onClick={() => {
+              setOpen(false);
+              handleCtaClick("navbar-creator-stack");
+            }}
+          >
+            Get the Creator Stack
+            <ArrowUpRight className="h-4 w-4" aria-hidden />
+          </PrimaryButton>
+        </div>
+      ) : null}
+    </header>
+  );
+}
