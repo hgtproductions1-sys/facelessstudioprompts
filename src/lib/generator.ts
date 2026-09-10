@@ -6,6 +6,7 @@ import {
   renderTemplate,
   sanitizeMidjourneyPrompt,
   sanitizeTopic,
+  topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
 
@@ -1174,7 +1175,8 @@ export function generatePackage({
   const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
   const s = seed ?? hashSeed(`${niche}::${topic}`);
   const cleanTopic = sanitizeTopic(topic);
-  const lowTopic = cleanTopic.charAt(0).toLowerCase() + cleanTopic.slice(1);
+  const phrase = topicPhrase(cleanTopic);
+  const lowTopic = phrase.charAt(0).toLowerCase() + phrase.slice(1);
   const env = pick(profile.environments, s);
   const env2 = pick(profile.environments, s, 1);
   const desc = pick(profile.descriptors, s);
