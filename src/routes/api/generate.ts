@@ -332,7 +332,6 @@ export const Route = createFileRoute("/api/generate")({
         }
 
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
-        const gatewayKey = process.env["LOVABLE_API_KEY"];
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
           const pkg = await generateWithGlm(niche, topic, glmKey);
