@@ -51,7 +51,7 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
-  return {
+  const merged = {
     ...fallbackPackage(niche, topic),
     ...p,
     niche,
@@ -59,6 +59,60 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
     seed: hashSeed(`${niche}::${topic}`),
     generatedAt: new Date().toISOString(),
   } as ProductionPackage;
+
+  return sanitizePackage(merged);
+}
+
+/** Applies the shared sanitisation rules to any package (local or model-generated). */
+function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
+  const seed = pkg.visual.seedValue || pkg.seed;
+  const mixCues: string[] = [];
+
+  const cueSheet = (pkg.character.cueSheet ?? []).map((r) => {
+    const mix = extractMixDirective(r.cue ?? "");
+    if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
+    return {
+      timestamp: r.timestamp,
+      line: dedupePhrases(r.line ?? ""),
+      cue: toElevenLabsCue(r.cue ?? ""),
+    };
+  });
+
+  const shots = (pkg.camera.shots ?? []).map((s, i) => ({
+    ...s,
+    prompt: buildShotPrompt({
+      motion: s.motion ?? "slow push in",
+      subjectAction: dedupePhrases(
+        `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
+      ),
+      environmentLighting: clampWords(pkg.visual.styleDNA.join(", "), 20),
+      motionStrength: 3 + (i % 2),
+    }),
+  }));
+
+  return {
+    ...pkg,
+    topic: sanitizeTopic(pkg.topic),
+    character: {
+      ...pkg.character,
+      hooks: (pkg.character.hooks ?? []).map((h) => ({
+        label: h.label,
+        text: dedupePhrases(h.text ?? ""),
+      })),
+      cueSheet,
+    },
+    visual: {
+      ...pkg.visual,
+      leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
+      midjourneyPrompt: sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt ?? "", seed),
+      googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
+    },
+    camera: {
+      ...pkg.camera,
+      shots,
+      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues],
+    },
+  };
 }
 
 async function generateWithGlm(niche: string, topic: string, apiKey: string): Promise<ProductionPackage | null> {
