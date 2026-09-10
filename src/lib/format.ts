@@ -37,10 +37,11 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   ].join("\n");
 
   const prompt3 = cam.shots
-    .map(
-      (sh) =>
-        `${String(sh.index).padStart(2, "0")} | ${sh.timecode} | ${sh.motion} | ${sh.transition} | ${sh.animationCue}`,
-    )
+    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.timecode}\n${sh.prompt}`)
+    .join("\n\n");
+
+  const editPoints = cam.shots
+    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.transition} | ${sh.animationCue}`)
     .join("\n");
 
   return [
@@ -76,8 +77,8 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
       .join(", ")}`,
     c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n"),
     "",
-    "VO Cue Sheet:",
-    c.cueSheet.map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`).join("\n"),
+    "VO Cue Sheet (ElevenLabs v3 tags only):",
+    c.cueSheet.map((r) => `${r.timestamp} | ${r.cue} ${r.line}`).join("\n"),
     "",
     "[VISUAL]",
     `Style DNA: ${v.styleDNA.join(", ")}`,
@@ -90,8 +91,14 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
       .map(([k, val]) => `${k}: ${val}`)
       .join(" · ")}`,
     "",
-    "Shot List:",
+    "Shot List (engine-ready):",
     prompt3,
+    "",
+    "Edit Points & Animation Cues (NLE only):",
+    editPoints,
+    "",
+    "[SOUND DESIGN & MUSIC CUES]",
+    cam.soundDesign.map((sd) => `- ${sd}`).join("\n"),
     "",
     "[END OF BLUEPRINT]",
     "",

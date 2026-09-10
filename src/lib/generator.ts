@@ -1,3 +1,15 @@
+import {
+  buildParagraph,
+  buildShotPrompt,
+  dedupePhrases,
+  extractMixDirective,
+  renderTemplate,
+  sanitizeMidjourneyPrompt,
+  sanitizeTopic,
+  topicPhrase,
+  toElevenLabsCue,
+} from "@/lib/prompt-sanitize";
+
 export interface ProductionPackage {
   niche: string;
   topic: string;
@@ -37,6 +49,8 @@ export interface ProductionPackage {
       motion: string;
       transition: string;
       animationCue: string;
+      /** Engine-ready prompt for Runway Gen-3 / Kling — no NLE transitions. */
+      prompt: string;
     }[];
     rigCheatSheet: string[];
     soundDesign: string[];
@@ -1160,8 +1174,9 @@ export function generatePackage({
 }): ProductionPackage {
   const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
   const s = seed ?? hashSeed(`${niche}::${topic}`);
-  const cleanTopic = topic.trim().replace(/\.$/, "");
-  const lowTopic = cleanTopic.charAt(0).toLowerCase() + cleanTopic.slice(1);
+  const cleanTopic = sanitizeTopic(topic);
+  const phrase = topicPhrase(cleanTopic);
+  const lowTopic = phrase.charAt(0).toLowerCase() + phrase.slice(1);
   const env = pick(profile.environments, s);
   const env2 = pick(profile.environments, s, 1);
   const desc = pick(profile.descriptors, s);
@@ -1177,79 +1192,107 @@ export function generatePackage({
 
   const hooks = profile.hooks.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: h.replace("{topic}", lowTopic),
+    text: renderTemplate(h, cleanTopic),
   }));
 
-  const cueSheet = [
+  const rawCueSheet = [
     {
       timestamp: "0:00",
       line: hooks[0]?.text ?? "",
-      cue: "[cold open, no music, dry close-mic]",
+      cue: "cold open, no music, dry close-mic",
     },
     {
       timestamp: "0:04",
       line: `Everything you were told about ${lowTopic} came from one source.`,
-      cue: "[pause 0.5s, drop pitch]",
+      cue: "pause 0.5s, drop pitch",
     },
     {
       timestamp: "0:11",
       line: `Here is what the ${desc} record actually shows.`,
-      cue: "[bed track enters, lift energy 10%]",
+      cue: "bed track enters, lift energy 10%",
     },
     {
       timestamp: "0:19",
       line: `Detail one: ${lowTopic} does not behave the way the story requires.`,
-      cue: "[accelerate, build tension]",
+      cue: "accelerate, build tension",
     },
     {
       timestamp: "0:27",
       line: `Detail two: the timeline only works if someone is lying.`,
-      cue: "[clip consonants, forward placement]",
+      cue: "clip consonants, forward placement",
     },
     {
       timestamp: "0:35",
       line: `Which leaves one ${desc2} explanation.`,
-      cue: `[${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop]`,
+      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop`,
     },
     {
       timestamp: "0:41",
       line: `Follow for part two on ${lowTopic}.`,
-      cue: "[drop to intimate volume, music out]",
+      cue: "drop to intimate volume, music out",
     },
   ];
+
+  // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
+  const cueSheet = rawCueSheet.map((r) => ({
+    timestamp: r.timestamp,
+    line: dedupePhrases(r.line),
+    cue: toElevenLabsCue(r.cue),
+  }));
+
+  const mixCues = rawCueSheet
+    .map((r) => {
+      const mix = extractMixDirective(r.cue);
+      return mix ? `${r.timestamp} — ${mix}` : null;
+    })
+    .filter((x): x is string => Boolean(x));
 
   const negativePrompt =
     "blurry, lowres, deformed hands, extra fingers, visible face, text, watermark, logo, cartoon, oversaturated";
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
-  const leonardoPrompt = [
-    `Cinematic vertical still of a faceless ${archetypeNoun}, set in ${env},`,
-    `theme: ${lowTopic}. Face fully obscured by shadow and framing, shot from behind at chest height.`,
-    `${(profile.wardrobe[0] ?? "").toLowerCase()}, ${(profile.wardrobe[1] ?? "").toLowerCase()}.`,
-    `Palette of ${profile.palette}. ${profile.styleDNA.join(", ")}.`,
-    `Single hard key light with deep falloff, atmospheric haze, fine film grain, shallow depth of field,`,
-    `photoreal texture on fabric and skin, negative space reserved at the top third for caption text.`,
-    `--ar 9:16 --style raw --stylize 250`,
-  ].join(" ");
+  const wardrobeLead = [profile.wardrobe[0], profile.wardrobe[1]]
+    .filter(Boolean)
+    .join(", ")
+    .toLowerCase();
+  const lightingLine = `single hard key light with deep falloff, atmospheric haze, palette of ${profile.palette}`;
 
-  const midjourneyPrompt = [
-    `faceless ${archetypeNoun} :: ${lowTopic} ::`,
-    `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus,`,
-    `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette},`,
-    `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
-    `--ar 9:16 --v 6.1 --stylize 250 --chaos 12 --no text, watermark, extra limbs`,
-  ].join(" ");
+  const leonardoPrompt = buildParagraph(
+    [
+      `Cinematic vertical 9:16 still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `face fully obscured by shadow and framing, shot from behind at chest height, hands in sharp focus`,
+      wardrobeLead,
+      lightingLine,
+      `${profile.styleDNA.join(", ").toLowerCase()}, fine film grain, shallow depth of field, negative space at the top third for captions`,
+    ],
+    100,
+  );
 
-  const googleFlowPrompt = [
-    `Google Flow (Veo 3) scene prompt — paste into Flow's "Text to Video" box:`,
-    `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme: ${lowTopic}.`,
-    `Face hidden by shadow and framing; ${(profile.wardrobe[0] ?? "").toLowerCase()} wardrobe, hands in focus.`,
-    `Camera: slow push-in with subtle parallax on foreground atmosphere.`,
-    `Lighting: single hard key with deep falloff, volumetric haze, palette of ${profile.palette}.`,
-    `Style: ${profile.styleDNA.join(", ")}, 35mm film grain, photoreal texture.`,
-    `Negative: no visible face, no text, no watermark, no warped hands.`,
-  ].join(" ");
+  const midjourneyPrompt = sanitizeMidjourneyPrompt(
+    buildParagraph(
+      [
+        `faceless ${archetypeNoun}, ${lowTopic}`,
+        `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus`,
+        `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
+        `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
+      ],
+      80,
+    ),
+    s,
+  );
+
+  const googleFlowPrompt = buildParagraph(
+    [
+      `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `face hidden by shadow and framing, ${(profile.wardrobe[0] ?? "").toLowerCase()}, hands in focus`,
+      `camera slowly pushes in with subtle parallax on foreground atmosphere`,
+      lightingLine,
+      `${profile.styleDNA.join(", ").toLowerCase()}, 35mm film grain, photoreal texture`,
+      `no visible face, no text, no watermark, no warped hands`,
+    ],
+    100,
+  );
 
   const shotMotions = [
     "Slow push-in, 5% scale over 4s",
@@ -1278,17 +1321,33 @@ export function generatePackage({
     "Slow grain intensification toward the reveal",
     "Vignette closes 8% over the final beat",
   ];
+  const subjectActions = [
+    `faceless ${archetypeNoun} hands working with ${lowTopic}`,
+    `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
+    `close macro on hands adjusting ${lowTopic}`,
+    `faceless ${archetypeNoun} stepping forward, head out of frame`,
+    `hands lifting the key prop tied to ${lowTopic}`,
+  ];
+  const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
+
   const shotCount = 6 + (s % 2);
   const shots = Array.from({ length: shotCount }, (_, i) => {
     const start = i * 7;
     const end = start + 7;
     const fmt = (n: number) => `0:${String(n).padStart(2, "0")}`;
+    const motion = pick(shotMotions, s, i);
     return {
       index: i + 1,
       timecode: `${fmt(start)}–${fmt(end)}`,
-      motion: pick(shotMotions, s, i),
+      motion,
       transition: pick(transitions, s, i * 3),
       animationCue: pick(cues, s, i * 5),
+      prompt: buildShotPrompt({
+        motion,
+        subjectAction: pick(subjectActions, s, i),
+        environmentLighting: pick(environmentLighting, s, i),
+        motionStrength: 3 + (i % 2),
+      }),
     };
   });
 
@@ -1345,7 +1404,7 @@ export function generatePackage({
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
-      soundDesign: profile.sound,
+      soundDesign: [...profile.sound, ...mixCues],
     },
   };
 }
@@ -1372,7 +1431,7 @@ export function packageToText(pkg: ProductionPackage): string {
       .join("\n")}\n\nSHOT LIST\n${cam.shots
       .map(
         (sh) =>
-          `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Motion: ${sh.motion}\n  Transition: ${sh.transition}\n  Animation Cue: ${sh.animationCue}`,
+          `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Prompt: ${sh.prompt}\n  Animation Cue: ${sh.animationCue}\n  Edit point (NLE only): ${sh.transition}`,
       )
       .join(
         "\n",

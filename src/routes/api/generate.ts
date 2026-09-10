@@ -1,6 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { generatePackage, hashSeed, type ProductionPackage } from "@/lib/generator";
 import { getTopPromptsForNiche } from "@/data/promptLibrary";
+import {
+  buildShotPrompt,
+  clampWords,
+  dedupePhrases,
+  extractMixDirective,
+  sanitizeMidjourneyPrompt,
+  sanitizeTopic,
+  stripPromptFlags,
+  toElevenLabsCue,
+} from "@/lib/prompt-sanitize";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
@@ -51,7 +61,7 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
-  return {
+  const merged = {
     ...fallbackPackage(niche, topic),
     ...p,
     niche,
@@ -59,9 +69,67 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
     seed: hashSeed(`${niche}::${topic}`),
     generatedAt: new Date().toISOString(),
   } as ProductionPackage;
+
+  return sanitizePackage(merged);
 }
 
-async function generateWithGlm(niche: string, topic: string, apiKey: string): Promise<ProductionPackage | null> {
+/** Applies the shared sanitisation rules to any package (local or model-generated). */
+function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
+  const seed = pkg.visual.seedValue || pkg.seed;
+  const mixCues: string[] = [];
+
+  const cueSheet = (pkg.character.cueSheet ?? []).map((r) => {
+    const mix = extractMixDirective(r.cue ?? "");
+    if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
+    return {
+      timestamp: r.timestamp,
+      line: dedupePhrases(r.line ?? ""),
+      cue: toElevenLabsCue(r.cue ?? ""),
+    };
+  });
+
+  const shots = (pkg.camera.shots ?? []).map((s, i) => ({
+    ...s,
+    prompt: buildShotPrompt({
+      motion: s.motion ?? "slow push in",
+      subjectAction: dedupePhrases(
+        `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
+      ),
+      environmentLighting: clampWords(pkg.visual.styleDNA.join(", "), 20),
+      motionStrength: 3 + (i % 2),
+    }),
+  }));
+
+  return {
+    ...pkg,
+    topic: sanitizeTopic(pkg.topic),
+    character: {
+      ...pkg.character,
+      hooks: (pkg.character.hooks ?? []).map((h) => ({
+        label: h.label,
+        text: dedupePhrases(h.text ?? ""),
+      })),
+      cueSheet,
+    },
+    visual: {
+      ...pkg.visual,
+      leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
+      midjourneyPrompt: sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt ?? "", seed),
+      googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
+    },
+    camera: {
+      ...pkg.camera,
+      shots,
+      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues],
+    },
+  };
+}
+
+async function generateWithGlm(
+  niche: string,
+  topic: string,
+  apiKey: string,
+): Promise<ProductionPackage | null> {
   const references = getTopPromptsForNiche(niche, 3)
     .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
     .join("\n\n");
@@ -82,19 +150,20 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
         messages: [
           {
             role: "system",
-            content:
-              [
-                "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
-                `Reference style examples from successful creators:\n${references}`,
-                "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
-                "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
-                "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
-                "hooks must be scroll-stopping spoken lines under 12 words. cueSheet lines must be real voiceover script sentences with delivery cues.",
-                "leonardoPrompt and midjourneyPrompt must be single-paragraph copy-paste prompts with lighting, palette, camera and negative-space details, ending with render flags.",
-                "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16, describing subject, wardrobe, camera motion, lighting, style, and negatives.",
-                "camera shots must each specify a distinct motion, transition, and animation cue usable directly in an AI video tool.",
-                "Face never visible in any prompt.",
-              ].join(" "),
+            content: [
+              "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+              `Reference style examples from successful creators:\n${references}`,
+              "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
+              "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
+              "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
+              "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
+              "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
+              "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
+              "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
+              "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+              "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
+              "Face never visible in any prompt.",
+            ].join(" "),
           },
           {
             role: "user",
@@ -133,7 +202,7 @@ export const Route = createFileRoute("/api/generate")({
           return Response.json({ error: "Invalid JSON body" }, { status: 400 });
         }
         const niche = typeof body.niche === "string" ? body.niche.trim() : "";
-        const topic = typeof body.topic === "string" ? body.topic.trim() : "";
+        const topic = typeof body.topic === "string" ? sanitizeTopic(body.topic) : "";
         if (!niche || !topic || niche.length > 200 || topic.length > 300) {
           return Response.json({ error: "niche and topic are required" }, { status: 400 });
         }

@@ -20,7 +20,7 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
     ``,
     c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n"),
     ``,
-    c.cueSheet.map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`).join("\n"),
+    c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n"),
     ``,
     c.retentionBeats.map((b) => `- ${b}`).join("\n"),
   ].join("\n");
@@ -105,25 +105,24 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
 
       <div>
         <BlockLabel
-          action={
-            <CopyButton
-              value={c.cueSheet.map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`).join("\n")}
-            />
-          }
+          action={<CopyButton value={c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n")} />}
         >
-          Voiceover Cue Sheet
+          Voiceover Script (ElevenLabs v3 tags)
         </BlockLabel>
         <div className="border-line divide-line divide-y rounded-lg border">
           {c.cueSheet.map((r) => (
             <div key={r.timestamp} className="p-2.5">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-[11px] text-cyan">{r.timestamp}</span>
-                <span className="text-sm text-ink">{r.line}</span>
+                <span className="font-mono text-[11px] text-purple-bright">{r.cue}</span>
               </div>
-              <p className="mt-1 font-mono text-[11px] text-ink-muted">{r.cue}</p>
+              <p className="mt-1 text-sm text-ink">{r.line}</p>
             </div>
           ))}
         </div>
+        <p className="mt-1.5 text-[11px] text-ink-muted">
+          Music and mixing notes live in the Sound Design &amp; Music Cues block on Step 03.
+        </p>
       </div>
 
       <div>

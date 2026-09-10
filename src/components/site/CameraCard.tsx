@@ -6,8 +6,7 @@ import { AffiliateCta, BlockLabel, CopyButton, FooterCta, SpecGrid } from "./pri
 
 export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
   const cam = pkg.camera;
-  const shotText = (s: (typeof cam.shots)[number]) =>
-    `Shot ${String(s.index).padStart(2, "0")} — ${s.timecode}\nMotion: ${s.motion}\nTransition: ${s.transition}\nAnimation Cue: ${s.animationCue}`;
+  const shotText = (s: (typeof cam.shots)[number]) => s.prompt;
 
   const allText = [
     "CAMERA MOTION PLAN",
@@ -37,7 +36,7 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <div>
-        <BlockLabel>Shot List</BlockLabel>
+        <BlockLabel>Shot List — Engine-Ready Prompts</BlockLabel>
         <ol className="relative space-y-4">
           {cam.shots.map((s, i) => (
             <li key={s.index} className="relative flex gap-3">
@@ -56,14 +55,12 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
                   </p>
                   <CopyButton value={shotText(s)} label="" className="px-1" />
                 </div>
-                <p className="mt-1.5 text-xs text-ink-dim">
-                  <span className="text-cyan">Motion:</span> {s.motion}
+                <p className="border-line bg-surface2 mt-1.5 rounded-md border p-2 font-mono text-[11px] leading-relaxed text-ink-dim">
+                  {s.prompt}
                 </p>
-                <p className="mt-1 text-xs text-ink-dim">
-                  <span className="text-cyan">Transition:</span> {s.transition}
-                </p>
-                <p className="mt-1 text-xs text-ink-dim">
-                  <span className="text-cyan">Animation Cue:</span> {s.animationCue}
+                <p className="mt-1.5 text-[11px] text-ink-muted">
+                  <span className="text-cyan">Edit point (NLE only):</span> {s.transition} ·{" "}
+                  {s.animationCue}
                 </p>
               </div>
             </li>
@@ -89,7 +86,7 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <div>
-        <BlockLabel>Sound Design Layer</BlockLabel>
+        <BlockLabel>Sound Design &amp; Music Cues</BlockLabel>
         <ul className="space-y-1.5 text-sm text-ink-dim">
           {cam.soundDesign.map((r) => (
             <li key={r} className="flex gap-2">
