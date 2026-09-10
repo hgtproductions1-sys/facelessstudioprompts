@@ -88,7 +88,7 @@ export function Footer() {
         </p>
 
         <div className="border-line mt-12 flex flex-col justify-between gap-3 border-t pt-6 text-xs text-ink-muted md:flex-row">
-          <span>© 2025 The Faceless Prompts. All rights reserved.</span>
+          <span>© 2026 The Faceless Prompts. All rights reserved.</span>
           <span>Built for creators who'd rather stay behind the camera.</span>
         </div>
       </div>
