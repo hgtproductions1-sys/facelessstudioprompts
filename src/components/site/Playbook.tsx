@@ -7,13 +7,13 @@ export function Playbook() {
           The <span className="gradient-text">Faceless Creator Playbook</span>
         </h2>
         <p className="mt-2 text-sm text-ink-muted">
-          How short-form automation actually works, from niche selection to a repeatable daily
-          publishing loop.
+          How faceless YouTube automation actually works, from niche selection to a repeatable daily
+          publishing loop — and how to use a short-form video prompt generator to run it.
         </p>
 
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-ink-dim md:text-base">
           <h3 className="text-lg font-semibold text-ink">
-            Why a Blueprint Beats Inspiration
+            Faceless YouTube Automation: Why a Blueprint Beats Inspiration
           </h3>
           <p>
             A faceless channel is a production line, not a personality. The creators who publish
@@ -22,10 +22,12 @@ export function Playbook() {
             colour palette never moves, and their shot grammar is a template rather than a choice.
             That is why a blueprint matters more than inspiration: once the archetype, wardrobe,
             palette, and pacing are written down, the only variable left each day is the topic, and
-            a topic takes ninety seconds to pick.
+            a topic takes ninety seconds to pick. A short-form video prompt generator turns that
+            fixed blueprint into a full YouTube Shorts automation kit — script, stills, motion, and
+            narration — in a single pass.
           </p>
           <h3 className="text-lg font-semibold text-ink">
-            The Four-Stage Production Workflow
+            The Four-Stage Short-Form Video Prompt Generator Workflow
           </h3>
           <p>
             The workflow itself splits into four stages that map cleanly onto four tools. First,
@@ -38,9 +40,15 @@ export function Playbook() {
             wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
             stability and similarity settings so episode twelve sounds exactly like episode one.
           </p>
-          <h3 className="text-lg font-semibold text-ink">Consistency Drives Retention</h3>
+          <h3 className="text-lg font-semibold text-ink">
+            Midjourney Character Consistency Prompts and ElevenLabs Viral Voiceover Scripts
+          </h3>
           <p>
-            Consistency is the entire retention strategy. Viewers do not subscribe to a video, they
+            Consistency is the entire retention strategy. Midjourney character consistency prompts —
+            one locked seed, one character token, one negative prompt list — keep the same face and
+            wardrobe across every frame, while ElevenLabs viral voiceover scripts with fixed
+            stability and style settings keep the narration identical from episode one to episode
+            fifty. Viewers do not subscribe to a video, they
             subscribe to a pattern they can recognise in a scrolling feed — the same character, the
             same colour grade, the same rhythm of cuts, the same closing line. Practically, that
             means writing your negative prompts once and reusing them forever, keeping a single seed
@@ -61,6 +69,19 @@ export function Playbook() {
             the reader is already mid-workflow and needs the next step. Combine the two — ads for
             reach, affiliate links for intent — and a faceless operation can run profitably long
             before it reaches platform payout thresholds.
+          </p>
+          <h3 className="text-lg font-semibold text-ink">
+            Faceless TikTok Niche Ideas and YouTube Short Automation
+          </h3>
+          <p>
+            The faceless TikTok niche ideas that travel best in 2026 are the ones with a repeatable
+            visual gimmick: AI pet stories, animal cooking, POV immersive vlogs, ASMR restoration,
+            miniature builds, analog horror, and ranking countdowns. Each of those runs as YouTube
+            Short automation too — the same blueprint exports one vertical master that you publish to
+            Shorts, TikTok, and Reels the same morning. Pick one niche, generate thirty blueprints in
+            a sitting, batch the stills, batch the voiceovers, and schedule a week at a time; that
+            batching loop, not raw creativity, is what separates channels that survive month three
+            from the ones that stall at video nine.
           </p>
         </div>
       </article>

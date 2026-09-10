@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AiToolsHubRouteImport } from './routes/ai-tools-hub'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -22,6 +23,11 @@ import { Route as ApiGenerateRouteImport } from './routes/api/generate'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdsDottxtRoute = AdsDottxtRouteImport.update({
+  id: '/ads.txt',
+  path: '/ads.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
@@ -67,6 +73,7 @@ const ApiGenerateRoute = ApiGenerateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdsDottxtRoute: typeof AdsDottxtRoute
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   AiToolsHubRoute: typeof AiToolsHubRoute
   ContactRoute: typeof ContactRoute
@@ -154,6 +167,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ads.txt': {
+      id: '/ads.txt'
+      path: '/ads.txt'
+      fullPath: '/ads.txt'
+      preLoaderRoute: typeof AdsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/affiliate-disclosure': {
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdsDottxtRoute: AdsDottxtRoute,
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   AiToolsHubRoute: AiToolsHubRoute,
   ContactRoute: ContactRoute,
