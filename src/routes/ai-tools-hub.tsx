@@ -18,7 +18,7 @@ export const Route = createFileRoute("/ai-tools-hub")({
 
 function ToolsHub() {
   return (
-    <div className="bg-base min-h-screen overflow-x-hidden text-ink">
+    <div className="bg-canvas min-h-screen overflow-x-hidden text-ink">
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-20 pt-28">
         <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">

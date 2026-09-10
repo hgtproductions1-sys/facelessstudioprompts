@@ -232,7 +232,7 @@ function Index() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="bg-base relative min-h-screen overflow-x-hidden text-ink">
+      <div className="bg-canvas relative min-h-screen overflow-x-hidden text-ink">
         <div className="ambient-glow pointer-events-none absolute inset-x-0 top-0 z-0 h-[60vh]" />
         <div className="grid-overlay pointer-events-none absolute inset-x-0 top-0 z-0 h-[70vh]" />
 
