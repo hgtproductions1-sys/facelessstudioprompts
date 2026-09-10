@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, Heart, Search, Wand2 } from "lucide-react";
+import { Heart, Search, Wand2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
