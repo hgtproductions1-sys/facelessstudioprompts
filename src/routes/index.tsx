@@ -208,9 +208,9 @@ function Index() {
                 Convert
               </h1>
               <p className="mx-auto mt-5 max-w-2xl text-lg text-ink-dim">
-                Generate a complete AI production package — recurring character profile, Leonardo
-                &amp; Midjourney style prompts, and shot-by-shot camera motion — in one click. Built
-                for creators running CPA traffic.
+                Generate a complete AI production package — recurring character profile, Google Flow,
+                Leonardo &amp; Midjourney style prompts, and shot-by-shot camera motion — in one click.
+                &nbsp;
               </p>
             </div>
 
