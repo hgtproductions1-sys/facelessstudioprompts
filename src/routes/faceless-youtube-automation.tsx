@@ -40,19 +40,19 @@ const STAGES = [
     title: "Lock one recurring character",
     Icon: Sparkles,
     body: "Write the character down once — species, age, wardrobe, one signature prop — and paste the same description into every prompt. That consistency token, plus a fixed seed, is what stops your protagonist mutating between shots. Midjourney character consistency prompts work the same way: a reference description and a locked seed, repeated verbatim rather than rewritten from memory each video.",
-    action: { label: "Browse character prompts", to: "/library" as const, hash: undefined },
+    action: { label: "Browse character prompts", to: "/library" as const },
   },
   {
     title: "Generate stills, then motion",
     Icon: ImageIcon,
     body: "Still frames first, animation second. An image model such as Midjourney, Leonardo, Flux or Imagen produces the keyframes; an animator such as Veo, Runway, Kling or Luma turns them into shots with deliberate camera movement. Writing one engine-ready prompt per shot — camera motion, subject action, environment, lighting — keeps the result from turning into random drift.",
-    action: { label: "See the video animators", to: "/ai-tools-hub" as const, hash: undefined },
+    action: { label: "See the video animators", to: "/ai-tools-hub" as const },
   },
   {
     title: "Narrate and design the sound",
     Icon: AudioLines,
     body: "Keep the spoken script separate from the sound design. Your voiceover copy should hold natural dialogue plus a few emotional and pacing tags; the music beds, whooshes and mix notes belong in a second list the editor reads. ElevenLabs viral voiceover scripts are written for exactly that split, and it is the difference between a clean narration track and an editor guessing what you meant.",
-    action: { label: "Voice and audio tools", to: "/ai-tools-hub" as const, hash: undefined },
+    action: { label: "Voice and audio tools", to: "/ai-tools-hub" as const },
   },
   {
     title: "Publish on a fixed cadence",
