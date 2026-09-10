@@ -69,9 +69,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/#resources" className="text-ink-dim hover:text-white">
-                  Cookie Preferences
-                </a>
+                <Link to="/contact" className="text-ink-dim hover:text-white">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>

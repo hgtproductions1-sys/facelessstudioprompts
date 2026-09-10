@@ -50,6 +50,9 @@ import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
 import { DownloadCard } from "@/components/site/DownloadCard";
+import { EnginePrompts } from "@/components/site/EnginePrompts";
+import { LeaderboardAd, NativeAd } from "@/components/site/AdSlot";
+import { Playbook } from "@/components/site/Playbook";
 
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
