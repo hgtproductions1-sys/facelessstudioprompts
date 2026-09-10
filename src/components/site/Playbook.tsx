@@ -40,9 +40,15 @@ export function Playbook() {
             wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
             stability and similarity settings so episode twelve sounds exactly like episode one.
           </p>
-          <h3 className="text-lg font-semibold text-ink">Consistency Drives Retention</h3>
+          <h3 className="text-lg font-semibold text-ink">
+            Midjourney Character Consistency Prompts and ElevenLabs Viral Voiceover Scripts
+          </h3>
           <p>
-            Consistency is the entire retention strategy. Viewers do not subscribe to a video, they
+            Consistency is the entire retention strategy. Midjourney character consistency prompts —
+            one locked seed, one character token, one negative prompt list — keep the same face and
+            wardrobe across every frame, while ElevenLabs viral voiceover scripts with fixed
+            stability and style settings keep the narration identical from episode one to episode
+            fifty. Viewers do not subscribe to a video, they
             subscribe to a pattern they can recognise in a scrolling feed — the same character, the
             same colour grade, the same rhythm of cuts, the same closing line. Practically, that
             means writing your negative prompts once and reusing them forever, keeping a single seed
