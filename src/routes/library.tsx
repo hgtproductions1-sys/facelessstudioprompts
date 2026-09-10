@@ -38,17 +38,17 @@ const BADGE: Record<PromptCategory, string> = {
 /** Best-effort mapping from a library entry to one of the generator's niches. */
 function toGeneratorNiche(niche: string | undefined, category: PromptCategory): string {
   const key = (niche ?? "").toLowerCase();
-  if (key.includes("true crime")) return NICHES[0];
-  if (key.includes("drama")) return NICHES[3];
-  if (key.includes("anime")) return NICHES[5];
-  if (key.includes("asmr")) return NICHES[9];
-  if (key.includes("pov")) return NICHES[7];
+  if (key.includes("true crime")) return NICHES[10];
+  if (key.includes("drama")) return NICHES[6];
+  if (key.includes("anime")) return NICHES[3];
+  if (key.includes("asmr")) return NICHES[5];
+  if (key.includes("pov")) return NICHES[2];
   if (key.includes("influencer")) return NICHES[8];
-  if (key.includes("nursery")) return NICHES[1];
-  if (key.includes("cooking")) return NICHES[9];
+  if (key.includes("nursery")) return NICHES[9];
+  if (key.includes("cooking")) return NICHES[1];
   if (key.includes("stickman")) return NICHES[4];
-  if (category === "SEO") return NICHES[2];
-  if (category === "Character") return NICHES[3];
+  if (category === "SEO") return NICHES[16];
+  if (category === "Character") return NICHES[0];
   return NICHES[0];
 }
 
