@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
@@ -6,16 +7,7 @@ const DESC =
   "Plain-English, FTC-compliant disclosure of how The Faceless Prompts earns affiliate commissions and why that never changes our recommendations.";
 
 export const Route = createFileRoute("/affiliate-disclosure")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead({ path: "/affiliate-disclosure", title: TITLE, description: DESC, type: "article" }),
   component: DisclosurePage,
 });
 

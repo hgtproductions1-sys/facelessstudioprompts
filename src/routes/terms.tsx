@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
@@ -6,16 +7,7 @@ const DESC =
   "The terms covering use of the The Faceless Prompts generator: acceptable use, output ownership, no guarantee of results, and liability limits.";
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead({ path: "/terms", title: TITLE, description: DESC, type: "article" }),
   component: TermsPage,
 });
 
