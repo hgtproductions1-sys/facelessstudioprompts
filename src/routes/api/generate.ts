@@ -62,6 +62,9 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
 }
 
 async function generateWithGlm(niche: string, topic: string, apiKey: string): Promise<ProductionPackage | null> {
+  const references = getTopPromptsForNiche(niche, 3)
+    .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
+    .join("\n\n");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
