@@ -109,6 +109,10 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        {/* ═══════════════════════════════════════════════════════════
+            PASTE YOUR CPA CONTENT LOCKER JAVASCRIPT SNIPPET HERE
+            (OGAds / CPAGrip / CPAlead / AdBlueMedia / etc.)
+            ═══════════════════════════════════════════════════════════ */}
         <Scripts />
       </body>
     </html>
