@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
+import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
   id: '/affiliate-disclosure',
   path: '/affiliate-disclosure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -44,6 +50,7 @@ const ApiGenerateRoute = ApiGenerateRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/generate': typeof ApiGenerateRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/generate': typeof ApiGenerateRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
+  '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/api/generate': typeof ApiGenerateRoute
@@ -66,13 +75,25 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/affiliate-disclosure' | '/privacy' | '/terms' | '/api/generate'
+    | '/'
+    | '/affiliate-disclosure'
+    | '/library'
+    | '/privacy'
+    | '/terms'
+    | '/api/generate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/affiliate-disclosure' | '/privacy' | '/terms' | '/api/generate'
+  to:
+    | '/'
+    | '/affiliate-disclosure'
+    | '/library'
+    | '/privacy'
+    | '/terms'
+    | '/api/generate'
   id:
     | '__root__'
     | '/'
     | '/affiliate-disclosure'
+    | '/library'
     | '/privacy'
     | '/terms'
     | '/api/generate'
@@ -81,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
+  LibraryRoute: typeof LibraryRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   ApiGenerateRoute: typeof ApiGenerateRoute
@@ -100,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/affiliate-disclosure'
       fullPath: '/affiliate-disclosure'
       preLoaderRoute: typeof AffiliateDisclosureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -129,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
+  LibraryRoute: LibraryRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   ApiGenerateRoute: ApiGenerateRoute,
