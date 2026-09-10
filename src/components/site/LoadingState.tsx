@@ -2,6 +2,7 @@ import { CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { LOADING_STEPS } from "@/hooks/usePackageGenerator";
 
 export function ProgressStepper({ step, totalMs }: { step: number; totalMs: number }) {
+  const finished = step >= LOADING_STEPS.length;
   return (
     <div className="glass-card mx-auto max-w-7xl p-4">
       <ol className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -25,10 +26,20 @@ export function ProgressStepper({ step, totalMs }: { step: number; totalMs: numb
       <div className="bg-surface2 mt-4 h-1 w-full overflow-hidden rounded-full">
         <div
           className="from-purple to-cyan h-full rounded-full bg-gradient-to-r"
-          style={{ width: "100%", animation: `fsp-fill ${totalMs}ms linear forwards` }}
+          style={
+            finished
+              ? { width: "100%", animation: "fsp-pulse 1.6s ease-in-out infinite" }
+              : { width: "100%", animation: `fsp-fill ${totalMs}ms linear forwards` }
+          }
         />
       </div>
-      <style>{`@keyframes fsp-fill { from { width: 0% } to { width: 100% } }`}</style>
+      {finished ? (
+        <p className="text-ink-muted mt-3 text-xs">
+          Still writing — a real AI blueprint takes 30&ndash;60 seconds. Keep this tab open and your
+          blueprint will appear here.
+        </p>
+      ) : null}
+      <style>{`@keyframes fsp-fill { from { width: 0% } to { width: 100% } } @keyframes fsp-pulse { 0%, 100% { opacity: 0.35 } 50% { opacity: 1 } }`}</style>
     </div>
   );
 }
