@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MotionConfig, motion } from "framer-motion";
 import {
-  Baby,
-  Bike,
   BookOpen,
   Boxes,
   Brush,
