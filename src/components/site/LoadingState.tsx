@@ -1,8 +1,16 @@
 import { CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { LOADING_STEPS } from "@/hooks/usePackageGenerator";
 
-export function ProgressStepper({ step, totalMs }: { step: number; totalMs: number }) {
-  const finished = step >= LOADING_STEPS.length;
+export function ProgressStepper({
+  step,
+  totalMs,
+  slow,
+}: {
+  step: number;
+  totalMs: number;
+  slow: boolean;
+}) {
+  const finished = slow;
   return (
     <div className="glass-card mx-auto max-w-7xl p-4">
       <ol className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">

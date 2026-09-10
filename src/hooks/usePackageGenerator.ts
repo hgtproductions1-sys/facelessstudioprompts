@@ -29,6 +29,7 @@ export function usePackageGenerator() {
   const [pkg, setPkg] = useState<ProductionPackage | null>(null);
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
+  const [slow, setSlow] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export function usePackageGenerator() {
     timers.current = [];
     setLoading(true);
     setStep(0);
+    setSlow(false);
     [600, 1200, 1800].forEach((ms, i) => {
       timers.current.push(setTimeout(() => setStep(i + 1), ms));
     });
@@ -49,9 +51,11 @@ export function usePackageGenerator() {
 
     timers.current.push(
       setTimeout(() => {
+        setSlow(true);
         void request.then((remote) => {
           setPkg(remote ?? generatePackage({ niche, topic, seed: resolvedSeed }));
           setStep(LOADING_STEPS.length);
+          setSlow(false);
           setLoading(false);
         });
       }, TOTAL_MS),
@@ -63,5 +67,5 @@ export function usePackageGenerator() {
     run(pkg.niche, pkg.topic, pkg.seed + 7919);
   }, [pkg, run]);
 
-  return { pkg, loading, step, run, regenerate, totalMs: TOTAL_MS };
+  return { pkg, loading, step, slow, run, regenerate, totalMs: TOTAL_MS };
 }

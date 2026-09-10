@@ -167,7 +167,7 @@ function Index() {
   const [error, setError] = useState("");
   const resultsRef = useRef<HTMLDivElement>(null);
   const autoRan = useRef(false);
-  const { pkg, loading, step, run, regenerate, totalMs } = usePackageGenerator();
+  const { pkg, loading, step, slow, run, regenerate, totalMs } = usePackageGenerator();
 
   useEffect(() => {
     if (autoRan.current) return;
@@ -368,7 +368,7 @@ function Index() {
 
             {loading ? (
               <>
-                <ProgressStepper step={step} totalMs={totalMs} />
+                <ProgressStepper step={step} totalMs={totalMs} slow={slow} />
                 <SkeletonCards />
               </>
             ) : null}
