@@ -14,8 +14,8 @@ export function Playbook() {
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-ink-dim md:text-base">
           <p>
             A faceless channel is a production line, not a personality. The creators who publish
-            every single day are not more talented — they have removed every decision that has to
-            be made twice. Their niche is fixed, their character is locked to one description, their
+            every single day are not more talented — they have removed every decision that has to be
+            made twice. Their niche is fixed, their character is locked to one description, their
             colour palette never moves, and their shot grammar is a template rather than a choice.
             That is why a blueprint matters more than inspiration: once the archetype, wardrobe,
             palette, and pacing are written down, the only variable left each day is the topic, and

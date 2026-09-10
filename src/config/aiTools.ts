@@ -144,9 +144,7 @@ export const AI_TOOLS: AiTool[] = [
       const specs = Object.entries(v)
         .map(([k, val]) => `${k}: ${val}`)
         .join("\n");
-      const script = pkg.character.cueSheet
-        .map((c) => `[${c.cue}] ${c.line}`)
-        .join("\n\n");
+      const script = pkg.character.cueSheet.map((c) => `[${c.cue}] ${c.line}`).join("\n\n");
       return [
         `VOICE SETTINGS\n${specs}`,
         `Stability: 45% | Similarity: 80% | Style exaggeration: 25% | Speaker boost: on`,
