@@ -550,8 +550,10 @@ export function generatePackage({
   const negativePrompt =
     "blurry, lowres, deformed hands, extra fingers, visible face, text, watermark, logo, cartoon, oversaturated";
 
+  const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
+
   const leonardoPrompt = [
-    `Cinematic vertical still of a faceless ${profile.archetype.toLowerCase()} in a ${env},`,
+    `Cinematic vertical still of a faceless ${archetypeNoun}, set in ${env},`,
     `theme: ${lowTopic}. Face fully obscured by shadow and framing, shot from behind at chest height.`,
     `${(profile.wardrobe[0] ?? "").toLowerCase()}, ${(profile.wardrobe[1] ?? "").toLowerCase()}.`,
     `Palette of ${profile.palette}. ${profile.styleDNA.join(", ")}.`,
@@ -561,7 +563,7 @@ export function generatePackage({
   ].join(" ");
 
   const midjourneyPrompt = [
-    `faceless ${profile.archetype.toLowerCase()} :: ${lowTopic} ::`,
+    `faceless ${archetypeNoun} :: ${lowTopic} ::`,
     `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus,`,
     `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette},`,
     `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
