@@ -1405,7 +1405,7 @@ export function generatePackage({
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
-      soundDesign: profile.sound,
+      soundDesign: [...profile.sound, ...mixCues],
     },
   };
 }
