@@ -159,6 +159,17 @@ function ScrollToTop() {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    if (document.querySelector('script[data-adsense="true"]')) return;
+    const script = document.createElement("script");
+    script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3120853344446369";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    script.dataset["adsense"] = "true";
+    document.head.appendChild(script);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollToTop />
