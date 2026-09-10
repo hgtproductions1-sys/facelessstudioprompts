@@ -1,3 +1,14 @@
+import {
+  buildParagraph,
+  buildShotPrompt,
+  dedupePhrases,
+  extractMixDirective,
+  renderTemplate,
+  sanitizeMidjourneyPrompt,
+  sanitizeTopic,
+  toElevenLabsCue,
+} from "@/lib/prompt-sanitize";
+
 export interface ProductionPackage {
   niche: string;
   topic: string;
