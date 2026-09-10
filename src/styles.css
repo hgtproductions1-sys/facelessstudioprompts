@@ -73,9 +73,9 @@
   --color-purple-bright: var(--accent-purple-bright);
   --color-cyan: var(--accent-cyan);
   --color-cyan-bright: var(--accent-cyan-bright);
-  --color-ink: var(--text-primary);
-  --color-ink-dim: var(--text-secondary);
-  --color-ink-muted: var(--text-muted);
+  --color-ink: var(--text-primary, #f4f4f6);
+  --color-ink-dim: var(--text-secondary, #a1a1ac);
+  --color-ink-muted: var(--text-muted, #6b6b78);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-code: var(--code-bg);
