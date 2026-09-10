@@ -1,13 +1,10 @@
 # Roadmap
 
-## In progress
-- [ ] Fix mobile overlap: Generate button / quick-start chips overlapping the empty-state card (spacing, flow, z-index); verify at 375/768/1440
-- [ ] Re-verify locker toast fires on Download click (Playwright reported no toast)
-
-## Production finalization (from prior request)
-- [x] Remove console.log/debug statements (removed console.info in affiliates.ts)
-- [x] Fix lint/TS errors (tsgo clean; eslint 0 errors, only shadcn fast-refresh warnings)
-- [x] Verify routes /, /privacy, /terms, /affiliate-disclosure (all 200)
-- [x] Locker card renders with Download button wired to openContentLocker()
-- [x] CPA placeholder present in src/routes/__root.tsx before closing body (JSX comment — lives in source, not rendered HTML)
-- [x] No horizontal overflow at 375/768/1440
+## Done
+- [x] Fixed mobile overlap: empty-state card was being rendered inside the Generate button; removed it and added mt-8/mt-12 + z-10 to the results section — clean at 375/768/1440, no overlap, no horizontal scroll
+- [x] Locker toast verified: Download button fires "Locker script not installed yet" toast via openContentLocker()
+- [x] Removed console statements (console.info in affiliates.ts)
+- [x] tsgo clean; eslint 0 errors (only standard shadcn fast-refresh warnings)
+- [x] Routes /, /privacy, /terms, /affiliate-disclosure all return 200 with correct headings
+- [x] CPA placeholder comment present in src/routes/__root.tsx body
+- [x] Zero console/page errors across all routes
