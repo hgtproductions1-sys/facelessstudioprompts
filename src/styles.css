@@ -146,7 +146,7 @@
 
   body {
     background-color: var(--bg-base);
-    color: var(--text-primary);
+    color: var(--text-primary, #f4f4f6);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
