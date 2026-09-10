@@ -25,10 +25,7 @@ export function LockerCard() {
   return (
     <div className="relative">
       {/* ambient background glow */}
-      <div
-        aria-hidden
-        className="absolute -inset-6 -z-10 rounded-full bg-[#8b5cf6]/30 blur-3xl"
-      />
+      <div aria-hidden className="absolute -inset-6 -z-10 rounded-full bg-[#8b5cf6]/30 blur-3xl" />
       <div
         aria-hidden
         className="absolute -right-10 -bottom-10 -z-10 h-56 w-56 rounded-full bg-[#06b6d4]/20 blur-3xl"
