@@ -62,6 +62,44 @@ const STAGES = [
   },
 ];
 
+type StageAction =
+  | { label: string; to: "/"; hash?: string }
+  | { label: string; to: "/library" }
+  | { label: string; to: "/ai-tools-hub" };
+
+/** Renders a stage's next step as a typed internal link. */
+function StageActionLink({ action }: { action: StageAction }) {
+  const className =
+    "mt-4 inline-flex items-center gap-1.5 text-sm text-purple-bright transition-colors hover:text-cyan";
+  const inner = (
+    <>
+      {action.label}
+      <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+    </>
+  );
+
+  switch (action.to) {
+    case "/library":
+      return (
+        <Link to="/library" className={className}>
+          {inner}
+        </Link>
+      );
+    case "/ai-tools-hub":
+      return (
+        <Link to="/ai-tools-hub" className={className}>
+          {inner}
+        </Link>
+      );
+    default:
+      return (
+        <Link to="/" hash={action.hash ?? "generator"} className={className}>
+          {inner}
+        </Link>
+      );
+  }
+}
+
 const STACK = [
   ["Script and hooks", "The Faceless Prompts generator", "Three competing openings, a shot list and a cue sheet per topic."],
   ["Stills", "Midjourney, Leonardo, Flux, Google Imagen", "Keyframes with a locked character, palette and seed."],
@@ -275,14 +313,7 @@ function FacelessYouTubeAutomationGuide() {
                         {stage.title}
                       </h3>
                       <p className="mt-2 text-sm leading-relaxed text-ink-dim">{stage.body}</p>
-                      <Link
-                        to={stage.action.to}
-                        hash={stage.action.hash}
-                        className="mt-4 inline-flex items-center gap-1.5 text-sm text-purple-bright transition-colors hover:text-cyan"
-                      >
-                        {stage.action.label}
-                        <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                      </Link>
+                      <StageActionLink action={stage.action} />
                     </div>
                   </div>
                 </li>
