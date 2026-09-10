@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, Heart, Search, Wand2 } from "lucide-react";
+import { Heart, Search, Wand2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
@@ -186,26 +186,6 @@ function LibraryPage() {
           </p>
         ) : null}
 
-        {/* PDF BANNER */}
-        <section className="mx-auto mt-16 max-w-4xl">
-          <div className="glass-card top-rail-cp relative overflow-hidden rounded-2xl p-6 text-center md:p-8">
-            <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
-              Want all <span className="gradient-text">100+ prompts</span> as a PDF?
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-ink-dim">
-              Every prompt in this library plus the full faceless video blueprint, formatted for
-              offline use.
-            </p>
-            <a
-              href="/faceless-video-blueprint.pdf"
-              download
-              className="from-purple to-cyan mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r px-6 py-4 text-base font-bold text-[#0a0a0c] transition-all duration-200 hover:brightness-110 hover:shadow-[0_0_28px_-4px_rgba(139,92,246,0.65)] focus-visible:ring-2 focus-visible:ring-purple-bright focus-visible:outline-none active:scale-[0.98]"
-            >
-              <Download className="h-5 w-5" aria-hidden />
-              Download Complete Pack (PDF)
-            </a>
-          </div>
-        </section>
       </main>
 
       <Footer />

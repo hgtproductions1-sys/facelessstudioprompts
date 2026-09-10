@@ -49,7 +49,7 @@ import { CameraCard } from "@/components/site/CameraCard";
 import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
-import { DownloadCard } from "@/components/site/DownloadCard";
+import { BlueprintCard } from "@/components/site/BlueprintCard";
 import { EnginePrompts } from "@/components/site/EnginePrompts";
 import { LeaderboardAd, NativeAd } from "@/components/site/AdSlot";
 import { Playbook } from "@/components/site/Playbook";
@@ -378,7 +378,7 @@ function Index() {
 
           {/* BONUS DOWNLOAD */}
           <div className="relative z-10 mx-auto mt-14 max-w-4xl px-4">
-            <DownloadCard />
+            <BlueprintCard pkg={pkg} />
           </div>
 
           <Playbook />
