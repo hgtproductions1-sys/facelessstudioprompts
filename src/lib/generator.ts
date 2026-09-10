@@ -37,6 +37,8 @@ export interface ProductionPackage {
       motion: string;
       transition: string;
       animationCue: string;
+      /** Engine-ready prompt for Runway Gen-3 / Kling — no NLE transitions. */
+      prompt: string;
     }[];
     rigCheatSheet: string[];
     soundDesign: string[];
