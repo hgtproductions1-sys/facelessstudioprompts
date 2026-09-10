@@ -6,6 +6,7 @@ import { AffiliateCta } from "./primitives";
 
 const NAV_LINKS = [
   { label: "Generator", href: "/#generator" },
+  { label: "Library", href: "/library" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Prompt Library", href: "/#library" },
   { label: "Resources", href: "/#resources" },
