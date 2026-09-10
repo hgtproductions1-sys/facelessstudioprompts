@@ -138,7 +138,6 @@ function Index() {
     );
   }, [search.niche, search.topic, run]);
 
-
   const scrollToResults = () => {
     setTimeout(
       () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
@@ -278,8 +277,6 @@ function Index() {
                   disabled={disabled}
                   className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
                 >
-
-
                   {loading ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

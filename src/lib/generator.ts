@@ -104,7 +104,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Tender with bursts of wonder",
       "Signature Pause": "0.7s before every emotional turn",
     },
-    styleDNA: ["Pixar-Grade 3D", "Soft Rim Light", "Fur Detail Pass", "Shallow Depth", "Warm Bloom"],
+    styleDNA: [
+      "Pixar-Grade 3D",
+      "Soft Rim Light",
+      "Fur Detail Pass",
+      "Shallow Depth",
+      "Warm Bloom",
+    ],
     palette: "honey gold, moss green, dusty cream",
     environments: [
       "rain-soaked cobbled alley lit by a single shop window",
@@ -141,7 +147,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Content, unhurried",
       "Signature Pause": "0.9s before the first bite",
     },
-    styleDNA: ["Hyperreal CGI Fur", "Steam Volumetrics", "Golden Kitchen Light", "Macro Food Detail", "Cozy Realism"],
+    styleDNA: [
+      "Hyperreal CGI Fur",
+      "Steam Volumetrics",
+      "Golden Kitchen Light",
+      "Macro Food Detail",
+      "Cozy Realism",
+    ],
     palette: "butter yellow, forest green, toasted amber",
     environments: [
       "log cabin kitchen with copper pans and open fire",
@@ -178,7 +190,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Curious, quietly amazed",
       "Signature Pause": "0.6s at every doorway",
     },
-    styleDNA: ["First-Person Lens", "Natural Light", "Handheld Micro-Shake", "Wide 18mm", "Photoreal"],
+    styleDNA: [
+      "First-Person Lens",
+      "Natural Light",
+      "Handheld Micro-Shake",
+      "Wide 18mm",
+      "Photoreal",
+    ],
     palette: "sun-warmed sand, sky blue, worn timber",
     environments: [
       "narrow market street at golden hour",
@@ -252,7 +270,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Deadpan into punchline",
       "Signature Pause": "0.3s before every joke landing",
     },
-    styleDNA: ["Clean Vector Stickman", "Flat White Background", "Bold Stroke", "Snappy Keyframes", "Minimal"],
+    styleDNA: [
+      "Clean Vector Stickman",
+      "Flat White Background",
+      "Bold Stroke",
+      "Snappy Keyframes",
+      "Minimal",
+    ],
     palette: "pure white, ink black, single red accent",
     environments: [
       "empty white void with one drawn horizon line",
@@ -289,7 +313,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Calm, detached",
       "Signature Pause": "2.0s between actions",
     },
-    styleDNA: ["Macro Texture", "Soft Diffused Light", "Ultra Slow Motion", "Photoreal Surfaces", "Clean Frame"],
+    styleDNA: [
+      "Macro Texture",
+      "Soft Diffused Light",
+      "Ultra Slow Motion",
+      "Photoreal Surfaces",
+      "Clean Frame",
+    ],
     palette: "soft grey, foam white, muted steel",
     environments: [
       "white tiled workbench with one overhead softbox",
@@ -326,7 +356,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Exhausted urgency",
       "Signature Pause": "0.8s before every noise cue",
     },
-    styleDNA: ["Desaturated Grade", "Handheld Realism", "Practical Firelight", "Heavy Grain", "Cinematic Grime"],
+    styleDNA: [
+      "Desaturated Grade",
+      "Handheld Realism",
+      "Practical Firelight",
+      "Heavy Grain",
+      "Cinematic Grime",
+    ],
     palette: "ash grey, dried blood red, sickly green",
     environments: [
       "overturned highway at dusk with abandoned cars",
@@ -363,7 +399,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Solemn awe",
       "Signature Pause": "1.2s after every proclamation",
     },
-    styleDNA: ["Anime Epic Key Art", "God Rays", "Gold Leaf Accents", "Cel Shaded Detail", "Grand Scale"],
+    styleDNA: [
+      "Anime Epic Key Art",
+      "God Rays",
+      "Gold Leaf Accents",
+      "Cel Shaded Detail",
+      "Grand Scale",
+    ],
     palette: "sun gold, ivory white, storm indigo",
     environments: [
       "desert plain split by a column of light",
@@ -400,7 +442,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Enthusiastic but controlled",
       "Signature Pause": "0.5s before every verdict",
     },
-    styleDNA: ["Studio Softbox", "Glossy Product Macro", "Clean Gradient BG", "Shallow Depth", "Editorial Polish"],
+    styleDNA: [
+      "Studio Softbox",
+      "Glossy Product Macro",
+      "Clean Gradient BG",
+      "Shallow Depth",
+      "Editorial Polish",
+    ],
     palette: "warm ivory, blush beige, brushed champagne",
     environments: [
       "seamless studio backdrop with one soft gradient",
@@ -437,7 +485,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Tender, drifting",
       "Signature Pause": "2.0s between phrases",
     },
-    styleDNA: ["Dreamy Soft Focus", "Painterly Night", "Twinkle Particles", "Slow Parallax", "Pastel Glow"],
+    styleDNA: [
+      "Dreamy Soft Focus",
+      "Painterly Night",
+      "Twinkle Particles",
+      "Slow Parallax",
+      "Pastel Glow",
+    ],
     palette: "midnight blue, moon silver, soft lilac",
     environments: [
       "nursery window with slow-drifting stars",
@@ -474,7 +528,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Restrained gravity",
       "Signature Pause": "0.8s before every reveal",
     },
-    styleDNA: ["VHS Analog Artifact", "Scanline Noise", "Emergency Broadcast Frame", "Cinematic Noir", "Hyper-Detailed"],
+    styleDNA: [
+      "VHS Analog Artifact",
+      "Scanline Noise",
+      "Emergency Broadcast Frame",
+      "Cinematic Noir",
+      "Hyper-Detailed",
+    ],
     palette: "desaturated teal, sodium-vapour orange, deep ink black",
     environments: [
       "rain-slick evidence room lit by one desk lamp",
@@ -511,7 +571,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Focused calm",
       "Signature Pause": "1.5s between build steps",
     },
-    styleDNA: ["Top-Down Bench Shot", "Warm Practical Light", "Macro Craft Detail", "Timelapse Blend", "Clean Composition"],
+    styleDNA: [
+      "Top-Down Bench Shot",
+      "Warm Practical Light",
+      "Macro Craft Detail",
+      "Timelapse Blend",
+      "Clean Composition",
+    ],
     palette: "kraft brown, matte grey, workshop green",
     environments: [
       "overhead cutting mat with tools laid in a row",
@@ -548,7 +614,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Serene concentration",
       "Signature Pause": "1.4s before each cut",
     },
-    styleDNA: ["Extreme Macro", "Wet Surface Sheen", "Single Key Light", "Slow Rotate", "Photoreal Produce"],
+    styleDNA: [
+      "Extreme Macro",
+      "Wet Surface Sheen",
+      "Single Key Light",
+      "Slow Rotate",
+      "Photoreal Produce",
+    ],
     palette: "watermelon red, cucumber green, ivory flesh",
     environments: [
       "black slate board with water droplets",
@@ -585,7 +657,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Quiet satisfaction",
       "Signature Pause": "1.2s before each reveal wipe",
     },
-    styleDNA: ["Hyperreal Paint Reflection", "Foam Volumetrics", "Studio Bay Lighting", "Slow Push-In", "Before/After Split"],
+    styleDNA: [
+      "Hyperreal Paint Reflection",
+      "Foam Volumetrics",
+      "Studio Bay Lighting",
+      "Slow Push-In",
+      "Before/After Split",
+    ],
     palette: "deep gloss black, foam white, chrome blue",
     environments: [
       "detailing bay with wet concrete and overhead LEDs",
@@ -622,7 +700,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Neutral, observational",
       "Signature Pause": "2.0s between cooking steps",
     },
-    styleDNA: ["Macro Miniature", "Tilt-Shift Depth", "Warm Practical Flame", "Photoreal Micro Food", "Clean Tabletop"],
+    styleDNA: [
+      "Macro Miniature",
+      "Tilt-Shift Depth",
+      "Warm Practical Flame",
+      "Photoreal Micro Food",
+      "Clean Tabletop",
+    ],
     palette: "copper orange, cream tile, herb green",
     environments: [
       "matchbox-scale kitchen set on a wooden board",
@@ -659,7 +743,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Nostalgic excitement",
       "Signature Pause": "0.8s before the seal breaks",
     },
-    styleDNA: ["Retro Film Grade", "Tabletop Overhead", "Warm Tungsten", "Product Macro", "90s Print Texture",],
+    styleDNA: [
+      "Retro Film Grade",
+      "Tabletop Overhead",
+      "Warm Tungsten",
+      "Product Macro",
+      "90s Print Texture",
+    ],
     palette: "faded primary red, cardboard tan, retro teal",
     environments: [
       "bedroom carpet with the box lit by one lamp",
@@ -696,7 +786,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Assured, competitive",
       "Signature Pause": "0.5s before every rank number",
     },
-    styleDNA: ["Bold Numeral Overlay", "High Contrast Studio", "Split Comparison Frame", "Motion Graphic Wipes", "Ultra Clean"],
+    styleDNA: [
+      "Bold Numeral Overlay",
+      "High Contrast Studio",
+      "Split Comparison Frame",
+      "Motion Graphic Wipes",
+      "Ultra Clean",
+    ],
     palette: "jet black, alert yellow, signal white",
     environments: [
       "dark studio with a floating number graphic",
@@ -733,7 +829,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Curious, explanatory",
       "Signature Pause": "0.6s before each data reveal",
     },
-    styleDNA: ["Paper Cut-Out Collage", "Layered Drop Shadow", "Flat Editorial Palette", "Snap Transitions", "Infographic Clarity"],
+    styleDNA: [
+      "Paper Cut-Out Collage",
+      "Layered Drop Shadow",
+      "Flat Editorial Palette",
+      "Snap Transitions",
+      "Infographic Clarity",
+    ],
     palette: "newsprint cream, editorial red, slate navy",
     environments: [
       "flat paper desk with sliding chart cut-outs",
@@ -770,7 +872,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Composed conviction",
       "Signature Pause": "1.4s after every maxim",
     },
-    styleDNA: ["Marble Chiaroscuro", "Golden Hour Shafts", "Muted Stone", "Fine Grain", "Sculptural"],
+    styleDNA: [
+      "Marble Chiaroscuro",
+      "Golden Hour Shafts",
+      "Muted Stone",
+      "Fine Grain",
+      "Sculptural",
+    ],
     palette: "bone white, warm amber, deep umber shadow",
     environments: [
       "colonnaded stone courtyard at dawn",
@@ -807,7 +915,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Stylised intensity",
       "Signature Pause": "Beat-drop hold on every chorus",
     },
-    styleDNA: ["Music Video Grade", "Beat-Synced Cuts", "Neon Practicals", "Lens Flare Streaks", "Surreal Composite"],
+    styleDNA: [
+      "Music Video Grade",
+      "Beat-Synced Cuts",
+      "Neon Practicals",
+      "Lens Flare Streaks",
+      "Surreal Composite",
+    ],
     palette: "electric magenta, deep violet, chrome silver",
     environments: [
       "rain-lit rooftop with neon signage behind",
@@ -844,7 +958,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Sweet then unsettling",
       "Signature Pause": "1.0s before every twist",
     },
-    styleDNA: ["Illustrated Storybook Horror", "Ink Line Texture", "Hand-Painted Shadow", "Distorted Perspective", "Uncanny Cute"],
+    styleDNA: [
+      "Illustrated Storybook Horror",
+      "Ink Line Texture",
+      "Hand-Painted Shadow",
+      "Distorted Perspective",
+      "Uncanny Cute",
+    ],
     palette: "bruised purple, sickly yellow, ink black",
     environments: [
       "crooked house interior with tilted walls",
@@ -881,7 +1001,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Playful tension",
       "Signature Pause": "0.4s before every level transition",
     },
-    styleDNA: ["16-Bit Pixel Art", "Limited Palette Ramp", "Scanline Overlay", "Parallax Scroll", "HUD Framing"],
+    styleDNA: [
+      "16-Bit Pixel Art",
+      "Limited Palette Ramp",
+      "Scanline Overlay",
+      "Parallax Scroll",
+      "HUD Framing",
+    ],
     palette: "cobalt blue, pixel gold, dungeon grey",
     environments: [
       "side-scroll dungeon corridor with torch sprites",
@@ -918,7 +1044,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Intrigued, upbeat",
       "Signature Pause": "0.5s at every year jump",
     },
-    styleDNA: ["Portrait Morph Transition", "Year Card Overlay", "Archive Grain Blend", "Studio Key Light", "Timeline Framing"],
+    styleDNA: [
+      "Portrait Morph Transition",
+      "Year Card Overlay",
+      "Archive Grain Blend",
+      "Studio Key Light",
+      "Timeline Framing",
+    ],
     palette: "monochrome grey, spotlight white, accent gold",
     environments: [
       "black studio plate with one centred portrait",
@@ -955,7 +1087,13 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Emotional Register": "Broad comedy with a soft ending",
       "Signature Pause": "0.4s before every side-swap",
     },
-    styleDNA: ["Pixar-Style 3D", "Split Screen Contrast", "Warm vs Cold Grade", "Expressive Animal Rig", "Punchy Comedy Timing"],
+    styleDNA: [
+      "Pixar-Style 3D",
+      "Split Screen Contrast",
+      "Warm vs Cold Grade",
+      "Expressive Animal Rig",
+      "Punchy Comedy Timing",
+    ],
     palette: "gold and cream on one side, grey and rust on the other",
     environments: [
       "split frame: marble penthouse against a rainy alley",
