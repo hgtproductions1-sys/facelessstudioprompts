@@ -46,14 +46,7 @@ interface NicheProfile {
   archetype: string;
   toneTags: string[];
   wardrobe: string[];
-  voice: {
-    voiceType: string;
-    wpm: string;
-    pitch: string;
-    accent: string;
-    register: string;
-    pause: string;
-  };
+  voice: Record<string, string>;
   styleDNA: string[];
   palette: string;
   environments: string[];
@@ -469,14 +462,14 @@ export function hashSeed(input: string): number {
 }
 
 function pick<T>(arr: T[], seed: number, offset = 0): T {
-  return arr[(seed + offset) % arr.length];
+  return arr[(seed + offset) % arr.length] as T;
 }
 
 function tokenFrom(seed: number, topic: string): string {
   const base = (slugify(topic).replace(/-/g, "") + "faceless").toUpperCase();
   let out = "";
   for (let i = 0; i < 8; i++) {
-    out += base[(seed + i * 7) % base.length];
+    out += base[(seed + i * 7) % base.length] ?? "X";
   }
   return `FSP-CORE-${out}-v1`;
 }
@@ -494,7 +487,7 @@ export function generatePackage({
   topic: string;
   seed?: number;
 }): ProductionPackage {
-  const profile = NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]];
+  const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
   const s = seed ?? hashSeed(`${niche}::${topic}`);
   const cleanTopic = topic.trim().replace(/\.$/, "");
   const lowTopic = cleanTopic.charAt(0).toLowerCase() + cleanTopic.slice(1);
@@ -512,14 +505,14 @@ export function generatePackage({
   ].join("\n");
 
   const hooks = profile.hooks.map((h, i) => ({
-    label: `Hook ${["A", "B", "C"][i]}`,
+    label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
     text: h.replace("{topic}", lowTopic),
   }));
 
   const cueSheet = [
     {
       timestamp: "0:00",
-      line: hooks[0].text,
+      line: hooks[0]?.text ?? "",
       cue: "[cold open, no music, dry close-mic]",
     },
     {
