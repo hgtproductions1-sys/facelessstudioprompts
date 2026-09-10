@@ -17,7 +17,7 @@ export function LogoLockup() {
     <Link to="/" className="flex items-center gap-2.5" aria-label="The Faceless Prompts home">
       <img src={logoMark} alt="The Faceless Prompts logo" width={28} height={28} className="h-7 w-7 rounded-lg" />
       <span className="text-[15px] font-bold text-white">
-        Faceless <span className="gradient-text">Studio Pro</span>
+        The Faceless <span className="gradient-text">Prompts</span>
       </span>
     </Link>
   );
