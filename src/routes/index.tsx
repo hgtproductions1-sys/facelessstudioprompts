@@ -1,4 +1,4 @@
-import { pageHead } from "@/lib/seo";
+import { pageHead, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { MotionConfig, motion } from "framer-motion";
 import {
