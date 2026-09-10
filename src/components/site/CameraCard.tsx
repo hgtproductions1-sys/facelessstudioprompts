@@ -6,8 +6,7 @@ import { AffiliateCta, BlockLabel, CopyButton, FooterCta, SpecGrid } from "./pri
 
 export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
   const cam = pkg.camera;
-  const shotText = (s: (typeof cam.shots)[number]) =>
-    `Shot ${String(s.index).padStart(2, "0")} — ${s.timecode}\nMotion: ${s.motion}\nTransition: ${s.transition}\nAnimation Cue: ${s.animationCue}`;
+  const shotText = (s: (typeof cam.shots)[number]) => s.prompt;
 
   const allText = [
     "CAMERA MOTION PLAN",
