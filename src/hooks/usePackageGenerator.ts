@@ -10,6 +10,21 @@ export const LOADING_STEPS = [
 
 const TOTAL_MS = 2400;
 
+async function fetchPackage(niche: string, topic: string): Promise<ProductionPackage | null> {
+  try {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ niche, topic }),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { package?: ProductionPackage };
+    return data.package ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function usePackageGenerator() {
   const [pkg, setPkg] = useState<ProductionPackage | null>(null);
   const [loading, setLoading] = useState(false);
@@ -28,11 +43,17 @@ export function usePackageGenerator() {
     [600, 1200, 1800].forEach((ms, i) => {
       timers.current.push(setTimeout(() => setStep(i + 1), ms));
     });
+
+    const resolvedSeed = seed ?? hashSeed(`${niche}::${topic}`);
+    const request = fetchPackage(niche, topic);
+
     timers.current.push(
       setTimeout(() => {
-        setPkg(generatePackage({ niche, topic, seed: seed ?? hashSeed(`${niche}::${topic}`) }));
-        setStep(LOADING_STEPS.length);
-        setLoading(false);
+        void request.then((remote) => {
+          setPkg(remote ?? generatePackage({ niche, topic, seed: resolvedSeed }));
+          setStep(LOADING_STEPS.length);
+          setLoading(false);
+        });
       }, TOTAL_MS),
     );
   }, []);
