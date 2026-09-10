@@ -199,7 +199,7 @@ export const Route = createFileRoute("/api/generate")({
           return Response.json({ error: "Invalid JSON body" }, { status: 400 });
         }
         const niche = typeof body.niche === "string" ? body.niche.trim() : "";
-        const topic = typeof body.topic === "string" ? body.topic.trim() : "";
+        const topic = typeof body.topic === "string" ? sanitizeTopic(body.topic) : "";
         if (!niche || !topic || niche.length > 200 || topic.length > 300) {
           return Response.json({ error: "niche and topic are required" }, { status: 400 });
         }
