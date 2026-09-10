@@ -87,12 +87,19 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
         ],
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[generate] GLM responded with HTTP ${res.status}`);
+      return null;
+    }
     const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const content = data.choices?.[0]?.message?.content;
-    if (!content) return null;
+    if (!content) {
+      console.warn("[generate] GLM response had no message content");
+      return null;
+    }
     return normalizePackage(JSON.parse(content), niche, topic);
-  } catch {
+  } catch (err) {
+    console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
     return null;
   } finally {
     clearTimeout(timer);
