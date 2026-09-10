@@ -30,6 +30,7 @@ const SCHEMA_SHAPE = `{
     "negativePrompt": string,
     "leonardoPrompt": string,
     "midjourneyPrompt": string,
+    "googleFlowPrompt": string,
     "consistencyToken": string,
     "negativeLibrary": string[5]
   },
@@ -72,13 +73,22 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
       },
       body: JSON.stringify({
         model: GLM_MODEL,
-        temperature: 0.8,
+        temperature: 0.6,
         response_format: { type: "json_object" },
         messages: [
           {
             role: "system",
             content:
-              "You are a faceless-video production engine. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera sections). No markdown, no code fences, no commentary.",
+              [
+                "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+                "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
+                "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
+                "hooks must be scroll-stopping spoken lines under 12 words. cueSheet lines must be real voiceover script sentences with delivery cues.",
+                "leonardoPrompt and midjourneyPrompt must be single-paragraph copy-paste prompts with lighting, palette, camera and negative-space details, ending with render flags.",
+                "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16, describing subject, wardrobe, camera motion, lighting, style, and negatives.",
+                "camera shots must each specify a distinct motion, transition, and animation cue usable directly in an AI video tool.",
+                "Face never visible in any prompt.",
+              ].join(" "),
           },
           {
             role: "user",
