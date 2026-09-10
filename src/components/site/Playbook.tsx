@@ -1,3 +1,13 @@
+import { Link } from "@tanstack/react-router";
+import consistencyImg from "@/assets/playbook-consistency.jpg";
+import nichesImg from "@/assets/playbook-niches.jpg";
+import workflowImg from "@/assets/playbook-workflow.jpg";
+
+const figure = "mt-8 overflow-hidden rounded-2xl border border-line bg-surface2";
+const img = "h-auto w-full";
+const caption = "border-line border-t px-4 py-3 text-xs text-ink-muted";
+const link = "text-cyan underline underline-offset-2 hover:text-white";
+
 export function Playbook() {
   return (
     <section id="playbook" className="border-line mt-20 border-t">
