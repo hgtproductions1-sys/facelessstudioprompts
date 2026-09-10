@@ -28,10 +28,22 @@ const STATS = [
 ];
 
 const TESTIMONIALS = [
-  ["Dana R.", "@quietcasefiles", "First blueprint hit 410k views. The hook options alone are worth it."],
+  [
+    "Dana R.",
+    "@quietcasefiles",
+    "First blueprint hit 410k views. The hook options alone are worth it.",
+  ],
   ["Milo T.", "@stoicdaily", "My character finally looks the same in every single frame."],
-  ["Priya N.", "@passivepriya", "The cue sheet cut my scripting time from two hours to twelve minutes."],
-  ["Jonas K.", "@deepfieldshorts", "Camera plan is the part every other tool skips. This one nails it."],
+  [
+    "Priya N.",
+    "@passivepriya",
+    "The cue sheet cut my scripting time from two hours to twelve minutes.",
+  ],
+  [
+    "Jonas K.",
+    "@deepfieldshorts",
+    "Camera plan is the part every other tool skips. This one nails it.",
+  ],
   ["Ava L.", "@darkpsychnotes", "Pasted the Midjourney prompt straight in. Zero edits needed."],
   ["Ben O.", "@offgridben", "Ran nine videos off one package. Retention went up 22%."],
 ];

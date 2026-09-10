@@ -47,13 +47,7 @@ export function CopyButton({
   );
 }
 
-export function BlockLabel({
-  children,
-  action,
-}: {
-  children: ReactNode;
-  action?: ReactNode;
-}) {
+export function BlockLabel({ children, action }: { children: ReactNode; action?: ReactNode }) {
   return (
     <div className="mb-2 flex items-center justify-between gap-2">
       <h4 className="text-[11px] font-medium tracking-widest text-ink-dim uppercase">{children}</h4>

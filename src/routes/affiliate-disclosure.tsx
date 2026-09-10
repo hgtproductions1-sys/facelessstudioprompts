@@ -65,8 +65,8 @@ function DisclosurePage() {
       <LegalSection heading="Questions">
         <p>
           If anything here is unclear, or you want to know whether a specific link is monetised,
-          email <span className="text-cyan">privacy@facelessstudiopro.com</span> and we will tell you
-          plainly.
+          email <span className="text-cyan">privacy@facelessstudiopro.com</span> and we will tell
+          you plainly.
         </p>
       </LegalSection>
     </LegalLayout>
