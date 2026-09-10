@@ -1239,33 +1239,47 @@ export function generatePackage({
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
-  const leonardoPrompt = [
-    `Cinematic vertical still of a faceless ${archetypeNoun}, set in ${env},`,
-    `theme: ${lowTopic}. Face fully obscured by shadow and framing, shot from behind at chest height.`,
-    `${(profile.wardrobe[0] ?? "").toLowerCase()}, ${(profile.wardrobe[1] ?? "").toLowerCase()}.`,
-    `Palette of ${profile.palette}. ${profile.styleDNA.join(", ")}.`,
-    `Single hard key light with deep falloff, atmospheric haze, fine film grain, shallow depth of field,`,
-    `photoreal texture on fabric and skin, negative space reserved at the top third for caption text.`,
-    `--ar 9:16 --style raw --stylize 250`,
-  ].join(" ");
+  const wardrobeLead = [profile.wardrobe[0], profile.wardrobe[1]]
+    .filter(Boolean)
+    .join(", ")
+    .toLowerCase();
+  const lightingLine = `single hard key light with deep falloff, atmospheric haze, palette of ${profile.palette}`;
 
-  const midjourneyPrompt = [
-    `faceless ${archetypeNoun} :: ${lowTopic} ::`,
-    `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus,`,
-    `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette},`,
-    `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
-    `--ar 9:16 --v 6.1 --stylize 250 --chaos 12 --no text, watermark, extra limbs`,
-  ].join(" ");
+  const leonardoPrompt = buildParagraph(
+    [
+      `Cinematic vertical 9:16 still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `face fully obscured by shadow and framing, shot from behind at chest height, hands in sharp focus`,
+      wardrobeLead,
+      lightingLine,
+      `${profile.styleDNA.join(", ").toLowerCase()}, fine film grain, shallow depth of field, negative space at the top third for captions`,
+    ],
+    100,
+  );
 
-  const googleFlowPrompt = [
-    `Google Flow (Veo 3) scene prompt — paste into Flow's "Text to Video" box:`,
-    `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme: ${lowTopic}.`,
-    `Face hidden by shadow and framing; ${(profile.wardrobe[0] ?? "").toLowerCase()} wardrobe, hands in focus.`,
-    `Camera: slow push-in with subtle parallax on foreground atmosphere.`,
-    `Lighting: single hard key with deep falloff, volumetric haze, palette of ${profile.palette}.`,
-    `Style: ${profile.styleDNA.join(", ")}, 35mm film grain, photoreal texture.`,
-    `Negative: no visible face, no text, no watermark, no warped hands.`,
-  ].join(" ");
+  const midjourneyPrompt = sanitizeMidjourneyPrompt(
+    buildParagraph(
+      [
+        `faceless ${archetypeNoun}, ${lowTopic}`,
+        `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus`,
+        `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
+        `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
+      ],
+      80,
+    ),
+    s,
+  );
+
+  const googleFlowPrompt = buildParagraph(
+    [
+      `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `face hidden by shadow and framing, ${(profile.wardrobe[0] ?? "").toLowerCase()}, hands in focus`,
+      `camera slowly pushes in with subtle parallax on foreground atmosphere`,
+      lightingLine,
+      `${profile.styleDNA.join(", ").toLowerCase()}, 35mm film grain, photoreal texture`,
+      `no visible face, no text, no watermark, no warped hands`,
+    ],
+    100,
+  );
 
   const shotMotions = [
     "Slow push-in, 5% scale over 4s",
