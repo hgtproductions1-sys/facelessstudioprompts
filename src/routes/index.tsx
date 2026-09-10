@@ -60,9 +60,9 @@ import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/prim
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
 import { NICHES, packageToText, slugify } from "@/lib/generator";
 
-const TITLE = "The Faceless Prompts | AI Video Generator for Creators";
+const TITLE = "The Faceless Prompts | Free AI Video Generator";
 const DESC =
-  "Free AI video generator for faceless creators. Turn any niche and topic into a complete production package: a consistent character profile, Midjourney, Leonardo and Google Flow (Veo) prompts, shot-by-shot camera motion, ElevenLabs voice settings and a downloadable blueprint.";
+  "Generate viral faceless video blueprints, Midjourney image prompts, and ElevenLabs voiceover scripts in seconds.";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => {

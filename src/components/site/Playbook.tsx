@@ -12,6 +12,9 @@ export function Playbook() {
         </p>
 
         <div className="mt-8 space-y-6 text-sm leading-relaxed text-ink-dim md:text-base">
+          <h3 className="text-lg font-semibold text-ink">
+            Why a Blueprint Beats Inspiration
+          </h3>
           <p>
             A faceless channel is a production line, not a personality. The creators who publish
             every single day are not more talented — they have removed every decision that has to be
@@ -21,6 +24,9 @@ export function Playbook() {
             palette, and pacing are written down, the only variable left each day is the topic, and
             a topic takes ninety seconds to pick.
           </p>
+          <h3 className="text-lg font-semibold text-ink">
+            The Four-Stage Production Workflow
+          </h3>
           <p>
             The workflow itself splits into four stages that map cleanly onto four tools. First,
             script and hook: you need three competing openings for every video, because the first
@@ -32,6 +38,7 @@ export function Playbook() {
             wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
             stability and similarity settings so episode twelve sounds exactly like episode one.
           </p>
+          <h3 className="text-lg font-semibold text-ink">Consistency Drives Retention</h3>
           <p>
             Consistency is the entire retention strategy. Viewers do not subscribe to a video, they
             subscribe to a pattern they can recognise in a scrolling feed — the same character, the
@@ -42,6 +49,9 @@ export function Playbook() {
             comment to form. Retention graphs improve far more from removing dead air at second
             three than from any change in visual quality.
           </p>
+          <h3 className="text-lg font-semibold text-ink">
+            Monetisation: Ads for Reach, Affiliates for Intent
+          </h3>
           <p>
             Monetisation follows volume, but only if the back end is set up before the traffic
             arrives. Display advertising rewards depth of content, so a channel that also publishes
