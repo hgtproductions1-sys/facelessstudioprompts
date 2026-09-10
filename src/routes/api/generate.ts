@@ -1,6 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { generatePackage, hashSeed, type ProductionPackage } from "@/lib/generator";
 import { getTopPromptsForNiche } from "@/data/promptLibrary";
+import {
+  buildShotPrompt,
+  clampWords,
+  dedupePhrases,
+  extractMixDirective,
+  sanitizeMidjourneyPrompt,
+  sanitizeTopic,
+  stripPromptFlags,
+  toElevenLabsCue,
+} from "@/lib/prompt-sanitize";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
