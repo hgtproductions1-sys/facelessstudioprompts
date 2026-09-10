@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
@@ -6,16 +7,7 @@ const DESC =
   "Get in touch with the The Faceless Prompts team about the generator, partnerships, advertising, or privacy requests.";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead({ path: "/contact", title: TITLE, description: DESC, type: "website" }),
   component: ContactPage,
 });
 

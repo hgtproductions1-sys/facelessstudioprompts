@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { MotionConfig, motion } from "framer-motion";
 import {
@@ -70,16 +71,7 @@ export const Route = createFileRoute("/")({
     if (typeof search["topic"] === "string") out.topic = search["topic"];
     return out;
   },
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead({ path: "/", title: TITLE, description: DESC, type: "website" }),
   component: Index,
 });
 

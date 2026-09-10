@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
@@ -11,16 +12,7 @@ const DESC =
   "The image generators, video animators, and voice engines faceless creators use daily — what each one is best at, and the prompt syntax that works.";
 
 export const Route = createFileRoute("/ai-tools-hub")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead({ path: "/ai-tools-hub", title: TITLE, description: DESC, type: "website" }),
   component: ToolsHub,
 });
 
