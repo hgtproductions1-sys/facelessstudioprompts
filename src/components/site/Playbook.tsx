@@ -127,8 +127,30 @@ export function Playbook() {
             Shorts, TikTok, and Reels the same morning. Pick one niche, generate thirty blueprints in
             a sitting, batch the stills, batch the voiceovers, and schedule a week at a time; that
             batching loop, not raw creativity, is what separates channels that survive month three
-            from the ones that stall at video nine.
+            from the ones that stall at video nine. Read the full{" "}
+            <Link to="/faceless-youtube-automation" className={link}>
+              step-by-step guide to starting a faceless YouTube automation channel
+            </Link>
+            , or{" "}
+            <Link to="/" hash="generator" className={link}>
+              generate a blueprint for one of the 24 niches
+            </Link>{" "}
+            right now.
           </p>
+          <figure className={figure}>
+            <img
+              src={nichesImg}
+              alt="Grid of vertical phone screens representing faceless niches: pet stories, cooking, ASMR restoration, miniature builds, horror and countdowns"
+              loading="lazy"
+              width={1280}
+              height={720}
+              className={img}
+            />
+            <figcaption className={caption}>
+              Repeatable visual gimmicks — pet stories, cooking, ASMR restoration, miniature builds,
+              analog horror and countdowns — travel best on Shorts, TikTok and Reels.
+            </figcaption>
+          </figure>
         </div>
       </article>
     </section>
