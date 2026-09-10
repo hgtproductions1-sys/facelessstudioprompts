@@ -58,7 +58,8 @@ export const AFFILIATES = {
 
 export type AffiliateKey = keyof typeof AFFILIATES;
 
-export function handleCtaClick(_id: string, internal = false) {
+export function handleCtaClick(id: string, internal = false) {
+  trackClick(id, { link_type: internal ? "internal" : "affiliate" });
   if (internal) {
     toast.success("Opening…");
     return;
