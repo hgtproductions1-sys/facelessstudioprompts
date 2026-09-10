@@ -38,7 +38,7 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://leonardo.ai",
     build: (pkg) =>
       [
-        `Prompt: ${pkg.visual.leonardoPrompt}`,
+        `Prompt: ${stripPromptFlags(pkg.visual.leonardoPrompt)}`,
         `Negative prompt: ${pkg.visual.negativePrompt}`,
         `Model: ${pkg.visual.model} | Preset: Cinematic | Alchemy: On | PhotoReal: On`,
         `Aspect ratio: ${pkg.visual.aspectRatio} | Guidance: 7 | Seed: ${pkg.visual.seedValue}`,
@@ -53,7 +53,7 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://blackforestlabs.ai",
     build: (pkg) =>
       [
-        `${subject(pkg)}. ${style(pkg)}. ${pkg.visual.leonardoPrompt}`,
+        buildParagraph([subject(pkg), style(pkg), stripPromptFlags(pkg.visual.leonardoPrompt)], 95),
         ``,
         `guidance_scale: 3.5 | steps: 28 | width x height: ${pkg.visual.resolution} | seed: ${pkg.visual.seedValue}`,
         `avoid: ${pkg.visual.negativePrompt}`,
@@ -67,11 +67,16 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://labs.google/fx/tools/image-fx",
     build: (pkg) =>
       [
-        `A ${pkg.visual.aspectRatio} cinematic frame of ${subject(pkg)}.`,
-        `Lighting and finish: ${style(pkg)}.`,
-        `Scene: ${pkg.visual.leonardoPrompt}`,
+        buildParagraph(
+          [
+            `A ${pkg.visual.aspectRatio} cinematic frame of ${subject(pkg)}`,
+            style(pkg),
+            stripPromptFlags(pkg.visual.leonardoPrompt),
+          ],
+          95,
+        ),
         `Do not include: ${pkg.visual.negativePrompt}.`,
-      ].join("\n"),
+      ].join("\n\n"),
   },
   {
     id: "runway",
@@ -81,13 +86,11 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://runwayml.com",
     build: (pkg) =>
       [
-        `[camera] ${pkg.camera.overview["Camera Style"] ?? "cinematic handheld"}`,
-        `[subject] ${subject(pkg)}`,
-        `[motion] ${pkg.camera.shots[0]?.motion ?? "slow dolly in"}, continuous, no cuts`,
-        `[style] ${style(pkg)}`,
-        `[duration] 10s | [ratio] ${pkg.visual.aspectRatio}`,
+        pkg.camera.shots[0]?.prompt ?? "",
         ``,
-        `Shot sequence:\n${shots(pkg)}`,
+        `Ratio: ${pkg.visual.aspectRatio} | Duration: 10s`,
+        ``,
+        `Full shot sequence:\n${shots(pkg)}`,
       ].join("\n"),
   },
   {
@@ -98,10 +101,9 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://klingai.com",
     build: (pkg) =>
       [
-        `Prompt: ${subject(pkg)} — ${pkg.camera.shots[0]?.animationCue ?? "subtle idle motion"}. ${style(pkg)}.`,
+        `Prompt: ${pkg.camera.shots[0]?.prompt ?? ""}`,
         `Negative prompt: ${pkg.visual.negativePrompt}`,
         `Mode: Professional | Duration: 10s | Creativity: 0.5 | Ratio: ${pkg.visual.aspectRatio}`,
-        `Camera movement: ${pkg.camera.shots[1]?.motion ?? "push in"}`,
       ].join("\n"),
   },
   {
@@ -112,7 +114,7 @@ export const AI_TOOLS: AiTool[] = [
     url: "https://lumalabs.ai/dream-machine",
     build: (pkg) =>
       [
-        `${subject(pkg)}. ${pkg.camera.shots[0]?.motion ?? "slow push in"}, ${style(pkg)}.`,
+        pkg.camera.shots[0]?.prompt ?? "",
         `Keep the character identical between keyframes (token ${pkg.visual.consistencyToken}).`,
         `Loop: off | Enhance prompt: off | Ratio: ${pkg.visual.aspectRatio}`,
       ].join("\n"),
