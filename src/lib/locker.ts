@@ -23,18 +23,38 @@ declare global {
 }
 
 /**
- * Triggers the installed CPA content locker.
- * Returns true if a locker function was found and called,
- * false if no locker script is installed yet.
+ * Triggers the installed CPA content locker (playabledownloads.com).
+ *
+ * The network's script loads call_locker() asynchronously via its
+ * preloader, so when it isn't ready yet we poll briefly and fire it
+ * as soon as it appears. Returns false only when the locker script
+ * itself is missing from the page (nothing to wait for).
  */
 export function openContentLocker(): boolean {
   if (typeof window === "undefined") return false;
 
-  // Trigger the installed CPA content locker (playabledownloads.com).
+  // Ready now — trigger immediately.
   if (typeof window.call_locker === "function") {
     window.call_locker();
     return true;
   }
 
+  // The include script is present but call_locker isn't defined yet —
+  // poll until the preloader finishes (max ~8s), then trigger it.
+  if (document.querySelector('script[src*="playabledownloads.com"]')) {
+    const startedAt = Date.now();
+    const timer = window.setInterval(() => {
+      if (typeof window.call_locker === "function") {
+        window.clearInterval(timer);
+        window.call_locker();
+      } else if (Date.now() - startedAt > 8000) {
+        window.clearInterval(timer);
+        console.warn("[CPA Locker] call_locker() not available yet.");
+      }
+    }, 250);
+    return true;
+  }
+
+  console.warn("[CPA Locker] call_locker() not available yet.");
   return false;
 }

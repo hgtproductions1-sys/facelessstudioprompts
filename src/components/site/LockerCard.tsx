@@ -11,15 +11,12 @@ const CHECKLIST = [
 
 export function LockerCard() {
   const handleUnlockClick = () => {
-    toast.loading("Unlocking your blueprint…", { id: "locker" });
     const triggered = openContentLocker();
-    setTimeout(() => {
-      if (triggered) {
-        toast.success("Locker opened — complete an offer to unlock.", { id: "locker" });
-      } else {
-        toast.info("Locker script not installed yet. See /src/lib/locker.ts.", { id: "locker" });
-      }
-    }, 600);
+    if (triggered) {
+      toast.success("Locker opening…", { id: "locker" });
+    } else {
+      toast.info("Locker script not installed yet.", { id: "locker" });
+    }
   };
 
   return (
