@@ -36,7 +36,7 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
       </div>
 
       <div>
-        <BlockLabel>Shot List</BlockLabel>
+        <BlockLabel>Shot List — Engine-Ready Prompts</BlockLabel>
         <ol className="relative space-y-4">
           {cam.shots.map((s, i) => (
             <li key={s.index} className="relative flex gap-3">
