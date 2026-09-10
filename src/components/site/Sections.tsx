@@ -7,7 +7,7 @@ import { AffiliateCta } from "./primitives";
 const STEPS = [
   {
     title: "1. Pick Your Niche",
-    copy: "Choose from ten proven faceless verticals. Each one carries its own archetype, palette, and pacing profile.",
+    copy: "Choose from twenty-four faceless verticals. Each one carries its own archetype, palette, and pacing profile.",
     Icon: Compass,
   },
   {
@@ -76,34 +76,31 @@ export function TrustStrip() {
   return (
     <section id="library" className="border-line border-t">
       <div className="mx-auto max-w-6xl px-4 py-20">
-        <div className="divide-line grid grid-cols-2 gap-6 md:grid-cols-4 md:divide-x">
-          {STATS.map(([value, label]) => (
-            <div key={label} className="px-2 text-center">
-              <p className="gradient-text text-2xl font-extrabold md:text-3xl">{value}</p>
-              <p className="mt-1 text-[11px] tracking-widest text-ink-muted uppercase">{label}</p>
+        <h2 className="text-center text-2xl font-bold md:text-3xl">
+          What's in <span className="gradient-text">every blueprint</span>
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-ink-dim md:text-base">
+          One run of the generator returns all four of these for the niche and topic you type —
+          written to paste straight into your tools, not to read and forget.
+        </p>
+
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {FEATURES.map((f) => (
+            <div key={f.title} className="glass-card p-6">
+              <f.Icon className="h-5 w-5 text-cyan" aria-hidden />
+              <h3 className="mt-3 text-base font-semibold text-ink">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-dim">{f.copy}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
-          {TESTIMONIALS.map(([name, handle, quote]) => (
-            <figure key={handle} className="glass-card p-5">
-              <div className="flex items-center gap-3">
-                <span className="from-purple/40 to-cyan/40 h-9 w-9 rounded-full bg-gradient-to-br" />
-                <div>
-                  <figcaption className="text-sm font-semibold text-ink">{name}</figcaption>
-                  <p className="text-xs text-ink-muted">{handle}</p>
-                </div>
-              </div>
-              <div className="mt-3 flex gap-0.5" aria-label="5 out of 5 stars">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-cyan text-cyan" aria-hidden />
-                ))}
-              </div>
-              <blockquote className="mt-2 text-sm text-ink-dim">“{quote}”</blockquote>
-            </figure>
-          ))}
-        </div>
+        <p className="mt-10 text-center text-xs text-ink-muted">
+          {NICHES.length} niches tuned · more prompts in the{" "}
+          <Link to="/library" className="text-cyan underline underline-offset-2 hover:text-white">
+            prompt library
+          </Link>{" "}
+          · free to use, no account required. Views are never guaranteed.
+        </p>
       </div>
     </section>
   );
