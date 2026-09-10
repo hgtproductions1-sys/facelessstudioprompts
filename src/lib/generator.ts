@@ -1308,17 +1308,36 @@ export function generatePackage({
     "Slow grain intensification toward the reveal",
     "Vignette closes 8% over the final beat",
   ];
+  const subjectActions = [
+    `faceless ${archetypeNoun} hands working with ${lowTopic}`,
+    `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
+    `close macro on hands adjusting ${lowTopic}`,
+    `faceless ${archetypeNoun} stepping forward, head out of frame`,
+    `hands lifting the key prop tied to ${lowTopic}`,
+  ];
+  const environmentLighting = [
+    `${env}, ${lightingLine}`,
+    `${env2}, ${lightingLine}`,
+  ];
+
   const shotCount = 6 + (s % 2);
   const shots = Array.from({ length: shotCount }, (_, i) => {
     const start = i * 7;
     const end = start + 7;
     const fmt = (n: number) => `0:${String(n).padStart(2, "0")}`;
+    const motion = pick(shotMotions, s, i);
     return {
       index: i + 1,
       timecode: `${fmt(start)}–${fmt(end)}`,
-      motion: pick(shotMotions, s, i),
+      motion,
       transition: pick(transitions, s, i * 3),
       animationCue: pick(cues, s, i * 5),
+      prompt: buildShotPrompt({
+        motion,
+        subjectAction: pick(subjectActions, s, i),
+        environmentLighting: pick(environmentLighting, s, i),
+        motionStrength: 3 + (i % 2),
+      }),
     };
   });
 
