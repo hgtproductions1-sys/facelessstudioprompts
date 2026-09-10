@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Terms of Service — Faceless Studio Pro";
+const TITLE = "Terms of Service — The Faceless Prompts";
 const DESC =
-  "The terms covering use of the Faceless Studio Pro generator: acceptable use, output ownership, no guarantee of results, and liability limits.";
+  "The terms covering use of the The Faceless Prompts generator: acceptable use, output ownership, no guarantee of results, and liability limits.";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -24,7 +24,7 @@ function TermsPage() {
     <LegalLayout title="Terms of Service" updated="1 January 2025">
       <LegalSection heading="1. Acceptance of Terms">
         <p>
-          By accessing or using Faceless Studio Pro you agree to these terms. If you do not agree,
+          By accessing or using The Faceless Prompts you agree to these terms. If you do not agree,
           do not use the site. We may update these terms at any time, and continued use after an
           update constitutes acceptance of the revised version.
         </p>
@@ -41,7 +41,7 @@ function TermsPage() {
 
       <LegalSection heading="3. No Guarantee of Results">
         <p>
-          Faceless Studio Pro produces creative starting points, not outcomes. We make no
+          The Faceless Prompts produces creative starting points, not outcomes. We make no
           representation that using the output will produce views, followers, revenue, or any
           commercial result. Results vary by effort, niche, execution, and platform conditions
           outside our control.

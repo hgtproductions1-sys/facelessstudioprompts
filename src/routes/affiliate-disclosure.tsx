@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Affiliate Disclosure — Faceless Studio Pro";
+const TITLE = "Affiliate Disclosure — The Faceless Prompts";
 const DESC =
-  "Plain-English, FTC-compliant disclosure of how Faceless Studio Pro earns affiliate commissions and why that never changes our recommendations.";
+  "Plain-English, FTC-compliant disclosure of how The Faceless Prompts earns affiliate commissions and why that never changes our recommendations.";
 
 export const Route = createFileRoute("/affiliate-disclosure")({
   head: () => ({
@@ -24,7 +24,7 @@ function DisclosurePage() {
     <LegalLayout title="Affiliate Disclosure" updated="1 January 2025">
       <LegalSection heading="The Short Version">
         <p>
-          Faceless Studio Pro is free to use because some of the links on this site are affiliate
+          The Faceless Prompts is free to use because some of the links on this site are affiliate
           links. If you click one and buy something, we may earn a commission. It costs you nothing
           extra — the price is the same whether you use our link or go direct.
         </p>

@@ -53,7 +53,7 @@ export function HowItWorks() {
     <section id="how-it-works" className="border-line mt-24 border-t">
       <div className="mx-auto max-w-6xl px-4 py-24">
         <h2 className="text-center text-2xl font-bold md:text-3xl">
-          How <span className="gradient-text">Faceless Studio Pro</span> works
+          How <span className="gradient-text">The Faceless Prompts</span> works
         </h2>
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
           {STEPS.map((s, i) => (
