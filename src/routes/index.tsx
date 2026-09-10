@@ -17,7 +17,7 @@ import {
   TrendingUp,
   Wand2,
 } from "lucide-react";
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import {
   Select,
@@ -86,11 +86,29 @@ const QUICK_STARTS: { topic: string; niche: string }[] = [
 ];
 
 function Index() {
-  const [niche, setNiche] = useState("");
-  const [topic, setTopic] = useState("");
+  const search = Route.useSearch();
+  const [niche, setNiche] = useState(search.niche ?? "");
+  const [topic, setTopic] = useState(search.topic ?? "");
   const [error, setError] = useState("");
   const resultsRef = useRef<HTMLDivElement>(null);
+  const autoRan = useRef(false);
   const { pkg, loading, step, run, regenerate, totalMs } = usePackageGenerator();
+
+  useEffect(() => {
+    if (autoRan.current) return;
+    const n = search.niche;
+    const t = search.topic;
+    if (!n || !t || t.trim().length < 3) return;
+    autoRan.current = true;
+    setNiche(n);
+    setTopic(t);
+    run(n, t);
+    setTimeout(
+      () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      80,
+    );
+  }, [search.niche, search.topic, run]);
+
 
   const scrollToResults = () => {
     setTimeout(
