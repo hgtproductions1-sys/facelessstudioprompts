@@ -48,7 +48,7 @@ function fallbackPackage(niche: string, topic: string): ProductionPackage {
 function normalizePackage(raw: unknown, niche: string, topic: string): ProductionPackage | null {
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
-  if (!p.character || !p.visual || !p.camera) return null;
+  if (!p["character"] || !p["visual"] || !p["camera"]) return null;
   return {
     ...fallbackPackage(niche, topic),
     ...p,
