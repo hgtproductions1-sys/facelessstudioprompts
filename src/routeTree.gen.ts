@@ -18,6 +18,7 @@ import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as DotwellKnownAgenticVerifyDottxtRouteImport } from './routes/[.]well-known/agentic-verify[.]txt'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
 
 const IndexRoute = IndexRouteImport.update({
@@ -65,6 +66,12 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DotwellKnownAgenticVerifyDottxtRoute =
+  DotwellKnownAgenticVerifyDottxtRouteImport.update({
+    id: '/.well-known/agentic-verify.txt',
+    path: '/.well-known/agentic-verify.txt',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiGenerateRoute = ApiGenerateRouteImport.update({
   id: '/api/generate',
   path: '/api/generate',
@@ -81,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +101,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
 }
 export interface FileRoutesById {
@@ -106,6 +115,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/.well-known/agentic-verify.txt'
     | '/api/generate'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/.well-known/agentic-verify.txt'
     | '/api/generate'
   id:
     | '__root__'
@@ -144,6 +156,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
+    | '/.well-known/agentic-verify.txt'
     | '/api/generate'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +170,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  DotwellKnownAgenticVerifyDottxtRoute: typeof DotwellKnownAgenticVerifyDottxtRoute
   ApiGenerateRoute: typeof ApiGenerateRoute
 }
 
@@ -225,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/agentic-verify.txt': {
+      id: '/.well-known/agentic-verify.txt'
+      path: '/.well-known/agentic-verify.txt'
+      fullPath: '/.well-known/agentic-verify.txt'
+      preLoaderRoute: typeof DotwellKnownAgenticVerifyDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/generate': {
       id: '/api/generate'
       path: '/api/generate'
@@ -245,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  DotwellKnownAgenticVerifyDottxtRoute: DotwellKnownAgenticVerifyDottxtRoute,
   ApiGenerateRoute: ApiGenerateRoute,
 }
 export const routeTree = rootRouteImport
