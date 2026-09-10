@@ -85,6 +85,8 @@ async function generateWithGlm(niche: string, topic: string, apiKey: string): Pr
             content:
               [
                 "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+                `Reference style examples from successful creators:\n${references}`,
+                "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
                 "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
                 "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
                 "hooks must be scroll-stopping spoken lines under 12 words. cueSheet lines must be real voiceover script sentences with delivery cues.",
