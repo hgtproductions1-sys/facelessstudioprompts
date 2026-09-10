@@ -4,7 +4,7 @@ const BLUEPRINT_URL = "/faceless-video-blueprint.pdf";
 
 const CHECKLIST = [
   "47-page PDF blueprint",
-  "12 niche-specific persona templates",
+  "24 niche-specific persona templates",
   "Master prompt library (Midjourney+ Google Flow + Leonardo)",
   "Step-by-step CPA funnel diagram",
 ];
