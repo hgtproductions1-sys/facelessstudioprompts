@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, Lock } from "lucide-react";
+import { CheckCircle2, Download, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { openContentLocker } from "@/lib/locker";
 
@@ -79,7 +79,7 @@ export function LockerCard() {
                 className="absolute -inset-3 rounded-3xl bg-[#8b5cf6]/25 blur-xl motion-safe:animate-pulse"
               />
               <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl border border-[#8b5cf6]/40 bg-gradient-to-br from-[#8b5cf6]/20 to-[#06b6d4]/20">
-                <Lock className="h-10 w-10 text-[#8b5cf6]" aria-hidden />
+                <Download className="h-10 w-10 text-[#8b5cf6]" aria-hidden />
                 {/* shimmer sweep */}
                 <div
                   aria-hidden
@@ -91,8 +91,8 @@ export function LockerCard() {
             <div className="mt-5 flex rotate-[-4deg] items-center gap-2 rounded-lg border border-[#30363d] bg-[#161b22] px-3 py-2 opacity-70">
               <FileText className="h-4 w-4 shrink-0 text-[#8b949e]" aria-hidden />
               <span className="font-mono text-xs text-[#c9d1d9]">Faceless-Video-Blueprint.pdf</span>
-              <span className="rounded-full border border-[#d29922]/40 bg-[#d29922]/20 px-2 py-0.5 text-[10px] text-[#d29922]">
-                Locked
+              <span className="rounded-full border border-[#06b6d4]/40 bg-[#06b6d4]/20 px-2 py-0.5 text-[10px] text-[#67e8f9]">
+                PDF
               </span>
             </div>
 
@@ -101,12 +101,12 @@ export function LockerCard() {
               onClick={handleUnlockClick}
               className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8b5cf6] to-[#06b6d4] px-8 py-4 text-base font-bold text-[#0d1117] transition-all hover:shadow-[0_0_40px_-4px_rgba(139,92,246,0.8)] hover:brightness-110 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[#8b5cf6] focus-visible:outline-none"
             >
-              <Lock className="h-4 w-4" aria-hidden />
-              Download Complete Package (Locked)
+              <Download className="h-4 w-4" aria-hidden />
+              Download Complete Package
             </button>
 
             <p className="mt-3 text-center text-[11px] text-[#6e7681]">
-              Instant access after unlock · No credit card required
+              Instant download · No credit card required
             </p>
           </div>
         </div>
