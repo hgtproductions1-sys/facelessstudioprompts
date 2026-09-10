@@ -70,6 +70,19 @@ export function Playbook() {
             reach, affiliate links for intent — and a faceless operation can run profitably long
             before it reaches platform payout thresholds.
           </p>
+          <h3 className="text-lg font-semibold text-ink">
+            Faceless TikTok Niche Ideas and YouTube Short Automation
+          </h3>
+          <p>
+            The faceless TikTok niche ideas that travel best in 2026 are the ones with a repeatable
+            visual gimmick: AI pet stories, animal cooking, POV immersive vlogs, ASMR restoration,
+            miniature builds, analog horror, and ranking countdowns. Each of those runs as YouTube
+            Short automation too — the same blueprint exports one vertical master that you publish to
+            Shorts, TikTok, and Reels the same morning. Pick one niche, generate thirty blueprints in
+            a sitting, batch the stills, batch the voiceovers, and schedule a week at a time; that
+            batching loop, not raw creativity, is what separates channels that survive month three
+            from the ones that stall at video nine.
+          </p>
         </div>
       </article>
     </section>
