@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FacelessYoutubeAutomationRouteImport } from './routes/faceless-youtube-automation'
 import { Route as FreeToolsRouteImport } from './routes/free-tools'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as NichesRouteImport } from './routes/niches'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -64,6 +65,11 @@ const LibraryRoute = LibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NichesRoute = NichesRouteImport.update({
+  id: '/niches',
+  path: '/niches',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
+  '/niches': typeof NichesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
+  '/niches': typeof NichesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
+  '/niches': typeof NichesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/faceless-youtube-automation'
     | '/free-tools'
     | '/library'
+    | '/niches'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/faceless-youtube-automation'
     | '/free-tools'
     | '/library'
+    | '/niches'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/faceless-youtube-automation'
     | '/free-tools'
     | '/library'
+    | '/niches'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
@@ -194,6 +206,7 @@ export interface RootRouteChildren {
   FacelessYoutubeAutomationRoute: typeof FacelessYoutubeAutomationRoute
   FreeToolsRoute: typeof FreeToolsRoute
   LibraryRoute: typeof LibraryRoute
+  NichesRoute: typeof NichesRoute
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/niches': {
+      id: '/niches'
+      path: '/niches'
+      fullPath: '/niches'
+      preLoaderRoute: typeof NichesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -306,6 +326,7 @@ const rootRouteChildren: RootRouteChildren = {
   FacelessYoutubeAutomationRoute: FacelessYoutubeAutomationRoute,
   FreeToolsRoute: FreeToolsRoute,
   LibraryRoute: LibraryRoute,
+  NichesRoute: NichesRoute,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
