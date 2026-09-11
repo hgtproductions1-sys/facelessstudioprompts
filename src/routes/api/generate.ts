@@ -395,10 +395,17 @@ export const Route = createFileRoute("/api/generate")({
           return Response.json({ error: "niche and topic are required" }, { status: 400 });
         }
 
+        const selection: StyleSelection = {
+          ...(typeof body.format === "string" ? { format: body.format } : {}),
+          ...(typeof body.vibe === "string" ? { vibe: body.vibe } : {}),
+          ...(typeof body.pacing === "string" ? { pacing: body.pacing } : {}),
+        };
+        const st = resolveStyle(selection);
+
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
-          const pkg = await generateWithGlm(niche, topic, glmKey);
+          const pkg = await generateWithGlm(niche, topic, st, glmKey);
           if (pkg) return Response.json({ package: pkg, source: "glm" });
         } else {
           console.warn("[generate] GLM_API_KEY is not set");
