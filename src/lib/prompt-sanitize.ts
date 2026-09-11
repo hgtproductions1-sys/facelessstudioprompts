@@ -280,6 +280,65 @@ function trimDangling(text: string): string {
   return out.replace(/[.:,;]+$/, "").trim();
 }
 
+/** The only camera commands allowed at the head of a shot prompt. */
+export const CAMERA_MOVES = [
+  "Push-in",
+  "Pull-out",
+  "Pan left",
+  "Pan right",
+  "Tilt up",
+  "Tilt down",
+  "Tracking shot",
+  "Orbit",
+  "Crane shot",
+  "Snap-zoom",
+] as const;
+
+const MOVE_PATTERNS: [RegExp, string][] = [
+  [/push[-\s]?in|punch[-\s]?in|dolly\s+in|creep\s+in/i, "Push-in"],
+  [/pull[-\s]?(?:out|back)|dolly\s+out|pull\s+away|reveal/i, "Pull-out"],
+  [/crane|jib|boom\s+(?:up|down)/i, "Crane shot"],
+  [/orbit|arc\s+around|circle\s+around|rotate\s+around/i, "Orbit"],
+  [/snap[-\s]?zoom|whip[-\s]?zoom|crash\s+zoom|quick\s+zoom/i, "Snap-zoom"],
+  [/tilt\s+up|rise\s+from/i, "Tilt up"],
+  [/tilt\s+down|tilt/i, "Tilt down"],
+  [/pan\s+left/i, "Pan left"],
+  [/pan\s+right|pan\b/i, "Pan right"],
+  [/track|dolly|follow|lateral|drift|handheld|float|slide/i, "Tracking shot"],
+  [/static|locked[-\s]?off|breathing\s+zoom|zoom/i, "Push-in"],
+];
+
+/**
+ * Maps any motion phrasing onto a standard cinematographic camera command.
+ * Pacing adjectives ("snappy", "fast", "slow") are never valid commands.
+ */
+export function normalizeCameraMove(raw: string, fallback = "Push-in"): string {
+  const text = stripTransitions(raw ?? "");
+  for (const [re, move] of MOVE_PATTERNS) {
+    if (re.test(text)) return move;
+  }
+  return fallback;
+}
+
+/**
+ * Removes redundant resolution / aspect-ratio prose ("vertical 9:16 frame at
+ * 1080x1920") from a prompt body. The canonical --ar flag is appended later.
+ */
+export function stripFormatSpecs(text: string): string {
+  return toRawLine(text)
+    .replace(
+      /\b(?:vertical|horizontal|portrait|landscape)?\s*\b\d{1,2}\s*:\s*\d{1,2}\b(?:\s*(?:aspect\s*ratio|frame|format|crop|composition))?(?:\s*(?:at|in)\s*\d{3,4}\s*[x×]\s*\d{3,4}(?:\s*(?:px|pixels|resolution))?)?/gi,
+      "",
+    )
+    .replace(/\b\d{3,4}\s*[x×]\s*\d{3,4}\b(?:\s*(?:px|pixels|resolution))?/gi, "")
+    .replace(/\b(?:vertical|horizontal|portrait|landscape)\s+(?:frame|format|orientation)\b/gi, "")
+    .replace(/\s*,\s*,/g, ",")
+    .replace(/\s+([,.])/g, "$1")
+    .replace(/^[\s,.-]+/, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 export interface ShotPromptInput {
   motion: string;
   subjectAction: string;
