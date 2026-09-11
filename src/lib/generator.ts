@@ -1272,54 +1272,67 @@ export function generatePackage({
     .toLowerCase();
   const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
 
-  const leonardoPrompt = buildParagraph(
-    [
-      `${orient} ${ar} still of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      framing,
-      wardrobeLead,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
-    ],
-    100,
+  // Non-human niches anchor on the actual topic subject, never a human persona.
+  const heroSubject = human
+    ? `${subjPrefix}${archetypeNoun}`
+    : lowTopic || archetypeNoun;
+
+  const leonardoPrompt = stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject} in ${env}`,
+        framing,
+        human ? wardrobeLead : "",
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
+      ],
+      100,
+    ),
   );
 
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
-    buildParagraph(
-      [
-        `${subjPrefix}${archetypeNoun}, ${lowTopic}`,
-        `${env2}, ${framing}`,
-        `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
-        `${st.vibe.lighting}, ${st.vibe.style}`,
-      ],
-      80,
+    stripFormatSpecs(
+      buildParagraph(
+        [
+          `${heroSubject}`,
+          `${env2}, ${framing}`,
+          `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
+          `${st.vibe.lighting}, ${st.vibe.style}`,
+        ],
+        80,
+      ),
     ),
     s,
     ar,
     midjourneyNegativeFor(niche),
   );
 
-  const googleFlowPrompt = buildParagraph(
-    [
-      `${orient} ${ar} shot of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}`,
-      `camera motion: ${st.pacing.camera}`,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
-      `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
-    ],
-    100,
+  const googleFlowPrompt = stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject} in ${env}`,
+        human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
+        `camera motion: ${normalizeCameraMove(st.pacing.camera)}`,
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
+        `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
+      ],
+      100,
+    ),
   );
 
-  const masterPrompt = `${buildParagraph(
-    [
-      `${orient} ${ar} image of a ${subjPrefix}${archetypeNoun}, subject of ${lowTopic}`,
-      framing,
-      wardrobeLead,
-      `environment: ${env}, ${env2}`,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
-    ],
-    100,
+  const masterPrompt = `${stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject}`,
+        framing,
+        human ? wardrobeLead : "",
+        `environment: ${env}, ${env2}`,
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
+      ],
+      100,
+    ),
   )} --ar ${ar}`;
 
   const shotMotions =
