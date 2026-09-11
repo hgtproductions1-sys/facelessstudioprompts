@@ -1074,7 +1074,7 @@ export const NICHE_PAGES: NichePage[] = [
     }
   ],
     relatedSlugs: [
-    "rusty-1969-mustang-barn-find",
+    "diy-cardboard-and-miniature-builds",
     "ai-asmr-cooking-cleaning-restoration",
     "miniature-asmr-cooking"
   ],
