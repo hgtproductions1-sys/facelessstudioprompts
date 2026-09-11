@@ -1360,14 +1360,22 @@ export function generatePackage({
     "Slow grain intensification toward the reveal",
     "Vignette closes 8% over the final beat",
   ];
-  const subjectActions = [
-    `faceless ${archetypeNoun} hands working with ${lowTopic}`,
-    `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
-    `close macro on hands adjusting ${lowTopic}`,
-    `faceless ${archetypeNoun} stepping forward, head out of frame`,
-    `hands lifting the key prop tied to ${lowTopic}`,
-  ];
-  const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
+  const subjectActions = human
+    ? [
+        `faceless ${archetypeNoun} hands working with ${lowTopic}`,
+        `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
+        `close macro on hands adjusting ${lowTopic}`,
+        `faceless ${archetypeNoun} stepping forward, head out of frame`,
+        `hands lifting the key prop tied to ${lowTopic}`,
+      ]
+    : [
+        `${archetypeNoun} moves into frame and reacts to ${lowTopic}`,
+        `${archetypeNoun} turns toward the ${desc} detail`,
+        `close macro on the ${desc2} detail of ${lowTopic}`,
+        `${archetypeNoun} steps forward into the light`,
+        `${archetypeNoun} lifts the key prop tied to ${lowTopic}`,
+      ];
+  const environmentLighting = [env, env2];
 
   const shotCount = 4;
   const shots = Array.from({ length: shotCount }, (_, i) => {
