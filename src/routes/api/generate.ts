@@ -15,6 +15,11 @@ import {
   toElevenLabsCue,
   toRawLine,
 } from "@/lib/prompt-sanitize";
+import {
+  getScaffold,
+  hasTrueCrimeLeak,
+  isInvestigativeNiche,
+} from "@/lib/nicheScaffolds";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
 import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
 
@@ -114,9 +119,33 @@ function referenceBlock(niche: string): string {
     .join("\n\n");
 }
 
+/** Hard niche-archetype instructions built from the per-niche scaffold. */
+function nicheRules(niche: string): string[] {
+  const sc = getScaffold(niche);
+  const rules: string[] = [];
+  if (sc) {
+    rules.push(
+      `NICHE ARCHETYPE — match this scaffolding EXACTLY. Hook format must follow these shapes: ${sc.hookTemplates.join(" | ")}.`,
+      `VOICEOVER STYLE: ${sc.voStyle}`,
+      `CUE STRUCTURE — mirror these timestamps, beat purpose and delivery tags exactly (rewrite the wording for the given topic, keep the structure): ${sc.voCuePattern
+        .map((r) => `${r.timestamp} ${r.cue} "${r.line}"`)
+        .join(" | ")}.`,
+      `ART STYLE — every image prompt must read as: ${sc.imageStyleFlags}. Never use an art style from a different niche.`,
+      `CAMERA VOCABULARY — draw the four shots from these niche motions: ${sc.cameraMotionSet.join(", ")}.`,
+      `SOUND DESIGN — base the bed track, SFX and silence on: ${sc.soundDesignDefaults.join(" | ")}.`,
+    );
+  }
+  if (!isInvestigativeNiche(niche)) {
+    rules.push(
+      'FORBIDDEN VOCABULARY: this is not a true-crime or investigative niche. Never use investigative or case-file language anywhere in the output — no "timeline", "one source", "lied"/"lying", "the record shows", "case", "evidence", "part two", or cliffhanger CTAs. Comedy and skit niches use comedic narration and reaction beats instead.',
+    );
+  }
+  return rules;
+}
+
 /** Turns the user's format / vibe / pacing choices into hard model instructions. */
 function styleRules(st: ResolvedStyle, niche: string): string[] {
-  return [subjectRule(niche), ..._styleRules(st)];
+  return [subjectRule(niche), ...nicheRules(niche), ..._styleRules(st)];
 }
 
 function _styleRules(st: ResolvedStyle): string[] {
@@ -313,6 +342,21 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
   };
 }
 
+const STRICT_RETRY_RULES = [
+  "PREVIOUS ATTEMPT FAILED VALIDATION: it used true-crime / investigative vocabulary in a niche that must never use it. Rewrite completely in this niche's own voice. Banned strings anywhere in the JSON: \"timeline only works\", \"one source\", \"lied\", \"is lying\", \"part two\", \"cold case\", \"the record actually shows\". Use the niche's hook shapes, cue structure and art style exactly as specified.",
+];
+
+/** True when the model leaked investigative language into a non-investigative niche. */
+function packageLeaks(pkg: ProductionPackage, niche: string): boolean {
+  const text = [
+    ...pkg.character.hooks.map((h) => h.text),
+    ...pkg.character.cueSheet.map((r) => `${r.line} ${r.cue}`),
+    ...pkg.character.retentionBeats,
+    pkg.variation.copyPastePrompt,
+  ].join(" ");
+  return hasTrueCrimeLeak(text, niche);
+}
+
 /** Streams a production package out of the Lovable AI gateway Responses API. */
 async function generateWithLovableAi(
   niche: string,
@@ -321,6 +365,7 @@ async function generateWithLovableAi(
   seed: number,
   apiKey: string,
   initialRunId?: string,
+  extraRules: string[] = [],
 ): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
   try {
     const res = await fetch(GATEWAY_RESPONSES_ENDPOINT, {
@@ -343,6 +388,7 @@ async function generateWithLovableAi(
             content: [
               ...PRODUCTION_RULES,
               ...styleRules(st, niche),
+              ...extraRules,
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
@@ -419,6 +465,7 @@ async function generateWithGlm(
   st: ResolvedStyle,
   seed: number,
   apiKey: string,
+  extraRules: string[] = [],
 ): Promise<ProductionPackage | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -440,6 +487,7 @@ async function generateWithGlm(
             content: [
               ...PRODUCTION_RULES,
               ...styleRules(st, niche),
+              ...extraRules,
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
@@ -503,15 +551,29 @@ export const Route = createFileRoute("/api/generate")({
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
-          const pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
-          if (pkg) return Response.json({ package: pkg, source: "glm" });
+          let pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
+          // One stricter retry when the model leaks true-crime language into a
+          // niche that should never use it.
+          if (pkg && packageLeaks(pkg, niche)) {
+            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
+            pkg = await generateWithGlm(niche, topic, st, seed, glmKey, STRICT_RETRY_RULES);
+          }
+          if (pkg && !packageLeaks(pkg, niche)) {
+            return Response.json({ package: pkg, source: "glm" });
+          }
+          if (pkg) {
+            return Response.json({
+              package: fallbackPackage(niche, topic, selection, seed),
+              source: "local",
+            });
+          }
         } else {
           console.warn("[generate] GLM_API_KEY is not set");
         }
 
         const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
-          const result = await generateWithLovableAi(
+          let result = await generateWithLovableAi(
             niche,
             topic,
             st,
@@ -519,6 +581,24 @@ export const Route = createFileRoute("/api/generate")({
             gatewayKey,
             initialRunId,
           );
+          if (result && packageLeaks(result.pkg, niche)) {
+            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
+            result = await generateWithLovableAi(
+              niche,
+              topic,
+              st,
+              seed,
+              gatewayKey,
+              initialRunId,
+              STRICT_RETRY_RULES,
+            );
+          }
+          if (result && packageLeaks(result.pkg, niche)) {
+            return Response.json({
+              package: fallbackPackage(niche, topic, selection, seed),
+              source: "local",
+            });
+          }
           if (result) {
             return Response.json(
               { package: result.pkg, source: "lovable" },

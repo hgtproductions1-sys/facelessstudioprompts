@@ -12,6 +12,7 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
+import { fillTemplate, getScaffold, isInvestigativeNiche } from "@/lib/nicheScaffolds";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 import {
   isHumanSubject,
@@ -1142,9 +1143,9 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Silence: 1.0s before the kind ending",
     ],
     hooks: [
-      "Poor dog versus rich dog: {topic}.",
-      "Same animal, two worlds: {topic}.",
-      "Guess which one is happier in {topic}.",
+      "Rich {topic} vs Poor {topic} — guess who eats better.",
+      "Rich {topic} vs Poor {topic} — same day, two worlds.",
+      "Rich {topic} vs Poor {topic} — the twist is at the end.",
     ],
     descriptors: ["contrasting", "comedic", "heartfelt", "exaggerated"],
   },
@@ -1292,38 +1293,61 @@ export function generatePackage({
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
 
-  const hooks = profile.hooks.map((h, i) => ({
+  const scaffold = getScaffold(niche);
+
+  // "a whale and a rat" -> ["whale", "rat"] so versus-style hooks read cleanly.
+  const versusNiche = /poor vs|versus/i.test(niche);
+  const pair = versusNiche
+    ? stripArticle(lowTopic)
+        .split(/\s+(?:and|versus|vs\.?)\s+/i)
+        .map((part) => stripArticle(part.trim()))
+        .filter(Boolean)
+    : [];
+  const fill = (template: string): string => {
+    if (pair.length !== 2) return fillTemplate(template, phrase);
+    let i = 0;
+    return template.replace(/\{(?:topic|lowTopic)\}/g, () => pair[i++ % 2] ?? phrase);
+  };
+
+  const hookSource = scaffold?.hookTemplates ?? profile.hooks;
+  const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: renderTemplate(h, cleanTopic),
+    text: scaffold ? fill(h) : renderTemplate(h, cleanTopic),
   }));
 
-  const rawCueSheet = [
-    {
-      timestamp: "0:00",
-      line: hooks[0]?.text ?? "",
-      cue: "cold open, no music, dry close-mic",
-    },
-    {
-      timestamp: "0:04",
-      line: `Everything you were told about ${lowTopic} came from one source.`,
-      cue: "pause 0.5s, drop pitch",
-    },
-    {
-      timestamp: "0:11",
-      line: `Here is what the ${desc} record actually shows.`,
-      cue: "bed track enters, lift energy 10%",
-    },
-    {
-      timestamp: "0:17",
-      line: `${lowTopic} does not behave the way the story requires, and the timeline only works if someone is lying.`,
-      cue: "accelerate, build tension",
-    },
-    {
-      timestamp: "0:24",
-      line: `Which leaves one ${desc2} explanation. Follow for part two on ${lowTopic}.`,
-      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
-    },
-  ];
+  const rawCueSheet = scaffold
+    ? scaffold.voCuePattern.map((r) => ({
+        timestamp: r.timestamp,
+        line: fill(r.line),
+        cue: r.cue,
+      }))
+    : [
+        {
+          timestamp: "0:00",
+          line: hooks[0]?.text ?? "",
+          cue: "cold open, no music, dry close-mic",
+        },
+        {
+          timestamp: "0:05",
+          line: `Here is what makes ${lowTopic} worth watching.`,
+          cue: "pause 0.5s",
+        },
+        {
+          timestamp: "0:12",
+          line: `The ${desc} detail is easy to miss the first time.`,
+          cue: "bed track enters, lift energy 10%",
+        },
+        {
+          timestamp: "0:19",
+          line: `Watch what happens next with ${lowTopic}.`,
+          cue: "accelerate",
+        },
+        {
+          timestamp: "0:26",
+          line: `That ${desc2} moment is the whole point.`,
+          cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
+        },
+      ];
 
   // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
   const cueSheet = rawCueSheet.map((r) => ({
@@ -1353,6 +1377,9 @@ export function generatePackage({
   const topicSubject = stripArticle(lowTopic) || archetypeNoun;
   const heroSubject = human ? `${subjPrefix}${archetypeNoun}` : topicSubject;
 
+  // Art direction comes from the niche scaffold so each niche renders in its own medium.
+  const styleFlags = scaffold?.imageStyleFlags ?? profile.styleDNA.join(", ").toLowerCase();
+
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
       [
@@ -1360,7 +1387,7 @@ export function generatePackage({
         framing,
         human ? wardrobeLead : "",
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
+        `${styleFlags}, negative space at the top third for captions`,
       ],
       100,
     ),
@@ -1369,12 +1396,7 @@ export function generatePackage({
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
     stripFormatSpecs(
       buildParagraph(
-        [
-          `${heroSubject}`,
-          `${env2}, ${framing}`,
-          `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
-          `${st.vibe.lighting}, ${st.vibe.style}`,
-        ],
+        [`${heroSubject}`, `${env2}, ${framing}`, `${styleFlags}, ${profile.palette}`],
         80,
       ),
     ),
@@ -1388,9 +1410,9 @@ export function generatePackage({
       [
         `${heroSubject} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
-        `camera motion: ${normalizeCameraMove(st.pacing.camera)}`,
+        `camera motion: ${normalizeCameraMove(scaffold?.cameraMotionSet?.[0] ?? st.pacing.camera)}`,
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
+        styleFlags,
         `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
       ],
       100,
@@ -1405,17 +1427,19 @@ export function generatePackage({
         human ? wardrobeLead : "",
         `environment: ${env}, ${env2}`,
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
+        `${styleFlags}, negative space in the top third for captions`,
       ],
       100,
     ),
   )} --ar ${ar}`;
 
-  // Standard cinematographic camera commands only — never pacing adjectives.
+  // Niche-specific camera vocabulary first; generic cinematography as the fallback.
   const shotMotions =
-    st.pacing.id === "fast"
-      ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
-      : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
+    scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
+      ? scaffold.cameraMotionSet
+      : st.pacing.id === "fast"
+        ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
+        : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
@@ -1490,7 +1514,9 @@ export function generatePackage({
       retentionBeats: [
         `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
         `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
-        `0:38 — Cliffhanger: tease part two on ${lowTopic} before the CTA lands.`,
+        isInvestigativeNiche(niche)
+          ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
+          : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
       ],
     },
     visual: {
@@ -1536,7 +1562,7 @@ export function generatePackage({
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
-      soundDesign: [...profile.sound, ...mixCues],
+      soundDesign: [...(scaffold?.soundDesignDefaults ?? profile.sound), ...mixCues],
     },
     variation,
   };
