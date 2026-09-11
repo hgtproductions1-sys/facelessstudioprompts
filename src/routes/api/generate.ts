@@ -61,11 +61,19 @@ const SCHEMA_SHAPE = `{
     "shots": [{ "index": number, "timecode": string, "motion": string, "transition": string, "animationCue": string }] (exactly 4 items),
     "rigCheatSheet": string[4],
     "soundDesign": string[3]
+  },
+  "variation": {
+    "hookStyle": string,
+    "storyStructure": string,
+    "pacingProfile": string,
+    "editingStyle": string,
+    "emotionalTone": string,
+    "copyPastePrompt": string
   }
 }`;
 
 const PRODUCTION_RULES = [
-  "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+  "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera, variation). No markdown, no code fences, no commentary.",
   "OUTPUT SANITISATION: every string value is pure raw plain text. Never use markdown — no asterisks, no bold, no italics, no hashtags or headings, no backticks, no code fences, no bullet characters, no numbered list prefixes. Prompts must be copy-paste ready for external engines exactly as written.",
   "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
   "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
@@ -83,13 +91,19 @@ const PRODUCTION_RULES = [
   "SUBJECT ANCHORING: never invent a human persona (mechanic, chef, investigator, narrator) for a topic about an object, vehicle, animal or food. Anchor every shot action directly to the actual topic subject, e.g. \"Tracking shot: past the Mustang's rusted front grille, dust motes swirling\".",
   "IMAGE PROMPT CLEANLINESS: never write resolution or aspect-ratio prose such as \"vertical 9:16 frame at 1080x1920\" inside masterPrompt or any image prompt. The app appends the single --ar parameter at the end.",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
+  "VARIATION PLAN: create a distinctive combination of hook device, story structure, pacing arc, editing grammar, and emotional tone for this exact niche and topic. Do not recycle one universal template across niches. copyPastePrompt must be one practical plain-text paragraph that tells the creator how to execute this combination while preserving channel identity and changing the opening, information order, shot rhythm, transitions, and emotional framing.",
 ];
 
-function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
+function fallbackPackage(
+  niche: string,
+  topic: string,
+  style?: StyleSelection,
+  seed?: number,
+): ProductionPackage {
   return generatePackage({
     niche,
     topic,
-    seed: hashSeed(`${niche}::${topic}`),
+    seed: seed ?? hashSeed(`${niche}::${topic}`),
     ...(style ? { style } : {}),
   });
 }
@@ -113,8 +127,8 @@ function _styleRules(st: ResolvedStyle): string[] {
   ];
 }
 
-function userInstruction(niche: string, topic: string, st: ResolvedStyle): string {
-  return `Niche: ${niche}\nTopic: ${topic}\nFormat: ${st.format.label} (${st.format.aspectRatio})\nVisual vibe: ${st.vibe.label}\nPacing: ${st.pacing.label}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
+function userInstruction(niche: string, topic: string, st: ResolvedStyle, seed: number): string {
+  return `Niche: ${niche}\nTopic: ${topic}\nVariation seed: ${seed}\nFormat: ${st.format.label} (${st.format.aspectRatio})\nVisual vibe: ${st.vibe.label}\nPacing: ${st.pacing.label}\n\nUse the variation seed to choose a fresh combination for this run. Return a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
 }
 
 /** Parses model output that may be wrapped in prose or code fences. */
@@ -137,20 +151,26 @@ function normalizePackage(
   niche: string,
   topic: string,
   st: ResolvedStyle,
+  seed: number,
 ): ProductionPackage | null {
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
   const merged = {
-    ...fallbackPackage(niche, topic, {
-      format: st.format.id,
-      vibe: st.vibe.id,
-      pacing: st.pacing.id,
-    }),
+    ...fallbackPackage(
+      niche,
+      topic,
+      {
+        format: st.format.id,
+        vibe: st.vibe.id,
+        pacing: st.pacing.id,
+      },
+      seed,
+    ),
     ...p,
     niche,
     topic,
-    seed: hashSeed(`${niche}::${topic}`),
+    seed,
     generatedAt: new Date().toISOString(),
   } as ProductionPackage;
 
@@ -276,6 +296,14 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
         stripMarkdown(line),
       ),
     },
+    variation: {
+      hookStyle: toRawLine(pkg.variation.hookStyle),
+      storyStructure: toRawLine(pkg.variation.storyStructure),
+      pacingProfile: toRawLine(pkg.variation.pacingProfile),
+      editingStyle: toRawLine(pkg.variation.editingStyle),
+      emotionalTone: toRawLine(pkg.variation.emotionalTone),
+      copyPastePrompt: dedupePhrases(toRawLine(pkg.variation.copyPastePrompt)),
+    },
   };
 }
 
@@ -284,6 +312,7 @@ async function generateWithLovableAi(
   niche: string,
   topic: string,
   st: ResolvedStyle,
+  seed: number,
   apiKey: string,
   initialRunId?: string,
 ): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
@@ -311,7 +340,7 @@ async function generateWithLovableAi(
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic, st) },
+          { role: "user", content: userInstruction(niche, topic, st, seed) },
         ],
       }),
     });
@@ -366,7 +395,7 @@ async function generateWithLovableAi(
       console.warn("[generate] Lovable AI stream returned no text");
       return null;
     }
-    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic, st);
+    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic, st, seed);
     if (!pkg) {
       console.warn("[generate] Lovable AI output did not match the ProductionPackage shape");
       return null;
@@ -382,6 +411,7 @@ async function generateWithGlm(
   niche: string,
   topic: string,
   st: ResolvedStyle,
+  seed: number,
   apiKey: string,
 ): Promise<ProductionPackage | null> {
   const controller = new AbortController();
@@ -407,7 +437,7 @@ async function generateWithGlm(
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic, st) },
+          { role: "user", content: userInstruction(niche, topic, st, seed) },
         ],
       }),
     });
@@ -421,7 +451,7 @@ async function generateWithGlm(
       console.warn("[generate] GLM response had no message content");
       return null;
     }
-    return normalizePackage(parseJsonLoose(content), niche, topic, st);
+    return normalizePackage(parseJsonLoose(content), niche, topic, st, seed);
   } catch (err) {
     console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
     return null;
@@ -440,6 +470,7 @@ export const Route = createFileRoute("/api/generate")({
           format?: unknown;
           vibe?: unknown;
           pacing?: unknown;
+          seed?: unknown;
         };
         try {
           body = await request.json();
@@ -458,11 +489,15 @@ export const Route = createFileRoute("/api/generate")({
           ...(typeof body.pacing === "string" ? { pacing: body.pacing } : {}),
         };
         const st = resolveStyle(selection);
+        const seed =
+          typeof body.seed === "number" && Number.isFinite(body.seed)
+            ? Math.trunc(body.seed)
+            : hashSeed(`${niche}::${topic}`);
 
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
-          const pkg = await generateWithGlm(niche, topic, st, glmKey);
+          const pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
           if (pkg) return Response.json({ package: pkg, source: "glm" });
         } else {
           console.warn("[generate] GLM_API_KEY is not set");
@@ -470,7 +505,14 @@ export const Route = createFileRoute("/api/generate")({
 
         const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
-          const result = await generateWithLovableAi(niche, topic, st, gatewayKey, initialRunId);
+          const result = await generateWithLovableAi(
+            niche,
+            topic,
+            st,
+            seed,
+            gatewayKey,
+            initialRunId,
+          );
           if (result) {
             return Response.json(
               { package: result.pkg, source: "lovable" },
@@ -486,7 +528,7 @@ export const Route = createFileRoute("/api/generate")({
         }
 
         return Response.json({
-          package: fallbackPackage(niche, topic, selection),
+          package: fallbackPackage(niche, topic, selection, seed),
           source: "local",
         });
       },
