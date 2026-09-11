@@ -15,11 +15,6 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   });
 
   const prompt1 = [
-    c.physicalDescription,
-    "",
-    "Wardrobe & props:",
-    ...c.wardrobe.map((w) => `- ${w}`),
-    "",
     "Voice & delivery:",
     ...Object.entries(c.voiceSpec).map(([k, val]) => `- ${k}: ${val}`),
     "",
@@ -28,12 +23,10 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   ].join("\n");
 
   const prompt2 = [
-    v.leonardoPrompt,
+    v.masterPrompt || v.leonardoPrompt,
     "",
-    v.midjourneyPrompt,
-    "",
-    "Google Flow (Veo 3):",
-    v.googleFlowPrompt,
+    "Negative prompt:",
+    v.negativePrompt,
   ].join("\n");
 
   const prompt3 = cam.shots
