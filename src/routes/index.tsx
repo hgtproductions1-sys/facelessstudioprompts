@@ -321,26 +321,9 @@ function Index() {
                   </div>
                 </div>
 
-                <PrimaryButton
-                  type="submit"
-                  disabled={disabled}
-                  className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                      Generating…
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="h-4 w-4" aria-hidden />
-                      Generate Package
-                    </>
-                  )}
-                </PrimaryButton>
               </div>
 
-              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {[
                   {
                     id: "format",
