@@ -1432,11 +1432,17 @@ export function generatePackage({
       midjourneyPrompt,
       googleFlowPrompt,
       consistencyToken: tokenFrom(s, cleanTopic),
-      negativeLibrary: [
-        "no visible face, no eye contact, no portrait framing",
-        "no text, no watermark, no logo, no UI overlay",
-        "no extra fingers, no warped hands, no plastic skin",
-      ],
+      negativeLibrary: human
+        ? [
+            "no visible face, no eye contact, no portrait framing",
+            "no text, no watermark, no logo, no UI overlay",
+            "no extra fingers, no warped hands, no plastic skin",
+          ]
+        : [
+            "no mutated anatomy, no missing face, no extra limbs",
+            "no text, no watermark, no logo, no UI overlay",
+            "no melted geometry, no duplicated subject, no plastic sheen",
+          ],
     },
     camera: {
       overview: {
@@ -1451,7 +1457,7 @@ export function generatePackage({
       },
       shots,
       rigCheatSheet: [
-        "AI video tool: motion strength 3–4 of 10 — anything higher warps the faceless silhouette.",
+        `AI video tool: motion strength 3–4 of 10 — anything higher warps the ${human ? "faceless silhouette" : "subject's anatomy"}.`,
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
