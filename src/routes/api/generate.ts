@@ -74,14 +74,14 @@ const PRODUCTION_RULES = [
   "negativePrompt is a single comma-separated list of things to exclude, always including visible face, text and watermark.",
   "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
-  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
   "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE sentence following [Camera Motion] + [Subject Action] + [Environment & Lighting].",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
   "Face never visible in any prompt.",
 ];
 
-function fallbackPackage(niche: string, topic: string): ProductionPackage {
-  return generatePackage({ niche, topic, seed: hashSeed(`${niche}::${topic}`) });
+function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
+  return generatePackage({ niche, topic, seed: hashSeed(`${niche}::${topic}`), style });
 }
 
 function referenceBlock(niche: string): string {
@@ -90,8 +90,17 @@ function referenceBlock(niche: string): string {
     .join("\n\n");
 }
 
-function userInstruction(niche: string, topic: string): string {
-  return `Niche: ${niche}\nTopic: ${topic}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
+/** Turns the user's format / vibe / pacing choices into hard model instructions. */
+function styleRules(st: ResolvedStyle): string[] {
+  return [
+    `OUTPUT FORMAT: ${st.format.label}. Every image and video prompt must describe a ${st.format.orientation} ${st.format.aspectRatio} frame at ${st.format.resolution}. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
+    `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
+    `PACING: ${st.pacing.label}. Camera motion must be ${st.pacing.camera}. Average shot length about ${st.pacing.avgShotLength}, and the voice pace (voiceSpec "Pace (WPM)") must be ${st.pacing.wpm}.`,
+  ];
+}
+
+function userInstruction(niche: string, topic: string, st: ResolvedStyle): string {
+  return `Niche: ${niche}\nTopic: ${topic}\nFormat: ${st.format.label} (${st.format.aspectRatio})\nVisual vibe: ${st.vibe.label}\nPacing: ${st.pacing.label}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
 }
 
 /** Parses model output that may be wrapped in prose or code fences. */
