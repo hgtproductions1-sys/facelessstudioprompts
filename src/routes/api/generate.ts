@@ -8,9 +8,12 @@ import {
   extractMixDirective,
   sanitizeMidjourneyPrompt,
   sanitizeTopic,
+  stripMarkdown,
   stripPromptFlags,
   toElevenLabsCue,
+  toRawLine,
 } from "@/lib/prompt-sanitize";
+import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
