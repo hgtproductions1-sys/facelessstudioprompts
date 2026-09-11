@@ -14,6 +14,7 @@ import {
   toRawLine,
 } from "@/lib/prompt-sanitize";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
+import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
@@ -70,14 +71,13 @@ const PRODUCTION_RULES = [
   "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
   "HARD LIMIT — SCRIPT LENGTH: the cueSheet is a maximum of 30 seconds of spoken audio. Return EXACTLY 5 cue rows whose spoken lines total between 65 and 80 words in all. Never write a long or multi-minute script. Timestamps must stay within 0:00 to 0:30.",
   "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine flags, no --parameters and no engine names. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
-  "negativePrompt is a single comma-separated list of things to exclude, always including visible face, text and watermark.",
+  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine names. The app appends the --ar flag. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
+  "negativePrompt is a single comma-separated list of things to exclude, always including text and watermark.",
   "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
   "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
-  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE sentence following [Camera Motion] + [Subject Action] + [Environment & Lighting].",
+  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE short sentence using the strict syntax [Specific Camera Movement] + [Subject Action] + [Brief Scene Setting]. Keep the scene setting to a few words and NEVER repeat long lighting, palette or style descriptions in every shot.",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
-  "Face never visible in any prompt.",
 ];
 
 function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
@@ -96,7 +96,11 @@ function referenceBlock(niche: string): string {
 }
 
 /** Turns the user's format / vibe / pacing choices into hard model instructions. */
-function styleRules(st: ResolvedStyle): string[] {
+function styleRules(st: ResolvedStyle, niche: string): string[] {
+  return [subjectRule(niche), ..._styleRules(st)];
+}
+
+function _styleRules(st: ResolvedStyle): string[] {
   return [
     `OUTPUT FORMAT: ${st.format.label}. Every image and video prompt must describe a ${st.format.orientation} ${st.format.aspectRatio} frame at ${st.format.resolution}. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
     `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
@@ -148,6 +152,36 @@ function normalizePackage(
   return sanitizePackage(merged, st);
 }
 
+const FACELESS_TERMS =
+  /\b(faceless|anonymous silhouette|head cropped(?: out of frame)?|face (?:is )?(?:never |not )?visible|no visible face|face hidden[^,.]*|hidden face|face obscured[^,.]*|visible face)\b[^,.]*/gi;
+
+/** Removes faceless language from prompts whose subject is not human. */
+function deFaceless(text: string, human: boolean): string {
+  if (human) return text;
+  return text
+    .replace(FACELESS_TERMS, "")
+    .replace(/\s*,\s*,/g, ",")
+    .replace(/\s+([,.])/g, "$1")
+    .replace(/([,.])\1+/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s,.-]+/, "")
+    .trim();
+}
+
+/** Negative prompt: only human subjects exclude a visible face. */
+function sanitizeNegative(raw: string, human: boolean): string {
+  const list = toRawLine(raw)
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .filter((p) => human || !/face/i.test(p));
+  for (const must of ["text", "watermark"]) {
+    if (!list.some((p) => p.toLowerCase().includes(must))) list.push(must);
+  }
+  if (human && !list.some((p) => /visible face/i.test(p))) list.push("visible face");
+  return list.join(", ");
+}
+
 /** Applies the shared sanitisation rules to any package (local or model-generated). */
 function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
@@ -164,6 +198,7 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     };
   });
 
+  const human = isHumanSubject(pkg.niche);
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
@@ -171,12 +206,13 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     prompt: buildShotPrompt({
       motion: s.motion ?? st.pacing.camera,
       subjectAction: dedupePhrases(
-        `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
+        clampWords(
+          `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}`,
+          5,
+        ) + ` ${clampWords(toRawLine(s.animationCue ?? ""), 10)}`,
       ),
-      environmentLighting: clampWords(
-        `${pkg.visual.styleDNA.join(", ")}, ${st.vibe.lighting}`,
-        24,
-      ),
+      // Brief scene setting only — no repeated lighting essays per shot.
+      environmentLighting: clampWords(pkg.visual.styleDNA[0] ?? st.vibe.style, 5),
       motionStrength: st.pacing.id === "fast" ? 4 : 3,
     }),
   }));
@@ -197,20 +233,31 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       ...pkg.visual,
       aspectRatio: st.format.aspectRatio,
       resolution: st.format.resolution,
-      negativePrompt: toRawLine(pkg.visual.negativePrompt ?? ""),
-      masterPrompt: clampWords(
-        stripPromptFlags(
-          dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+      negativePrompt: sanitizeNegative(pkg.visual.negativePrompt ?? "", human),
+      // The master image prompt always carries the selected aspect ratio.
+      masterPrompt: `${clampWords(
+        deFaceless(
+          stripPromptFlags(
+            dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+          ),
+          human,
         ),
         100,
+      )} --ar ${st.format.aspectRatio}`,
+      leonardoPrompt: clampWords(
+        deFaceless(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), human),
+        100,
       ),
-      leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
       midjourneyPrompt: sanitizeMidjourneyPrompt(
-        pkg.visual.midjourneyPrompt ?? "",
+        deFaceless(pkg.visual.midjourneyPrompt ?? "", human),
         seed,
         st.format.aspectRatio,
+        midjourneyNegativeFor(pkg.niche),
       ),
-      googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
+      googleFlowPrompt: clampWords(
+        deFaceless(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), human),
+        100,
+      ),
     },
     camera: {
       ...pkg.camera,
@@ -250,7 +297,7 @@ async function generateWithLovableAi(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
-              ...styleRules(st),
+              ...styleRules(st, niche),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
@@ -346,7 +393,7 @@ async function generateWithGlm(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
-              ...styleRules(st),
+              ...styleRules(st, niche),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },

@@ -10,6 +10,13 @@ import {
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
+import {
+  isHumanSubject,
+  midjourneyNegativeFor,
+  negativePromptFor,
+  subjectFramingClause,
+  subjectPrefix,
+} from "@/lib/subject";
 
 export interface ProductionPackage {
   niche: string;
@@ -1190,10 +1197,20 @@ export function generatePackage({
   const desc = pick(profile.descriptors, s);
   const desc2 = pick(profile.descriptors, s, 2);
 
+  const human = isHumanSubject(niche);
+  const framing = subjectFramingClause(niche);
+  const subjPrefix = subjectPrefix(niche);
+
   const physicalDescription = [
-    `Faceless figure, shot from behind and at chest height — the face is never visible, always cropped, shadowed, or turned away.`,
-    `Silhouette: ${pick(["tall and still", "broad and grounded", "lean and deliberate"], s)}, shoulders squared, head slightly lowered.`,
-    `Hands are the hero: close macro on ${pick(["gloved fingers", "bare knuckles", "steady hands"], s, 3)} handling material tied to ${lowTopic}.`,
+    human
+      ? `Faceless figure, shot from behind and at chest height — the face is never visible, always cropped, shadowed, or turned away.`
+      : `${titleCase(profile.archetype.toLowerCase().replace(/^the /, ""))} shown complete and in full detail — natural face and anatomy clearly visible, consistent markings and proportions in every shot.`,
+    human
+      ? `Silhouette: ${pick(["tall and still", "broad and grounded", "lean and deliberate"], s)}, shoulders squared, head slightly lowered.`
+      : `Silhouette: ${pick(["compact and rounded", "sturdy and grounded", "sleek and defined"], s)}, instantly recognisable at thumbnail size.`,
+    human
+      ? `Hands are the hero: close macro on ${pick(["gloved fingers", "bare knuckles", "steady hands"], s, 3)} handling material tied to ${lowTopic}.`
+      : `Hero detail: close macro on the ${desc} surface tied to ${lowTopic}.`,
     `Environment: ${env}; secondary set-up in ${env2}.`,
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
@@ -1245,8 +1262,7 @@ export function generatePackage({
     })
     .filter((x): x is string => Boolean(x));
 
-  const negativePrompt =
-    "blurry, lowres, deformed hands, extra fingers, visible face, text, watermark, logo, cartoon, oversaturated";
+  const negativePrompt = negativePromptFor(niche);
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
@@ -1258,8 +1274,8 @@ export function generatePackage({
 
   const leonardoPrompt = buildParagraph(
     [
-      `${orient} ${ar} still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `face fully obscured by shadow and framing, shot from behind at chest height, hands in sharp focus`,
+      `${orient} ${ar} still of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      framing,
       wardrobeLead,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
@@ -1270,8 +1286,8 @@ export function generatePackage({
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
     buildParagraph(
       [
-        `faceless ${archetypeNoun}, ${lowTopic}`,
-        `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus`,
+        `${subjPrefix}${archetypeNoun}, ${lowTopic}`,
+        `${env2}, ${framing}`,
         `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
         `${st.vibe.lighting}, ${st.vibe.style}`,
       ],
@@ -1279,31 +1295,32 @@ export function generatePackage({
     ),
     s,
     ar,
+    midjourneyNegativeFor(niche),
   );
 
   const googleFlowPrompt = buildParagraph(
     [
-      `${orient} ${ar} shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `face hidden by shadow and framing, ${(profile.wardrobe[0] ?? "").toLowerCase()}, hands in focus`,
+      `${orient} ${ar} shot of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}`,
       `camera motion: ${st.pacing.camera}`,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
-      `no visible face, no text, no watermark, no warped hands`,
+      `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
     ],
     100,
   );
 
-  const masterPrompt = buildParagraph(
+  const masterPrompt = `${buildParagraph(
     [
-      `${orient} ${ar} image of a faceless ${archetypeNoun}, subject of ${lowTopic}`,
-      `face never visible — head cropped or hidden in shadow, hands and posture in sharp focus`,
+      `${orient} ${ar} image of a ${subjPrefix}${archetypeNoun}, subject of ${lowTopic}`,
+      framing,
       wardrobeLead,
       `environment: ${env}, ${env2}`,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
     ],
     100,
-  );
+  )} --ar ${ar}`;
 
   const shotMotions =
     st.pacing.id === "fast"
@@ -1343,14 +1360,22 @@ export function generatePackage({
     "Slow grain intensification toward the reveal",
     "Vignette closes 8% over the final beat",
   ];
-  const subjectActions = [
-    `faceless ${archetypeNoun} hands working with ${lowTopic}`,
-    `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
-    `close macro on hands adjusting ${lowTopic}`,
-    `faceless ${archetypeNoun} stepping forward, head out of frame`,
-    `hands lifting the key prop tied to ${lowTopic}`,
-  ];
-  const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
+  const subjectActions = human
+    ? [
+        `faceless ${archetypeNoun} hands working with ${lowTopic}`,
+        `faceless ${archetypeNoun} turning toward the ${desc} detail, shoulders only`,
+        `close macro on hands adjusting ${lowTopic}`,
+        `faceless ${archetypeNoun} stepping forward, head out of frame`,
+        `hands lifting the key prop tied to ${lowTopic}`,
+      ]
+    : [
+        `${archetypeNoun} moves into frame and reacts to ${lowTopic}`,
+        `${archetypeNoun} turns toward the ${desc} detail`,
+        `close macro on the ${desc2} detail of ${lowTopic}`,
+        `${archetypeNoun} steps forward into the light`,
+        `${archetypeNoun} lifts the key prop tied to ${lowTopic}`,
+      ];
+  const environmentLighting = [env, env2];
 
   const shotCount = 4;
   const shots = Array.from({ length: shotCount }, (_, i) => {
@@ -1407,11 +1432,17 @@ export function generatePackage({
       midjourneyPrompt,
       googleFlowPrompt,
       consistencyToken: tokenFrom(s, cleanTopic),
-      negativeLibrary: [
-        "no visible face, no eye contact, no portrait framing",
-        "no text, no watermark, no logo, no UI overlay",
-        "no extra fingers, no warped hands, no plastic skin",
-      ],
+      negativeLibrary: human
+        ? [
+            "no visible face, no eye contact, no portrait framing",
+            "no text, no watermark, no logo, no UI overlay",
+            "no extra fingers, no warped hands, no plastic skin",
+          ]
+        : [
+            "no mutated anatomy, no missing face, no extra limbs",
+            "no text, no watermark, no logo, no UI overlay",
+            "no melted geometry, no duplicated subject, no plastic sheen",
+          ],
     },
     camera: {
       overview: {
@@ -1426,7 +1457,7 @@ export function generatePackage({
       },
       shots,
       rigCheatSheet: [
-        "AI video tool: motion strength 3–4 of 10 — anything higher warps the faceless silhouette.",
+        `AI video tool: motion strength 3–4 of 10 — anything higher warps the ${human ? "faceless silhouette" : "subject's anatomy"}.`,
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],

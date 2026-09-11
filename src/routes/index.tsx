@@ -264,7 +264,7 @@ function Index() {
               onSubmit={submit}
               className="glass-card top-rail-pc relative mx-auto mt-10 max-w-3xl overflow-hidden p-6 md:p-8"
             >
-              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-[1fr_1.4fr_auto]">
+              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-[1fr_1.4fr]">
                 <div>
                   <label
                     htmlFor="niche"
@@ -321,26 +321,9 @@ function Index() {
                   </div>
                 </div>
 
-                <PrimaryButton
-                  type="submit"
-                  disabled={disabled}
-                  className="h-12 w-full px-6 whitespace-nowrap md:w-auto"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                      Generating…
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="h-4 w-4" aria-hidden />
-                      Generate Package
-                    </>
-                  )}
-                </PrimaryButton>
               </div>
 
-              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {[
                   {
                     id: "format",
@@ -390,9 +373,30 @@ function Index() {
                 ))}
               </div>
 
+              <PrimaryButton
+                type="submit"
+                disabled={disabled}
+                className="mt-6 h-12 w-full px-6 text-base whitespace-nowrap"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                    Generating…
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-4 w-4" aria-hidden />
+                    Generate Package
+                  </>
+                )}
+              </PrimaryButton>
+
               {error ? <p className="mt-2 text-xs text-warning">{error}</p> : null}
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <p className="mt-6 mb-2 text-xs font-medium tracking-widest text-ink-muted uppercase">
+                Quick Ideas:
+              </p>
+              <div className="flex flex-wrap gap-2">
                 {QUICK_STARTS.map((q) => (
                   <button
                     key={q.topic}

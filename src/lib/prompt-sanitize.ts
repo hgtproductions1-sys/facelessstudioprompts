@@ -164,7 +164,12 @@ export function toRawLine(text: string): string {
 export const MJ_NEGATIVE = "blurry, lowres, visible face, text, watermark, extra limbs";
 
 /** Rebuilds a Midjourney prompt with exactly one canonical set of flags. */
-export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = "9:16"): string {
+export function sanitizeMidjourneyPrompt(
+  prompt: string,
+  seed: number,
+  aspect = "9:16",
+  negative: string = MJ_NEGATIVE,
+): string {
   const body = dedupePhrases(stripPromptFlags(toRawLine(prompt)));
   const flags = [
     `--ar ${aspect}`,
@@ -173,7 +178,7 @@ export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = 
     "--stylize 250",
     "--chaos 12",
     `--seed ${Math.abs(Math.trunc(seed)) || 1}`,
-    `--no ${MJ_NEGATIVE}`,
+    `--no ${negative}`,
   ].join(" ");
   return `${body} ${flags}`.replace(/\s{2,}/g, " ").trim();
 }
@@ -265,6 +270,16 @@ export function stripTransitions(text: string): string {
     .trim();
 }
 
+const DANGLING =
+  /\s+(?:the|a|an|of|in|on|into|onto|outside|inside|beside|with|and|to|from|for|at|as|by|over|under|near|through|while|that|which|its|his|her|their)$/i;
+
+/** Drops trailing connector words left behind by word clamping. */
+function trimDangling(text: string): string {
+  let out = text.replace(/[.:,;]+$/, "").trim();
+  while (DANGLING.test(out)) out = out.replace(DANGLING, "");
+  return out.replace(/[.:,;]+$/, "").trim();
+}
+
 export interface ShotPromptInput {
   motion: string;
   subjectAction: string;
@@ -282,9 +297,10 @@ export function buildShotPrompt({
   environmentLighting,
   motionStrength = 3,
 }: ShotPromptInput): string {
-  const m = stripTransitions(motion).replace(/[.:,]+$/, "");
-  const subject = stripTransitions(subjectAction).replace(/[.,]+$/, "");
-  const env = stripTransitions(environmentLighting).replace(/[.,]+$/, "");
+  const m = trimDangling(clampWords(stripTransitions(motion), 12));
+  const subject = trimDangling(clampWords(stripTransitions(subjectAction), 14));
+  // Scene setting stays brief — no repeated lighting/style essays per shot.
+  const env = trimDangling(clampWords(stripTransitions(environmentLighting), 8));
   const strength = Math.min(4, Math.max(3, Math.round(motionStrength)));
   return dedupePhrases(
     `${m}: ${subject}, ${env}, continuous motion, cinematic 24fps --motion ${strength}`,
