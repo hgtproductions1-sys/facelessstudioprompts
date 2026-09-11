@@ -536,15 +536,29 @@ export const Route = createFileRoute("/api/generate")({
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
-          const pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
-          if (pkg) return Response.json({ package: pkg, source: "glm" });
+          let pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
+          // One stricter retry when the model leaks true-crime language into a
+          // niche that should never use it.
+          if (pkg && packageLeaks(pkg, niche)) {
+            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
+            pkg = await generateWithGlm(niche, topic, st, seed, glmKey, STRICT_RETRY_RULES);
+          }
+          if (pkg && !packageLeaks(pkg, niche)) {
+            return Response.json({ package: pkg, source: "glm" });
+          }
+          if (pkg) {
+            return Response.json({
+              package: fallbackPackage(niche, topic, selection, seed),
+              source: "local",
+            });
+          }
         } else {
           console.warn("[generate] GLM_API_KEY is not set");
         }
 
         const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
-          const result = await generateWithLovableAi(
+          let result = await generateWithLovableAi(
             niche,
             topic,
             st,
@@ -552,6 +566,24 @@ export const Route = createFileRoute("/api/generate")({
             gatewayKey,
             initialRunId,
           );
+          if (result && packageLeaks(result.pkg, niche)) {
+            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
+            result = await generateWithLovableAi(
+              niche,
+              topic,
+              st,
+              seed,
+              gatewayKey,
+              initialRunId,
+              STRICT_RETRY_RULES,
+            );
+          }
+          if (result && packageLeaks(result.pkg, niche)) {
+            return Response.json({
+              package: fallbackPackage(niche, topic, selection, seed),
+              source: "local",
+            });
+          }
           if (result) {
             return Response.json(
               { package: result.pkg, source: "lovable" },
