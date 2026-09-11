@@ -206,10 +206,13 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     prompt: buildShotPrompt({
       motion: s.motion ?? st.pacing.camera,
       subjectAction: dedupePhrases(
-        `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
+        clampWords(
+          `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}`,
+          5,
+        ) + ` ${clampWords(toRawLine(s.animationCue ?? ""), 10)}`,
       ),
       // Brief scene setting only — no repeated lighting essays per shot.
-      environmentLighting: clampWords(pkg.visual.styleDNA.slice(0, 2).join(", "), 8),
+      environmentLighting: clampWords(pkg.visual.styleDNA[0] ?? st.vibe.style, 5),
       motionStrength: st.pacing.id === "fast" ? 4 : 3,
     }),
   }));
