@@ -1185,6 +1185,27 @@ function titleCase(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+const ANIMAL_SKIT_NICHE = "Poor vs. Rich Animals (AI Skits)";
+
+function cueEndTime(cueSheet: { timestamp: string }[], index: number): string {
+  return cueSheet[index + 1]?.timestamp ?? "0:30";
+}
+
+function animalMotionType(motion: string): string {
+  return motion.toLowerCase().split(/\s+(?:from|on|between|comparing|of)\s+/)[0]?.trim() ?? motion;
+}
+
+function orderDistinctMotions(motions: string[], seed: number, count: number): string[] {
+  const ordered: string[] = [];
+  for (let i = 0; ordered.length < count && i < motions.length * 2; i++) {
+    const candidate = motions[(seed + i) % motions.length];
+    if (!candidate) continue;
+    const previous = ordered.at(-1);
+    if (!previous || animalMotionType(previous) !== animalMotionType(candidate)) ordered.push(candidate);
+  }
+  return ordered;
+}
+
 const VARIATION_OPTIONS = {
   hookStyle: [
     "Cold open with a surprising statistic",
@@ -1248,6 +1269,58 @@ function buildVariationPlan(seed: number, niche: string, topic: string) {
     editingStyle,
     emotionalTone,
     copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the core channel identity, but change the opening device, sequence of information, shot rhythm, transitions, and emotional framing so this upload feels deliberately original rather than copied from an earlier video.`,
+  };
+}
+
+function variationMatchesNiche(
+  variation: ReturnType<typeof buildVariationPlan>,
+  niche: string,
+  emotionalRegister: string,
+): boolean {
+  if (niche !== ANIMAL_SKIT_NICHE) return true;
+  const text = `${variation.storyStructure} ${variation.emotionalTone}`.toLowerCase();
+  const contradictsComedy = /investigat|urgent|uncanny|suspense|evidence|verdict|clues|withheld/.test(text);
+  const needsWarmComedy = /comedy|comedic|playful/.test(text) && /warm|soft|heart/.test(text);
+  return /comedy/i.test(emotionalRegister) && needsWarmComedy && !contradictsComedy;
+}
+
+function rebuildVariationForNiche(seed: number, niche: string, topic: string) {
+  const hookStyle = pick(
+    ["Comedic contrast in the opening frame", "Character voice-swap cold open", "Reaction-first rich-versus-poor reveal"],
+    seed,
+    1,
+  );
+  const storyStructure = pick(
+    [
+      "Parallel rich-versus-poor setup, escalating contrast, shared-hearted payoff",
+      "Alternating character viewpoints, comic reversal, warm resolution",
+      "Three escalating comparisons followed by a generous final twist",
+    ],
+    seed,
+    3,
+  );
+  const pacingProfile = pick(
+    ["Quick character swaps, held reaction, gentle final beat", "Fast contrast beats, comic pause, soft landing"],
+    seed,
+    5,
+  );
+  const editingStyle = pick(
+    ["Whip-pan swaps with split-screen comparisons", "Reaction-led cuts with one held closing two-shot"],
+    seed,
+    7,
+  );
+  const emotionalTone = pick(
+    ["Broad comedy with a soft ending", "Playfully competitive with a warm ending", "Comedic and heartfelt"],
+    seed,
+    11,
+  );
+  return {
+    hookStyle,
+    storyStructure,
+    pacingProfile,
+    editingStyle,
+    emotionalTone,
+    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the playful character contrast and finish on an earned moment of warmth so the upload feels original without contradicting the channel voice.`,
   };
 }
 
