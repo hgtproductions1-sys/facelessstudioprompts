@@ -163,9 +163,14 @@ function Index() {
   const [niche, setNiche] = useState(search.niche ?? "");
   const [topic, setTopic] = useState(search.topic ?? "");
   const [error, setError] = useState("");
+  const [format, setFormat] = useState<string>(FORMATS[0]!.id);
+  const [vibe, setVibe] = useState<string>(VIBES[0]!.id);
+  const [pacing, setPacing] = useState<string>(PACINGS[0]!.id);
   const resultsRef = useRef<HTMLDivElement>(null);
   const autoRan = useRef(false);
   const { pkg, loading, step, slow, run, regenerate, totalMs } = usePackageGenerator();
+  const styleRef = useRef({ format, vibe, pacing });
+  styleRef.current = { format, vibe, pacing };
 
   useEffect(() => {
     if (autoRan.current) return;
@@ -175,7 +180,7 @@ function Index() {
     autoRan.current = true;
     setNiche(n);
     setTopic(t);
-    run(n, t);
+    run(n, t, styleRef.current);
     setTimeout(
       () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
       80,
