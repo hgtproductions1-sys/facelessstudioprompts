@@ -123,12 +123,21 @@ function parseJsonLoose(text: string): unknown | null {
   }
 }
 
-function normalizePackage(raw: unknown, niche: string, topic: string): ProductionPackage | null {
+function normalizePackage(
+  raw: unknown,
+  niche: string,
+  topic: string,
+  st: ResolvedStyle,
+): ProductionPackage | null {
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
   const merged = {
-    ...fallbackPackage(niche, topic),
+    ...fallbackPackage(niche, topic, {
+      format: st.format.id,
+      vibe: st.vibe.id,
+      pacing: st.pacing.id,
+    }),
     ...p,
     niche,
     topic,
@@ -136,11 +145,11 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
     generatedAt: new Date().toISOString(),
   } as ProductionPackage;
 
-  return sanitizePackage(merged);
+  return sanitizePackage(merged, st);
 }
 
 /** Applies the shared sanitisation rules to any package (local or model-generated). */
-function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
+function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
   const mixCues: string[] = [];
 
