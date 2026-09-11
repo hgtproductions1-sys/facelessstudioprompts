@@ -340,6 +340,56 @@ function Index() {
                 </PrimaryButton>
               </div>
 
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {[
+                  {
+                    id: "format",
+                    label: "Format",
+                    value: format,
+                    onChange: setFormat,
+                    options: FORMATS,
+                  },
+                  {
+                    id: "vibe",
+                    label: "Visual Vibe",
+                    value: vibe,
+                    onChange: setVibe,
+                    options: VIBES,
+                  },
+                  {
+                    id: "pacing",
+                    label: "Pacing",
+                    value: pacing,
+                    onChange: setPacing,
+                    options: PACINGS,
+                  },
+                ].map((field) => (
+                  <div key={field.id}>
+                    <label
+                      htmlFor={field.id}
+                      className="mb-2 block text-xs font-medium tracking-widest text-ink-dim uppercase"
+                    >
+                      {field.label}
+                    </label>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        id={field.id}
+                        className="bg-surface2 border-line-hover !h-11 w-full rounded-xl text-sm focus:ring-2 focus:ring-purple"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="border-line bg-surface">
+                        {field.options.map((o) => (
+                          <SelectItem key={o.id} value={o.id} className="text-sm">
+                            {o.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
+              </div>
+
               {error ? <p className="mt-2 text-xs text-warning">{error}</p> : null}
 
               <div className="mt-5 flex flex-wrap gap-2">
