@@ -159,6 +159,12 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
     },
     visual: {
       ...pkg.visual,
+      masterPrompt: clampWords(
+        stripPromptFlags(
+          dedupePhrases(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || ""),
+        ),
+        100,
+      ),
       leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
       midjourneyPrompt: sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt ?? "", seed),
       googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
