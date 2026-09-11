@@ -56,6 +56,7 @@ import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
 import { NICHES, packageToText, slugify } from "@/lib/generator";
+import { FORMATS, PACINGS, VIBES } from "@/lib/styleOptions";
 
 const TITLE = "The Faceless Prompts | Free AI Video Generator";
 const DESC =
@@ -162,9 +163,14 @@ function Index() {
   const [niche, setNiche] = useState(search.niche ?? "");
   const [topic, setTopic] = useState(search.topic ?? "");
   const [error, setError] = useState("");
+  const [format, setFormat] = useState<string>(FORMATS[0]!.id);
+  const [vibe, setVibe] = useState<string>(VIBES[0]!.id);
+  const [pacing, setPacing] = useState<string>(PACINGS[0]!.id);
   const resultsRef = useRef<HTMLDivElement>(null);
   const autoRan = useRef(false);
   const { pkg, loading, step, slow, run, regenerate, totalMs } = usePackageGenerator();
+  const styleRef = useRef({ format, vibe, pacing });
+  styleRef.current = { format, vibe, pacing };
 
   useEffect(() => {
     if (autoRan.current) return;
@@ -174,7 +180,7 @@ function Index() {
     autoRan.current = true;
     setNiche(n);
     setTopic(t);
-    run(n, t);
+    run(n, t, styleRef.current);
     setTimeout(
       () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
       80,
@@ -201,7 +207,7 @@ function Index() {
       return;
     }
     setError("");
-    run(niche, topic);
+    run(niche, topic, { format, vibe, pacing });
     scrollToResults();
   };
 
@@ -209,7 +215,7 @@ function Index() {
     setNiche(q.niche);
     setTopic(q.topic);
     setError("");
-    run(q.niche, q.topic);
+    run(q.niche, q.topic, { format, vibe, pacing });
     scrollToResults();
   };
 
@@ -332,6 +338,56 @@ function Index() {
                     </>
                   )}
                 </PrimaryButton>
+              </div>
+
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {[
+                  {
+                    id: "format",
+                    label: "Format",
+                    value: format,
+                    onChange: setFormat,
+                    options: FORMATS,
+                  },
+                  {
+                    id: "vibe",
+                    label: "Visual Vibe",
+                    value: vibe,
+                    onChange: setVibe,
+                    options: VIBES,
+                  },
+                  {
+                    id: "pacing",
+                    label: "Pacing",
+                    value: pacing,
+                    onChange: setPacing,
+                    options: PACINGS,
+                  },
+                ].map((field) => (
+                  <div key={field.id}>
+                    <label
+                      htmlFor={field.id}
+                      className="mb-2 block text-xs font-medium tracking-widest text-ink-dim uppercase"
+                    >
+                      {field.label}
+                    </label>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        id={field.id}
+                        className="bg-surface2 border-line-hover !h-11 w-full rounded-xl text-sm focus:ring-2 focus:ring-purple"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="border-line bg-surface">
+                        {field.options.map((o) => (
+                          <SelectItem key={o.id} value={o.id} className="text-sm">
+                            {o.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
               </div>
 
               {error ? <p className="mt-2 text-xs text-warning">{error}</p> : null}

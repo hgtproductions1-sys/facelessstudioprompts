@@ -8,9 +8,12 @@ import {
   extractMixDirective,
   sanitizeMidjourneyPrompt,
   sanitizeTopic,
+  stripMarkdown,
   stripPromptFlags,
   toElevenLabsCue,
+  toRawLine,
 } from "@/lib/prompt-sanitize";
+import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
@@ -60,6 +63,7 @@ const SCHEMA_SHAPE = `{
 
 const PRODUCTION_RULES = [
   "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera). No markdown, no code fences, no commentary.",
+  "OUTPUT SANITISATION: every string value is pure raw plain text. Never use markdown — no asterisks, no bold, no italics, no hashtags or headings, no backticks, no code fences, no bullet characters, no numbered list prefixes. Prompts must be copy-paste ready for external engines exactly as written.",
   "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
   "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
   "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
@@ -70,14 +74,19 @@ const PRODUCTION_RULES = [
   "negativePrompt is a single comma-separated list of things to exclude, always including visible face, text and watermark.",
   "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
-  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
   "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE sentence following [Camera Motion] + [Subject Action] + [Environment & Lighting].",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
   "Face never visible in any prompt.",
 ];
 
-function fallbackPackage(niche: string, topic: string): ProductionPackage {
-  return generatePackage({ niche, topic, seed: hashSeed(`${niche}::${topic}`) });
+function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
+  return generatePackage({
+    niche,
+    topic,
+    seed: hashSeed(`${niche}::${topic}`),
+    ...(style ? { style } : {}),
+  });
 }
 
 function referenceBlock(niche: string): string {
@@ -86,8 +95,17 @@ function referenceBlock(niche: string): string {
     .join("\n\n");
 }
 
-function userInstruction(niche: string, topic: string): string {
-  return `Niche: ${niche}\nTopic: ${topic}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
+/** Turns the user's format / vibe / pacing choices into hard model instructions. */
+function styleRules(st: ResolvedStyle): string[] {
+  return [
+    `OUTPUT FORMAT: ${st.format.label}. Every image and video prompt must describe a ${st.format.orientation} ${st.format.aspectRatio} frame at ${st.format.resolution}. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
+    `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
+    `PACING: ${st.pacing.label}. Camera motion must be ${st.pacing.camera}. Average shot length about ${st.pacing.avgShotLength}, and the voice pace (voiceSpec "Pace (WPM)") must be ${st.pacing.wpm}.`,
+  ];
+}
+
+function userInstruction(niche: string, topic: string, st: ResolvedStyle): string {
+  return `Niche: ${niche}\nTopic: ${topic}\nFormat: ${st.format.label} (${st.format.aspectRatio})\nVisual vibe: ${st.vibe.label}\nPacing: ${st.pacing.label}\n\nReturn a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
 }
 
 /** Parses model output that may be wrapped in prose or code fences. */
@@ -105,12 +123,21 @@ function parseJsonLoose(text: string): unknown | null {
   }
 }
 
-function normalizePackage(raw: unknown, niche: string, topic: string): ProductionPackage | null {
+function normalizePackage(
+  raw: unknown,
+  niche: string,
+  topic: string,
+  st: ResolvedStyle,
+): ProductionPackage | null {
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
   const merged = {
-    ...fallbackPackage(niche, topic),
+    ...fallbackPackage(niche, topic, {
+      format: st.format.id,
+      vibe: st.vibe.id,
+      pacing: st.pacing.id,
+    }),
     ...p,
     niche,
     topic,
@@ -118,11 +145,11 @@ function normalizePackage(raw: unknown, niche: string, topic: string): Productio
     generatedAt: new Date().toISOString(),
   } as ProductionPackage;
 
-  return sanitizePackage(merged);
+  return sanitizePackage(merged, st);
 }
 
 /** Applies the shared sanitisation rules to any package (local or model-generated). */
-function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
+function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
   const mixCues: string[] = [];
 
@@ -131,8 +158,8 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
     const mix = extractMixDirective(r.cue ?? "");
     if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
     return {
-      timestamp: r.timestamp,
-      line: dedupePhrases(r.line ?? ""),
+      timestamp: toRawLine(r.timestamp ?? ""),
+      line: dedupePhrases(toRawLine(r.line ?? "")),
       cue: toElevenLabsCue(r.cue ?? ""),
     };
   });
@@ -140,13 +167,17 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
+    motion: toRawLine(s.motion ?? ""),
     prompt: buildShotPrompt({
-      motion: s.motion ?? "slow push in",
+      motion: s.motion ?? st.pacing.camera,
       subjectAction: dedupePhrases(
         `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
       ),
-      environmentLighting: clampWords(pkg.visual.styleDNA.join(", "), 20),
-      motionStrength: 3 + (i % 2),
+      environmentLighting: clampWords(
+        `${pkg.visual.styleDNA.join(", ")}, ${st.vibe.lighting}`,
+        24,
+      ),
+      motionStrength: st.pacing.id === "fast" ? 4 : 3,
     }),
   }));
 
@@ -155,28 +186,38 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
     topic: sanitizeTopic(pkg.topic),
     character: {
       ...pkg.character,
+      voiceSpec: { ...pkg.character.voiceSpec, "Pace (WPM)": st.pacing.wpm },
       hooks: (pkg.character.hooks ?? []).map((h) => ({
         label: h.label,
-        text: dedupePhrases(h.text ?? ""),
+        text: dedupePhrases(toRawLine(h.text ?? "")),
       })),
       cueSheet,
     },
     visual: {
       ...pkg.visual,
+      aspectRatio: st.format.aspectRatio,
+      resolution: st.format.resolution,
+      negativePrompt: toRawLine(pkg.visual.negativePrompt ?? ""),
       masterPrompt: clampWords(
         stripPromptFlags(
-          dedupePhrases(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || ""),
+          dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
         ),
         100,
       ),
       leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
-      midjourneyPrompt: sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt ?? "", seed),
+      midjourneyPrompt: sanitizeMidjourneyPrompt(
+        pkg.visual.midjourneyPrompt ?? "",
+        seed,
+        st.format.aspectRatio,
+      ),
       googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
     },
     camera: {
       ...pkg.camera,
       shots,
-      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues],
+      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues].map((line) =>
+        stripMarkdown(line),
+      ),
     },
   };
 }
@@ -185,6 +226,7 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
 async function generateWithLovableAi(
   niche: string,
   topic: string,
+  st: ResolvedStyle,
   apiKey: string,
   initialRunId?: string,
 ): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
@@ -208,10 +250,11 @@ async function generateWithLovableAi(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
+              ...styleRules(st),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic) },
+          { role: "user", content: userInstruction(niche, topic, st) },
         ],
       }),
     });
@@ -266,7 +309,7 @@ async function generateWithLovableAi(
       console.warn("[generate] Lovable AI stream returned no text");
       return null;
     }
-    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic);
+    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic, st);
     if (!pkg) {
       console.warn("[generate] Lovable AI output did not match the ProductionPackage shape");
       return null;
@@ -281,6 +324,7 @@ async function generateWithLovableAi(
 async function generateWithGlm(
   niche: string,
   topic: string,
+  st: ResolvedStyle,
   apiKey: string,
 ): Promise<ProductionPackage | null> {
   const controller = new AbortController();
@@ -302,10 +346,11 @@ async function generateWithGlm(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
+              ...styleRules(st),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic) },
+          { role: "user", content: userInstruction(niche, topic, st) },
         ],
       }),
     });
@@ -319,7 +364,7 @@ async function generateWithGlm(
       console.warn("[generate] GLM response had no message content");
       return null;
     }
-    return normalizePackage(parseJsonLoose(content), niche, topic);
+    return normalizePackage(parseJsonLoose(content), niche, topic, st);
   } catch (err) {
     console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
     return null;
@@ -332,7 +377,13 @@ export const Route = createFileRoute("/api/generate")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        let body: { niche?: unknown; topic?: unknown };
+        let body: {
+          niche?: unknown;
+          topic?: unknown;
+          format?: unknown;
+          vibe?: unknown;
+          pacing?: unknown;
+        };
         try {
           body = await request.json();
         } catch {
@@ -344,10 +395,17 @@ export const Route = createFileRoute("/api/generate")({
           return Response.json({ error: "niche and topic are required" }, { status: 400 });
         }
 
+        const selection: StyleSelection = {
+          ...(typeof body.format === "string" ? { format: body.format } : {}),
+          ...(typeof body.vibe === "string" ? { vibe: body.vibe } : {}),
+          ...(typeof body.pacing === "string" ? { pacing: body.pacing } : {}),
+        };
+        const st = resolveStyle(selection);
+
         const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
         const glmKey = process.env["GLM_API_KEY"];
         if (glmKey) {
-          const pkg = await generateWithGlm(niche, topic, glmKey);
+          const pkg = await generateWithGlm(niche, topic, st, glmKey);
           if (pkg) return Response.json({ package: pkg, source: "glm" });
         } else {
           console.warn("[generate] GLM_API_KEY is not set");
@@ -355,7 +413,7 @@ export const Route = createFileRoute("/api/generate")({
 
         const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
-          const result = await generateWithLovableAi(niche, topic, gatewayKey, initialRunId);
+          const result = await generateWithLovableAi(niche, topic, st, gatewayKey, initialRunId);
           if (result) {
             return Response.json(
               { package: result.pkg, source: "lovable" },
@@ -370,7 +428,10 @@ export const Route = createFileRoute("/api/generate")({
           console.warn("[generate] LOVABLE_API_KEY is not set");
         }
 
-        return Response.json({ package: fallbackPackage(niche, topic), source: "local" });
+        return Response.json({
+          package: fallbackPackage(niche, topic, selection),
+          source: "local",
+        });
       },
     },
   },

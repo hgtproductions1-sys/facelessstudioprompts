@@ -132,13 +132,42 @@ export function stripPromptFlags(prompt: string): string {
   return cut.replace(/[\s,;:.]+$/, "").trim();
 }
 
+/**
+ * Strips markdown syntax so copied prompts are pure raw text:
+ * code fences, bold/italic markers, headings, list bullets and link syntax.
+ */
+export function stripMarkdown(text: string): string {
+  return (text ?? "")
+    .replace(/```[a-z]*\n?/gi, "")
+    .replace(/```/g, "")
+    .replace(/`+/g, "")
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s*/gm, "")
+    .replace(/^\s{0,3}>\s?/gm, "")
+    .replace(/^\s{0,3}[-*+]\s+/gm, "")
+    .replace(/^\s{0,3}\d+[.)]\s+/gm, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/__([^_]+)__/g, "$1")
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1$2")
+    .replace(/(^|[^_])_([^_\n]+)_/g, "$1$2")
+    .replace(/^\s*[-*_]{3,}\s*$/gm, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+/** Markdown-free single-line text (for prompts that must be one paragraph). */
+export function toRawLine(text: string): string {
+  return stripMarkdown(text).replace(/\s*\n+\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+}
+
 export const MJ_NEGATIVE = "blurry, lowres, visible face, text, watermark, extra limbs";
 
 /** Rebuilds a Midjourney prompt with exactly one canonical set of flags. */
-export function sanitizeMidjourneyPrompt(prompt: string, seed: number): string {
-  const body = dedupePhrases(stripPromptFlags(prompt));
+export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = "9:16"): string {
+  const body = dedupePhrases(stripPromptFlags(toRawLine(prompt)));
   const flags = [
-    "--ar 9:16",
+    `--ar ${aspect}`,
     "--v 6.1",
     "--style raw",
     "--stylize 250",
@@ -151,7 +180,7 @@ export function sanitizeMidjourneyPrompt(prompt: string, seed: number): string {
 
 /** Trims a paragraph to a maximum word count without cutting mid-sentence badly. */
 export function clampWords(text: string, max = 95): string {
-  const clean = dedupePhrases(text)
+  const clean = dedupePhrases(toRawLine(text))
     .replace(/\s{2,}/g, " ")
     .trim();
   const words = clean.split(" ");
@@ -228,7 +257,7 @@ const NLE_TRANSITION =
 
 /** Strips NLE transition language out of motion/action copy. */
 export function stripTransitions(text: string): string {
-  return (text ?? "")
+  return toRawLine(text)
     .replace(NLE_TRANSITION, "")
     .replace(/\s*,\s*,/g, ",")
     .replace(/^[\s,.-]+|[\s,.-]+$/g, "")
