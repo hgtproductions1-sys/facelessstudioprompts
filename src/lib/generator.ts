@@ -12,6 +12,7 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
+import { fillTemplate, getScaffold } from "@/lib/nicheScaffolds";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 import {
   isHumanSubject,
