@@ -15,12 +15,13 @@ async function fetchPackage(
   niche: string,
   topic: string,
   style: StyleSelection,
+  seed: number,
 ): Promise<ProductionPackage | null> {
   try {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ niche, topic, ...style }),
+      body: JSON.stringify({ niche, topic, seed, ...style }),
     });
     if (!res.ok) return null;
     const data = (await res.json()) as { package?: ProductionPackage };
@@ -55,7 +56,7 @@ export function usePackageGenerator() {
       });
 
       const resolvedSeed = seed ?? hashSeed(`${niche}::${topic}`);
-      const request = fetchPackage(niche, topic, style);
+      const request = fetchPackage(niche, topic, style, resolvedSeed);
 
       timers.current.push(
         setTimeout(() => {

@@ -7,6 +7,7 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   const c = pkg.character;
   const v = pkg.visual;
   const cam = pkg.camera;
+  const variation = pkg.variation;
   const line = "=".repeat(60);
   const date = new Date(pkg.generatedAt).toLocaleDateString("en-US", {
     year: "numeric",
@@ -64,6 +65,17 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
     "",
     "[SOUND DESIGN & MUSIC CUES]",
     cam.soundDesign.map((sd) => `- ${sd}`).join("\n"),
+    "",
+    "── STEP 4: VARIATION & ANTI-GENERIC PLAN ──",
+    "",
+    "COPY-PASTE PROMPT",
+    variation.copyPastePrompt,
+    "",
+    `Hook Style: ${variation.hookStyle}`,
+    `Story Structure: ${variation.storyStructure}`,
+    `Pacing Profile: ${variation.pacingProfile}`,
+    `Editing Style: ${variation.editingStyle}`,
+    `Emotional Tone: ${variation.emotionalTone}`,
     "",
     "[END OF BLUEPRINT]",
     "",

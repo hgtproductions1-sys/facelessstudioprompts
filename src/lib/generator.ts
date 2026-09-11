@@ -68,6 +68,14 @@ export interface ProductionPackage {
     rigCheatSheet: string[];
     soundDesign: string[];
   };
+  variation: {
+    hookStyle: string;
+    storyStructure: string;
+    pacingProfile: string;
+    editingStyle: string;
+    emotionalTone: string;
+    copyPastePrompt: string;
+  };
 }
 
 interface NicheProfile {
@@ -1176,6 +1184,72 @@ function titleCase(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+const VARIATION_OPTIONS = {
+  hookStyle: [
+    "Cold open with a surprising statistic",
+    "Rhetorical question that challenges an assumption",
+    "Start in the middle of the decisive action",
+    "Contrarian claim followed by immediate proof",
+    "Sensory detail before revealing the subject",
+    "Outcome-first reveal with the cause withheld",
+    "Direct viewer challenge with a specific stake",
+    "Quiet confession that opens an unanswered loop",
+  ],
+  storyStructure: [
+    "Chronological escalation from setup to payoff",
+    "Flash-forward opening, then rewind to the cause",
+    "Two contrasting timelines that converge at the reveal",
+    "Problem, failed attempt, insight, final transformation",
+    "Three clues arranged from subtle to undeniable",
+    "Before-and-after comparison with a midpoint reversal",
+    "Single-moment deep dive with widening context",
+    "Myth, evidence, verdict structure",
+  ],
+  pacingProfile: [
+    "Slow build, rapid payoff, one-beat closing pause",
+    "Immediate burst, controlled middle, accelerating finish",
+    "Steady curiosity climb with two sharp pattern interrupts",
+    "Measured setup, compressed proof sequence, held reveal",
+    "Alternating quick and quiet beats with a clean final hit",
+    "Fast first five seconds, deliberate explanation, snap ending",
+  ],
+  editingStyle: [
+    "Hard cuts on actions with one held detail shot",
+    "Smooth match cuts supported by restrained b-roll",
+    "Graphic cutaways alternating with close observational footage",
+    "Rhythmic jump cuts followed by a continuous final shot",
+    "Object-led match cuts with minimal on-screen text",
+    "Clean documentary cuts with one visual callback",
+  ],
+  emotionalTone: [
+    "Skeptical and investigative",
+    "Warm and nostalgic",
+    "Playfully competitive",
+    "Quietly suspenseful",
+    "Earnest and hopeful",
+    "Precise and satisfying",
+    "Urgent but credible",
+    "Curious and slightly uncanny",
+  ],
+} as const;
+
+function buildVariationPlan(seed: number, niche: string, topic: string) {
+  const hookStyle = pick([...VARIATION_OPTIONS.hookStyle], seed, 1);
+  const storyStructure = pick([...VARIATION_OPTIONS.storyStructure], seed, 3);
+  const pacingProfile = pick([...VARIATION_OPTIONS.pacingProfile], seed, 5);
+  const editingStyle = pick([...VARIATION_OPTIONS.editingStyle], seed, 7);
+  const emotionalTone = pick([...VARIATION_OPTIONS.emotionalTone], seed, 11);
+
+  return {
+    hookStyle,
+    storyStructure,
+    pacingProfile,
+    editingStyle,
+    emotionalTone,
+    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the core channel identity, but change the opening device, sequence of information, shot rhythm, transitions, and emotional framing so this upload feels deliberately original rather than copied from an earlier video.`,
+  };
+}
+
 export function generatePackage({
   niche,
   topic,
@@ -1397,6 +1471,7 @@ export function generatePackage({
       }),
     };
   });
+  const variation = buildVariationPlan(s, niche, cleanTopic);
 
   return {
     niche,
@@ -1463,6 +1538,7 @@ export function generatePackage({
       ],
       soundDesign: [...profile.sound, ...mixCues],
     },
+    variation,
   };
 }
 
@@ -1470,6 +1546,7 @@ export function packageToText(pkg: ProductionPackage): string {
   const c = pkg.character;
   const v = pkg.visual;
   const cam = pkg.camera;
+  const variation = pkg.variation;
   const div = "\n\n===============================\n\n";
   return [
     `FACELESS STUDIO PRO — PRODUCTION PACKAGE\nNiche: ${pkg.niche}\nTopic: ${pkg.topic}\nSeed: ${pkg.seed}\nGenerated: ${pkg.generatedAt}`,
@@ -1484,5 +1561,6 @@ export function packageToText(pkg: ProductionPackage): string {
     `STEP 3 — VIDEO GENERATION PROMPTS\n${cam.shots
       .map((sh) => `Shot ${String(sh.index).padStart(2, "0")}\n${sh.prompt}`)
       .join("\n\n")}\n\nSOUND DESIGN & MUSIC CUES\n${cam.soundDesign.map((r) => `- ${r}`).join("\n")}`,
+    `STEP 4 — VARIATION & ANTI-GENERIC PLAN\n\nCOPY-PASTE PROMPT\n${variation.copyPastePrompt}\n\nHook Style: ${variation.hookStyle}\nStory Structure: ${variation.storyStructure}\nPacing Profile: ${variation.pacingProfile}\nEditing Style: ${variation.editingStyle}\nEmotional Tone: ${variation.emotionalTone}`,
   ].join(div);
 }

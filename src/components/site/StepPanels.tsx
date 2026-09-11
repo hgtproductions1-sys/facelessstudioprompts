@@ -4,9 +4,10 @@ import type { ProductionPackage } from "@/lib/generator";
 import { CharacterCard } from "./CharacterCard";
 import { VisualCard } from "./VisualCard";
 import { CameraCard } from "./CameraCard";
+import { VariationCard } from "./VariationCard";
 import { cn } from "@/lib/utils";
 
-const TABS = ["Script", "Image", "Video"] as const;
+const TABS = ["Script", "Image", "Video", "Variation"] as const;
 
 export function StepPanels({ pkg }: { pkg: ProductionPackage }) {
   const [tab, setTab] = useState(0);
@@ -15,12 +16,13 @@ export function StepPanels({ pkg }: { pkg: ProductionPackage }) {
     <CharacterCard key="s1" pkg={pkg} />,
     <VisualCard key="s2" pkg={pkg} />,
     <CameraCard key="s3" pkg={pkg} />,
+    <VariationCard key="s4" pkg={pkg} />,
   ];
 
   return (
     <>
-      {/* Desktop — equal 3-column layout */}
-      <div className="mx-auto mt-6 hidden max-w-7xl grid-cols-3 items-stretch gap-6 lg:grid">
+      {/* Tablet / desktop — equal responsive grid */}
+      <div className="mx-auto mt-6 hidden max-w-[1600px] grid-cols-1 items-stretch gap-6 md:grid md:grid-cols-2 lg:grid-cols-4">
         {cards.map((card, i) => (
           <motion.div
             key={i}
@@ -34,12 +36,12 @@ export function StepPanels({ pkg }: { pkg: ProductionPackage }) {
         ))}
       </div>
 
-      {/* Mobile / tablet — simple 3-tab switcher */}
-      <div className="mx-auto mt-6 max-w-3xl lg:hidden">
+      {/* Mobile — simple 4-tab switcher */}
+      <div className="mx-auto mt-6 max-w-3xl md:hidden">
         <div
           role="tablist"
           aria-label="Blueprint steps"
-          className="border-line bg-surface2 grid grid-cols-3 gap-1 rounded-xl border p-1"
+          className="border-line bg-surface2 grid grid-cols-4 gap-1 rounded-xl border p-1"
         >
           {TABS.map((label, i) => (
             <button
