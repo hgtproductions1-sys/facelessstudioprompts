@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { NICHE_PAGES, getNichePage, type NichePage, type NichePrompt } from "@/data/niches";
+import { getNichePage, type NichePage, type NichePrompt } from "@/data/niches";
 import { SITE_URL, pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/niches/$slug")({
@@ -244,5 +244,3 @@ function NicheLandingPage() {
     </div>
   );
 }
-
-export const ALL_NICHE_SLUGS = NICHE_PAGES.map((n) => n.slug);

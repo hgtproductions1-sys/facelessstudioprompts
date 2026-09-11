@@ -24,6 +24,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as DotwellKnownAgenticVerifyDottxtRouteImport } from './routes/[.]well-known/agentic-verify[.]txt'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
 import { Route as NichesIndexRouteImport } from './routes/niches.index'
+import { Route as NichesSlugRouteImport } from './routes/niches.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -102,6 +103,11 @@ const NichesIndexRoute = NichesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => NichesRoute,
 } as any)
+const NichesSlugRoute = NichesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NichesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches/$slug': typeof NichesSlugRoute
   '/niches/': typeof NichesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches/$slug': typeof NichesSlugRoute
   '/niches': typeof NichesIndexRoute
 }
 export interface FileRoutesById {
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches/$slug': typeof NichesSlugRoute
   '/niches/': typeof NichesIndexRoute
 }
 export interface FileRouteTypes {
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches/$slug'
     | '/niches/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches/$slug'
     | '/niches'
   id:
     | '__root__'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches/$slug'
     | '/niches/'
   fileRoutesById: FileRoutesById
 }
@@ -331,14 +343,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NichesIndexRouteImport
       parentRoute: typeof NichesRoute
     }
+    '/niches/$slug': {
+      id: '/niches/$slug'
+      path: '/$slug'
+      fullPath: '/niches/$slug'
+      preLoaderRoute: typeof NichesSlugRouteImport
+      parentRoute: typeof NichesRoute
+    }
   }
 }
 
 interface NichesRouteChildren {
+  NichesSlugRoute: typeof NichesSlugRoute
   NichesIndexRoute: typeof NichesIndexRoute
 }
 
 const NichesRouteChildren: NichesRouteChildren = {
+  NichesSlugRoute: NichesSlugRoute,
   NichesIndexRoute: NichesIndexRoute,
 }
 
