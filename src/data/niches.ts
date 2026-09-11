@@ -41,10 +41,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-cat-and-pet-stories",
     name: "AI Cat & Pet Stories",
     niche: "AI Cat & Pet Stories",
-    seoTitle: "AI Cat & Pet Stories AI Video Prompts | Faceless Prompts",
+    seoTitle: "AI Cat & Pet Stories Video Prompts | Faceless Prompts",
     metaDescription:
       "Free ai cat & pet stories AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Cat & Pet Stories AI Video Prompts",
+    h1: "AI Cat & Pet Stories Video Prompts",
     intro:
       "AI Cat & Pet Stories is one of the strongest faceless formats right now: heartwarming, playful, cinematic storytelling built around the tiny hero cat. Every blueprint below locks the same character, the honey gold, moss green, dusty cream palette and gentle → emotional spike pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
@@ -122,10 +122,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-animal-cooking",
     name: "AI Animal Cooking",
     niche: "AI Animal Cooking",
-    seoTitle: "AI Animal Cooking AI Video Prompts | The Faceless Prompts",
+    seoTitle: "AI Animal Cooking Video Prompts | The Faceless Prompts",
     metaDescription:
       "Free ai animal cooking AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Animal Cooking AI Video Prompts",
+    h1: "AI Animal Cooking Video Prompts",
     intro:
       "AI Animal Cooking is one of the strongest faceless formats right now: cozy, whimsical, satisfying storytelling built around the chef bear in the forest kitchen. Every blueprint below locks the same character, the butter yellow, forest green, toasted amber palette and slow asmr → reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
@@ -458,10 +458,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-asmr-cooking-cleaning-restoration",
     name: "AI ASMR",
     niche: "AI ASMR (Cooking, Cleaning, Restoration)",
-    seoTitle: "AI ASMR AI Video Prompts | The Faceless Prompts",
+    seoTitle: "AI ASMR Video Prompts | The Faceless Prompts",
     metaDescription:
       "Free ai asmr AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI ASMR AI Video Prompts",
+    h1: "AI ASMR Video Prompts",
     intro:
       "AI ASMR is one of the strongest faceless formats right now: hypnotic, tactile, wordless storytelling built around the silent hands restorer. Every blueprint below locks the same character, the soft grey, foam white, muted steel palette and very slow → satisfying release pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
@@ -713,10 +713,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-influencer-product-reviews",
     name: "AI Influencer Product Reviews",
     niche: "AI Influencer Product Reviews",
-    seoTitle: "AI Influencer Product Reviews AI Video Prompts",
+    seoTitle: "AI Influencer Product Reviews Video Prompts",
     metaDescription:
       "Free ai influencer product reviews AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Influencer Product Reviews AI Video Prompts",
+    h1: "AI Influencer Product Reviews Video Prompts",
     intro:
       "AI Influencer Product Reviews is one of the strongest faceless formats right now: confident, aspirational, crisp storytelling built around the polished digital host. Every blueprint below locks the same character, the warm ivory, blush beige, brushed champagne palette and punchy → verdict pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
@@ -1138,10 +1138,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-car-wash-and-restoration",
     name: "AI Car Wash & Restoration",
     niche: "AI Car Wash & Restoration",
-    seoTitle: "AI Car Wash & Restoration AI Video Prompts | Faceless Prompts",
+    seoTitle: "AI Car Wash & Restoration Video Prompts | Faceless Prompts",
     metaDescription:
       "Free ai car wash & restoration AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Car Wash & Restoration AI Video Prompts",
+    h1: "AI Car Wash & Restoration Video Prompts",
     intro:
       "AI Car Wash & Restoration is one of the strongest faceless formats right now: satisfying, methodical, transformative storytelling built around the detail perfectionist. Every blueprint below locks the same character, the deep gloss black, foam white, chrome blue palette and slow build → big reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
@@ -1644,10 +1644,10 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-music-videos",
     name: "AI Music Videos",
     niche: "AI Music Videos",
-    seoTitle: "AI Music Videos AI Video Prompts | The Faceless Prompts",
+    seoTitle: "AI Music Videos Video Prompts | The Faceless Prompts",
     metaDescription:
       "Free ai music videos AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Music Videos AI Video Prompts",
+    h1: "AI Music Videos Video Prompts",
     intro:
       "AI Music Videos is one of the strongest faceless formats right now: stylised, rhythmic, surreal storytelling built around the faceless performer. Every blueprint below locks the same character, the electric magenta, deep violet, chrome silver palette and beat-synced → chorus drop pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
     prompts: [
