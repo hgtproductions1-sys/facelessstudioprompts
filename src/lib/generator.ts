@@ -11,12 +11,11 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
-import { fillTemplate, getScaffold, isInvestigativeNiche } from "@/lib/nicheScaffolds";
+import { fillTemplate } from "@/lib/nicheScaffolds";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 import {
   isHumanSubject,
   midjourneyNegativeFor,
-  negativePromptFor,
   subjectFramingClause,
   subjectPrefix,
 } from "@/lib/subject";
@@ -78,7 +77,7 @@ export interface ProductionPackage {
   };
 }
 
-interface NicheProfile {
+export interface NicheProfile {
   archetype: string;
   toneTags: string[];
   wardrobe: string[];
@@ -90,7 +89,31 @@ interface NicheProfile {
   sound: string[];
   hooks: string[];
   descriptors: string[];
+  hookFormat: string;
+  voVoiceType: string;
+  voEmotionalRegister: string;
+  cameraMotions: [string, string, string, string, string, string];
+  retentionBeatLabels: [string, string, string];
+  soundDesign: { bedTrack: string; sfx: string[]; silenceCue: string };
+  imageStyleFlags: string;
+  imageNegativePrompt: string;
+  variationTone: string;
+  forbiddenVocabulary: string[];
 }
+
+type LegacyNicheProfile = Omit<
+  NicheProfile,
+  | "hookFormat"
+  | "voVoiceType"
+  | "voEmotionalRegister"
+  | "cameraMotions"
+  | "retentionBeatLabels"
+  | "soundDesign"
+  | "imageStyleFlags"
+  | "imageNegativePrompt"
+  | "variationTone"
+  | "forbiddenVocabulary"
+>;
 
 export const NICHES = [
   "AI Cat & Pet Stories",
@@ -121,7 +144,7 @@ export const NICHES = [
 
 export type Niche = (typeof NICHES)[number];
 
-export const NICHE_PROFILES: Record<string, NicheProfile> = {
+const BASE_NICHE_PROFILES: Record<string, LegacyNicheProfile> = {
   "AI Cat & Pet Stories": {
     archetype: "The Tiny Hero Cat",
     toneTags: ["Heartwarming", "Playful", "Cinematic"],
@@ -1150,6 +1173,102 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
   },
 };
 
+type NicheRules = Pick<
+  NicheProfile,
+  | "hookFormat"
+  | "voVoiceType"
+  | "voEmotionalRegister"
+  | "cameraMotions"
+  | "retentionBeatLabels"
+  | "soundDesign"
+  | "imageStyleFlags"
+  | "imageNegativePrompt"
+  | "variationTone"
+  | "forbiddenVocabulary"
+>;
+
+const R = (
+  hookFormat: string,
+  voVoiceType: string,
+  voEmotionalRegister: string,
+  cameraMotions: NicheRules["cameraMotions"],
+  retentionBeatLabels: NicheRules["retentionBeatLabels"],
+  bedTrack: string,
+  sfx: string[],
+  silenceCue: string,
+  imageStyleFlags: string,
+  imageNegativePrompt: string,
+  variationTone: string,
+  forbiddenVocabulary: string[],
+): NicheRules => ({
+  hookFormat, voVoiceType, voEmotionalRegister, cameraMotions, retentionBeatLabels,
+  soundDesign: { bedTrack, sfx, silenceCue }, imageStyleFlags, imageNegativePrompt,
+  variationTone, forbiddenVocabulary,
+});
+
+const NICHE_RULES: Record<Niche, NicheRules> = {
+  "AI Cat & Pet Stories": R("The pet who {topic} — and no one knew why.", "Warm single narrator, gentle storytelling pace", "Heartwarming with bittersweet beats", ["slow push toward subject's face", "gentle tilt following paw movement", "static wide reveal", "slight pan across environment", "close-up reaction hold", "pull-back emotional reveal"], ["Emotional hook", "Story reveal", "Heart-tug payoff"], "70 BPM soft piano + strings", ["soft meow", "purr", "paw steps"], "1.5s before the emotional climax", "Pixar-style 3D animated, soft fur texture, warm golden lighting, cinematic emotional tone", "realistic gore, violence, disturbing imagery, mutated features", "Warm and hopeful", ["timeline", "investigation", "suspect", "evidence"]),
+  "AI Animal Cooking": R("An animal chef makes {topic} from scratch.", "Playful single narrator, children's-book energy", "Cheerful, silly, upbeat", ["overhead ingredient reveal", "macro whisking close-up", "pan across countertop", "static side-angle cooking shot", "low-angle hero plate reveal", "quick cut combo rhythm"], ["Curiosity opener", "Silly mishap", "Satisfying finish"], "128 BPM bouncy ukulele + marimba", ["chop", "sizzle", "plate clink"], "None — continuous music", "Pixar-style 3D cartoon, cute anthropomorphic animals, bright kitchen palette, warm cinematic lighting", "realistic cooking, real animals, blood, distorted faces", "Playful and light", ["timeline", "investigation", "crisis", "grave"]),
+  "POV Immersive Vlogs": R("POV: You {topic}.", "First-person narrator, whispered internal monologue", "Raw, intimate, observational", ["handheld first-person shake", "slow tilt up from ground", "walking forward motion", "glance left then right", "camera lowers as subject sits", "static first-person hold"], ["Immersive opener", "Sensory detail", "Reveal moment"], "ambient field recording, no music", ["footsteps", "breathing", "environment ambience"], "Nothing — no silence cues", "Photoreal 35mm, handheld POV, natural lighting, shallow depth of field", "cgi, cartoon, anime, stylized", "Immersive and observational", ["countdown", "top 5", "comedy", "joke"]),
+  "Anime Fight Versus": R("{topic} — the fight you've been waiting for.", "High-energy announcer, hype-man pacing", "Explosive, competitive, dramatic", ["fast dolly-in on clash", "wide establishing power-up shot", "slow-motion impact freeze", "rapid pan following punch", "low-angle hero shot", "pull-back reveal of destruction"], ["Power-up hype", "Impact clash", "Winning blow reveal"], "140 BPM epic orchestral + taiko drums", ["whoosh", "impact boom", "energy charge"], "1.0s before the finishing blow", "Anime style, cel-shaded, dramatic speed lines, vibrant energy effects, cinematic widescreen", "photoreal, 3D render, muted colors, western cartoon", "Bold and explosive", ["gentle", "cozy", "soft"]),
+  "Stickman Explainer & Skits": R("Here's why {topic} actually works.", "Deadpan educational narrator", "Dry, witty, informative", ["static wide frame", "quick zoom on stickman face", "pan across diagram", "hard cut between panels", "push-in on chart", "cutaway to visual metaphor"], ["Curiosity opener", "Absurd analogy", "Punchline explanation"], "minimal lo-fi beat, 90 BPM", ["pen click", "whoosh transition", "record scratch on beat"], "0.5s before punchline", "Minimalist 2D stickman cartoon, white background, thin black outlines, pale yellow accent", "photoreal, detailed textures, 3D, complex rendering", "Deadpan and clever", ["emotional", "heartfelt", "moving"]),
+  "AI ASMR (Cooking, Cleaning, Restoration)": R("No narration — pure ASMR of {topic}.", "No voiceover — sound design only", "Calm, satisfying, meditative", ["fixed macro overhead", "slow zoom on texture", "static close-up hold", "gentle tilt across surface", "micro push on detail", "no camera movement — locked frame"], ["Texture reveal", "Satisfying process", "Perfect finish"], "no music", ["liquid pour", "brush scrape", "foam burst", "metal click"], "None — continuous ambient", "Hyper-realistic macro, sharp detail, soft natural lighting, shallow depth of field", "cartoon, stylized, animation, illustration", "Calm and satisfying", ["hook", "cliffhanger", "countdown"]),
+  "Zombie Apocalypse Drama": R("A survivor has 60 seconds to escape {topic}.", "Tense first-person survivor, breathless", "Panicked, urgent, survival-focused", ["handheld chase shake", "running forward motion", "whip pan to check behind", "fall to ground impact", "close-up on terrified face", "wide shot of horde approaching"], ["Threat reveal", "Near-miss beat", "Escape moment"], "85 BPM tense drone + percussion", ["moan", "footsteps", "breath", "metal clang"], "2s before the escape moment", "Hyper-realistic cinematic, desaturated palette, film grain, dust and debris", "cartoon, anime, colorful, stylized", "Tense and cinematic", ["comedy", "cute", "playful"]),
+  "Bible & Mythology Anime": R("The story of {topic} — as you've never seen it.", "Reverent epic narrator, storybook pacing", "Dramatic, awe-inspiring, mythic", ["slow reveal from clouds", "ascending crane shot", "wide epic establishing shot", "close-up on divine glow", "orbit around character", "pull-back to cosmic scale"], ["Divine reveal", "Mythic conflict", "Transcendent ending"], "60 BPM choir + orchestral swells", ["thunder", "holy chime", "wind"], "2s before the divine revelation", "Anime style, cel-shaded, divine lighting, ornate detail, cinematic widescreen", "photoreal, cartoon, modern clothing, contemporary setting", "Reverent and epic", ["comedy", "silly", "meme"]),
+  "AI Influencer Product Reviews": R("I've been using {topic} for 30 days — here's the truth.", "Casual friend-next-door, natural Filipina accent", "Conversational, authentic, honest", ["handheld selfie angle", "close-up on product", "medium shot talking head", "pan across workspace", "static reviewer POV", "quick cut to product in use"], ["First impression", "Testing surprise", "Honest verdict"], "no music, natural room tone", ["product click", "paper rustle", "typing"], "None", "Photoreal, natural lighting, modern home/studio background, 4K", "cartoon, anime, stylized, CGI", "Authentic and conversational", ["mythology", "epic", "dramatic"]),
+  "Lullaby & Sleep Music": R("No hook — soft opening fade-in of {topic}.", "Soft breathy female vocals only, no narration", "Calm, soothing, sleepy", ["static locked frame", "very slow tilt across sleeping subject", "no movement", "gentle drift on ambient particles", "slow dissolve to next scene", "static hold"], ["Gentle entry", "Peaceful drift", "Soft landing"], "62 BPM music box + soft piano", ["very soft chime", "gentle breath"], "Never silent — continuous ambient", "Pixar-style 3D, soft pastel colors, warm nursery lighting, sleepy atmosphere", "fast motion, flashing lights, loud colors, scary imagery", "Gentle and soothing", ["hook", "cliffhanger", "payoff", "countdown"]),
+  "Analog Horror & Unsolved Mysteries": R("Recording recovered: {topic}. Subject unknown.", "Distorted broadcast voice, unsettling monotone", "Creepy, wrong, uncanny", ["static found-footage hold", "sudden tilt to hidden figure", "distorted zoom in", "VHS tracking glitch shake", "static wide with slow figure approach", "cut to black abruptly"], ["Anomaly detected", "Escalating dread", "Unresolved terror"], "static drone + low rumble", ["VHS whir", "static burst", "distant scream"], "Long uncomfortable silence before the reveal", "VHS found-footage aesthetic, low-fi, grain, distorted color, 1980s camcorder", "modern high-def, clean, cartoon, anime", "Unsettling and wrong", ["cute", "cheerful", "upbeat", "heartwarming"]),
+  "DIY Cardboard & Miniature Builds": R("Making {topic} from cardboard — no power tools.", "Friendly maker narrator, step-by-step pacing", "Satisfying, methodical, encouraging", ["overhead build shot", "macro close on glue bond", "timelapse sequence", "side-angle assembly shot", "static workbench hold", "reveal spin of finished piece"], ["Build start", "Satisfying assembly", "Finished reveal"], "100 BPM acoustic guitar + light percussion", ["cardboard fold", "hot glue squeeze", "scissors snip"], "1s before final reveal", "Photoreal craft photography, warm workshop lighting, macro detail", "cartoon, anime, CGI, floating objects", "Satisfying and methodical", ["investigation", "threat", "horror"]),
+  "Vegetable & Fruit Carving": R("Carving {topic} into a watermelon.", "No narration, ambient workshop sound only", "Satisfying, focused, meditative", ["locked macro overhead", "slow zoom on knife tip", "static side angle", "micro push into carving detail", "no movement — locked frame", "final spin of finished piece"], ["First cut", "Reveal progress", "Finished sculpture"], "no music", ["knife slice", "rind peel", "juice drip"], "None — continuous ambient", "Photoreal macro, sharp focus, natural lighting, shallow depth of field", "cartoon, anime, drawing, illustration", "Satisfying and precise", ["comedy", "character", "narrative"]),
+  "AI Car Wash & Restoration": R("This {topic} hasn't been cleaned in 20 years.", "No narration, satisfying transformation only", "Satisfying, dramatic reveal", ["steady close-up on dirty surface", "slow cinematic zoom during wash", "static wide transformation reveal", "macro foam detail", "pull-back before-after shot", "locked frame with water motion"], ["Grime reveal", "Satisfying wash", "Mirror-finish payoff"], "120 BPM uplifting cinematic beat", ["water spray", "foam burst", "brush scrub", "metal sparkle chime"], "1s before the final reveal", "Photoreal, automotive commercial lighting, high detail, HDR", "cartoon, anime, stylized, illustration", "Satisfying and dramatic", ["narrative", "character", "story"]),
+  "Miniature ASMR Cooking": R("Tiny kitchen — {topic} at 1:12 scale.", "No narration — pure miniature ASMR", "Satisfying, precise, miniature wonder", ["macro overhead on tiny stove", "close-up on miniature knife", "static side shot of tiny cooking", "micro push on steam", "locked frame with food sizzle", "final plate reveal"], ["Tiny prep", "Macro cooking detail", "Finished mini dish"], "no music", ["tiny sizzle", "mini clink", "soft pour"], "None — continuous ambient", "Photoreal macro, miniature scale, cinematic macro lighting, warm kitchen tones", "cartoon, stylized, full-size objects", "Satisfying and precise", ["character", "story", "narrative"]),
+  "Nostalgia Toy Unboxing": R("Opening a vintage {topic} — unopened for 30 years.", "No narration, ASMR unboxing focus", "Nostalgic, satisfying, gentle", ["POV overhead unboxing", "macro close on tape seal", "static side angle with hands entering", "slow zoom on reveal", "locked frame on display shelf", "gentle pan across collection"], ["Box inspection", "Reveal moment", "Collection placement"], "ambient 80s synth pad, no rhythm", ["cardboard crease", "plastic crinkle", "tape peel"], "2s before the toy reveal", "Photoreal, 1990s camcorder look, warm nostalgic lighting, sharp detail", "cartoon, anime, modern aesthetic, 4K clean", "Nostalgic and gentle", ["investigation", "threat", "horror"]),
+  "Ranking & Top 5 Countdowns": R("Top 5 {topic} — number one will surprise you.", "Energetic countdown narrator, build-up pacing", "Curious, competitive, escalating", ["zoom-in on rank number", "static wide with animated rank", "cut between items", "push-in on the number one reveal", "slow pan across ranked items", "dramatic pull-back on final"], ["Curiosity opener", "Ranking buildup", "Number one reveal"], "110 BPM tension-building electronic", ["countdown tick", "drum hit", "whoosh"], "1s before number one reveal", "Clean editorial illustration, bold typography, high-contrast palette", "photoreal, cinematic, dark, moody", "Curious and competitive", ["gentle", "soft", "quiet"]),
+  "Vox-Style Paper-Cut Commentary": R("{topic} — and why it matters more than you think.", "Investigative documentary narrator, measured pacing", "Analytical, credible, thoughtful", ["overhead tabletop with paper reveal", "slow push on evidence board", "static paper-slide animation", "pan across documents", "zoom on map or chart", "reveal of final paper stack"], ["Central question", "Evidence buildup", "Conclusion reveal"], "95 BPM minimal documentary score", ["paper slide", "pin push", "typewriter click"], "1.5s before the conclusion", "Paper-cut collage, torn edges, vintage textures, editorial design, beige + red accents", "photoreal, cartoon, 3D, glossy", "Analytical and credible", ["joke", "silly", "playful", "cute"]),
+  "Elderly Wisdom & Stoic Long-Form": R("The Stoics taught this 2,000 years ago — most people still ignore {topic}.", "Wise elder narrator, slow deliberate pacing", "Reflective, patient, timeless", ["static wide with slow text overlay", "slow pan across classical imagery", "gentle zoom on statue or scene", "locked frame with ambient nature", "slow tilt across landscape", "fade transitions between scenes"], ["Timeless premise", "Wisdom reveal", "Reflective close"], "70 BPM soft orchestral, no percussion", ["wind", "distant birds", "soft footsteps"], "2s before the final wisdom line", "Cinematic painterly realism, muted earthy palette, museum-quality composition", "cartoon, anime, modern, neon, stylized", "Reflective and timeless", ["meme", "comedy", "trending", "viral"]),
+  "AI Music Videos": R("No hook — music starts immediately with {topic}.", "Music vocals only, no narration", "Musical, artistic, cinematic", ["beat-synced cut rhythm", "cinematic dolly through scene", "slow push on performer", "spin around subject", "static hold with light change", "lyric-synced zoom"], ["Beat entry", "Chorus visual peak", "Emotional outro"], "song-driven, no separate bed", ["matched to song beats"], "None — music continuous", "Cinematic artistic style, high contrast lighting, music-video aesthetic", "documentary, casual, handheld", "Artistic and cinematic", ["narration", "explainer", "tutorial"]),
+  "Cartoon Horror Illustration": R("You shouldn't have opened {topic}.", "Creepy playful narrator, unsettling singsong", "Eerie, unsettling, darkly comedic", ["static hold with subtle zoom", "sudden whip to hidden figure", "slow push on expression", "creepy tilt down", "locked frame with movement in background", "freeze frame on horror reveal"], ["Creepy setup", "Wrong detail", "Horror payoff"], "95 BPM off-kilter music box + drone", ["creak", "whisper", "child laughter reversed"], "3s of dead silence before the reveal", "Adult indie cartoon, thick outlines, flat colors, hand-drawn texture, eerie atmosphere", "cute, wholesome, bright, cheerful, disney", "Eerie and unsettling", ["cute", "wholesome", "family-friendly", "cheerful"]),
+  "Pixel Game POV": R("POV: You're the last {topic} in a pixel world.", "Retro game announcer or silent POV", "Nostalgic, adventurous, retro", ["retro 90s pixel scrolling", "top-down walking motion", "side-scroll pan", "static pixel frame with cursor", "pixelated zoom-in", "locked frame with sprite animation"], ["World entry", "Retro encounter", "Victory screen"], "8-bit chiptune, 130 BPM", ["coin ping", "jump", "enemy hit", "level-up jingle"], "None — continuous chiptune", "90s pixel art, 16-bit SNES palette, retro game aesthetic, crisp sprite detail", "photoreal, 3D, HD, modern rendering", "Nostalgic and retro", ["photoreal", "cinematic", "editorial"]),
+  "Celebrity Evolution & Glow-Up": R("{topic} then vs now — the transformation is wild.", "Dramatic reveal narrator, punchy pacing", "Shocking, dramatic, satisfying", ["split-screen slide reveal", "zoom-in on before photo", "wipe transition to after", "static hold with morph effect", "pan across transformation timeline", "final pull-back reveal"], ["Before reveal", "Transformation moment", "After shock"], "105 BPM dramatic electronic", ["whoosh", "camera shutter", "impact hit"], "1s before the after reveal", "Photoreal, magazine-quality portraits, cinematic lighting", "cartoon, anime, stylized, illustration", "Dramatic and shocking", ["gentle", "quiet", "calm"]),
+  "Poor vs. Rich Animals (AI Skits)": R("Rich {topic} vs Poor {topic} — the twist changes everything.", "Dual comedic character voices, contrasting pitch", "Broad comedy with a soft ending", ["whip pan between characters", "snap zoom on reaction", "split-screen slide-in", "low-angle hero shot", "slow tilt from rich side to poor side", "hard cut on punchline"], ["Setup beat", "Reaction beat", "Payoff beat"], "116 BPM comedic orchestral swap", ["cash register on rich cuts", "tin clatter on poor cuts"], "1.0s before the kind ending", "Pixar-style 3D cartoon render, expressive animal rig, split-screen warm vs cold grade, punchy comedy lighting", "gore, realistic, dark, horror", "Comedic and warm", ["timeline", "investigation", "evidence", "part two", "one source"]),
+};
+
+export const NICHE_PROFILES: Record<string, NicheProfile> = NICHES.reduce<Record<string, NicheProfile>>(
+  (profiles, niche) => {
+    const base = BASE_NICHE_PROFILES[niche];
+    if (!base) throw new Error(`Missing base profile for ${niche}`);
+    profiles[niche] = { ...base, ...NICHE_RULES[niche] };
+    return profiles;
+  },
+  {},
+);
+
+export function getNicheProfile(niche: string): NicheProfile {
+  return (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
+}
+
+const SAFE_TERM_REPLACEMENTS: Record<string, string> = {
+  cinematic: "film-grade",
+  emotional: "expressive",
+  heartfelt: "warm",
+  moving: "affecting",
+  hook: "opening",
+  cliffhanger: "unresolved beat",
+  payoff: "resolution",
+  countdown: "sequence",
+  narrative: "sequence",
+  character: "subject",
+  story: "concept",
+};
+
+function scrubForbiddenVocabulary(text: string, profile: NicheProfile): string {
+  return profile.forbiddenVocabulary.reduce((output, term) => {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const replacement = SAFE_TERM_REPLACEMENTS[term.toLowerCase()] ?? "excluded concept";
+    return output.replace(new RegExp(`\\b${escaped}\\b`, "gi"), replacement);
+  }, text);
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()
@@ -1254,12 +1373,17 @@ const VARIATION_OPTIONS = {
   ],
 } as const;
 
-function buildVariationPlan(seed: number, niche: string, topic: string) {
+function buildVariationPlan(
+  seed: number,
+  niche: string,
+  topic: string,
+  profile: NicheProfile,
+): ProductionPackage["variation"] {
   const hookStyle = pick([...VARIATION_OPTIONS.hookStyle], seed, 1);
   const storyStructure = pick([...VARIATION_OPTIONS.storyStructure], seed, 3);
   const pacingProfile = pick([...VARIATION_OPTIONS.pacingProfile], seed, 5);
   const editingStyle = pick([...VARIATION_OPTIONS.editingStyle], seed, 7);
-  const emotionalTone = pick([...VARIATION_OPTIONS.emotionalTone], seed, 11);
+  const emotionalTone = profile.variationTone;
 
   return {
     hookStyle,
@@ -1267,60 +1391,45 @@ function buildVariationPlan(seed: number, niche: string, topic: string) {
     pacingProfile,
     editingStyle,
     emotionalTone,
-    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the core channel identity, but change the opening device, sequence of information, shot rhythm, transitions, and emotional framing so this upload feels deliberately original rather than copied from an earlier video.`,
+    copyPastePrompt: `For this ${niche} video about ${topic}, follow the opening device ${profile.hookFormat.toLowerCase()}. Use ${hookStyle.toLowerCase()}, structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the niche voice while changing the information order, shot rhythm, transitions, and framing so this upload feels deliberately original.`,
   };
 }
 
-function variationMatchesNiche(
-  variation: ReturnType<typeof buildVariationPlan>,
+function variationMatchesNiche(variation: ProductionPackage["variation"], profile: NicheProfile): boolean {
+  const tone = variation.emotionalTone.toLowerCase();
+  const variationText = Object.values(variation).join(" ").toLowerCase();
+  const required = profile.variationTone.toLowerCase().split(/\s+(?:and|with)\s+/).filter((word) => word.length > 3);
+  return required.some((word) => tone.includes(word)) && !profile.forbiddenVocabulary.some((word) => variationText.includes(word.toLowerCase()));
+}
+
+function rebuildVariationForNiche(
+  seed: number,
   niche: string,
-  emotionalRegister: string,
-): boolean {
-  if (niche !== ANIMAL_SKIT_NICHE) return true;
-  const text = `${variation.storyStructure} ${variation.emotionalTone}`.toLowerCase();
-  const contradictsComedy = /investigat|urgent|uncanny|suspense|evidence|verdict|clues|withheld/.test(text);
-  const needsWarmComedy = /comedy|comedic|playful/.test(text) && /warm|soft|heart/.test(text);
-  return /comedy/i.test(emotionalRegister) && needsWarmComedy && !contradictsComedy;
-}
-
-function rebuildVariationForNiche(seed: number, niche: string, topic: string) {
-  const hookStyle = pick(
-    ["Comedic contrast in the opening frame", "Character voice-swap cold open", "Reaction-first rich-versus-poor reveal"],
-    seed,
-    1,
-  );
-  const storyStructure = pick(
-    [
-      "Parallel rich-versus-poor setup, escalating contrast, shared-hearted payoff",
-      "Alternating character viewpoints, comic reversal, warm resolution",
-      "Three escalating comparisons followed by a generous final twist",
-    ],
-    seed,
-    3,
-  );
-  const pacingProfile = pick(
-    ["Quick character swaps, held reaction, gentle final beat", "Fast contrast beats, comic pause, soft landing"],
-    seed,
-    5,
-  );
-  const editingStyle = pick(
-    ["Whip-pan swaps with split-screen comparisons", "Reaction-led cuts with one held closing two-shot"],
-    seed,
-    7,
-  );
-  const emotionalTone = pick(
-    ["Broad comedy with a soft ending", "Playfully competitive with a warm ending", "Comedic and heartfelt"],
-    seed,
-    11,
-  );
+  topic: string,
+  profile: NicheProfile,
+): ProductionPackage["variation"] {
+  const hookStyle = `Niche-specific opening based on: ${profile.hookFormat}`;
+  const storyStructure = `${profile.retentionBeatLabels.join(" to ")} progression`;
+  const pacingProfile = `${profile.voEmotionalRegister} pacing with a controlled final beat`;
+  const editingStyle = `${profile.cameraMotions[(seed + 1) % profile.cameraMotions.length]} followed by ${profile.cameraMotions[(seed + 3) % profile.cameraMotions.length]}`;
+  const emotionalTone = profile.variationTone;
   return {
     hookStyle,
     storyStructure,
     pacingProfile,
     editingStyle,
     emotionalTone,
-    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the playful character contrast and finish on an earned moment of warmth so the upload feels original without contradicting the channel voice.`,
+    copyPastePrompt: scrubForbiddenVocabulary(`For this ${niche} video about ${topic}, use ${profile.hookFormat.toLowerCase()} as the opening pattern. Structure the sequence as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the tone ${emotionalTone.toLowerCase()}. Preserve the niche's ${profile.voEmotionalRegister.toLowerCase()} voice while changing the execution enough to feel original.`, profile),
   };
+}
+
+function scrubVariation(
+  variation: ProductionPackage["variation"],
+  profile: NicheProfile,
+): ProductionPackage["variation"] {
+  return Object.fromEntries(
+    Object.entries(variation).map(([key, value]) => [key, scrubForbiddenVocabulary(value, profile)]),
+  ) as unknown as ProductionPackage["variation"];
 }
 
 export function generatePackage({
@@ -1334,7 +1443,7 @@ export function generatePackage({
   seed?: number;
   style?: StyleSelection;
 }): ProductionPackage {
-  const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
+  const profile = getNicheProfile(niche);
   const st = resolveStyle(style);
   const ar = st.format.aspectRatio;
   const orient = st.format.orientation;
@@ -1365,8 +1474,6 @@ export function generatePackage({
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
 
-  const scaffold = getScaffold(niche);
-
   // "a whale and a rat" -> ["whale", "rat"] so versus-style hooks read cleanly.
   const versusNiche = /poor vs|versus/i.test(niche);
   const pair = versusNiche
@@ -1381,50 +1488,44 @@ export function generatePackage({
     return template.replace(/\{(?:topic|lowTopic)\}/g, () => pair[i++ % 2] ?? phrase);
   };
 
-  const hookSource = scaffold?.hookTemplates ?? profile.hooks;
+  const hookSource = [profile.hookFormat, ...profile.hooks.slice(0, 2)];
   const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: scaffold ? fill(h) : renderTemplate(h, cleanTopic),
+    text: scrubForbiddenVocabulary(fill(h), profile),
   }));
 
-  const rawCueSheet = scaffold
-    ? scaffold.voCuePattern.map((r) => ({
-        timestamp: r.timestamp,
-        line: fill(r.line),
-        cue: r.cue,
-      }))
-    : [
-        {
-          timestamp: "0:00",
-          line: hooks[0]?.text ?? "",
-          cue: "cold open, no music, dry close-mic",
-        },
-        {
-          timestamp: "0:05",
-          line: `Here is what makes ${lowTopic} worth watching.`,
-          cue: "pause 0.5s",
-        },
-        {
-          timestamp: "0:12",
-          line: `The ${desc} detail is easy to miss the first time.`,
-          cue: "bed track enters, lift energy 10%",
-        },
-        {
-          timestamp: "0:19",
-          line: `Watch what happens next with ${lowTopic}.`,
-          cue: "accelerate",
-        },
-        {
-          timestamp: "0:26",
-          line: `That ${desc2} moment is the whole point.`,
-          cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
-        },
-      ];
+  const rawCueSheet = [
+    {
+      timestamp: "0:00",
+      line: hooks[0]?.text ?? "",
+      cue: `cold open, ${profile.voEmotionalRegister.toLowerCase()}`,
+    },
+    {
+      timestamp: "0:05",
+      line: `${profile.retentionBeatLabels[0]} begins as ${lowTopic} reveals one ${desc} detail worth noticing.`,
+      cue: "pause 0.4s",
+    },
+    {
+      timestamp: "0:11",
+      line: `${profile.retentionBeatLabels[1]} changes the rhythm, bringing the ${desc2} contrast clearly into view.`,
+      cue: "increase pace slightly",
+    },
+    {
+      timestamp: "0:18",
+      line: `Now ${lowTopic} shifts again, and the central idea becomes impossible to overlook.`,
+      cue: "pause 0.3s",
+    },
+    {
+      timestamp: "0:25",
+      line: `${profile.retentionBeatLabels[2]} lands with a final ${desc} image that completes the moment.`,
+      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, intimate finish`,
+    },
+  ];
 
   // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
   const cueSheet = rawCueSheet.map((r) => ({
     timestamp: r.timestamp,
-    line: dedupePhrases(r.line),
+    line: scrubForbiddenVocabulary(dedupePhrases(r.line), profile),
     cue: toElevenLabsCue(r.cue),
   }));
 
@@ -1435,7 +1536,7 @@ export function generatePackage({
     })
     .filter((x): x is string => Boolean(x));
 
-  const negativePrompt = negativePromptFor(niche);
+  const negativePrompt = `${profile.imageNegativePrompt}, text, watermark`;
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
@@ -1443,7 +1544,7 @@ export function generatePackage({
     .filter(Boolean)
     .join(", ")
     .toLowerCase();
-  const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
+  const lightingLine = scrubForbiddenVocabulary(`${st.vibe.lighting}, palette of ${profile.palette}`, profile);
 
   // Non-human niches anchor on the actual topic subject, never a human persona.
   const topicSubject = stripArticle(lowTopic) || archetypeNoun;
@@ -1453,10 +1554,14 @@ export function generatePackage({
     animalSkits && pair.length === 2
       ? `A rich ${pair[0]} and a poor ${pair[1]}, both with full expressive animal features, stage a playful side-by-side comedy contrast`
       : heroSubject;
-  const imageSubjectLead = animalSkits ? animalImageOpening : heroSubject;
+  const imageSubjectLead = animalSkits
+    ? animalImageOpening
+    : human
+      ? `A cinematic scene featuring ${heroSubject} connected to ${lowTopic}`
+      : `A complete ${topicSubject} presented as the central subject`;
 
   // Art direction comes from the niche scaffold so each niche renders in its own medium.
-  const styleFlags = scaffold?.imageStyleFlags ?? profile.styleDNA.join(", ").toLowerCase();
+  const styleFlags = profile.imageStyleFlags;
 
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
@@ -1488,7 +1593,7 @@ export function generatePackage({
       [
         `${imageSubjectLead} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
-        `camera motion: ${normalizeCameraMove(scaffold?.cameraMotionSet?.[0] ?? st.pacing.camera)}`,
+        `camera motion: ${normalizeCameraMove(profile.cameraMotions[0] ?? st.pacing.camera)}`,
         lightingLine,
         styleFlags,
         `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
@@ -1512,30 +1617,14 @@ export function generatePackage({
   )} --ar ${ar}`;
 
   // Niche-specific camera vocabulary first; generic cinematography as the fallback.
-  const animalMotionSet =
-    pair.length === 2
-      ? [
-          `Whip pan from wide to rich ${pair[0]}`,
-          `Snap zoom on poor ${pair[1]}'s reaction`,
-          `Split-screen slide-in comparing rich ${pair[0]} and poor ${pair[1]}`,
-          `Low-angle hero shot of rich ${pair[0]}`,
-          `Slow tilt from rich ${pair[0]}'s side to poor ${pair[1]}'s side`,
-        ]
-      : [
-          "Whip pan between characters",
-          "Snap zoom on the poor animal's reaction",
-          "Split-screen slide-in comparing both sides",
-          "Low-angle hero shot of the rich animal",
-          "Slow tilt from the rich side to the poor side",
-        ];
-  const shotMotions =
-    animalSkits
-      ? animalMotionSet
-      : scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
-        ? scaffold.cameraMotionSet
-      : st.pacing.id === "fast"
-        ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
-        : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
+  const shotMotions = profile.cameraMotions.map((motion) => {
+    if (!animalSkits || pair.length !== 2) return motion;
+    return motion
+      .replace("between characters", `from rich ${pair[0]} to poor ${pair[1]}`)
+      .replace("on reaction", `on poor ${pair[1]}'s reaction`)
+      .replace("rich side", `rich ${pair[0]}'s side`)
+      .replace("poor side", `poor ${pair[1]}'s side`);
+  });
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
@@ -1588,17 +1677,16 @@ export function generatePackage({
       animationCue: pick(cues, s, i * 5),
       prompt: animalSkits
         ? storyboardPrompt
-        : `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
+        : scrubForbiddenVocabulary(
+            `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
+            profile,
+          ),
     };
   });
-  const initialVariation = buildVariationPlan(s, niche, cleanTopic);
-  const variation = variationMatchesNiche(
-    initialVariation,
-    niche,
-    profile.voice["Emotional Register"] ?? "",
-  )
+  const initialVariation = scrubVariation(buildVariationPlan(s, niche, cleanTopic, profile), profile);
+  const variation = variationMatchesNiche(initialVariation, profile)
     ? initialVariation
-    : rebuildVariationForNiche(s, niche, cleanTopic);
+    : scrubVariation(rebuildVariationForNiche(s, niche, cleanTopic, profile), profile);
 
   return {
     niche,
@@ -1611,23 +1699,19 @@ export function generatePackage({
       toneTags: profile.toneTags,
       physicalDescription,
       wardrobe: profile.wardrobe,
-      voiceSpec: { ...profile.voice, "Pace (WPM)": st.pacing.wpm },
+      voiceSpec: {
+        ...profile.voice,
+        "Voice Type": profile.voVoiceType,
+        "Emotional Register": profile.voEmotionalRegister,
+        "Pace (WPM)": st.pacing.wpm,
+      },
       hooks,
       cueSheet,
-      retentionBeats: animalSkits
-        ? [
-            "0:00 — Setup beat: establish the rich-versus-poor contrast immediately.",
-            "0:11 — Reaction beat: hold on the poor character's generous choice.",
-            "0:18 — Pattern interrupt: swap the expected winner and pause on the rich character's stare.",
-            "0:25 — Payoff beat: reveal that sharing makes the smaller meal feel richer.",
-          ]
-        : [
-            `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
-            `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
-            isInvestigativeNiche(niche)
-              ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
-              : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
-          ],
+      retentionBeats: [
+        `${cueSheet[0]?.timestamp ?? "0:00"} — ${profile.retentionBeatLabels[0]}: establish ${lowTopic}.`,
+        `${cueSheet[2]?.timestamp ?? "0:12"} — ${profile.retentionBeatLabels[1]}: develop the central turn.`,
+        `${cueSheet.at(-1)?.timestamp ?? "0:25"} — ${profile.retentionBeatLabels[2]}: land the final moment.`,
+      ],
     },
     visual: {
       styleDNA: profile.styleDNA,
@@ -1672,7 +1756,12 @@ export function generatePackage({
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
-      soundDesign: [...(scaffold?.soundDesignDefaults ?? profile.sound), ...mixCues],
+      soundDesign: [
+        `Bed track: ${profile.soundDesign.bedTrack}`,
+        `SFX: ${profile.soundDesign.sfx.join(", ")}`,
+        `Silence: ${profile.soundDesign.silenceCue}`,
+        ...mixCues,
+      ],
     },
     variation,
   };
