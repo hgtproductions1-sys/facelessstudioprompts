@@ -1417,9 +1417,12 @@ export function generatePackage({
       overview: {
         "Total Runtime": `0:${String(shotCount * 7).padStart(2, "0")}`,
         "Shot Count": String(shotCount),
-        "Avg Shot Length": "7.0s",
-        "Pacing Profile": profile.pacing,
-        "Target Platform": "TikTok / Shorts / Reels (9:16)",
+        "Avg Shot Length": st.pacing.avgShotLength,
+        "Pacing Profile": `${st.pacing.label} — ${profile.pacing}`,
+        "Target Platform":
+          st.format.id === "youtube"
+            ? `YouTube long-form (${ar})`
+            : `TikTok / Shorts / Reels (${ar})`,
       },
       shots,
       rigCheatSheet: [
