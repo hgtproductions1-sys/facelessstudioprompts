@@ -12,6 +12,7 @@
 - [x] Loading state now says a blueprint takes 30-60 seconds instead of a stepper that freezes at 2.4s.
 
 ## Next
+- [ ] Replace all shared niche-generation scaffolding with 24 complete profiles and enforce each profile across local and AI output.
 - [x] Make Poor vs. Rich Animals outputs storyboard-synced: varied motions, contextual image opening, timed comedy beats, and matching variation tone.
 - [ ] Publish the engine order + loading copy (in progress) and confirm the honesty edits and the guide serve on https://www.thefacelessprompts.com.
 - [ ] Request indexing in Search Console for /faceless-youtube-automation once it serves on the domain.
