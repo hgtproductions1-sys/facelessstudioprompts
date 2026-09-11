@@ -1021,7 +1021,7 @@ const BASE_NICHE_PROFILES: Record<string, LegacyNicheProfile> = {
       "Ink Line Texture",
       "Hand-Painted Shadow",
       "Distorted Perspective",
-      "Uncanny Cute",
+      "Uncanny Doll-Like",
     ],
     palette: "bruised purple, sickly yellow, ink black",
     environments: [
