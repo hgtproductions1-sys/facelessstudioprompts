@@ -1677,7 +1677,10 @@ export function generatePackage({
       animationCue: pick(cues, s, i * 5),
       prompt: animalSkits
         ? storyboardPrompt
-        : `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
+        : scrubForbiddenVocabulary(
+            `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
+            profile,
+          ),
     };
   });
   const initialVariation = scrubVariation(buildVariationPlan(s, niche, cleanTopic, profile), profile);
