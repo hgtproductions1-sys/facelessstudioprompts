@@ -126,7 +126,8 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
   const mixCues: string[] = [];
 
-  const cueSheet = (pkg.character.cueSheet ?? []).map((r) => {
+  // Hard caps: max 30s of script (5 rows) and exactly 4 shots.
+  const cueSheet = (pkg.character.cueSheet ?? []).slice(0, 5).map((r) => {
     const mix = extractMixDirective(r.cue ?? "");
     if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
     return {
@@ -136,8 +137,9 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
     };
   });
 
-  const shots = (pkg.camera.shots ?? []).map((s, i) => ({
+  const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
+    index: i + 1,
     prompt: buildShotPrompt({
       motion: s.motion ?? "slow push in",
       subjectAction: dedupePhrases(
