@@ -8,6 +8,7 @@ import { AffiliateCta } from "./primitives";
 const NAV_LINKS = [
   { label: "Generator", href: "/#generator" },
   { label: "AI Tools Hub", href: "/ai-tools-hub" },
+  { label: "Niches", href: "/niches" },
   { label: "Free Vault", href: "/free-tools" },
   { label: "Playbook", href: "/#playbook" },
   { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
