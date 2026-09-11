@@ -254,7 +254,7 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
-    motion: normalizeCameraMove(s.motion ?? st.pacing.camera),
+    motion: profile.cameraMotions[(seed + i) % profile.cameraMotions.length] ?? normalizeCameraMove(s.motion ?? st.pacing.camera),
     prompt: buildShotPrompt({
       motion: s.motion ?? st.pacing.camera,
       // Non-human niches anchor the action on the real topic subject, not a persona.
@@ -277,12 +277,22 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     topic: sanitizeTopic(pkg.topic),
     character: {
       ...pkg.character,
-      voiceSpec: { ...pkg.character.voiceSpec, "Pace (WPM)": st.pacing.wpm },
+      voiceSpec: {
+        ...pkg.character.voiceSpec,
+        "Voice Type": profile.voVoiceType,
+        "Emotional Register": profile.voEmotionalRegister,
+        "Pace (WPM)": st.pacing.wpm,
+      },
       hooks: (pkg.character.hooks ?? []).map((h) => ({
         label: h.label,
         text: dedupePhrases(toRawLine(h.text ?? "")),
       })),
       cueSheet,
+      retentionBeats: profile.retentionBeatLabels.map((label, i) => {
+        const cueIndex = i === 0 ? 0 : i === 1 ? 2 : Math.max(0, cueSheet.length - 1);
+        const timestamp = cueSheet[cueIndex]?.timestamp ?? ["0:00", "0:12", "0:25"][i];
+        return `${timestamp} — ${label}: ${toRawLine(pkg.character.retentionBeats?.[i] ?? "Advance the niche-specific story beat.").replace(/^\d+:\d+\s*[—-]\s*[^:]+:\s*/, "")}`;
+      }),
     },
     visual: {
       ...pkg.visual,
@@ -319,9 +329,12 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     camera: {
       ...pkg.camera,
       shots,
-      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues].map((line) =>
-        stripMarkdown(line),
-      ),
+      soundDesign: [
+        `Bed track: ${profile.soundDesign.bedTrack}`,
+        `SFX: ${profile.soundDesign.sfx.join(", ")}`,
+        `Silence: ${profile.soundDesign.silenceCue}`,
+        ...mixCues,
+      ].map((line) => stripMarkdown(line)),
     },
     variation: {
       hookStyle: toRawLine(pkg.variation.hookStyle),

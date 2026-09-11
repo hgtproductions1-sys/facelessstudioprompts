@@ -1370,35 +1370,16 @@ function buildVariationPlan(seed: number, niche: string, topic: string, profile:
 
 function variationMatchesNiche(variation: ReturnType<typeof buildVariationPlan>, profile: NicheProfile): boolean {
   const tone = variation.emotionalTone.toLowerCase();
+  const variationText = Object.values(variation).join(" ").toLowerCase();
   const required = profile.variationTone.toLowerCase().split(/\s+(?:and|with)\s+/).filter((word) => word.length > 3);
-  return required.some((word) => tone.includes(word)) && !profile.forbiddenVocabulary.some((word) => tone.includes(word.toLowerCase()));
+  return required.some((word) => tone.includes(word)) && !profile.forbiddenVocabulary.some((word) => variationText.includes(word.toLowerCase()));
 }
 
 function rebuildVariationForNiche(seed: number, niche: string, topic: string, profile: NicheProfile) {
-  const hookStyle = pick(
-    ["Comedic contrast in the opening frame", "Character voice-swap cold open", "Reaction-first rich-versus-poor reveal"],
-    seed,
-    1,
-  );
-  const storyStructure = pick(
-    [
-      "Parallel rich-versus-poor setup, escalating contrast, shared-hearted payoff",
-      "Alternating character viewpoints, comic reversal, warm resolution",
-      "Three escalating comparisons followed by a generous final twist",
-    ],
-    seed,
-    3,
-  );
-  const pacingProfile = pick(
-    ["Quick character swaps, held reaction, gentle final beat", "Fast contrast beats, comic pause, soft landing"],
-    seed,
-    5,
-  );
-  const editingStyle = pick(
-    ["Whip-pan swaps with split-screen comparisons", "Reaction-led cuts with one held closing two-shot"],
-    seed,
-    7,
-  );
+  const hookStyle = `Niche-specific opening based on: ${profile.hookFormat}`;
+  const storyStructure = `${profile.retentionBeatLabels.join(" to ")} progression`;
+  const pacingProfile = `${profile.voEmotionalRegister} pacing with a controlled final beat`;
+  const editingStyle = `${profile.cameraMotions[(seed + 1) % profile.cameraMotions.length]} followed by ${profile.cameraMotions[(seed + 3) % profile.cameraMotions.length]}`;
   const emotionalTone = profile.variationTone;
   return {
     hookStyle,
