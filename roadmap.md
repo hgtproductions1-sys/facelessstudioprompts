@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Done
+- [x] Add a seeded Variation & Anti-Generic Plan to generation, the fourth output card, loading state, affiliate CTA, and text exports.
 - [x] Fix ads.txt publisher checksum (`f08c47fec0942fa0` -> `f08c47fec0942fa6`); published and verified live at https://www.thefacelessprompts.com/ads.txt.
 - [x] Mark the stale "Add a sitemap" SEO finding fixed.
 - [x] Build `/faceless-youtube-automation` guide (niche choice, persona locking, prompt stacking, motion, voiceover, tool stack, revenue, pitfalls, FAQ, JSON-LD), add to sitemap + footer.

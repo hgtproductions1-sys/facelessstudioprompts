@@ -156,18 +156,24 @@ function normalizePackage(
   if (!raw || typeof raw !== "object") return null;
   const p = raw as Record<string, unknown>;
   if (!p["character"] || !p["visual"] || !p["camera"]) return null;
+  const fallback = fallbackPackage(
+    niche,
+    topic,
+    {
+      format: st.format.id,
+      vibe: st.vibe.id,
+      pacing: st.pacing.id,
+    },
+    seed,
+  );
+  const rawVariation =
+    p["variation"] && typeof p["variation"] === "object"
+      ? (p["variation"] as Partial<ProductionPackage["variation"]>)
+      : {};
   const merged = {
-    ...fallbackPackage(
-      niche,
-      topic,
-      {
-        format: st.format.id,
-        vibe: st.vibe.id,
-        pacing: st.pacing.id,
-      },
-      seed,
-    ),
+    ...fallback,
     ...p,
+    variation: { ...fallback.variation, ...rawVariation },
     niche,
     topic,
     seed,
