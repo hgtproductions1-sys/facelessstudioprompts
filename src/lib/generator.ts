@@ -1368,7 +1368,7 @@ export function generatePackage({
         motion,
         subjectAction: pick(subjectActions, s, i),
         environmentLighting: pick(environmentLighting, s, i),
-        motionStrength: 3 + (i % 2),
+        motionStrength: st.pacing.id === "fast" ? 4 : 3,
       }),
     };
   });
