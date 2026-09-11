@@ -377,7 +377,13 @@ export const Route = createFileRoute("/api/generate")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        let body: { niche?: unknown; topic?: unknown };
+        let body: {
+          niche?: unknown;
+          topic?: unknown;
+          format?: unknown;
+          vibe?: unknown;
+          pacing?: unknown;
+        };
         try {
           body = await request.json();
         } catch {
