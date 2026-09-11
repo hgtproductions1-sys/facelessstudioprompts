@@ -482,7 +482,7 @@ export const NICHE_SCAFFOLDS: Record<string, NicheScaffold> = {
       "Snap zoom on the reaction",
       "Low-angle hero shot of the rich animal",
       "Split-screen slide-in comparing both sides",
-      "Push-in on the shared crumb",
+      "Slow tilt from rich side to poor side",
     ],
     ["Bed track: 116 BPM comedic orchestral swap", "SFX: cash register on rich cuts, tin clatter on poor cuts", "Silence: 1.0s before the kind ending"],
   ),
