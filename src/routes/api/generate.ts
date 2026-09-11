@@ -350,6 +350,7 @@ async function generateWithLovableAi(
   seed: number,
   apiKey: string,
   initialRunId?: string,
+  extraRules: string[] = [],
 ): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
   try {
     const res = await fetch(GATEWAY_RESPONSES_ENDPOINT, {
@@ -372,6 +373,7 @@ async function generateWithLovableAi(
             content: [
               ...PRODUCTION_RULES,
               ...styleRules(st, niche),
+              ...extraRules,
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
@@ -448,6 +450,7 @@ async function generateWithGlm(
   st: ResolvedStyle,
   seed: number,
   apiKey: string,
+  extraRules: string[] = [],
 ): Promise<ProductionPackage | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -469,6 +472,7 @@ async function generateWithGlm(
             content: [
               ...PRODUCTION_RULES,
               ...styleRules(st, niche),
+              ...extraRules,
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
