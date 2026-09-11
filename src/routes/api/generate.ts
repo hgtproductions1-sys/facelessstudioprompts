@@ -152,6 +152,36 @@ function normalizePackage(
   return sanitizePackage(merged, st);
 }
 
+const FACELESS_TERMS =
+  /\b(faceless|anonymous silhouette|head cropped(?: out of frame)?|face (?:is )?(?:never |not )?visible|no visible face|face hidden[^,.]*|hidden face|face obscured[^,.]*|visible face)\b[^,.]*/gi;
+
+/** Removes faceless language from prompts whose subject is not human. */
+function deFaceless(text: string, human: boolean): string {
+  if (human) return text;
+  return text
+    .replace(FACELESS_TERMS, "")
+    .replace(/\s*,\s*,/g, ",")
+    .replace(/\s+([,.])/g, "$1")
+    .replace(/([,.])\1+/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^[\s,.-]+/, "")
+    .trim();
+}
+
+/** Negative prompt: only human subjects exclude a visible face. */
+function sanitizeNegative(raw: string, human: boolean): string {
+  const list = toRawLine(raw)
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .filter((p) => human || !/face/i.test(p));
+  for (const must of ["text", "watermark"]) {
+    if (!list.some((p) => p.toLowerCase().includes(must))) list.push(must);
+  }
+  if (human && !list.some((p) => /visible face/i.test(p))) list.push("visible face");
+  return list.join(", ");
+}
+
 /** Applies the shared sanitisation rules to any package (local or model-generated). */
 function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
