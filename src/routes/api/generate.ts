@@ -236,6 +236,7 @@ function sanitizeNegative(raw: string, human: boolean): string {
 /** Applies the shared sanitisation rules to any package (local or model-generated). */
 function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
+  const profile = getNicheProfile(pkg.niche);
   const mixCues: string[] = [];
 
   // Hard caps: max 30s of script (5 rows) and exactly 4 shots.
@@ -327,9 +328,9 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       storyStructure: toRawLine(pkg.variation.storyStructure),
       pacingProfile: toRawLine(pkg.variation.pacingProfile),
       editingStyle: toRawLine(pkg.variation.editingStyle),
-      emotionalTone: getNicheProfile(niche).variationTone,
+      emotionalTone: profile.variationTone,
       copyPastePrompt: dedupePhrases(
-        `${toRawLine(pkg.variation.copyPastePrompt)} Keep the emotional tone ${getNicheProfile(niche).variationTone.toLowerCase()} and the narration ${getNicheProfile(niche).voEmotionalRegister.toLowerCase()}.`,
+        `${toRawLine(pkg.variation.copyPastePrompt)} Keep the emotional tone ${profile.variationTone.toLowerCase()} and the narration ${profile.voEmotionalRegister.toLowerCase()}.`,
       ),
     },
   };
@@ -345,7 +346,23 @@ function strictRetryRules(niche: string, detected: string[]): string[] {
 
 /** True when the model leaked investigative language into a non-investigative niche. */
 function forbiddenTermsInPackage(pkg: ProductionPackage, niche: string): string[] {
-  const text = JSON.stringify(pkg).toLowerCase();
+  // Negative prompts intentionally name excluded concepts, so validate only
+  // creative output that an engine or narrator will positively execute.
+  const text = [
+    ...pkg.character.hooks.map((hook) => hook.text),
+    ...pkg.character.cueSheet.map((row) => row.line),
+    ...pkg.character.retentionBeats,
+    pkg.visual.masterPrompt,
+    pkg.visual.leonardoPrompt,
+    pkg.visual.googleFlowPrompt,
+    ...pkg.camera.shots.map((shot) => `${shot.motion} ${shot.prompt}`),
+    pkg.variation.hookStyle,
+    pkg.variation.storyStructure,
+    pkg.variation.pacingProfile,
+    pkg.variation.editingStyle,
+    pkg.variation.emotionalTone,
+    pkg.variation.copyPastePrompt,
+  ].join(" ").toLowerCase();
   return getNicheProfile(niche).forbiddenVocabulary.filter((term) => text.includes(term.toLowerCase()));
 }
 

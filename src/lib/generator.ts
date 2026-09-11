@@ -11,12 +11,11 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
-import { fillTemplate, getScaffold, isInvestigativeNiche } from "@/lib/nicheScaffolds";
+import { fillTemplate, getScaffold } from "@/lib/nicheScaffolds";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 import {
   isHumanSubject,
   midjourneyNegativeFor,
-  negativePromptFor,
   subjectFramingClause,
   subjectPrefix,
 } from "@/lib/subject";
