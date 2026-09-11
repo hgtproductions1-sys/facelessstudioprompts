@@ -1502,7 +1502,9 @@ export function generatePackage({
       retentionBeats: [
         `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
         `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
-        `0:38 — Cliffhanger: tease part two on ${lowTopic} before the CTA lands.`,
+        isInvestigativeNiche(niche)
+          ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
+          : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
       ],
     },
     visual: {
