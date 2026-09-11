@@ -158,8 +158,8 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     const mix = extractMixDirective(r.cue ?? "");
     if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
     return {
-      timestamp: r.timestamp,
-      line: dedupePhrases(r.line ?? ""),
+      timestamp: toRawLine(r.timestamp ?? ""),
+      line: dedupePhrases(toRawLine(r.line ?? "")),
       cue: toElevenLabsCue(r.cue ?? ""),
     };
   });
@@ -167,13 +167,17 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
+    motion: toRawLine(s.motion ?? ""),
     prompt: buildShotPrompt({
-      motion: s.motion ?? "slow push in",
+      motion: s.motion ?? st.pacing.camera,
       subjectAction: dedupePhrases(
         `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
       ),
-      environmentLighting: clampWords(pkg.visual.styleDNA.join(", "), 20),
-      motionStrength: 3 + (i % 2),
+      environmentLighting: clampWords(
+        `${pkg.visual.styleDNA.join(", ")}, ${st.vibe.lighting}`,
+        24,
+      ),
+      motionStrength: st.pacing.id === "fast" ? 4 : 3,
     }),
   }));
 
@@ -182,28 +186,38 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     topic: sanitizeTopic(pkg.topic),
     character: {
       ...pkg.character,
+      voiceSpec: { ...pkg.character.voiceSpec, "Pace (WPM)": st.pacing.wpm },
       hooks: (pkg.character.hooks ?? []).map((h) => ({
         label: h.label,
-        text: dedupePhrases(h.text ?? ""),
+        text: dedupePhrases(toRawLine(h.text ?? "")),
       })),
       cueSheet,
     },
     visual: {
       ...pkg.visual,
+      aspectRatio: st.format.aspectRatio,
+      resolution: st.format.resolution,
+      negativePrompt: toRawLine(pkg.visual.negativePrompt ?? ""),
       masterPrompt: clampWords(
         stripPromptFlags(
-          dedupePhrases(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || ""),
+          dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
         ),
         100,
       ),
       leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
-      midjourneyPrompt: sanitizeMidjourneyPrompt(pkg.visual.midjourneyPrompt ?? "", seed),
+      midjourneyPrompt: sanitizeMidjourneyPrompt(
+        pkg.visual.midjourneyPrompt ?? "",
+        seed,
+        st.format.aspectRatio,
+      ),
       googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
     },
     camera: {
       ...pkg.camera,
       shots,
-      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues],
+      soundDesign: [...(pkg.camera.soundDesign ?? []), ...mixCues].map((line) =>
+        stripMarkdown(line),
+      ),
     },
   };
 }
