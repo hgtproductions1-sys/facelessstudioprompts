@@ -3,7 +3,10 @@ import {
   buildShotPrompt,
   dedupePhrases,
   extractMixDirective,
+  normalizeCameraMove,
+  stripArticle,
   renderTemplate,
+  stripFormatSpecs,
   sanitizeMidjourneyPrompt,
   sanitizeTopic,
   topicPhrase,
@@ -1272,76 +1275,73 @@ export function generatePackage({
     .toLowerCase();
   const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
 
-  const leonardoPrompt = buildParagraph(
-    [
-      `${orient} ${ar} still of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      framing,
-      wardrobeLead,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
-    ],
-    100,
+  // Non-human niches anchor on the actual topic subject, never a human persona.
+  const topicSubject = stripArticle(lowTopic) || archetypeNoun;
+  const heroSubject = human ? `${subjPrefix}${archetypeNoun}` : topicSubject;
+
+  const leonardoPrompt = stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject} in ${env}`,
+        framing,
+        human ? wardrobeLead : "",
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
+      ],
+      100,
+    ),
   );
 
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
-    buildParagraph(
-      [
-        `${subjPrefix}${archetypeNoun}, ${lowTopic}`,
-        `${env2}, ${framing}`,
-        `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
-        `${st.vibe.lighting}, ${st.vibe.style}`,
-      ],
-      80,
+    stripFormatSpecs(
+      buildParagraph(
+        [
+          `${heroSubject}`,
+          `${env2}, ${framing}`,
+          `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
+          `${st.vibe.lighting}, ${st.vibe.style}`,
+        ],
+        80,
+      ),
     ),
     s,
     ar,
     midjourneyNegativeFor(niche),
   );
 
-  const googleFlowPrompt = buildParagraph(
-    [
-      `${orient} ${ar} shot of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}`,
-      `camera motion: ${st.pacing.camera}`,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
-      `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
-    ],
-    100,
+  const googleFlowPrompt = stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject} in ${env}`,
+        human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
+        `camera motion: ${normalizeCameraMove(st.pacing.camera)}`,
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
+        `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
+      ],
+      100,
+    ),
   );
 
-  const masterPrompt = `${buildParagraph(
-    [
-      `${orient} ${ar} image of a ${subjPrefix}${archetypeNoun}, subject of ${lowTopic}`,
-      framing,
-      wardrobeLead,
-      `environment: ${env}, ${env2}`,
-      lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
-    ],
-    100,
+  const masterPrompt = `${stripFormatSpecs(
+    buildParagraph(
+      [
+        `${heroSubject}`,
+        framing,
+        human ? wardrobeLead : "",
+        `environment: ${env}, ${env2}`,
+        lightingLine,
+        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
+      ],
+      100,
+    ),
   )} --ar ${ar}`;
 
+  // Standard cinematographic camera commands only — never pacing adjectives.
   const shotMotions =
     st.pacing.id === "fast"
-      ? [
-          "Fast punch-in, 12% scale over 1.5s",
-          "Snap lateral dolly right with hard parallax",
-          "Quick whip-in from the hands to the prop",
-          "Rapid pull-back reveal, 18% scale over 2s",
-          "Energetic handheld push, 4% shake",
-          "Fast orbit left, 14 degrees, subject centred",
-          "Speed-driven tilt up from hands to shoulders",
-        ]
-      : [
-          "Very slow push-in, 3% scale over 8s",
-          "Gentle lateral drift, 2% with soft parallax",
-          "Static locked-off with 1% breathing zoom",
-          "Slow tilt up from hands to shoulders over 7s",
-          "Barely-there handheld float, 0.5% amplitude",
-          "Creeping pull-back reveal, 4% scale over 9s",
-          "Slow orbit left, 3 degrees, subject centred",
-        ];
+      ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
+      : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
@@ -1369,11 +1369,11 @@ export function generatePackage({
         `hands lifting the key prop tied to ${lowTopic}`,
       ]
     : [
-        `${archetypeNoun} moves into frame and reacts to ${lowTopic}`,
-        `${archetypeNoun} turns toward the ${desc} detail`,
-        `close macro on the ${desc2} detail of ${lowTopic}`,
-        `${archetypeNoun} steps forward into the light`,
-        `${archetypeNoun} lifts the key prop tied to ${lowTopic}`,
+        `the ${topicSubject} fills frame as its ${desc} detail catches the light`,
+        `close macro across the ${desc2} surface of the ${topicSubject}`,
+        `the ${topicSubject} shifts into view, ${desc} texture in sharp focus`,
+        `dust motes swirl past the ${topicSubject}`,
+        `the ${topicSubject} settles centre frame, ${desc2} highlight rolling across it`,
       ];
   const environmentLighting = [env, env2];
 
