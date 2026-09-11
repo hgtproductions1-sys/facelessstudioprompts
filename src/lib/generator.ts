@@ -1295,16 +1295,27 @@ export function generatePackage({
 
   const scaffold = getScaffold(niche);
 
+  // "a whale and a rat" -> ["whale", "rat"] so versus-style hooks read cleanly.
+  const pair = stripArticle(lowTopic)
+    .split(/\s+(?:and|versus|vs\.?)\s+/i)
+    .map((part) => stripArticle(part.trim()))
+    .filter(Boolean);
+  const fill = (template: string): string => {
+    if (pair.length !== 2) return fillTemplate(template, phrase);
+    let i = 0;
+    return template.replace(/\{(?:topic|lowTopic)\}/g, () => pair[i++ % 2] ?? phrase);
+  };
+
   const hookSource = scaffold?.hookTemplates ?? profile.hooks;
   const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: scaffold ? fillTemplate(h, phrase) : renderTemplate(h, cleanTopic),
+    text: scaffold ? fill(h) : renderTemplate(h, cleanTopic),
   }));
 
   const rawCueSheet = scaffold
     ? scaffold.voCuePattern.map((r) => ({
         timestamp: r.timestamp,
-        line: fillTemplate(r.line, phrase),
+        line: fill(r.line),
         cue: r.cue,
       }))
     : [
