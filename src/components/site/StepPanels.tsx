@@ -20,10 +20,11 @@ export function StepPanels({ pkg }: { pkg: ProductionPackage }) {
   return (
     <>
       {/* Desktop — equal 3-column layout */}
-      <div className="mx-auto mt-6 hidden max-w-7xl grid-cols-3 items-start gap-6 lg:grid">
+      <div className="mx-auto mt-6 hidden max-w-7xl grid-cols-3 items-stretch gap-6 lg:grid">
         {cards.map((card, i) => (
           <motion.div
             key={i}
+            className="h-full"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: i * 0.12 }}
