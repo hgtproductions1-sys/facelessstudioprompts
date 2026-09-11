@@ -309,7 +309,7 @@ async function generateWithLovableAi(
       console.warn("[generate] Lovable AI stream returned no text");
       return null;
     }
-    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic);
+    const pkg = normalizePackage(parseJsonLoose(finalText), niche, topic, st);
     if (!pkg) {
       console.warn("[generate] Lovable AI output did not match the ProductionPackage shape");
       return null;
@@ -345,10 +345,11 @@ async function generateWithGlm(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
+              ...styleRules(st),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic) },
+          { role: "user", content: userInstruction(niche, topic, st) },
         ],
       }),
     });
