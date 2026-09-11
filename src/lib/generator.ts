@@ -1262,8 +1262,7 @@ export function generatePackage({
     })
     .filter((x): x is string => Boolean(x));
 
-  const negativePrompt =
-    "blurry, lowres, deformed hands, extra fingers, visible face, text, watermark, logo, cartoon, oversaturated";
+  const negativePrompt = negativePromptFor(niche);
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
