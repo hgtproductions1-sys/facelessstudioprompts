@@ -168,6 +168,7 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     };
   });
 
+  const human = isHumanSubject(pkg.niche);
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
@@ -175,12 +176,10 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
     prompt: buildShotPrompt({
       motion: s.motion ?? st.pacing.camera,
       subjectAction: dedupePhrases(
-        `faceless ${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
+        `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}, ${s.animationCue ?? ""}`,
       ),
-      environmentLighting: clampWords(
-        `${pkg.visual.styleDNA.join(", ")}, ${st.vibe.lighting}`,
-        24,
-      ),
+      // Brief scene setting only — no repeated lighting essays per shot.
+      environmentLighting: clampWords(pkg.visual.styleDNA.slice(0, 2).join(", "), 8),
       motionStrength: st.pacing.id === "fast" ? 4 : 3,
     }),
   }));
