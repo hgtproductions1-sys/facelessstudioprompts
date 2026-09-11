@@ -4,6 +4,7 @@ import {
   dedupePhrases,
   extractMixDirective,
   normalizeCameraMove,
+  stripArticle,
   renderTemplate,
   stripFormatSpecs,
   sanitizeMidjourneyPrompt,
@@ -1275,9 +1276,8 @@ export function generatePackage({
   const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
 
   // Non-human niches anchor on the actual topic subject, never a human persona.
-  const heroSubject = human
-    ? `${subjPrefix}${archetypeNoun}`
-    : lowTopic || archetypeNoun;
+  const topicSubject = stripArticle(lowTopic) || archetypeNoun;
+  const heroSubject = human ? `${subjPrefix}${archetypeNoun}` : topicSubject;
 
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
@@ -1369,11 +1369,11 @@ export function generatePackage({
         `hands lifting the key prop tied to ${lowTopic}`,
       ]
     : [
-        `the ${lowTopic} fills frame as its ${desc} detail catches the light`,
-        `close macro across the ${desc2} surface of the ${lowTopic}`,
-        `the ${lowTopic} shifts into view, ${desc} texture in sharp focus`,
-        `dust motes swirl past the ${lowTopic}`,
-        `the ${lowTopic} settles centre frame, ${desc2} highlight rolling across it`,
+        `the ${topicSubject} fills frame as its ${desc} detail catches the light`,
+        `close macro across the ${desc2} surface of the ${topicSubject}`,
+        `the ${topicSubject} shifts into view, ${desc} texture in sharp focus`,
+        `dust motes swirl past the ${topicSubject}`,
+        `the ${topicSubject} settles centre frame, ${desc2} highlight rolling across it`,
       ];
   const environmentLighting = [env, env2];
 

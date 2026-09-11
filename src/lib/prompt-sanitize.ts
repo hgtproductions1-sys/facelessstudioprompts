@@ -100,6 +100,11 @@ export function topicPhrase(topic: string): string {
   return words.join(" ");
 }
 
+/** Strips a leading article so phrases like "the a rusted Mustang" never occur. */
+export function stripArticle(text: string): string {
+  return (text ?? "").replace(/^\s*(?:a|an|the)\s+/i, "").trim();
+}
+
 export function fitTopicToTemplate(template: string, topic: string): string {
   const before = template.split("{topic}")[0] ?? "";
   const ctx = new Set(
