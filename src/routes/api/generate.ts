@@ -81,7 +81,12 @@ const PRODUCTION_RULES = [
 ];
 
 function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
-  return generatePackage({ niche, topic, seed: hashSeed(`${niche}::${topic}`), style });
+  return generatePackage({
+    niche,
+    topic,
+    seed: hashSeed(`${niche}::${topic}`),
+    ...(style ? { style } : {}),
+  });
 }
 
 function referenceBlock(niche: string): string {
