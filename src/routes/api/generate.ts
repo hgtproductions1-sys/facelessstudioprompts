@@ -413,7 +413,7 @@ export const Route = createFileRoute("/api/generate")({
 
         const gatewayKey = process.env["LOVABLE_API_KEY"];
         if (gatewayKey) {
-          const result = await generateWithLovableAi(niche, topic, gatewayKey, initialRunId);
+          const result = await generateWithLovableAi(niche, topic, st, gatewayKey, initialRunId);
           if (result) {
             return Response.json(
               { package: result.pkg, source: "lovable" },
@@ -428,7 +428,10 @@ export const Route = createFileRoute("/api/generate")({
           console.warn("[generate] LOVABLE_API_KEY is not set");
         }
 
-        return Response.json({ package: fallbackPackage(niche, topic), source: "local" });
+        return Response.json({
+          package: fallbackPackage(niche, topic, selection),
+          source: "local",
+        });
       },
     },
   },
