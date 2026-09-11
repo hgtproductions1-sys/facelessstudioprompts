@@ -9,6 +9,7 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
+import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 
 export interface ProductionPackage {
   niche: string;
@@ -1169,12 +1170,17 @@ export function generatePackage({
   niche,
   topic,
   seed,
+  style,
 }: {
   niche: string;
   topic: string;
   seed?: number;
+  style?: StyleSelection;
 }): ProductionPackage {
   const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
+  const st = resolveStyle(style);
+  const ar = st.format.aspectRatio;
+  const orient = st.format.orientation;
   const s = seed ?? hashSeed(`${niche}::${topic}`);
   const cleanTopic = sanitizeTopic(topic);
   const phrase = topicPhrase(cleanTopic);
