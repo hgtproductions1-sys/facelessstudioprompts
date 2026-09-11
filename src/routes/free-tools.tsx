@@ -20,7 +20,7 @@ export const Route = createFileRoute("/free-tools")({
 const HACKS_TAB = "hacks";
 
 function FreeToolsPage() {
-  const [active, setActive] = useState<string>(TOOL_CATEGORIES[0].id);
+  const [active, setActive] = useState<string>(TOOL_CATEGORIES[0]?.id ?? "video-image");
   const [query, setQuery] = useState("");
   const [openHack, setOpenHack] = useState<number | null>(0);
 

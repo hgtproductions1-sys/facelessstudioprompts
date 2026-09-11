@@ -15,6 +15,7 @@ import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disc
 import { Route as AiToolsHubRouteImport } from './routes/ai-tools-hub'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FacelessYoutubeAutomationRouteImport } from './routes/faceless-youtube-automation'
+import { Route as FreeToolsRouteImport } from './routes/free-tools'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -53,6 +54,11 @@ const FacelessYoutubeAutomationRoute =
     path: '/faceless-youtube-automation',
     getParentRoute: () => rootRouteImport,
   } as any)
+const FreeToolsRoute = FreeToolsRouteImport.update({
+  id: '/free-tools',
+  path: '/free-tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
+  '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
+  '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
+  '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/ai-tools-hub'
     | '/contact'
     | '/faceless-youtube-automation'
+    | '/free-tools'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/ai-tools-hub'
     | '/contact'
     | '/faceless-youtube-automation'
+    | '/free-tools'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/ai-tools-hub'
     | '/contact'
     | '/faceless-youtube-automation'
+    | '/free-tools'
     | '/library'
     | '/privacy'
     | '/sitemap.xml'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   AiToolsHubRoute: typeof AiToolsHubRoute
   ContactRoute: typeof ContactRoute
   FacelessYoutubeAutomationRoute: typeof FacelessYoutubeAutomationRoute
+  FreeToolsRoute: typeof FreeToolsRoute
   LibraryRoute: typeof LibraryRoute
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       path: '/faceless-youtube-automation'
       fullPath: '/faceless-youtube-automation'
       preLoaderRoute: typeof FacelessYoutubeAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/free-tools': {
+      id: '/free-tools'
+      path: '/free-tools'
+      fullPath: '/free-tools'
+      preLoaderRoute: typeof FreeToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiToolsHubRoute: AiToolsHubRoute,
   ContactRoute: ContactRoute,
   FacelessYoutubeAutomationRoute: FacelessYoutubeAutomationRoute,
+  FreeToolsRoute: FreeToolsRoute,
   LibraryRoute: LibraryRoute,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
