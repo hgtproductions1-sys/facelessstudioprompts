@@ -164,7 +164,12 @@ export function toRawLine(text: string): string {
 export const MJ_NEGATIVE = "blurry, lowres, visible face, text, watermark, extra limbs";
 
 /** Rebuilds a Midjourney prompt with exactly one canonical set of flags. */
-export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = "9:16"): string {
+export function sanitizeMidjourneyPrompt(
+  prompt: string,
+  seed: number,
+  aspect = "9:16",
+  negative: string = MJ_NEGATIVE,
+): string {
   const body = dedupePhrases(stripPromptFlags(toRawLine(prompt)));
   const flags = [
     `--ar ${aspect}`,
@@ -173,7 +178,7 @@ export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = 
     "--stylize 250",
     "--chaos 12",
     `--seed ${Math.abs(Math.trunc(seed)) || 1}`,
-    `--no ${MJ_NEGATIVE}`,
+    `--no ${negative}`,
   ].join(" ");
   return `${body} ${flags}`.replace(/\s{2,}/g, " ").trim();
 }
