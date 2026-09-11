@@ -1369,11 +1369,11 @@ export function generatePackage({
         `hands lifting the key prop tied to ${lowTopic}`,
       ]
     : [
-        `${archetypeNoun} moves into frame and reacts to ${lowTopic}`,
-        `${archetypeNoun} turns toward the ${desc} detail`,
-        `close macro on the ${desc2} detail of ${lowTopic}`,
-        `${archetypeNoun} steps forward into the light`,
-        `${archetypeNoun} lifts the key prop tied to ${lowTopic}`,
+        `the ${lowTopic} fills frame as its ${desc} detail catches the light`,
+        `close macro across the ${desc2} surface of the ${lowTopic}`,
+        `the ${lowTopic} shifts into view, ${desc} texture in sharp focus`,
+        `dust motes swirl past the ${lowTopic}`,
+        `the ${lowTopic} settles centre frame, ${desc2} highlight rolling across it`,
       ];
   const environmentLighting = [env, env2];
 
