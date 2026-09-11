@@ -151,6 +151,14 @@ function NicheLandingPage() {
         <article>
           <header className="mt-4 max-w-3xl">
             <h1 className="text-3xl font-bold text-white sm:text-4xl">{page.h1}</h1>
+            <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-medium">
+              <span className="border-line bg-surface2 rounded-full border px-2.5 py-1 text-ink-dim">
+                Difficulty: <span className="text-ink">{page.difficulty}</span>
+              </span>
+              <span className="border-line bg-surface2 rounded-full border px-2.5 py-1 text-ink-dim">
+                Est. RPM: <span className="text-cyan">{page.estimatedRpm}</span>
+              </span>
+            </div>
             <p className="mt-4 leading-relaxed text-ink-dim">{page.intro}</p>
             <Link
               to="/"
