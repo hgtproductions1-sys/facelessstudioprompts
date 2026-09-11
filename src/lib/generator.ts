@@ -1337,26 +1337,11 @@ export function generatePackage({
     ),
   )} --ar ${ar}`;
 
+  // Standard cinematographic camera commands only — never pacing adjectives.
   const shotMotions =
     st.pacing.id === "fast"
-      ? [
-          "Fast punch-in, 12% scale over 1.5s",
-          "Snap lateral dolly right with hard parallax",
-          "Quick whip-in from the hands to the prop",
-          "Rapid pull-back reveal, 18% scale over 2s",
-          "Energetic handheld push, 4% shake",
-          "Fast orbit left, 14 degrees, subject centred",
-          "Speed-driven tilt up from hands to shoulders",
-        ]
-      : [
-          "Very slow push-in, 3% scale over 8s",
-          "Gentle lateral drift, 2% with soft parallax",
-          "Static locked-off with 1% breathing zoom",
-          "Slow tilt up from hands to shoulders over 7s",
-          "Barely-there handheld float, 0.5% amplitude",
-          "Creeping pull-back reveal, 4% scale over 9s",
-          "Slow orbit left, 3 degrees, subject centred",
-        ];
+      ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
+      : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
