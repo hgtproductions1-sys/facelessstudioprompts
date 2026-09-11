@@ -324,6 +324,7 @@ async function generateWithLovableAi(
 async function generateWithGlm(
   niche: string,
   topic: string,
+  st: ResolvedStyle,
   apiKey: string,
 ): Promise<ProductionPackage | null> {
   const controller = new AbortController();
@@ -363,7 +364,7 @@ async function generateWithGlm(
       console.warn("[generate] GLM response had no message content");
       return null;
     }
-    return normalizePackage(parseJsonLoose(content), niche, topic);
+    return normalizePackage(parseJsonLoose(content), niche, topic, st);
   } catch (err) {
     console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
     return null;
