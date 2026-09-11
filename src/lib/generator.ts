@@ -1292,38 +1292,47 @@ export function generatePackage({
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
 
-  const hooks = profile.hooks.map((h, i) => ({
+  const scaffold = getScaffold(niche);
+
+  const hookSource = scaffold?.hookTemplates ?? profile.hooks;
+  const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: renderTemplate(h, cleanTopic),
+    text: scaffold ? fillTemplate(h, phrase) : renderTemplate(h, cleanTopic),
   }));
 
-  const rawCueSheet = [
-    {
-      timestamp: "0:00",
-      line: hooks[0]?.text ?? "",
-      cue: "cold open, no music, dry close-mic",
-    },
-    {
-      timestamp: "0:04",
-      line: `Everything you were told about ${lowTopic} came from one source.`,
-      cue: "pause 0.5s, drop pitch",
-    },
-    {
-      timestamp: "0:11",
-      line: `Here is what the ${desc} record actually shows.`,
-      cue: "bed track enters, lift energy 10%",
-    },
-    {
-      timestamp: "0:17",
-      line: `${lowTopic} does not behave the way the story requires, and the timeline only works if someone is lying.`,
-      cue: "accelerate, build tension",
-    },
-    {
-      timestamp: "0:24",
-      line: `Which leaves one ${desc2} explanation. Follow for part two on ${lowTopic}.`,
-      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
-    },
-  ];
+  const rawCueSheet = scaffold
+    ? scaffold.voCuePattern.map((r) => ({
+        timestamp: r.timestamp,
+        line: fillTemplate(r.line, phrase),
+        cue: r.cue,
+      }))
+    : [
+        {
+          timestamp: "0:00",
+          line: hooks[0]?.text ?? "",
+          cue: "cold open, no music, dry close-mic",
+        },
+        {
+          timestamp: "0:05",
+          line: `Here is what makes ${lowTopic} worth watching.`,
+          cue: "pause 0.5s",
+        },
+        {
+          timestamp: "0:12",
+          line: `The ${desc} detail is easy to miss the first time.`,
+          cue: "bed track enters, lift energy 10%",
+        },
+        {
+          timestamp: "0:19",
+          line: `Watch what happens next with ${lowTopic}.`,
+          cue: "accelerate",
+        },
+        {
+          timestamp: "0:26",
+          line: `That ${desc2} moment is the whole point.`,
+          cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
+        },
+      ];
 
   // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
   const cueSheet = rawCueSheet.map((r) => ({
