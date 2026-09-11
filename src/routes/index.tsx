@@ -373,9 +373,30 @@ function Index() {
                 ))}
               </div>
 
+              <PrimaryButton
+                type="submit"
+                disabled={disabled}
+                className="mt-6 h-12 w-full px-6 text-base whitespace-nowrap"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                    Generating…
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="h-4 w-4" aria-hidden />
+                    Generate Package
+                  </>
+                )}
+              </PrimaryButton>
+
               {error ? <p className="mt-2 text-xs text-warning">{error}</p> : null}
 
-              <div className="mt-5 flex flex-wrap gap-2">
+              <p className="mt-6 mb-2 text-xs font-medium tracking-widest text-ink-muted uppercase">
+                Quick Ideas:
+              </p>
+              <div className="flex flex-wrap gap-2">
                 {QUICK_STARTS.map((q) => (
                   <button
                     key={q.topic}
