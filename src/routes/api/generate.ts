@@ -226,6 +226,7 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
 async function generateWithLovableAi(
   niche: string,
   topic: string,
+  st: ResolvedStyle,
   apiKey: string,
   initialRunId?: string,
 ): Promise<{ pkg: ProductionPackage; runId: string | undefined } | null> {
