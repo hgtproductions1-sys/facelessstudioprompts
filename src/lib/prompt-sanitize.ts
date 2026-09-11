@@ -180,7 +180,7 @@ export function sanitizeMidjourneyPrompt(prompt: string, seed: number, aspect = 
 
 /** Trims a paragraph to a maximum word count without cutting mid-sentence badly. */
 export function clampWords(text: string, max = 95): string {
-  const clean = dedupePhrases(text)
+  const clean = dedupePhrases(toRawLine(text))
     .replace(/\s{2,}/g, " ")
     .trim();
   const words = clean.split(" ");
@@ -257,7 +257,7 @@ const NLE_TRANSITION =
 
 /** Strips NLE transition language out of motion/action copy. */
 export function stripTransitions(text: string): string {
-  return (text ?? "")
+  return toRawLine(text)
     .replace(NLE_TRANSITION, "")
     .replace(/\s*,\s*,/g, ",")
     .replace(/^[\s,.-]+|[\s,.-]+$/g, "")
