@@ -342,6 +342,21 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
   };
 }
 
+const STRICT_RETRY_RULES = [
+  "PREVIOUS ATTEMPT FAILED VALIDATION: it used true-crime / investigative vocabulary in a niche that must never use it. Rewrite completely in this niche's own voice. Banned strings anywhere in the JSON: \"timeline only works\", \"one source\", \"lied\", \"is lying\", \"part two\", \"cold case\", \"the record actually shows\". Use the niche's hook shapes, cue structure and art style exactly as specified.",
+];
+
+/** True when the model leaked investigative language into a non-investigative niche. */
+function packageLeaks(pkg: ProductionPackage, niche: string): boolean {
+  const text = [
+    ...pkg.character.hooks.map((h) => h.text),
+    ...pkg.character.cueSheet.map((r) => `${r.line} ${r.cue}`),
+    ...pkg.character.retentionBeats,
+    pkg.variation.copyPastePrompt,
+  ].join(" ");
+  return hasTrueCrimeLeak(text, niche);
+}
+
 /** Streams a production package out of the Lovable AI gateway Responses API. */
 async function generateWithLovableAi(
   niche: string,
