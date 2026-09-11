@@ -1143,9 +1143,9 @@ export const NICHE_PROFILES: Record<string, NicheProfile> = {
       "Silence: 1.0s before the kind ending",
     ],
     hooks: [
-      "Poor dog versus rich dog: {topic}.",
-      "Same animal, two worlds: {topic}.",
-      "Guess which one is happier in {topic}.",
+      "Rich {topic} vs Poor {topic} — guess who eats better.",
+      "Rich {topic} vs Poor {topic} — same day, two worlds.",
+      "Rich {topic} vs Poor {topic} — the twist is at the end.",
     ],
     descriptors: ["contrasting", "comedic", "heartfelt", "exaggerated"],
   },
