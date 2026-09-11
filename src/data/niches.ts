@@ -30,6 +30,10 @@ export interface NichePage {
   seoTitle: string;
   metaDescription: string;
   h1: string;
+  primaryKeyword: string;
+  secondaryKeywords: string[];
+  difficulty: "Easy" | "Medium" | "Hard";
+  estimatedRpm: string;
   intro: string;
   prompts: NichePrompt[];
   faqs: NicheFaq[];
@@ -41,2023 +45,1782 @@ export const NICHE_PAGES: NichePage[] = [
     slug: "ai-cat-and-pet-stories",
     name: "AI Cat & Pet Stories",
     niche: "AI Cat & Pet Stories",
-    seoTitle: "AI Cat & Pet Stories Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free ai cat & pet stories AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Cat & Pet Stories Video Prompts",
-    intro:
-      "AI Cat & Pet Stories is one of the strongest faceless formats right now: heartwarming, playful, cinematic storytelling built around the tiny hero cat. Every blueprint below locks the same character, the honey gold, moss green, dusty cream palette and gentle → emotional spike pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI Cat & Pet Stories Prompts — Free Generator",
+    metaDescription: "Generate viral AI cat and pet story videos in seconds. Get free Midjourney, ElevenLabs, and Veo 3 prompts to build a faceless animal channel today.",
+    h1: "AI Cat & Pet Stories Prompt Generator",
+    primaryKeyword: "AI cat video prompt generator",
+    secondaryKeywords: [
+    "ai pet stories",
+    "faceless cat video generator",
+    "how to make ai cat videos",
+    "best pet niches for youtube",
+    "midjourney cat prompts",
+    "ai animal story generator"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "The pet niche is a massive traffic driver on YouTube and TikTok, but creating original animal content without a real pet used to be impossible. Today, AI cat and pet stories are dominating the faceless video space. Viewers are captivated by emotional narratives, heroic rescue tales, and humorous feline antics. If you want to capitalize on this high-retention niche, you need the right tools to keep character consistency and hyper-realistic fur textures. This page provides a free prompt generator tailored specifically for AI animal content. Use the blueprints below to instantly generate voiceovers, visuals, and camera motions for your faceless channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Tiny Hero Cat — heartwarming, playful, cinematic tone. Voice: Warm storyteller narrator, mid-range, 132 WPM, Tender with bursts of wonder. Opening line: "Nobody thought this cat could survive [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny hero cat in rain-soaked cobbled alley lit by a single shop window, full subject in frame, natural face and complete anatomy, miniature red knit scarf, hand-stitched edges, palette of honey gold, moss green, dusty cream, pixar-grade 3d, soft rim light, fur detail pass, shallow depth, warm bloom, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: tiny hero cat enters the frame, rain-soaked cobbled alley lit by, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Tiny Hero Cat — heartwarming, playful, cinematic tone. Voice: Warm storyteller narrator, mid-range, 132 WPM, Tender with bursts of wonder. Opening line: "This little cat walked straight into [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny hero cat in sunlit farmhouse kitchen with flour in the air, full subject in frame, natural face and complete anatomy, tiny leather satchel worn across the chest, palette of honey gold, moss green, dusty cream, pixar-grade 3d, soft rim light, fur detail pass, shallow depth, warm bloom, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: tiny hero cat reacts to the turn, sunlit farmhouse kitchen with flour, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Tiny Hero Cat — heartwarming, playful, cinematic tone. Voice: Warm storyteller narrator, mid-range, 132 WPM, Tender with bursts of wonder. Opening line: "[your topic] changed everything for one stray."',
-        visual:
-          "Vertical 9:16 image of tiny hero cat in storm-lashed rooftop above a sleeping town, full subject in frame, natural face and complete anatomy, bell collar in aged brass, palette of honey gold, moss green, dusty cream, pixar-grade 3d, soft rim light, fur detail pass, shallow depth, warm bloom, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: tiny hero cat moves toward the key prop, storm-lashed rooftop above a sleeping, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Tiny Hero Cat — heartwarming, playful, cinematic tone. Voice: Warm storyteller narrator, mid-range, 132 WPM, Tender with bursts of wonder. Opening line: "Nobody thought this cat could survive [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny hero cat in rain-soaked cobbled alley lit by a single shop window, full subject in frame, natural face and complete anatomy, muddy paw wraps from the last adventure, palette of honey gold, moss green, dusty cream, pixar-grade 3d, soft rim light, fur detail pass, shallow depth, warm bloom, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: tiny hero cat holds the payoff beat, rain-soaked cobbled alley lit by, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Tiny Hero Cat — heartwarming, playful, cinematic tone. Voice: Warm storyteller narrator, mid-range, 132 WPM, Tender with bursts of wonder. Opening line: "This little cat walked straight into [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny hero cat in sunlit farmhouse kitchen with flour in the air, full subject in frame, natural face and complete anatomy, miniature red knit scarf, hand-stitched edges, palette of honey gold, moss green, dusty cream, pixar-grade 3d, soft rim light, fur detail pass, shallow depth, warm bloom, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: tiny hero cat settles as the loop resets, sunlit farmhouse kitchen with flour, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Stray's First Winter",
+      "character": "[shivering] The snow was cold, but the glowing window across the street promised warmth. I just had to cross the white desert.",
+      "visual": "A small orange tabby kitten shivering in a snowy alleyway looking toward a warmly lit bakery window, cozy cinematic lighting, hyper-realistic fur, 85mm lens --ar 9:16 --v 6.1",
+      "camera": "Slow low-angle push in on kitten shivering in the snow, warm glow reflecting in its eyes, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Guard Dog's Secret",
+      "character": "[deep, protective] They think I sleep all day. They don't see the shadows that try to creep in at midnight.",
+      "visual": "A massive scarred German Shepherd sitting attentively in a dark living room bathed in moonlight, shadows creeping under the door, intense stare, photorealistic --ar 9:16 --v 6.1",
+      "camera": "Slow tracking shot circling the German Shepherd in the dark, moonlight catching dust motes, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Clumsy Thief",
+      "character": "[fast, panicked] The fish was right there! How was I supposed to know the counter was slippery?",
+      "visual": "A fluffy white Persian cat slipping off a marble kitchen counter, a cooked fish suspended in mid-air, comedic action shot, bright natural kitchen lighting --ar 9:16 --v 6.1",
+      "camera": "Handheld micro-shake following the cat slipping off the counter, fast motion, bright lighting, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Loyal Wait",
+      "character": "[sad, drawn out] Five years. That's how long I've sat at this station. He said he'd be right back.",
+      "visual": "An old Akita dog waiting faithfully at a bustling train station in the rain, people walking past in blurred motion, melancholic blue lighting, highly detailed --ar 9:16 --v 6.1",
+      "camera": "Static shot with time-lapse effect of people rushing past the stationary waiting dog, rain falling, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Midnight Meeting",
+      "character": "[whisper, sly] When the humans close their eyes, the real neighborhood council begins.",
+      "visual": "Three neighborhood cats sitting in a circle on a moonlit rooftop, plotting, glowing yellow eyes, starry night sky background, cinematic shadows --ar 9:16 --v 6.1",
+      "camera": "Slow crane shot lowering onto the three cats on the rooftop, subtle ear twitches, continuous smooth motion, cinematic 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai cat & pet stories video work?",
-        answer:
-          "Gentle → Emotional Spike pacing, one locked character (the tiny hero cat) and a consistent palette of honey gold, moss green, dusty cream. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai cat & pet stories?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 132 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai cat & pet stories videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
-    relatedSlugs: ["ai-animal-cooking", "pov-immersive-vlogs", "anime-fight-versus"],
+    {
+      "question": "Is the AI pet niche monetizable?",
+      "answer": "Yes, the pet niche is highly monetizable on both YouTube and TikTok. Advertisers heavily target pet content, leading to stable AdSense rates, and the emotional storytelling nature of the videos results in high viewer retention."
+    },
+    {
+      "question": "What tools do I need to make AI cat stories?",
+      "answer": "You will need a script generator (like ChatGPT or Claude), an image generator that handles fur textures well (Midjourney v6 or Leonardo AI), a video motion engine (Runway Gen-3, Kling, or Veo 3), and an emotive voiceover tool (ElevenLabs)."
+    },
+    {
+      "question": "How do I keep the same cat character in every video?",
+      "answer": "To maintain consistency, use the Character Reference (--cref) parameter in Midjourney along with a specific character seed. Define your pet's exact breed, color, and unique markings in every visual prompt."
+    },
+    {
+      "question": "Do pet stories perform better on Shorts or Long-form?",
+      "answer": "Shorts are excellent for rapid subscriber growth and viral reach, while 5-to-8 minute long-form compilations of these stories generate significantly higher AdSense revenue and watch time."
+    }
+  ],
+    relatedSlugs: [
+    "ai-animal-cooking",
+    "poor-vs-rich-animals-ai-skits",
+    "lullaby-and-sleep-music"
+  ],
   },
   {
     slug: "ai-animal-cooking",
     name: "AI Animal Cooking",
     niche: "AI Animal Cooking",
-    seoTitle: "AI Animal Cooking Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free ai animal cooking AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Animal Cooking Video Prompts",
-    intro:
-      "AI Animal Cooking is one of the strongest faceless formats right now: cozy, whimsical, satisfying storytelling built around the chef bear in the forest kitchen. Every blueprint below locks the same character, the butter yellow, forest green, toasted amber palette and slow asmr → reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI Animal Cooking Prompts — Free Generator",
+    metaDescription: "Create viral faceless videos of animals cooking with our free AI prompt generator. Get Midjourney, Veo 3, and ElevenLabs scripts to start your channel.",
+    h1: "AI Animal Cooking Prompt Generator",
+    primaryKeyword: "AI animal cooking video generator",
+    secondaryKeywords: [
+    "animals cooking youtube shorts",
+    "faceless animal chef prompts",
+    "how to make ai cooking videos",
+    "midjourney animal prompts",
+    "ai food video generator"
+  ],
+    difficulty: "Hard",
+    estimatedRpm: "$3.00–$5.50",
+    intro: "Combining the universal appeal of food content with the viral nature of animals, the AI animal cooking niche is a goldmine for high-retention faceless channels. Audiences are mesmerized by bizarre, cozy visuals of bears baking bread or cats tossing pizza dough. This highly satisfying sub-niche requires precise prompting to ensure the AI doesn't warp the animal's paws while handling utensils. Our free generator provides the exact syntax needed to create consistent, high-quality culinary scenes. Use the blueprints below to instantly generate voiceovers, cooking visuals, and dynamic camera movements for your faceless chef channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Chef Bear in the Forest Kitchen — cozy, whimsical, satisfying tone. Voice: Low, friendly narrator, 120 WPM, Content, unhurried. Opening line: "This bear cooks [your topic] better than most humans."',
-        visual:
-          "Vertical 9:16 image of chef bear in the forest kitchen in log cabin kitchen with copper pans and open fire, full subject in frame, natural face and complete anatomy, cream chef jacket, double-breasted, flour-dusted, palette of butter yellow, forest green, toasted amber, hyperreal cgi fur, steam volumetrics, golden kitchen light, macro food detail, cozy realism, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: chef bear in the forest kitchen enters the frame, log cabin kitchen with copper, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Chef Bear in the Forest Kitchen — cozy, whimsical, satisfying tone. Voice: Low, friendly narrator, 120 WPM, Content, unhurried. Opening line: "Watch what happens when a bear tries [your topic]."',
-        visual:
-          "Vertical 9:16 image of chef bear in the forest kitchen in riverside outdoor stove with steam rolling off the pot, full subject in frame, natural face and complete anatomy, rolled linen apron tied twice at the waist, palette of butter yellow, forest green, toasted amber, hyperreal cgi fur, steam volumetrics, golden kitchen light, macro food detail, cozy realism, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: chef bear in the forest kitchen reacts to the turn, riverside outdoor stove with steam, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Chef Bear in the Forest Kitchen — cozy, whimsical, satisfying tone. Voice: Low, friendly narrator, 120 WPM, Content, unhurried. Opening line: "[your topic], made in a forest kitchen."',
-        visual:
-          "Vertical 9:16 image of chef bear in the forest kitchen in autumn forest table set with wooden bowls, full subject in frame, natural face and complete anatomy, tall toque with a slight lean, palette of butter yellow, forest green, toasted amber, hyperreal cgi fur, steam volumetrics, golden kitchen light, macro food detail, cozy realism, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: chef bear in the forest kitchen moves toward the key prop, autumn forest table set with, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Chef Bear in the Forest Kitchen — cozy, whimsical, satisfying tone. Voice: Low, friendly narrator, 120 WPM, Content, unhurried. Opening line: "This bear cooks [your topic] better than most humans."',
-        visual:
-          "Vertical 9:16 image of chef bear in the forest kitchen in log cabin kitchen with copper pans and open fire, full subject in frame, natural face and complete anatomy, wooden spoon tucked into the belt, palette of butter yellow, forest green, toasted amber, hyperreal cgi fur, steam volumetrics, golden kitchen light, macro food detail, cozy realism, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: chef bear in the forest kitchen holds the payoff beat, log cabin kitchen with copper, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Chef Bear in the Forest Kitchen — cozy, whimsical, satisfying tone. Voice: Low, friendly narrator, 120 WPM, Content, unhurried. Opening line: "Watch what happens when a bear tries [your topic]."',
-        visual:
-          "Vertical 9:16 image of chef bear in the forest kitchen in riverside outdoor stove with steam rolling off the pot, full subject in frame, natural face and complete anatomy, cream chef jacket, double-breasted, flour-dusted, palette of butter yellow, forest green, toasted amber, hyperreal cgi fur, steam volumetrics, golden kitchen light, macro food detail, cozy realism, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: chef bear in the forest kitchen settles as the loop resets, riverside outdoor stove with steam, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Bear Baker",
+      "character": "[warm, deep] First, you need wild honey. Not the store-bought kind. The kind you fight bees for.",
+      "visual": "A large grizzly bear wearing a flour-dusted chef apron kneading dough on a wooden table in a cozy rustic cabin kitchen, sunlight streaming through the window, highly detailed food textures, cinematic cozy lighting --ar 9:16 --v 6.1",
+      "camera": "Slow push-in on bear's paws kneading the soft dough, flour dust floating in the air, warm sunlight, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Sushi Cat",
+      "character": "[sharp, precise] Precision is everything. One wrong cut, and the salmon loses its spirit.",
+      "visual": "A serious tuxedo cat dressed as a sushi chef standing behind a sushi counter, cleanly slicing a beautiful piece of raw salmon with a miniature knife, neon Tokyo background lighting, hyper-realistic --ar 9:16 --v 6.1",
+      "camera": "Close-up macro tracking shot of the cat's paw slicing the glossy salmon, neon reflections, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Raccoon Barista",
+      "character": "[fast, energetic] Double shot of espresso, oat milk, and a tiny bit of trash-can magic. Order up!",
+      "visual": "A cute raccoon wearing a green barista apron pulling an espresso shot from a gleaming silver espresso machine, cozy dimly lit coffee shop, steam rising from the cup, photorealistic --ar 9:16 --v 6.1",
+      "camera": "Slow pan right revealing the raccoon barista pulling the espresso shot, steam volumetrics rising, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Fox Pizza Master",
+      "character": "[smooth, confident] The secret to the perfect crust? A wood-fired oven and a lot of attitude.",
+      "visual": "A red fox tossing a spinning pizza dough in the air inside a traditional Italian pizzeria, roaring fire in the brick oven behind it, flour suspended in the air, warm amber lighting --ar 9:16 --v 6.1",
+      "camera": "Slow-motion tilt up following the spinning pizza dough in the air as the fox watches, fire flickering in the background, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Hedgehog Pastry Chef",
+      "character": "[high-pitched, sweet] Decorating cupcakes takes a gentle touch... something my spikes don't always understand.",
+      "visual": "A tiny hedgehog wearing a miniature white chef hat carefully piping pink frosting onto a small vanilla cupcake, pastel bakery background, soft macro photography, highly detailed --ar 9:16 --v 6.1",
+      "camera": "Macro push-in on the hedgehog carefully piping frosting, shallow depth of field, pastel lighting, continuous smooth motion, cinematic 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai animal cooking video work?",
-        answer:
-          "Slow ASMR → Reveal pacing, one locked character (the chef bear in the forest kitchen) and a consistent palette of butter yellow, forest green, toasted amber. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai animal cooking?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 120 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai animal cooking videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
-    relatedSlugs: ["pov-immersive-vlogs", "anime-fight-versus", "stickman-explainer-and-skits"],
+    {
+      "question": "Is the AI animal cooking niche monetizable?",
+      "answer": "Yes. Because it is highly visual and brand-safe, it performs exceptionally well with AdSense and brand sponsorships. It also transcends language barriers, allowing for global viewership."
+    },
+    {
+      "question": "What tools do I need for AI cooking videos?",
+      "answer": "You need an image generator that excels at food textures and object permanence (Midjourney v6 is best), a motion model capable of handling subtle hand/paw movements (Kling or Runway), and ElevenLabs for the voiceover."
+    },
+    {
+      "question": "How do I prevent the AI from generating weird paws?",
+      "answer": "AI struggles with animals holding human tools. Always use negative prompts like 'extra limbs, deformed paws, warped tools' and prompt for 'macro close-up on paws' rather than full-body action shots to reduce rendering errors."
+    },
+    {
+      "question": "Should I add real cooking sound effects?",
+      "answer": "Absolutely. Adding high-quality ASMR sound effects (chopping, sizzling, pouring) is critical for viewer retention and helps disguise any slight visual imperfections in the AI video generation."
+    }
+  ],
+    relatedSlugs: [
+    "miniature-asmr-cooking",
+    "ai-cat-and-pet-stories",
+    "ai-asmr-cooking-cleaning-restoration"
+  ],
   },
   {
     slug: "pov-immersive-vlogs",
     name: "POV Immersive Vlogs",
     niche: "POV Immersive Vlogs",
-    seoTitle: "POV Immersive Vlogs AI Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free pov immersive vlogs AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "POV Immersive Vlogs AI Video Prompts",
-    intro:
-      "POV Immersive Vlogs is one of the strongest faceless formats right now: immersive, grounded, present-tense storytelling built around the first-person traveller. Every blueprint below locks the same character, the sun-warmed sand, sky blue, worn timber palette and continuous → reveal beat pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "POV Immersive Vlog Prompts — Free Generator",
+    metaDescription: "Generate cinematic POV faceless vlogs using AI. Get free prompts for ElevenLabs, Midjourney, and Runway Gen-3 to build immersive first-person video content.",
+    h1: "POV Immersive Vlog Prompt Generator",
+    primaryKeyword: "POV AI video generator",
+    secondaryKeywords: [
+    "immersive vlog prompts",
+    "first person ai video generator",
+    "how to make pov faceless videos",
+    "midjourney pov prompts",
+    "runway gen 3 pov settings",
+    "faceless travel vlog ai"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.00–$4.00",
+    intro: "POV (Point of View) immersive vlogs are revolutionizing how creators build parasocial relationships without ever showing their faces. By placing the viewer directly in the eyes of the protagonist—whether wandering through a cyberpunk city or exploring a quiet rainy forest—this format drives massive engagement through pure atmosphere. The secret to a viral POV video is perfectly syncing realistic first-person camera sway with environmental sound design. Our free generator ensures your AI tools understand first-person framing. Use the blueprints below to instantly generate immersive voiceovers, precise POV visuals, and realistic walking camera motions for your next faceless vlog.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The First-Person Traveller — immersive, grounded, present-tense tone. Voice: Close-mic conversational narrator, 138 WPM, Curious, quietly amazed. Opening line: "You just woke up in the middle of [your topic]."',
-        visual:
-          "Vertical 9:16 image of first-person traveller in narrow market street at golden hour, faceless framing, head cropped or shadowed, hands in sharp focus, faded canvas jacket, sleeves pushed up, palette of sun-warmed sand, sky blue, worn timber, first-person lens, natural light, handheld micro-shake, wide 18mm, photoreal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: first-person traveller enters the frame, narrow market street at golden, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The First-Person Traveller — immersive, grounded, present-tense tone. Voice: Close-mic conversational narrator, 138 WPM, Curious, quietly amazed. Opening line: "This is [your topic] through your own eyes."',
-        visual:
-          "Vertical 9:16 image of first-person traveller in wooden staircase into a fog-covered valley, faceless framing, head cropped or shadowed, hands in sharp focus, weathered hands with a braided cord bracelet, palette of sun-warmed sand, sky blue, worn timber, first-person lens, natural light, handheld micro-shake, wide 18mm, photoreal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: first-person traveller reacts to the turn, wooden staircase into a fog-covered, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The First-Person Traveller — immersive, grounded, present-tense tone. Voice: Close-mic conversational narrator, 138 WPM, Curious, quietly amazed. Opening line: "Walk with me straight into [your topic]."',
-        visual:
-          "Vertical 9:16 image of first-person traveller in small kitchen doorway opening onto a courtyard, faceless framing, head cropped or shadowed, hands in sharp focus, scuffed boots visible on the down-look, palette of sun-warmed sand, sky blue, worn timber, first-person lens, natural light, handheld micro-shake, wide 18mm, photoreal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: first-person traveller moves toward the key prop, small kitchen doorway opening onto, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The First-Person Traveller — immersive, grounded, present-tense tone. Voice: Close-mic conversational narrator, 138 WPM, Curious, quietly amazed. Opening line: "You just woke up in the middle of [your topic]."',
-        visual:
-          "Vertical 9:16 image of first-person traveller in narrow market street at golden hour, faceless framing, head cropped or shadowed, hands in sharp focus, worn day pack strap crossing the chest, palette of sun-warmed sand, sky blue, worn timber, first-person lens, natural light, handheld micro-shake, wide 18mm, photoreal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: first-person traveller holds the payoff beat, narrow market street at golden, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The First-Person Traveller — immersive, grounded, present-tense tone. Voice: Close-mic conversational narrator, 138 WPM, Curious, quietly amazed. Opening line: "This is [your topic] through your own eyes."',
-        visual:
-          "Vertical 9:16 image of first-person traveller in wooden staircase into a fog-covered valley, faceless framing, head cropped or shadowed, hands in sharp focus, faded canvas jacket, sleeves pushed up, palette of sun-warmed sand, sky blue, worn timber, first-person lens, natural light, handheld micro-shake, wide 18mm, photoreal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: first-person traveller settles as the loop resets, wooden staircase into a fog-covered, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Rainy Cyberpunk Walk",
+      "character": "[whisper, tired] Three days in this neon maze, and the rain still hasn't stopped. I need to find the lower levels.",
+      "visual": "POV shot looking down a rainy neon-lit cyberpunk alleyway, holding a glowing digital map in left hand, puddles reflecting purple and cyan lights, gritty cinematic realism, 24mm lens --ar 9:16 --v 6.1",
+      "camera": "First-person POV forward walking motion, slight handheld camera bob, rain falling, neon lights reflecting, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Cozy Cabin Morning",
+      "character": "[soft, relaxed] There's nothing quite like the sound of firewood cracking before the sun comes up.",
+      "visual": "POV shot looking at two hands holding a steaming mug of black coffee in front of a roaring stone fireplace inside a cozy log cabin, snowy window in the background, warm amber lighting, hyper-detailed --ar 9:16 --v 6.1",
+      "camera": "First-person POV static shot with slight natural breathing sway, steam rising from the coffee mug, fire flickering, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Abandoned Mall",
+      "character": "[nervous, quick] They said this place was empty. But I just heard footsteps on the floor above me.",
+      "visual": "POV shot holding a shaking flashlight pointing down a dark, overgrown abandoned shopping mall corridor, shattered glass on the floor, eerie moonlight filtering through broken skylights, found footage style --ar 9:16 --v 6.1",
+      "camera": "First-person POV slow creeping forward motion, flashlight beam swaying erratically, dust particles in the air, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Space Station Window",
+      "character": "[awe-struck, slow] Looking down at Earth from up here... it makes all our problems seem so incredibly small.",
+      "visual": "POV shot looking through a massive glass observation window on a futuristic space station, Earth glowing brightly in the darkness below, reflection of an astronaut helmet in the glass, sci-fi cinematic lighting --ar 9:16 --v 6.1",
+      "camera": "First-person POV slow push-in toward the observation window, Earth rotating slowly below, subtle floating sway, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Tokyo Night Drive",
+      "character": "[calm, reflective] Driving at 2 AM is the only time this city actually lets you think.",
+      "visual": "POV shot from the driver's seat of a vintage sports car driving down an empty Tokyo highway at night, neon streetlights blurring past the windshield, glowing dashboard dials, cinematic moody grading --ar 9:16 --v 6.1",
+      "camera": "First-person POV driving forward, streetlights reflecting and passing over the windshield, subtle car vibrations, continuous smooth motion, cinematic 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a pov immersive vlogs video work?",
-        answer:
-          "Continuous → Reveal Beat pacing, one locked character (the first-person traveller) and a consistent palette of sun-warmed sand, sky blue, worn timber. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit pov immersive vlogs?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 138 WPM.",
-      },
-      {
-        question: "How do I keep the character consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Keep the face hidden the same way in each shot so the silhouette reads as one person.",
-      },
-      {
-        question: "How long should pov immersive vlogs videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the POV immersive vlog niche monetizable?",
+      "answer": "Yes. POV vlogs build incredibly strong communities. Because they rely on high-quality visuals and storytelling rather than controversial topics, they maintain high AdSense RPMs and are perfect for ambient channel monetization."
+    },
+    {
+      "question": "What tools do I need for AI POV videos?",
+      "answer": "Midjourney v6 is essential for generating the initial 'POV shot looking at...' base image. Runway Gen-3 or Kling is critical for generating the first-person walking or driving motion, and you will need robust sound effect libraries for immersion."
+    },
+    {
+      "question": "How do I make the camera motion look realistic?",
+      "answer": "In your video AI prompts, use terms like 'first-person POV,' 'handheld camera bob,' or 'natural breathing sway.' Avoid high motion settings, as POV videos look best with slow, deliberate, and immersive movements."
+    },
+    {
+      "question": "How long should POV vlogs be?",
+      "answer": "Shorts (30-60 seconds) work well for intense or aesthetic moments. However, 10-to-30 minute long-form videos with ambient soundscapes (like 'A Rainy Walk in Cyberpunk Tokyo') can generate massive watch time and revenue."
+    }
+  ],
     relatedSlugs: [
-      "anime-fight-versus",
-      "stickman-explainer-and-skits",
-      "ai-asmr-cooking-cleaning-restoration",
-    ],
+    "analog-horror-and-unsolved-mysteries",
+    "pixel-game-pov",
+    "zombie-apocalypse-drama"
+  ],
   },
   {
     slug: "anime-fight-versus",
     name: "Anime Fight Versus",
     niche: "Anime Fight Versus",
-    seoTitle: "Anime Fight Versus AI Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free anime fight versus AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Anime Fight Versus AI Video Prompts",
-    intro:
-      "Anime Fight Versus is one of the strongest faceless formats right now: explosive, hype, cinematic storytelling built around the masked challenger. Every blueprint below locks the same character, the ink black, electric crimson, cold silver palette and fast cut → impact pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Anime Fight Versus Prompts — Free Generator",
+    metaDescription: "Create viral anime character versus battles with our free AI prompt generator. Get Midjourney anime styles, Veo 3 combat motions, and high-energy voiceover scripts.",
+    h1: "Anime Fight Versus Prompt Generator",
+    primaryKeyword: "AI anime fight generator",
+    secondaryKeywords: [
+    "anime versus video prompts",
+    "faceless anime shorts generator",
+    "how to make anime comparison videos",
+    "midjourney niji anime prompts",
+    "ai combat video generator"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$1.50–$3.00",
+    intro: "The 'Who Would Win?' anime debate is one of the most passionate and highly-searched topics on social media. Anime Fight Versus videos pit legendary archetypes against each other, comparing stats, abilities, and power scaling. For faceless creators, this niche guarantees high engagement, debates in the comments, and endless content opportunities. However, generating consistent anime aesthetics requires specific knowledge of AI models like Midjourney's Niji. Our free generator provides the exact prompts to output stunning 2D animation styles, dynamic combat camera angles, and hype-building narrator scripts. Use the blueprints below to launch your viral anime debate channel today.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Masked Challenger — explosive, hype, cinematic tone. Voice: Intense male narrator with grit, 150 WPM, Escalating hype. Opening line: "Who actually wins [your topic]?"',
-        visual:
-          "Vertical 9:16 image of masked challenger in shattered rooftop under a blood-red moon, full subject in frame, natural face and complete anatomy, torn black haori with a glowing crimson seam, palette of ink black, electric crimson, cold silver, anime key frame, speed lines, impact flash, cel shading, ultra dynamic, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: masked challenger enters the frame, shattered rooftop under a blood-red, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Masked Challenger — explosive, hype, cinematic tone. Voice: Intense male narrator with grit, 150 WPM, Escalating hype. Opening line: "[your topic] has one correct answer. Watch."',
-        visual:
-          "Vertical 9:16 image of masked challenger in flooded temple courtyard mid-storm, full subject in frame, natural face and complete anatomy, bandaged forearms and knuckles, palette of ink black, electric crimson, cold silver, anime key frame, speed lines, impact flash, cel shading, ultra dynamic, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: masked challenger reacts to the turn, flooded temple courtyard mid-storm, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Masked Challenger — explosive, hype, cinematic tone. Voice: Intense male narrator with grit, 150 WPM, Escalating hype. Opening line: "This fight settles [your topic] forever."',
-        visual:
-          "Vertical 9:16 image of masked challenger in collapsing arena with floating debris, full subject in frame, natural face and complete anatomy, split-face porcelain mask, hairline cracked, palette of ink black, electric crimson, cold silver, anime key frame, speed lines, impact flash, cel shading, ultra dynamic, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: masked challenger moves toward the key prop, collapsing arena with floating debris, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Masked Challenger — explosive, hype, cinematic tone. Voice: Intense male narrator with grit, 150 WPM, Escalating hype. Opening line: "Who actually wins [your topic]?"',
-        visual:
-          "Vertical 9:16 image of masked challenger in shattered rooftop under a blood-red moon, full subject in frame, natural face and complete anatomy, chipped katana slung low on the hip, palette of ink black, electric crimson, cold silver, anime key frame, speed lines, impact flash, cel shading, ultra dynamic, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: masked challenger holds the payoff beat, shattered rooftop under a blood-red, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Masked Challenger — explosive, hype, cinematic tone. Voice: Intense male narrator with grit, 150 WPM, Escalating hype. Opening line: "[your topic] has one correct answer. Watch."',
-        visual:
-          "Vertical 9:16 image of masked challenger in flooded temple courtyard mid-storm, full subject in frame, natural face and complete anatomy, torn black haori with a glowing crimson seam, palette of ink black, electric crimson, cold silver, anime key frame, speed lines, impact flash, cel shading, ultra dynamic, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: masked challenger settles as the loop resets, flooded temple courtyard mid-storm, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Fire Mage vs. The Ice Swordsman",
+      "character": "[fast, hyped] In the red corner, mastery over the inferno. In the blue corner, a blade cold enough to freeze time. Who takes the crown?",
+      "visual": "A split screen showing a furious fire mage cloaked in rising flames on the left, and a stoic ice swordsman drawing a glowing frost katana on the right, epic anime battle aesthetic, studio ghibli mixed with ufotable style, highly detailed 2D animation --ar 9:16 --niji 6",
+      "camera": "Fast dynamic zoom in on the two anime characters clashing, fire and ice particles exploding on impact, high impact motion, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Cyber Ninja vs. The Mecha Tank",
+      "character": "[aggressive, intense] Speed versus absolute defense. Can a blade made of pure plasma cut through impenetrable titanium armor? Let's look at the stats.",
+      "visual": "A sleek cyber ninja with a glowing neon katana leaping through the air toward a massive, heavily armed mecha tank, dystopian city background, vivid anime style, dynamic low angle perspective, 90s anime aesthetic --ar 9:16 --niji 6",
+      "camera": "Slow motion panning tracking shot following the cyber ninja leaping through the air, neon trails behind the blade, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Shadow Assassin vs. The Light Paladin",
+      "character": "[dark, dramatic] One strikes from the darkness, unseen. The other commands the blinding power of the sun. It's stealth versus raw holy power.",
+      "visual": "A shadowy assassin with glowing purple eyes dissolving into black mist, dodging a massive beam of golden light fired by a heavily armored holy paladin, epic anime confrontation, intense contrasting lighting, ufotable animation style --ar 9:16 --niji 6",
+      "camera": "Fast whip pan from the paladin firing the light beam to the assassin dodging into shadows, intense light bloom, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Gravity Manipulator vs. The Time Stopper",
+      "character": "[analytical, fast] If you can crush a black hole, does it matter if your opponent can stop the clock? This is the ultimate hax battle.",
+      "visual": "An anime villain floating in mid-air surrounded by crushed floating debris with glowing purple gravity rings, facing a hero holding a glowing pocket watch with time-fracture visual effects, epic anime showdown, high energy --ar 9:16 --niji 6",
+      "camera": "Circular orbit shot around the floating gravity manipulator, debris floating in slow motion, intense anime aura effects, continuous smooth motion, cinematic 24fps"
+    },
+    {
+      "title": "The Dragon Tamer vs. The Demon King",
+      "character": "[loud, booming] A pact with the ancient skies, challenged by the ruler of the underworld! The scale of this fight is apocalyptic!",
+      "visual": "An anime warrior riding a massive roaring red dragon breathing fire down upon a towering horned demon king shrouded in black lightning, apocalyptic wasteland, epic anime keyframe, 4k resolution --ar 9:16 --niji 6",
+      "camera": "Epic aerial pull-back shot revealing the massive scale of the dragon facing the demon king, lightning flashing, continuous smooth motion, cinematic 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a anime fight versus video work?",
-        answer:
-          "Fast Cut → Impact pacing, one locked character (the masked challenger) and a consistent palette of ink black, electric crimson, cold silver. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit anime fight versus?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 150 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should anime fight versus videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the anime versus niche monetizable?",
+      "answer": "Yes, but you must be careful with copyright. If you use AI to generate original archetypes (e.g., 'Fire Mage vs Ice Knight') rather than exact copyrighted characters (e.g., 'Naruto vs Goku'), you will have zero issues securing AdSense approval."
+    },
+    {
+      "question": "What tools do I need for AI anime videos?",
+      "answer": "You need Midjourney (specifically utilizing the --niji 6 parameter for authentic 2D anime styles), a fast-paced AI voice generator like ElevenLabs, and video editors like CapCut for heavy VFX and sound design."
+    },
+    {
+      "question": "How do I make the fights look dynamic?",
+      "answer": "AI video generators struggle with complex martial arts choreography. Instead, prompt for 'clashing weapons,' 'aura effects,' or 'particle explosions,' and use CapCut's shake and flash transitions between clips to simulate high-speed combat."
+    },
+    {
+      "question": "How do I drive engagement in versus videos?",
+      "answer": "Always end your Shorts with a call to action asking the viewers to debate the winner in the comments. Pinned comments asking 'Did I miss a hidden ability?' will drive your algorithm metrics sky-high."
+    }
+  ],
     relatedSlugs: [
-      "stickman-explainer-and-skits",
-      "ai-asmr-cooking-cleaning-restoration",
-      "zombie-apocalypse-drama",
-    ],
+    "cartoon-horror-illustration",
+    "bible-and-mythology-anime",
+    "ranking-and-top-5-countdowns"
+  ],
   },
   {
     slug: "stickman-explainer-and-skits",
     name: "Stickman Explainer & Skits",
     niche: "Stickman Explainer & Skits",
-    seoTitle: "Stickman Explainer & Skits AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free stickman explainer & skits AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Stickman Explainer & Skits AI Video Prompts",
-    intro:
-      "Stickman Explainer & Skits is one of the strongest faceless formats right now: funny, fast, relatable storytelling built around the stickman everyman. Every blueprint below locks the same character, the pure white, ink black, single red accent palette and rapid → punchline pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Stickman Explainer & Skits Prompts — Free Generator",
+    metaDescription: "Create viral stickman explainer videos and comedy skits with our free AI prompt generator. Get Midjourney styles, Veo 3 motions, and voiceover scripts.",
+    h1: "Stickman Explainer & Skits Prompt Generator",
+    primaryKeyword: "stickman video generator ai",
+    secondaryKeywords: [
+    "stickman animation prompts",
+    "how to make stickman skits",
+    "ai whiteboard animation generator",
+    "midjourney vector prompts",
+    "faceless sketch comedy ai"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.50–$4.00",
+    intro: "Stickman explainers and comedic skits have quietly become one of the highest-converting formats on YouTube Shorts and TikTok. Their minimalist design strips away visual distractions, forcing the viewer to focus entirely on the witty storytelling, fast-paced educational breakdowns, or absurd hypothetical scenarios. Because these videos rely heavily on clean 2D vector aesthetics and expressive white-board or minimalist framing, they require precise prompting to avoid messy AI artifacts. Our free generator provides the exact syntax needed to create sharp, scalable stickman content. Use the blueprints below to instantly generate voiceovers, crisp vector visuals, and dynamic whiteboard motions for your channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Stickman Everyman — funny, fast, relatable tone. Voice: Bright conversational narrator, 158 WPM, Deadpan into punchline. Opening line: "Here is [your topic], explained badly on purpose."',
-        visual:
-          "Vertical 9:16 image of stickman everyman in empty white void with one drawn horizon line, full subject in frame, natural face and complete anatomy, pure black stick limbs, uniform 6px stroke, palette of pure white, ink black, single red accent, clean vector stickman, flat white background, bold stroke, snappy keyframes, minimal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: stickman everyman enters the frame, empty white void with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Stickman Everyman — funny, fast, relatable tone. Voice: Bright conversational narrator, 158 WPM, Deadpan into punchline. Opening line: "[your topic] in 30 seconds, stick figures only."',
-        visual:
-          "Vertical 9:16 image of stickman everyman in sketched office desk in three strokes, full subject in frame, natural face and complete anatomy, single prop per scene, drawn in the same stroke, palette of pure white, ink black, single red accent, clean vector stickman, flat white background, bold stroke, snappy keyframes, minimal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: stickman everyman reacts to the turn, sketched office desk in three, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Stickman Everyman — funny, fast, relatable tone. Voice: Bright conversational narrator, 158 WPM, Deadpan into punchline. Opening line: "Everyone gets [your topic] wrong. Watch."',
-        visual:
-          "Vertical 9:16 image of stickman everyman in flat side-scroll street with drawn props, full subject in frame, natural face and complete anatomy, no facial features beyond two dot eyes, palette of pure white, ink black, single red accent, clean vector stickman, flat white background, bold stroke, snappy keyframes, minimal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: stickman everyman moves toward the key prop, flat side-scroll street with drawn, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Stickman Everyman — funny, fast, relatable tone. Voice: Bright conversational narrator, 158 WPM, Deadpan into punchline. Opening line: "Here is [your topic], explained badly on purpose."',
-        visual:
-          "Vertical 9:16 image of stickman everyman in empty white void with one drawn horizon line, full subject in frame, natural face and complete anatomy, optional red accent object for focus, palette of pure white, ink black, single red accent, clean vector stickman, flat white background, bold stroke, snappy keyframes, minimal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: stickman everyman holds the payoff beat, empty white void with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Stickman Everyman — funny, fast, relatable tone. Voice: Bright conversational narrator, 158 WPM, Deadpan into punchline. Opening line: "[your topic] in 30 seconds, stick figures only."',
-        visual:
-          "Vertical 9:16 image of stickman everyman in sketched office desk in three strokes, full subject in frame, natural face and complete anatomy, pure black stick limbs, uniform 6px stroke, palette of pure white, ink black, single red accent, clean vector stickman, flat white background, bold stroke, snappy keyframes, minimal, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: stickman everyman settles as the loop resets, sketched office desk in three, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The 3-Second Rule of Focus",
+      "character": "[fast, energetic] You scroll past thousands of videos a day. Why did you stop on this one? It's all about dopamine timing.",
+      "visual": "A minimalist black vector stickman standing against a pure white background, scratching its head with a thought bubble showing a glowing brain, clean 2D line art style, vector illustration, flat design --ar 9:16 --v 6.1",
+      "camera": "Static shot with a quick digital zoom-in on the stickman's thought bubble as it pops, clean motion, 24fps"
+    },
+    {
+      "title": "The Invisible Wall Trap",
+      "character": "[panicked, high-pitched] I've been walking straight for three hours! Why is the world just a flat screen?!",
+      "visual": "A black vector stickman frantically running into a transparent glass wall on a stark white grid background, minimalist comic strip style, sharp lines, highly expressive --ar 9:16 --v 6.1",
+      "camera": "Tracking pan left following the running stickman until it hits the wall and bounces back, smooth vector motion, 24fps"
+    },
+    {
+      "title": "How Money Actually Works",
+      "character": "[calm, analytical] Imagine trading a chicken for a laptop. Sound ridiculous? That's literally how the banking system started.",
+      "visual": "Two black vector stickmen handing a stylized gold coin back and forth over a minimal grey line graph, clean infographic aesthetic, corporate Memphis minimalist style --ar 9:16 --v 6.1",
+      "camera": "Smooth pan right following the gold coin passing between hands, clean educational motion, 24fps"
+    },
+    {
+      "title": "The Procrastination Loop",
+      "character": "[whisper, guilty] I'll just check my phone for five minutes. And suddenly, it's 3 AM and I'm watching deep-sea documentaries.",
+      "visual": "A stickman sitting at a minimalist desk illuminated by a harsh blue smartphone screen glow, dark minimalist background, clean white vector outlines --ar 9:16 --v 6.1",
+      "camera": "Slow vertical tilt down from the phone screen glow to the slumped stickman, subtle breathing motion, 24fps"
+    },
+    {
+      "title": "The Bad Advice Guru",
+      "character": "[confident, absurd] Feeling stressed? Try screaming at your microwave until it cooks your food faster. Works every time.",
+      "visual": "A stickman aggressively pointing finger at a tiny square box representing a microwave, speed lines around the hands, comical doodle art style --ar 9:16 --v 6.1",
+      "camera": "Snap-zoom in on the stickman's aggressive pointing hand, high-energy framing, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a stickman explainer & skits video work?",
-        answer:
-          "Rapid → Punchline pacing, one locked character (the stickman everyman) and a consistent palette of pure white, ink black, single red accent. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit stickman explainer & skits?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 158 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should stickman explainer & skits videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the stickman explainer niche monetizable?",
+      "answer": "Yes. Explainer and educational sketch channels achieve high retention rates because viewers stay to see the punchline or conclusion, which maximizes AdSense performance and sponsorship potential."
+    },
+    {
+      "question": "What tools do I need for stickman AI videos?",
+      "answer": "You need a scriptwriter (ChatGPT or Claude) for punchy dialogue, Midjourney v6 with vector terms for clean character generation, and an editor like CapCut to assemble the clips with sound effects."
+    },
+    {
+      "question": "How do I keep stickman designs completely clean?",
+      "answer": "Include terms like 'pure white background, vector line art, flat design, minimalist' in your visual prompts and use negative prompts to block gradients, shading, and realistic textures."
+    },
+    {
+      "question": "Why do stickman skits go viral so often?",
+      "answer": "They rely on universal human frustrations or relatable behavioral loops. When a viewer sees themselves in a funny stickman skit, they immediately share it."
+    }
+  ],
     relatedSlugs: [
-      "ai-asmr-cooking-cleaning-restoration",
-      "zombie-apocalypse-drama",
-      "bible-and-mythology-anime",
-    ],
+    "ranking-and-top-5-countdowns",
+    "vox-style-paper-cut-commentary",
+    "ai-influencer-product-reviews"
+  ],
   },
   {
     slug: "ai-asmr-cooking-cleaning-restoration",
     name: "AI ASMR",
     niche: "AI ASMR (Cooking, Cleaning, Restoration)",
-    seoTitle: "AI ASMR Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free ai asmr AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI ASMR Video Prompts",
-    intro:
-      "AI ASMR is one of the strongest faceless formats right now: hypnotic, tactile, wordless storytelling built around the silent hands restorer. Every blueprint below locks the same character, the soft grey, foam white, muted steel palette and very slow → satisfying release pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI ASMR Prompts (Cooking, Cleaning, Restoration) — Free",
+    metaDescription: "Generate hyper-satisfying AI ASMR videos featuring cooking, deep cleaning, and artifact restoration. Get free Midjourney and Kling prompts.",
+    h1: "AI ASMR Prompt Generator",
+    primaryKeyword: "ai asmr video generator",
+    secondaryKeywords: [
+    "ai restoration video prompts",
+    "satisfying ai cleaning videos",
+    "midjourney asmr textures",
+    "how to make ai asmr content",
+    "faceless satisfying shorts ai"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$3.50–$6.00",
+    intro: "The human brain loves satisfying loops, tactile textures, and crisp auditory triggers. AI ASMR—spanning deep cleaning, antique object restoration, and hyper-detailed cooking preparation—is one of the most hypnotic content genres online. Viewers will watch a rusty relic transform into pristine chrome or a dusty stone slab scrubbed clean on loop for minutes at a time. Because success relies heavily on visual texture rendering, your prompts must emphasize micro-details like soap suds, metal flakes, and smooth glides. Use our free generator blueprints below to create immersive, tactile ASMR scenes that keep retention pinned at 100%.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Silent Hands Restorer — hypnotic, tactile, wordless tone. Voice: Minimal whisper narration or none, 84 WPM, Calm, detached. Opening line: "The most satisfying part of [your topic] is the sound."',
-        visual:
-          "Vertical 9:16 image of silent hands restorer in white tiled workbench with one overhead softbox, full subject in frame, natural face and complete anatomy, rolled grey sleeves and clean forearms, palette of soft grey, foam white, muted steel, macro texture, soft diffused light, ultra slow motion, photoreal surfaces, clean frame, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: silent hands restorer enters the frame, white tiled workbench with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Silent Hands Restorer — hypnotic, tactile, wordless tone. Voice: Minimal whisper narration or none, 84 WPM, Calm, detached. Opening line: "Turn your volume up for [your topic]."',
-        visual:
-          "Vertical 9:16 image of silent hands restorer in restoration table with rust flaking under a brush, full subject in frame, natural face and complete anatomy, nitrile gloves, faintly powdered, palette of soft grey, foam white, muted steel, macro texture, soft diffused light, ultra slow motion, photoreal surfaces, clean frame, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: silent hands restorer reacts to the turn, restoration table with rust flaking, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Silent Hands Restorer — hypnotic, tactile, wordless tone. Voice: Minimal whisper narration or none, 84 WPM, Calm, detached. Opening line: "[your topic], in perfect slow motion."',
-        visual:
-          "Vertical 9:16 image of silent hands restorer in spotless counter with condensation on glass, full subject in frame, natural face and complete anatomy, neutral canvas apron with tool loops, palette of soft grey, foam white, muted steel, macro texture, soft diffused light, ultra slow motion, photoreal surfaces, clean frame, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: silent hands restorer moves toward the key prop, spotless counter with condensation on, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Silent Hands Restorer — hypnotic, tactile, wordless tone. Voice: Minimal whisper narration or none, 84 WPM, Calm, detached. Opening line: "The most satisfying part of [your topic] is the sound."',
-        visual:
-          "Vertical 9:16 image of silent hands restorer in white tiled workbench with one overhead softbox, full subject in frame, natural face and complete anatomy, no jewellery, short trimmed nails, palette of soft grey, foam white, muted steel, macro texture, soft diffused light, ultra slow motion, photoreal surfaces, clean frame, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: silent hands restorer holds the payoff beat, white tiled workbench with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Silent Hands Restorer — hypnotic, tactile, wordless tone. Voice: Minimal whisper narration or none, 84 WPM, Calm, detached. Opening line: "Turn your volume up for [your topic]."',
-        visual:
-          "Vertical 9:16 image of silent hands restorer in restoration table with rust flaking under a brush, full subject in frame, natural face and complete anatomy, rolled grey sleeves and clean forearms, palette of soft grey, foam white, muted steel, macro texture, soft diffused light, ultra slow motion, photoreal surfaces, clean frame, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: silent hands restorer settles as the loop resets, restoration table with rust flaking, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Rusty Pocket Watch Restoration",
+      "character": "[whisper, soft] Thirty layers of oxidation couldn't hide the brass underneath. Let's bring her back to life.",
+      "visual": "Macro close-up of a rusted brass pocket watch resting on a dark workbench, a metal pick scraping away crusty green corrosion, hyper-detailed textures, cinematic macro lighting, shallow depth of field --ar 9:16 --v 6.1",
+      "camera": "Macro slow push-in tracking the metal pick scraping away rust flakes in ultra-sharp detail, continuous smooth motion, 24fps"
+    },
+    {
+      "title": "The Deep Foam Clean",
+      "character": "[whisper, calming] Watch the dirt lift away. Total satisfaction in three seconds flat.",
+      "visual": "Macro shot of a grimy vintage leather boot covered in thick white cleaning foam, a soft-bristled brush sweeping across the surface revealing clean dark leather underneath, rich textures --ar 9:16 --v 6.1",
+      "camera": "Close-up tracking shot sliding across the boot surface as the brush sweeps foam away, smooth cleaning motion, 24fps"
+    },
+    {
+      "title": "The Kinetic Sand Slice",
+      "character": "[whisper, crisp] Clean edges. Zero resistance. Pure auditory and visual harmony.",
+      "visual": "A perfectly smooth brick of vibrant blue kinetic sand being sliced cleanly in half by a razor-sharp wire tool, micro-particles crumbling, clean studio lighting, 4k macro --ar 9:16 --v 6.1",
+      "camera": "Slow motion macro drop shot as the wire tool slices downward through the kinetic sand block, 24fps"
+    },
+    {
+      "title": "The Honeycomb Drizzle",
+      "character": "[whisper, slow] Pure raw amber cascading over a block of fresh dairy butter. Take your time.",
+      "visual": "Extreme macro shot of golden amber honey dripping slowly from a wooden dipper onto a square of yellow butter, glistening surfaces, warm lighting, hyper-realistic food textures --ar 9:16 --v 6.1",
+      "camera": "Static macro shot with slow tilt down following the heavy honey stream pooling on the butter, 24fps"
+    },
+    {
+      "title": "The Crystal Ice Crackle",
+      "character": "[whisper, crisp] Hand-carved glacier ice meeting boiling water. Listen closely.",
+      "visual": "A crystal clear spherical ice orb sitting on a dark slate coaster, micro-fractures glowing under subtle rim lighting, droplets of condensation sliding down the side --ar 9:16 --v 6.1",
+      "camera": "Macro orbit shot slowly circling the melting ice orb, water droplets catching light highlights, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai asmr video work?",
-        answer:
-          "Very Slow → Satisfying Release pacing, one locked character (the silent hands restorer) and a consistent palette of soft grey, foam white, muted steel. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai asmr?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 84 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai asmr videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the AI ASMR niche monetizable?",
+      "answer": "Yes, exceptionally well. Because ASMR videos attract a global audience across all languages and generate high watch time loops, AdSense earnings are strong and brand partnerships with lifestyle brands are frequent."
+    },
+    {
+      "question": "What tools do I need for AI ASMR content?",
+      "answer": "You need Midjourney v6 for ultra-sharp macro textures, Kling or Runway for smooth motion generation, and a high-end sound effects library (or ElevenLabs SFX) to layer crisp scrubbing, scraping, and crackling audio."
+    },
+    {
+      "question": "How do I make the visuals look hyper-realistic?",
+      "answer": "Use macro photography keywords in your visual prompts, such as 'extreme macro close-up, shallow depth of field, micro-particles, rich textures, rim lighting' to force the AI to render fine tactile details."
+    },
+    {
+      "question": "Why is audio more important than video in ASMR?",
+      "answer": "ASMR is an auditory-first medium. If your visual generation is 90% good but your scrubbing, scraping, or sizzling sound design is pristine, viewers will watch the entire loop."
+    }
+  ],
     relatedSlugs: [
-      "zombie-apocalypse-drama",
-      "bible-and-mythology-anime",
-      "ai-influencer-product-reviews",
-    ],
+    "miniature-asmr-cooking",
+    "ai-animal-cooking",
+    "ai-car-wash-and-restoration"
+  ],
   },
   {
     slug: "zombie-apocalypse-drama",
     name: "Zombie Apocalypse Drama",
     niche: "Zombie Apocalypse Drama",
-    seoTitle: "Zombie Apocalypse Drama AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free zombie apocalypse drama AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Zombie Apocalypse Drama AI Video Prompts",
-    intro:
-      "Zombie Apocalypse Drama is one of the strongest faceless formats right now: tense, gritty, desperate storytelling built around the last survivor. Every blueprint below locks the same character, the ash grey, dried blood red, sickly green palette and slow dread → sprint pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Zombie Apocalypse Drama Prompts — Free Generator",
+    metaDescription: "Create cinematic zombie apocalypse narrative shorts with our free AI prompt generator. Get atmospheric Midjourney prompts and survival voiceover scripts.",
+    h1: "Zombie Apocalypse Drama Prompt Generator",
+    primaryKeyword: "ai zombie video generator",
+    secondaryKeywords: [
+    "zombie apocalypse shorts prompts",
+    "faceless survival story ai",
+    "midjourney apocalyptic landscape prompts",
+    "runway cinematic zombie settings",
+    "how to make survival horror shorts"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "Survival horror and post-apocalyptic storytelling hold a permanent grip on internet culture. Zombie apocalypse dramas allow creators to build intense, high-stakes narratives about isolation, human choice, and survival against impossible odds—all without showing a human face. By focusing on atmospheric details like overgrown highways, flickering emergency radios, and shadowy figures lurking in fog, AI video tools can produce Hollywood-grade cinematic trailers and dramatic shorts. Our free generator provides the exact prompts needed to build gritty, cinematic survival content. Use the blueprints below to launch your dystopian drama channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Last Survivor — tense, gritty, desperate tone. Voice: Hoarse male narrator, 126 WPM, Exhausted urgency. Opening line: "Day 47 and [your topic] just changed the rules."',
-        visual:
-          "Vertical 9:16 image of last survivor in overturned highway at dusk with abandoned cars, faceless framing, head cropped or shadowed, hands in sharp focus, blood-flecked field jacket, one sleeve torn, palette of ash grey, dried blood red, sickly green, desaturated grade, handheld realism, practical firelight, heavy grain, cinematic grime, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: last survivor enters the frame, overturned highway at dusk with, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Last Survivor — tense, gritty, desperate tone. Voice: Hoarse male narrator, 126 WPM, Exhausted urgency. Opening line: "Nobody survives [your topic] alone."',
-        visual:
-          "Vertical 9:16 image of last survivor in barricaded supermarket lit by one flare, faceless framing, head cropped or shadowed, hands in sharp focus, duct-taped forearm guards, palette of ash grey, dried blood red, sickly green, desaturated grade, handheld realism, practical firelight, heavy grain, cinematic grime, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: last survivor reacts to the turn, barricaded supermarket lit by one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Last Survivor — tense, gritty, desperate tone. Voice: Hoarse male narrator, 126 WPM, Exhausted urgency. Opening line: "[your topic] is the reason the safe zone fell."',
-        visual:
-          "Vertical 9:16 image of last survivor in flooded subway tunnel with distant dragging sounds, faceless framing, head cropped or shadowed, hands in sharp focus, half-empty pack with a crowbar strapped on, palette of ash grey, dried blood red, sickly green, desaturated grade, handheld realism, practical firelight, heavy grain, cinematic grime, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: last survivor moves toward the key prop, flooded subway tunnel with distant, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Last Survivor — tense, gritty, desperate tone. Voice: Hoarse male narrator, 126 WPM, Exhausted urgency. Opening line: "Day 47 and [your topic] just changed the rules."',
-        visual:
-          "Vertical 9:16 image of last survivor in overturned highway at dusk with abandoned cars, faceless framing, head cropped or shadowed, hands in sharp focus, respirator hanging loose at the throat, palette of ash grey, dried blood red, sickly green, desaturated grade, handheld realism, practical firelight, heavy grain, cinematic grime, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: last survivor holds the payoff beat, overturned highway at dusk with, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Last Survivor — tense, gritty, desperate tone. Voice: Hoarse male narrator, 126 WPM, Exhausted urgency. Opening line: "Nobody survives [your topic] alone."',
-        visual:
-          "Vertical 9:16 image of last survivor in barricaded supermarket lit by one flare, faceless framing, head cropped or shadowed, hands in sharp focus, blood-flecked field jacket, one sleeve torn, palette of ash grey, dried blood red, sickly green, desaturated grade, handheld realism, practical firelight, heavy grain, cinematic grime, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: last survivor settles as the loop resets, barricaded supermarket lit by one, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Last Radio Broadcast",
+      "character": "[raspy, exhausted] Day 412. If anyone is receiving this frequency... please tell me we aren't the only ones left in Chicago.",
+      "visual": "An old analog radio sitting on a dusty wooden table inside a barricaded brick apartment, static green light glowing from the dial, overgrown weeds visible through a shattered window, gritty cinematic film grain --ar 9:16 --v 6.1",
+      "camera": "Slow push-in on the glowing radio dial, dust motes floating in a single beam of moonlight, continuous motion, cinematic 24fps"
+    },
+    {
+      "title": "The Overgrown Highway",
+      "character": "[whisper, cautious] They used to call this the main evacuation route. Now it's just a graveyard of steel and silence.",
+      "visual": "A desolate multi-lane highway completely overgrown with vines and abandoned rusted cars stretching into a foggy horizon, overcast grey sky, moody dystopian color grade, photorealistic --ar 9:16 --v 6.1",
+      "camera": "Low-angle drone tracking shot moving slowly forward down the abandoned highway between wrecked cars, cinematic 24fps"
+    },
+    {
+      "title": "The Shadow in the Fog",
+      "character": "[tense, fast] Don't shine the flashlight. They don't need eyes to find us out here.",
+      "visual": "A lone faceless survivor in a heavy hooded canvas jacket holding a tactical crossbow, standing inside a dense urban fog bank, silhouetted towering skyscrapers looming in the background --ar 9:16 --v 6.1",
+      "camera": "Slow handheld orbit shot circling the survivor in the thick fog, tension-building movement, cinematic 24fps"
+    },
+    {
+      "title": "The Supply Run",
+      "character": "[breathing heavy] The pharmacy is cleared out, but there might still be antibiotics in the back dispensary.",
+      "visual": "A shattered glass storefront of a ruined pharmacy, shelves stripped bare, debris scattered across the floor, harsh daylight cutting through broken security shutters, cinematic realism --ar 9:16 --v 6.1",
+      "camera": "First-person POV creeping slow forward motion past broken glass displays into the dark pharmacy backroom, 24fps"
+    },
+    {
+      "title": "The Safe Zone Beacon",
+      "character": "[hopeful, solemn] They lit the green flare on the water tower. That means the outpost is still holding.",
+      "visual": "A bright emerald-green flare burning intensely on top of a weathered brick water tower against a dark twilight sky, heavy smoke swirling upward, gritty post-apocalyptic atmosphere --ar 9:16 --v 6.1",
+      "camera": "Tilt-up shot from ground level tracking the green smoke rising into the dark twilight sky, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a zombie apocalypse drama video work?",
-        answer:
-          "Slow Dread → Sprint pacing, one locked character (the last survivor) and a consistent palette of ash grey, dried blood red, sickly green. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit zombie apocalypse drama?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 126 WPM.",
-      },
-      {
-        question: "How do I keep the character consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Keep the face hidden the same way in each shot so the silhouette reads as one person.",
-      },
-      {
-        question: "How long should zombie apocalypse drama videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the zombie apocalypse niche monetizable?",
+      "answer": "Yes. Post-apocalyptic survival content enjoys high viewer retention due to suspenseful pacing. However, ensure your prompts focus on atmosphere and drama rather than graphic gore to remain fully compliant with AdSense guidelines."
+    },
+    {
+      "question": "What tools do I need for AI zombie videos?",
+      "answer": "Midjourney v6 is essential for gritty, cinematic dystopian environments. Runway Gen-3 or Kling handles eerie fog and slow camera movements, and ElevenLabs provides gritty, weathered narrator voices."
+    },
+    {
+      "question": "How do I make apocalyptic settings look realistic?",
+      "answer": "Lean heavily on environmental storytelling in your prompts: 'overgrown vines, rusted vehicles, ash particles, volumetric fog, anamorphic lens flares, gritty film grain.'"
+    },
+    {
+      "question": "Do zombie stories work better as continuous series?",
+      "answer": "Episodic storytelling (\"Day 1,\" \"Day 2\") performs exceptionally well in this niche because viewers subscribe and return to see how the protagonist survives the next obstacle."
+    }
+  ],
     relatedSlugs: [
-      "bible-and-mythology-anime",
-      "ai-influencer-product-reviews",
-      "lullaby-and-sleep-music",
-    ],
+    "pov-immersive-vlogs",
+    "analog-horror-and-unsolved-mysteries",
+    "cartoon-horror-illustration"
+  ],
   },
   {
     slug: "bible-and-mythology-anime",
     name: "Bible & Mythology Anime",
     niche: "Bible & Mythology Anime",
-    seoTitle: "Bible & Mythology Anime AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free bible & mythology anime AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Bible & Mythology Anime AI Video Prompts",
-    intro:
-      "Bible & Mythology Anime is one of the strongest faceless formats right now: epic, reverent, mythic storytelling built around the chosen herald. Every blueprint below locks the same character, the sun gold, ivory white, storm indigo palette and building → revelatory pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Bible & Mythology Anime Prompts — Free Generator",
+    metaDescription: "Create epic anime-style biblical and mythological stories with our free AI prompt generator. Get Midjourney Niji prompts and cinematic voiceovers.",
+    h1: "Bible & Mythology Anime Prompt Generator",
+    primaryKeyword: "ai mythology anime generator",
+    secondaryKeywords: [
+    "biblical anime video prompts",
+    "greek mythology anime shorts generator",
+    "midjourney epic anime prompts",
+    "how to make mythology animation",
+    "faceless anime storytelling ai"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.00–$4.00",
+    intro: "Epic tales from ancient mythologies and biblical history—from Mount Olympus and Valhalla to Old Testament narratives—possess timeless narrative weight. When translated into high-end modern anime aesthetics, these stories pull massive engagement across YouTube and TikTok. Creators are leveraging AI to bring towering titans, legendary deities, and ancient prophets to life with breathtaking visual scale. Our free generator provides the exact prompts needed to output epic 2D anime framing, divine lighting effects, and dramatic narrator scripts. Use the blueprints below to launch your mythical storytelling channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Chosen Herald — epic, reverent, mythic tone. Voice: Resonant male narrator, 116 WPM, Solemn awe. Opening line: "Scripture describes [your topic] in terrifying detail."',
-        visual:
-          "Vertical 9:16 image of chosen herald in desert plain split by a column of light, full subject in frame, natural face and complete anatomy, white linen robe with gold-thread hem, palette of sun gold, ivory white, storm indigo, anime epic key art, god rays, gold leaf accents, cel shaded detail, grand scale, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: chosen herald enters the frame, desert plain split by a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Chosen Herald — epic, reverent, mythic tone. Voice: Resonant male narrator, 116 WPM, Solemn awe. Opening line: "[your topic] was never told to you this way."',
-        visual:
-          "Vertical 9:16 image of chosen herald in marble temple steps under gathering storm, full subject in frame, natural face and complete anatomy, bronze shoulder guard etched with script, palette of sun gold, ivory white, storm indigo, anime epic key art, god rays, gold leaf accents, cel shaded detail, grand scale, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: chosen herald reacts to the turn, marble temple steps under gathering, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Chosen Herald — epic, reverent, mythic tone. Voice: Resonant male narrator, 116 WPM, Solemn awe. Opening line: "This is what [your topic] actually looked like."',
-        visual:
-          "Vertical 9:16 image of chosen herald in sky above the clouds with wings unfurled, full subject in frame, natural face and complete anatomy, six-winged silhouette in backlight, palette of sun gold, ivory white, storm indigo, anime epic key art, god rays, gold leaf accents, cel shaded detail, grand scale, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: chosen herald moves toward the key prop, sky above the clouds with, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Chosen Herald — epic, reverent, mythic tone. Voice: Resonant male narrator, 116 WPM, Solemn awe. Opening line: "Scripture describes [your topic] in terrifying detail."',
-        visual:
-          "Vertical 9:16 image of chosen herald in desert plain split by a column of light, full subject in frame, natural face and complete anatomy, barefoot with dust to the ankles, palette of sun gold, ivory white, storm indigo, anime epic key art, god rays, gold leaf accents, cel shaded detail, grand scale, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: chosen herald holds the payoff beat, desert plain split by a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Chosen Herald — epic, reverent, mythic tone. Voice: Resonant male narrator, 116 WPM, Solemn awe. Opening line: "[your topic] was never told to you this way."',
-        visual:
-          "Vertical 9:16 image of chosen herald in marble temple steps under gathering storm, full subject in frame, natural face and complete anatomy, white linen robe with gold-thread hem, palette of sun gold, ivory white, storm indigo, anime epic key art, god rays, gold leaf accents, cel shaded detail, grand scale, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: chosen herald settles as the loop resets, marble temple steps under gathering, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Wrath of Poseidon",
+      "character": "[booming, powerful] When the ocean king raises his trident, entire empires are swallowed by the abyss in a single breath.",
+      "visual": "An epic anime portrayal of Poseidon towering over a stormy sea, gripping a glowing golden trident as massive crashing waves surge toward a Greek temple, studio ufotable combat aesthetic, vivid colors --ar 9:16 --niji 6",
+      "camera": "Low-angle dynamic push-up tracking Poseidon lowering his glowing trident toward the giant waves, 24fps"
+    },
+    {
+      "title": "The Burning Bush",
+      "character": "[whisper, reverent] Take off your sandals. The ground you stand upon is holy earth.",
+      "visual": "A lone silhouetted ancient prophet kneeling before a gnarled desert acacia tree engulfed in brilliant, non-consuming blue and gold holy fire, dramatic dark background, masterwork anime keyframe --ar 9:16 --niji 6",
+      "camera": "Slow orbit shot circling the kneeling figure and the glowing burning bush, divine light particle effects, 24fps"
+    },
+    {
+      "title": "Thor's Final Strike",
+      "character": "[grunting, fierce] Let the skies crack open! This is the end of the giants!",
+      "visual": "Thor with braided red hair and glowing runic tattoos swinging Mjölnir downward, lightning exploding across a dark nordic mountain range, epic anime action sequence, high contrast --ar 9:16 --niji 6",
+      "camera": "Fast whip-pan following the hammer swing as lightning shatters across the screen, high impact motion, 24fps"
+    },
+    {
+      "title": "The Fall of Lucifer",
+      "character": "[cold, defiant] Better to reign in darkness than to serve in the light.",
+      "visual": "A majestic multi-winged angel falling backward through cascading celestial clouds, wings turning from pure white feathers into dark obsidian glass, dramatic divine lighting --ar 9:16 --niji 6",
+      "camera": "Slow-motion downward tracking shot following the falling angel through the clouds, divine rays fading, 24fps"
+    },
+    {
+      "title": "Anubis Weighs the Soul",
+      "character": "[deep, solemn] The feather of truth decides your eternity. Let's see what your heart weighs.",
+      "visual": "Anubis, the jackal-headed deity with glowing golden ornaments, standing beside an ancient scale holding a glowing human soul against a white feather, mystical temple background --ar 9:16 --niji 6",
+      "camera": "Macro push-in on the ancient golden scale balancing the glowing soul, ethereal dust motes, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a bible & mythology anime video work?",
-        answer:
-          "Building → Revelatory pacing, one locked character (the chosen herald) and a consistent palette of sun gold, ivory white, storm indigo. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit bible & mythology anime?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 116 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should bible & mythology anime videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the mythology and biblical anime niche monetizable?",
+      "answer": "Yes. Mythology and historical-religious narratives have universal appeal and high retention rates, securing strong AdSense performance. Respectful, narrative-driven framing ensures brand safety."
+    },
+    {
+      "question": "What tools do I need for mythology anime videos?",
+      "answer": "Midjourney with `--niji 6` is mandatory for the high-end 2D anime style. Runway or Kling adds divine particle movement, and ElevenLabs delivers commanding, theatrical narrator voices."
+    },
+    {
+      "question": "How do I make mythical characters look truly epic?",
+      "answer": "Incorporate scale indicators and divine lighting into your prompts: 'towering deity, glowing runic auras, dramatic volumetric god-rays, divine particle embers, masterwork anime keyframe.'"
+    },
+    {
+      "question": "Do single-myth videos or multi-part series perform better?",
+      "answer": "Episodic character deep-dives (e.g., 'The Complete History of Hades') build deep subscriber loyalty, while standalone epic battles drive viral discovery through Shorts."
+    }
+  ],
     relatedSlugs: [
-      "ai-influencer-product-reviews",
-      "lullaby-and-sleep-music",
-      "analog-horror-and-unsolved-mysteries",
-    ],
+    "anime-fight-versus",
+    "cartoon-horror-illustration",
+    "elderly-wisdom-and-stoic-long-form"
+  ],
   },
   {
     slug: "ai-influencer-product-reviews",
     name: "AI Influencer Product Reviews",
     niche: "AI Influencer Product Reviews",
-    seoTitle: "AI Influencer Product Reviews Video Prompts",
-    metaDescription:
-      "Free ai influencer product reviews AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Influencer Product Reviews Video Prompts",
-    intro:
-      "AI Influencer Product Reviews is one of the strongest faceless formats right now: confident, aspirational, crisp storytelling built around the polished digital host. Every blueprint below locks the same character, the warm ivory, blush beige, brushed champagne palette and punchy → verdict pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI Influencer Product Review Prompts — Free Generator",
+    metaDescription: "Create viral virtual influencer product review videos with our free AI prompt generator. Get Midjourney hyper-realism and engaging script templates.",
+    h1: "AI Influencer Product Review Prompt Generator",
+    primaryKeyword: "ai influencer video generator",
+    secondaryKeywords: [
+    "virtual influencer product reviews",
+    "faceless UGC video prompts",
+    "midjourney hyperrealistic human prompts",
+    "how to make ai UGC content",
+    "ai affiliate marketing shorts generator"
+  ],
+    difficulty: "Hard",
+    estimatedRpm: "$4.00–$8.00",
+    intro: "Virtual influencers and AI-generated User Generated Content (UGC) are transforming digital marketing and affiliate e-commerce. Brands are eager for hyper-realistic virtual creators who can review products, unbox gadgets, and showcase lifestyle items on TikTok and Instagram Reels without logistical overhead. Creating consistent virtual characters requires advanced prompt structuring to maintain facial identity across different lighting conditions and outfits. Our free generator provides the exact blueprints needed to output photorealistic influencer footage and persuasive script hooks. Use the prompts below to build your automated UGC review channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Polished Digital Host — confident, aspirational, crisp tone. Voice: Bright female mid-tone, 146 WPM, Enthusiastic but controlled. Opening line: "I tested [your topic] so you don\'t have to."',
-        visual:
-          "Vertical 9:16 image of polished digital host in seamless studio backdrop with one soft gradient, full subject in frame, natural face and complete anatomy, ivory oversized blazer with sharp shoulders, palette of warm ivory, blush beige, brushed champagne, studio softbox, glossy product macro, clean gradient bg, shallow depth, editorial polish, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: polished digital host enters the frame, seamless studio backdrop with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Polished Digital Host — confident, aspirational, crisp tone. Voice: Bright female mid-tone, 146 WPM, Enthusiastic but controlled. Opening line: "[your topic] is either genius or a scam."',
-        visual:
-          "Vertical 9:16 image of polished digital host in marble vanity with product laid in a row, full subject in frame, natural face and complete anatomy, minimal gold hoop and thin chain, palette of warm ivory, blush beige, brushed champagne, studio softbox, glossy product macro, clean gradient bg, shallow depth, editorial polish, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: polished digital host reacts to the turn, marble vanity with product laid, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Polished Digital Host — confident, aspirational, crisp tone. Voice: Bright female mid-tone, 146 WPM, Enthusiastic but controlled. Opening line: "Three reasons [your topic] is worth it."',
-        visual:
-          "Vertical 9:16 image of polished digital host in sunlit loft corner with sheer curtain diffusion, full subject in frame, natural face and complete anatomy, glossy manicure holding the product, palette of warm ivory, blush beige, brushed champagne, studio softbox, glossy product macro, clean gradient bg, shallow depth, editorial polish, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: polished digital host moves toward the key prop, sunlit loft corner with sheer, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Polished Digital Host — confident, aspirational, crisp tone. Voice: Bright female mid-tone, 146 WPM, Enthusiastic but controlled. Opening line: "I tested [your topic] so you don\'t have to."',
-        visual:
-          "Vertical 9:16 image of polished digital host in seamless studio backdrop with one soft gradient, full subject in frame, natural face and complete anatomy, neutral silk shell top underneath, palette of warm ivory, blush beige, brushed champagne, studio softbox, glossy product macro, clean gradient bg, shallow depth, editorial polish, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: polished digital host holds the payoff beat, seamless studio backdrop with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Polished Digital Host — confident, aspirational, crisp tone. Voice: Bright female mid-tone, 146 WPM, Enthusiastic but controlled. Opening line: "[your topic] is either genius or a scam."',
-        visual:
-          "Vertical 9:16 image of polished digital host in marble vanity with product laid in a row, full subject in frame, natural face and complete anatomy, ivory oversized blazer with sharp shoulders, palette of warm ivory, blush beige, brushed champagne, studio softbox, glossy product macro, clean gradient bg, shallow depth, editorial polish, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: polished digital host settles as the loop resets, marble vanity with product laid, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Minimalist Skincare Unboxing",
+      "character": "[upbeat, friendly] I've tested fifty moisturizers this year, and this is the only one that didn't clog my pores by day three.",
+      "visual": "A hyper-realistic 24-year-old female virtual influencer with natural skin texture holding a sleek amber glass dropper bottle in front of a sunlit modern bathroom vanity, 85mm lens, photoreal --ar 9:16 --v 6.1",
+      "camera": "Handheld selfie-style micro-sway holding the skincare bottle up to the camera lens, bright natural lighting, 24fps"
+    },
+    {
+      "title": "The Tech Gadget First Look",
+      "character": "[excited, fast] Look at the bezel on this. For under fifty bucks, I honestly thought it was a scam.",
+      "visual": "A young trendy male digital creator sitting at a clean desk holding a futuristic wireless charging pad, neon LED desk accents in the background, sharp focus on product --ar 9:16 --v 6.1",
+      "camera": "Slow push-in framing the creator showcasing the tech gadget toward the camera, clean commercial lighting, 24fps"
+    },
+    {
+      "title": "The Ergonomic Office Gear Test",
+      "character": "[relieved, calm] If your lower back kills you after eight hours at a desk, stop scrolling right now.",
+      "visual": "A professional virtual influencer adjusting a high-end ergonomic mesh office chair in a bright, minimalist loft apartment office space, photorealistic human features --ar 9:16 --v 6.1",
+      "camera": "Pan left tracking the influencer adjusting the chair armrest, natural daylight streaming through large windows, 24fps"
+    },
+    {
+      "title": "The Travel Backpack Review",
+      "character": "[enthusiastic] It fits four days of clothes, a laptop, and still slides right under the airplane seat.",
+      "visual": "A stylish female traveler standing in an airport terminal holding a sleek matte-black travel backpack, blurred travelers walking in the background, commercial lifestyle photography --ar 9:16 --v 6.1",
+      "camera": "Handheld tracking shot as she swings the backpack around to show the zipper compartments, vibrant commercial grade, 24fps"
+    },
+    {
+      "title": "The Smartwatch Fitness Tracking Test",
+      "character": "[energetic, motivational] Tested it on a ten-mile run. The GPS accuracy is tighter than my sports watch.",
+      "visual": "An athletic virtual creator with a sleek titanium smartwatch on their wrist wiping sweat in a modern gym setting, soft studio rim lighting, ultra-detailed --ar 9:16 --v 6.1",
+      "camera": "Macro close-up tracking shot on the smartwatch screen lighting up as the creator taps it, dynamic motion, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai influencer product reviews video work?",
-        answer:
-          "Punchy → Verdict pacing, one locked character (the polished digital host) and a consistent palette of warm ivory, blush beige, brushed champagne. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai influencer product reviews?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 146 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai influencer product reviews videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the AI influencer product review niche monetizable?",
+      "answer": "Extremely high monetization potential. Beyond AdSense, this niche is tailor-made for affiliate marketing (TikTok Shop, Amazon Associates) and direct brand sponsorship deals."
+    },
+    {
+      "question": "What tools do I need for virtual influencer videos?",
+      "answer": "Midjourney v6 for hyper-realistic human character generation, Kling or LTX Studio for natural facial expressions and hand movements, and ElevenLabs for energetic, natural voice delivery."
+    },
+    {
+      "question": "How do I maintain character consistency across multiple videos?",
+      "answer": "Utilize Midjourney's Character Reference (`--cref`) parameter combined with a fixed seed number and identical physical descriptor phrases in every prompt."
+    },
+    {
+      "question": "Do viewers mind that the creator is AI?",
+      "answer": "As long as the product review is genuinely informative, engaging, and fast-paced, audiences treat AI influencers similarly to traditional UGC creators."
+    }
+  ],
     relatedSlugs: [
-      "lullaby-and-sleep-music",
-      "analog-horror-and-unsolved-mysteries",
-      "diy-cardboard-and-miniature-builds",
-    ],
+    "nostalgia-toy-unboxing",
+    "ai-cat-and-pet-stories",
+    "stickman-explainer-and-skits"
+  ],
   },
   {
     slug: "lullaby-and-sleep-music",
     name: "Lullaby & Sleep Music",
     niche: "Lullaby & Sleep Music",
-    seoTitle: "Lullaby & Sleep Music AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free lullaby & sleep music AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Lullaby & Sleep Music AI Video Prompts",
-    intro:
-      "Lullaby & Sleep Music is one of the strongest faceless formats right now: soothing, dreamlike, slow storytelling built around the moonlight keeper. Every blueprint below locks the same character, the midnight blue, moon silver, soft lilac palette and very slow → loopable pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Lullaby & Sleep Music Prompts — Free Generator",
+    metaDescription: "Create soothing ambient sleep music and lullaby videos with our free AI prompt generator. Get Midjourney calming visual prompts and audio scripts.",
+    h1: "Lullaby & Sleep Music Prompt Generator",
+    primaryKeyword: "ai sleep music video generator",
+    secondaryKeywords: [
+    "lullaby video prompts",
+    "ambient sleep music channel AI",
+    "midjourney relaxing visual prompts",
+    "how to make sleep channels youtube",
+    "faceless ambient video ai"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$1.50–$3.00",
+    intro: "Ambient sleep music and lullaby channels generate some of the most passive, long-term watch time on YouTube. Viewers leave these streams or looping videos running for eight hours straight to cope with insomnia, anxiety, or to help babies sleep. Because the content relies on hypnotic, slow-moving visuals paired with calming frequencies, your AI prompts must emphasize soft color palettes, gentle motion, and zero jarring transitions. Our free generator provides the exact syntax needed to create serene, dreamlike visual loops. Use the blueprints below to launch your automated ambient sleep channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Moonlight Keeper — soothing, dreamlike, slow tone. Voice: Gentle female whisper-sing, 76 WPM, Tender, drifting. Opening line: "Close your eyes and drift into [your topic]."',
-        visual:
-          "Vertical 9:16 image of moonlight keeper in nursery window with slow-drifting stars, full subject in frame, natural face and complete anatomy, soft cloud-grey shawl, oversized, palette of midnight blue, moon silver, soft lilac, dreamy soft focus, painterly night, twinkle particles, slow parallax, pastel glow, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: moonlight keeper enters the frame, nursery window with slow-drifting stars, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Moonlight Keeper — soothing, dreamlike, slow tone. Voice: Gentle female whisper-sing, 76 WPM, Tender, drifting. Opening line: "[your topic], slowed down for sleep."',
-        visual:
-          "Vertical 9:16 image of moonlight keeper in clouds rolling under a crescent moon, full subject in frame, natural face and complete anatomy, star-embroidered blanket held loosely, palette of midnight blue, moon silver, soft lilac, dreamy soft focus, painterly night, twinkle particles, slow parallax, pastel glow, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: moonlight keeper reacts to the turn, clouds rolling under a crescent, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Moonlight Keeper — soothing, dreamlike, slow tone. Voice: Gentle female whisper-sing, 76 WPM, Tender, drifting. Opening line: "Eight hours of [your topic] to fall asleep to."',
-        visual:
-          "Vertical 9:16 image of moonlight keeper in sleeping village seen from a hill at night, full subject in frame, natural face and complete anatomy, bare feet on soft rug, palette of midnight blue, moon silver, soft lilac, dreamy soft focus, painterly night, twinkle particles, slow parallax, pastel glow, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: moonlight keeper moves toward the key prop, sleeping village seen from a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Moonlight Keeper — soothing, dreamlike, slow tone. Voice: Gentle female whisper-sing, 76 WPM, Tender, drifting. Opening line: "Close your eyes and drift into [your topic]."',
-        visual:
-          "Vertical 9:16 image of moonlight keeper in nursery window with slow-drifting stars, full subject in frame, natural face and complete anatomy, no hard edges anywhere in frame, palette of midnight blue, moon silver, soft lilac, dreamy soft focus, painterly night, twinkle particles, slow parallax, pastel glow, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: moonlight keeper holds the payoff beat, nursery window with slow-drifting stars, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Moonlight Keeper — soothing, dreamlike, slow tone. Voice: Gentle female whisper-sing, 76 WPM, Tender, drifting. Opening line: "[your topic], slowed down for sleep."',
-        visual:
-          "Vertical 9:16 image of moonlight keeper in clouds rolling under a crescent moon, full subject in frame, natural face and complete anatomy, soft cloud-grey shawl, oversized, palette of midnight blue, moon silver, soft lilac, dreamy soft focus, painterly night, twinkle particles, slow parallax, pastel glow, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: moonlight keeper settles as the loop resets, clouds rolling under a crescent, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Floating Cloud Kingdom",
+      "character": "[whisper, ultra-soft] Close your eyes. Let the gentle wind carry you above the clouds where time stands still.",
+      "visual": "A soft glowing crescent moon resting on a bed of fluffy pastel pink and lavender clouds, gentle starlight twinkling in a deep indigo night sky, dreamlike aesthetic, cozy and serene --ar 16:9 --v 6.1",
+      "camera": "Slow, ultra-smooth horizontal drift gliding across the pastel cloudscape, continuous ambient motion, 24fps"
+    },
+    {
+      "title": "The Enchanted Forest Rain",
+      "character": "[whisper, calm] Listen to the soft rain tapping on ancient leaves. You are safe here.",
+      "visual": "A glowing mossy tree trunk inside a misty nighttime forest, tiny bioluminescent mushrooms casting a soft blue glow, gentle raindrops creating ripples in a clear forest stream, photorealistic --ar 16:9 --v 6.1",
+      "camera": "Slow vertical tilt down from the misty canopy to the glowing stream below, gentle rain falling, 24fps"
+    },
+    {
+      "title": "The Starry Ocean Voyage",
+      "character": "[whisper, deep sleep] The ocean waves are rocking you into a deep, peaceful sleep.",
+      "visual": "A vintage wooden sailboat gently drifting on a mirror-flat, midnight-blue ocean reflecting a massive glowing Milky Way galaxy, peaceful atmosphere, cinematic lighting --ar 16:9 --v 6.1",
+      "camera": "Slow lateral tracking shot following the drifting boat, gentle water ripples, 24fps"
+    },
+    {
+      "title": "The Cozy Fireplace Cabin",
+      "character": "[whisper, warm] A warm fire, a cozy blanket, and nothing else you need to do tonight.",
+      "visual": "A warm stone fireplace with glowing embers inside a quiet wooden cabin, frost-covered window pane showing soft falling snow outside, cozy amber lighting, hyper-detailed --ar 16:9 --v 6.1",
+      "camera": "Static shot with subtle fire ember glow shifting across the stone walls, ultra-slow calming motion, 24fps"
+    },
+    {
+      "title": "The Cosmic Nebula Lullaby",
+      "character": "[whisper, soothing] You are drifting through a universe built just for your dreams.",
+      "visual": "A swirling cosmic nebula composed of soft turquoise and gold stardust clouds, peaceful deep space panorama, ethereal glowing particles floating gently --ar 16:9 --v 6.1",
+      "camera": "Slow continuous forward zoom drifting through the glowing cosmic stardust clouds, peaceful motion, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a lullaby & sleep music video work?",
-        answer:
-          "Very Slow → Loopable pacing, one locked character (the moonlight keeper) and a consistent palette of midnight blue, moon silver, soft lilac. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit lullaby & sleep music?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 76 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should lullaby & sleep music videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the sleep music niche monetizable?",
+      "answer": "Yes, exceptionally well for long-term watch time. Because users stream 8-to-10 hour looping videos overnight, watch hours accumulate rapidly, leading to strong AdSense performance."
+    },
+    {
+      "question": "What tools do I need for sleep channels?",
+      "answer": "Midjourney v6 for serene landscape visuals (usually in 16:9 horizontal format), an AI music generator like Suno or Sonauto for relaxing frequencies, and an editor to loop the assets."
+    },
+    {
+      "question": "Should sleep videos be 16:9 horizontal or 9:16 vertical?",
+      "answer": "Horizontal (16:9) is traditional and preferred for YouTube long-form sleep streams and background relaxation, while vertical (9:16) works well for short ambient TikTok loops."
+    },
+    {
+      "question": "How do I loop AI video clips smoothly?",
+      "answer": "Use video generation models like Kling or Runway with very low motion settings (`--motion 1` or `--motion 2`) to ensure the transition frames loop seamlessly without sudden jumps."
+    }
+  ],
     relatedSlugs: [
-      "analog-horror-and-unsolved-mysteries",
-      "diy-cardboard-and-miniature-builds",
-      "vegetable-and-fruit-carving",
-    ],
+    "ai-cat-and-pet-stories",
+    "pov-immersive-vlogs",
+    "elderly-wisdom-and-stoic-long-form"
+  ],
   },
   {
     slug: "analog-horror-and-unsolved-mysteries",
     name: "Analog Horror & Unsolved Mysteries",
     niche: "Analog Horror & Unsolved Mysteries",
-    seoTitle: "Analog Horror & Unsolved Mysteries AI Video Prompts",
-    metaDescription:
-      "Free analog horror & unsolved mysteries AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Analog Horror & Unsolved Mysteries AI Video Prompts",
-    intro:
-      "Analog Horror & Unsolved Mysteries is one of the strongest faceless formats right now: authoritative, unsettling, low and slow storytelling built around the relentless investigator. Every blueprint below locks the same character, the desaturated teal, sodium-vapour orange, deep ink black palette and slow-burn → accelerating pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Analog Horror Series Prompts — Free Generator",
+    metaDescription: "Create chilling VHS-style analog horror and unsolved mystery videos with our free AI prompt generator. Get eerie Midjourney prompts and scripts.",
+    h1: "Analog Horror & Unsolved Mysteries Prompt Generator",
+    primaryKeyword: "ai analog horror generator",
+    secondaryKeywords: [
+    "analog horror video prompts",
+    "vhs style ai generator",
+    "unsolved mysteries shorts prompts",
+    "midjourney creepy vintage prompts",
+    "how to make analog horror"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "Analog horror has taken over internet culture by leveraging the unsettling aesthetic of 1980s and 90s VHS tapes, distorted emergency broadcast warnings, and corrupted archival footage. This niche relies heavily on psychological dread, cryptic anomalies, and uncanny imagery rather than jump scares. Because the visual style requires specific vintage artifacts, scanlines, and muted color grading, your prompts must capture that classic magnetic tape decay. Our free generator provides the exact syntax needed to create deeply eerie narrative content. Use the blueprints below to build your viral horror channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Relentless Investigator — authoritative, unsettling, low and slow tone. Voice: Deep male baritone, 128 WPM, Restrained gravity. Opening line: "Nobody ever explained [your topic]."',
-        visual:
-          "Vertical 9:16 image of relentless investigator in rain-slick evidence room lit by one desk lamp, faceless framing, head cropped or shadowed, hands in sharp focus, charcoal wool overcoat, collar turned up, palette of desaturated teal, sodium-vapour orange, deep ink black, vhs analog artifact, scanline noise, emergency broadcast frame, cinematic noir, hyper-detailed, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: relentless investigator enters the frame, rain-slick evidence room lit by, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Relentless Investigator — authoritative, unsettling, low and slow tone. Voice: Deep male baritone, 128 WPM, Restrained gravity. Opening line: "This tape of [your topic] was never meant to air."',
-        visual:
-          "Vertical 9:16 image of relentless investigator in static-filled broadcast screen in an empty room, faceless framing, head cropped or shadowed, hands in sharp focus, black leather gloves, worn at the knuckles, palette of desaturated teal, sodium-vapour orange, deep ink black, vhs analog artifact, scanline noise, emergency broadcast frame, cinematic noir, hyper-detailed, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: relentless investigator reacts to the turn, static-filled broadcast screen in an, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Relentless Investigator — authoritative, unsettling, low and slow tone. Voice: Deep male baritone, 128 WPM, Restrained gravity. Opening line: "They closed the file on [your topic] too fast."',
-        visual:
-          "Vertical 9:16 image of relentless investigator in cork board wall of photographs and pinned string, faceless framing, head cropped or shadowed, hands in sharp focus, manila case file bound with red string, palette of desaturated teal, sodium-vapour orange, deep ink black, vhs analog artifact, scanline noise, emergency broadcast frame, cinematic noir, hyper-detailed, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: relentless investigator moves toward the key prop, cork board wall of photographs, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Relentless Investigator — authoritative, unsettling, low and slow tone. Voice: Deep male baritone, 128 WPM, Restrained gravity. Opening line: "Nobody ever explained [your topic]."',
-        visual:
-          "Vertical 9:16 image of relentless investigator in rain-slick evidence room lit by one desk lamp, faceless framing, head cropped or shadowed, hands in sharp focus, brass-bodied flashlight, scuffed lens, palette of desaturated teal, sodium-vapour orange, deep ink black, vhs analog artifact, scanline noise, emergency broadcast frame, cinematic noir, hyper-detailed, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: relentless investigator holds the payoff beat, rain-slick evidence room lit by, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Relentless Investigator — authoritative, unsettling, low and slow tone. Voice: Deep male baritone, 128 WPM, Restrained gravity. Opening line: "This tape of [your topic] was never meant to air."',
-        visual:
-          "Vertical 9:16 image of relentless investigator in static-filled broadcast screen in an empty room, faceless framing, head cropped or shadowed, hands in sharp focus, charcoal wool overcoat, collar turned up, palette of desaturated teal, sodium-vapour orange, deep ink black, vhs analog artifact, scanline noise, emergency broadcast frame, cinematic noir, hyper-detailed, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: relentless investigator settles as the loop resets, static-filled broadcast screen in an, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Emergency Broadcast Override",
+      "character": "[distorted, robotic voice] Warning. Do not look outside. If you see a familiar face at your window, do not open the door.",
+      "visual": "An old 1980s CRT television screen displaying a corrupted amber emergency alert text box over static snow, dark living room background, VHS scanline artifacts, chromatic aberration --ar 9:16 --v 6.1",
+      "camera": "Static camera with heavy VHS tape glitch flicker and subtle scanline rolling motion, 24fps"
+    },
+    {
+      "title": "The Abandoned Ward Sign",
+      "character": "[whisper, eerie] The hospital was closed in 1984. But someone is still turning on the hallway lights at night.",
+      "visual": "A weathered metal sign reading 'Oakridge Asylum' hanging from a rusted chain against a rotting concrete wall, heavy green-tinted night-vision grain, creepy VHS aesthetic --ar 9:16 --v 6.1",
+      "camera": "Slow handheld night-vision pan across the rusted sign, grain distortion and digital noise, 24fps"
+    },
+    {
+      "title": "The Uncanny Smiling Figure",
+      "character": "[calm, unsettling] We thought it was a mannequin in the forest. Then it turned its head when we blinked.",
+      "visual": "Found footage style snapshot of a tall, faceless figure in a vintage suit standing perfectly still among dark pine trees, unnatural proportions, heavy VHS film degradation --ar 9:16 --v 6.1",
+      "camera": "Slow micro-zoom in on the shadowy figure standing between the trees, static grain jitter, 24fps"
+    },
+    {
+      "title": "The Missing Persons Tape",
+      "character": "[static crackle] Last footage recovered from Camera B before signal loss at Sublevel 3.",
+      "visual": "A timestamp overlay reading '03:14:1987' in bright green font over a dark underground concrete corridor lit by a single flickering fluorescent tube light --ar 9:16 --v 6.1",
+      "camera": "Handheld jerky camera movement mimicking someone walking cautiously down a dark hallway, 24fps"
+    },
+    {
+      "title": "The Decayed Family Portrait",
+      "character": "[whisper] They smiled for the camera. But their reflections in the mirror were missing.",
+      "visual": "A faded 1970s Polaroid photograph of a smiling family sitting on a porch, their facial features blurred into smooth skin, eerie vintage color grading, analog noise --ar 9:16 --v 6.1",
+      "camera": "Static shot with a slow vintage projector flicker effect and dust particles, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a analog horror & unsolved mysteries video work?",
-        answer:
-          "Slow-Burn → Accelerating pacing, one locked character (the relentless investigator) and a consistent palette of desaturated teal, sodium-vapour orange, deep ink black. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit analog horror & unsolved mysteries?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 128 WPM.",
-      },
-      {
-        question: "How do I keep the character consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Keep the face hidden the same way in each shot so the silhouette reads as one person.",
-      },
-      {
-        question: "How long should analog horror & unsolved mysteries videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the analog horror niche monetizable?",
+      "answer": "Yes. Analog horror channels command extremely loyal subscriber bases. While extreme gore can restrict AdSense, atmospheric psychological horror remains fully eligible for monetization."
+    },
+    {
+      "question": "What tools do I need for analog horror?",
+      "answer": "Midjourney v6 for vintage, grainy base images, video editors like CapCut or Premiere with VHS overlay effects and audio distortion plugins, and ElevenLabs for eerie or robotic voice filters."
+    },
+    {
+      "question": "How do I achieve the authentic VHS look?",
+      "answer": "Include keywords like 'VHS scanlines, chromatic aberration, magnetic tape noise, CRT television distortion, analog color grading' in your visual prompts."
+    },
+    {
+      "question": "Why is sound design critical in horror?",
+      "answer": "Analog horror is 70% sound. Low-frequency drone hums, tape static, muffled radio squelch, and sudden silence create the psychological dread that drives viewer retention."
+    }
+  ],
     relatedSlugs: [
-      "diy-cardboard-and-miniature-builds",
-      "vegetable-and-fruit-carving",
-      "ai-car-wash-and-restoration",
-    ],
+    "pov-immersive-vlogs",
+    "zombie-apocalypse-drama",
+    "cartoon-horror-illustration"
+  ],
   },
   {
     slug: "diy-cardboard-and-miniature-builds",
     name: "DIY Cardboard & Miniature Builds",
     niche: "DIY Cardboard & Miniature Builds",
-    seoTitle: "DIY Cardboard & Miniature Builds AI Video Prompts",
-    metaDescription:
-      "Free diy cardboard & miniature builds AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "DIY Cardboard & Miniature Builds AI Video Prompts",
-    intro:
-      "DIY Cardboard & Miniature Builds is one of the strongest faceless formats right now: focused, crafty, satisfying storytelling built around the silent maker. Every blueprint below locks the same character, the kraft brown, matte grey, workshop green palette and steady build → reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "DIY Cardboard & Miniature Build Prompts — Free Generator",
+    metaDescription: "Create viral DIY miniature cardboard creation videos with our free AI prompt generator. Get macro Midjourney prompts and crafting script guides.",
+    h1: "DIY Cardboard & Miniature Build Prompt Generator",
+    primaryKeyword: "ai miniature build video generator",
+    secondaryKeywords: [
+    "diy cardboard crafts shorts prompts",
+    "miniature architecture building ai",
+    "midjourney macro crafting prompts",
+    "how to make miniature building videos",
+    "satisfying craft shorts ai"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$3.00–$5.00",
+    intro: "Watching raw cardboard, hot glue, and everyday household materials transform into intricate working miniature castles, arcade cabinets, or sports cars is mesmerizing. The DIY miniature build niche captures millions of views because it combines crafty ingenuity with deeply satisfying ASMR pacing. Creators often present these builds from a macro first-person perspective, showcasing every precise cut and glue drop. Our free generator provides the exact syntax needed to render hyper-realistic miniature structures and crafting tools. Use the blueprints below to launch your viral crafting channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Silent Maker — focused, crafty, satisfying tone. Voice: Sparse narration or captions only, 96 WPM, Focused calm. Opening line: "I built [your topic] out of cardboard."',
-        visual:
-          "Vertical 9:16 image of silent maker in overhead cutting mat with tools laid in a row, full subject in frame, natural face and complete anatomy, grey work shirt, sleeves rolled to the elbow, palette of kraft brown, matte grey, workshop green, top-down bench shot, warm practical light, macro craft detail, timelapse blend, clean composition, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: silent maker enters the frame, overhead cutting mat with tools, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Silent Maker — focused, crafty, satisfying tone. Voice: Sparse narration or captions only, 96 WPM, Focused calm. Opening line: "[your topic], made from a single box."',
-        visual:
-          "Vertical 9:16 image of silent maker in workshop shelf lined with finished miniatures, full subject in frame, natural face and complete anatomy, glue-flecked fingertips and a steel ruler, palette of kraft brown, matte grey, workshop green, top-down bench shot, warm practical light, macro craft detail, timelapse blend, clean composition, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: silent maker reacts to the turn, workshop shelf lined with finished, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Silent Maker — focused, crafty, satisfying tone. Voice: Sparse narration or captions only, 96 WPM, Focused calm. Opening line: "This took 40 hours: [your topic]."',
-        visual:
-          "Vertical 9:16 image of silent maker in half-built cardboard house under a desk lamp, full subject in frame, natural face and complete anatomy, craft knife with a fresh blade, palette of kraft brown, matte grey, workshop green, top-down bench shot, warm practical light, macro craft detail, timelapse blend, clean composition, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: silent maker moves toward the key prop, half-built cardboard house under a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Silent Maker — focused, crafty, satisfying tone. Voice: Sparse narration or captions only, 96 WPM, Focused calm. Opening line: "I built [your topic] out of cardboard."',
-        visual:
-          "Vertical 9:16 image of silent maker in overhead cutting mat with tools laid in a row, full subject in frame, natural face and complete anatomy, cutting mat gridded in green, palette of kraft brown, matte grey, workshop green, top-down bench shot, warm practical light, macro craft detail, timelapse blend, clean composition, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: silent maker holds the payoff beat, overhead cutting mat with tools, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Silent Maker — focused, crafty, satisfying tone. Voice: Sparse narration or captions only, 96 WPM, Focused calm. Opening line: "[your topic], made from a single box."',
-        visual:
-          "Vertical 9:16 image of silent maker in workshop shelf lined with finished miniatures, full subject in frame, natural face and complete anatomy, grey work shirt, sleeves rolled to the elbow, palette of kraft brown, matte grey, workshop green, top-down bench shot, warm practical light, macro craft detail, timelapse blend, clean composition, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: silent maker settles as the loop resets, workshop shelf lined with finished, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Cardboard Cyberpunk Arcade",
+      "character": "[upbeat, clever] Two cereal boxes, a hot glue gun, and forty hours of cutting. Welcome to the micro-arcade.",
+      "visual": "Extreme macro shot of a tiny fully-detailed miniature arcade cabinet built entirely out of corrugated cardboard, working tiny LED screen glowing inside, workbench background --ar 9:16 --v 6.1",
+      "camera": "Slow macro push-in panning across the miniature arcade cabinet details, shallow depth of field, 24fps"
+    },
+    {
+      "title": "The Miniature Cliffside Castle",
+      "character": "[whisper, focused] Every stone carved by hand using balsa wood and grey acrylic paint.",
+      "visual": "Macro top-down view of a miniature medieval fortress built on a small rocky outcrop, tiny moss details and wooden drawbridge, realistic weathering textures --ar 9:16 --v 6.1",
+      "camera": "Slow overhead macro orbiting shot circling the miniature castle on the rock, 24fps"
+    },
+    {
+      "title": "The Working Cardboard Hydraulic Press",
+      "character": "[fast, curious] Can a tiny cardboard press crush a solid steel nut? Let's find out.",
+      "visual": "Macro close-up of a miniature wooden and cardboard hydraulic press mechanism compressing a small toy object, detailed gears and levers, workshop lighting --ar 9:16 --v 6.1",
+      "camera": "Macro side tracking shot as the miniature press lever pushes downward, smooth mechanical motion, 24fps"
+    },
+    {
+      "title": "The Secret Underground Vault",
+      "character": "[satisfying, calm] Building a secret subterranean bunker beneath a standard wooden desk.",
+      "visual": "Macro cross-section view of a miniature underground bunker connected by tiny ladders and secret rooms carved into foam board, warm interior lighting --ar 9:16 --v 6.1",
+      "camera": "Slow vertical tilt down revealing the multi-level underground miniature bunker, 24fps"
+    },
+    {
+      "title": "The Tiny V8 Engine Build",
+      "character": "[enthusiastic] Working miniature pistons built from soda cans and paperclips. Hear it click.",
+      "visual": "Extreme macro shot of miniature metallic engine blocks and tiny pistons assembled on a workshop mat, ultra-sharp focus, metallic reflections --ar 9:16 --v 6.1",
+      "camera": "Macro push-in tracking tiny mechanical parts fitting together, crisp focus, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a diy cardboard & miniature builds video work?",
-        answer:
-          "Steady Build → Reveal pacing, one locked character (the silent maker) and a consistent palette of kraft brown, matte grey, workshop green. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit diy cardboard & miniature builds?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 96 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should diy cardboard & miniature builds videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the DIY miniature building niche monetizable?",
+      "answer": "Yes. Crafting and DIY content is highly brand-safe, family-friendly, and attracts strong advertiser demand, resulting in stable AdSense revenue."
+    },
+    {
+      "question": "What tools do I need for miniature AI videos?",
+      "answer": "Midjourney v6 with macro lens parameters (`macro photography, shallow depth of field`), Kling or Runway for motion, and crisp crafting sound effects (scissor snips, glue gun clicks)."
+    },
+    {
+      "question": "How do I make cardboard look hyper-realistic?",
+      "answer": "Include tactile descriptors in your prompts: 'corrugated cardboard texture, frayed paper edges, acrylic paint weathering, micro-dust particles, macro photography.'"
+    },
+    {
+      "question": "Why do miniature builds keep retention high?",
+      "answer": "Viewers stay to see the final reveal at the end of the video. Structuring your video as a progression from raw materials to a finished masterpiece guarantees high watch completion rates."
+    }
+  ],
     relatedSlugs: [
-      "vegetable-and-fruit-carving",
-      "ai-car-wash-and-restoration",
-      "miniature-asmr-cooking",
-    ],
+    "miniature-asmr-cooking",
+    "ai-asmr-cooking-cleaning-restoration",
+    "vegetable-and-fruit-carving"
+  ],
   },
   {
     slug: "vegetable-and-fruit-carving",
     name: "Vegetable & Fruit Carving",
     niche: "Vegetable & Fruit Carving",
-    seoTitle: "Vegetable & Fruit Carving AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free vegetable & fruit carving AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Vegetable & Fruit Carving AI Video Prompts",
-    intro:
-      "Vegetable & Fruit Carving is one of the strongest faceless formats right now: precise, meditative, elegant storytelling built around the blade artisan. Every blueprint below locks the same character, the watermelon red, cucumber green, ivory flesh palette and slow → full reveal rotate pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Vegetable & Fruit Carving Prompts — Free Generator",
+    metaDescription: "Create mesmerizing fruit and vegetable carving ASMR shorts with our free AI prompt generator. Get macro Midjourney prompts and satisfying scripts.",
+    h1: "Vegetable & Fruit Carving Prompt Generator",
+    primaryKeyword: "ai fruit carving video generator",
+    secondaryKeywords: [
+    "vegetable carving shorts prompts",
+    "satisfying food art ai",
+    "midjourney macro carving prompts",
+    "how to make fruit carving videos",
+    "faceless food craft ai"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$3.00–$5.50",
+    intro: "The ancient art of fruit and vegetable carving transforms ordinary watermelons, pumpkins, and soaps into breathtaking floral sculptures and intricate 3D dragons. When presented as ASMR-style macro shorts, these videos captivate millions of viewers who love watching raw produce transform into masterpieces under a razor-sharp carving knife. Because the aesthetic depends entirely on vibrant color contrast and precise blade work, your prompts must highlight glossy textures and clean cuts. Our free generator provides the exact syntax needed to render stunning culinary art. Use the blueprints below to launch your carving channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Blade Artisan — precise, meditative, elegant tone. Voice: Minimal narration, soft, 92 WPM, Serene concentration. Opening line: "Watch a single melon become [your topic]."',
-        visual:
-          "Vertical 9:16 image of blade artisan in black slate board with water droplets, full subject in frame, natural face and complete anatomy, white chef coat with knife roll open, palette of watermelon red, cucumber green, ivory flesh, extreme macro, wet surface sheen, single key light, slow rotate, photoreal produce, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: blade artisan enters the frame, black slate board with water, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Blade Artisan — precise, meditative, elegant tone. Voice: Minimal narration, soft, 92 WPM, Serene concentration. Opening line: "[your topic], carved from one piece."',
-        visual:
-          "Vertical 9:16 image of blade artisan in rotating turntable under a hard key light, full subject in frame, natural face and complete anatomy, steady hands, no rings, palette of watermelon red, cucumber green, ivory flesh, extreme macro, wet surface sheen, single key light, slow rotate, photoreal produce, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: blade artisan reacts to the turn, rotating turntable under a hard, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Blade Artisan — precise, meditative, elegant tone. Voice: Minimal narration, soft, 92 WPM, Serene concentration. Opening line: "One knife, one hour, [your topic]."',
-        visual:
-          "Vertical 9:16 image of blade artisan in market stall counter with carved pieces in a row, full subject in frame, natural face and complete anatomy, thin carving blade catching the light, palette of watermelon red, cucumber green, ivory flesh, extreme macro, wet surface sheen, single key light, slow rotate, photoreal produce, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: blade artisan moves toward the key prop, market stall counter with carved, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Blade Artisan — precise, meditative, elegant tone. Voice: Minimal narration, soft, 92 WPM, Serene concentration. Opening line: "Watch a single melon become [your topic]."',
-        visual:
-          "Vertical 9:16 image of blade artisan in black slate board with water droplets, full subject in frame, natural face and complete anatomy, damp cloth folded beside the board, palette of watermelon red, cucumber green, ivory flesh, extreme macro, wet surface sheen, single key light, slow rotate, photoreal produce, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: blade artisan holds the payoff beat, black slate board with water, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Blade Artisan — precise, meditative, elegant tone. Voice: Minimal narration, soft, 92 WPM, Serene concentration. Opening line: "[your topic], carved from one piece."',
-        visual:
-          "Vertical 9:16 image of blade artisan in rotating turntable under a hard key light, full subject in frame, natural face and complete anatomy, white chef coat with knife roll open, palette of watermelon red, cucumber green, ivory flesh, extreme macro, wet surface sheen, single key light, slow rotate, photoreal produce, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: blade artisan settles as the loop resets, rotating turntable under a hard, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Watermelon Dragon Lotus",
+      "character": "[whisper, calm] One clean stroke transforms a heavy melon into a blooming lotus flower.",
+      "visual": "Extreme macro shot of a sharp artisan carving knife peeling back the dark green rind of a watermelon to reveal vibrant pink inner layers sculpted into intricate dragon scales, studio lighting --ar 9:16 --v 6.1",
+      "camera": "Macro slow push-in tracking the knife blade slicing into the watermelon rind, ultra-sharp detail, 24fps"
+    },
+    {
+      "title": "The Pumpkin Lantern Peony",
+      "character": "[satisfying, smooth] Thin layers of orange flesh falling away like velvet silk.",
+      "visual": "Macro close-up of a vibrant orange pumpkin being carved into a multi-layered blooming peony flower, crisp edges, wood carving table background, soft rim lighting --ar 9:16 --v 6.1",
+      "camera": "Close-up macro tracking shot sliding across the pumpkin petals as the carving tool shapes them, 24fps"
+    },
+    {
+      "title": "The Soap Bar Flower Carving",
+      "character": "[whisper, crisp] The cleanest curls you'll see all day. Pure visual satisfaction.",
+      "visual": "A translucent emerald-green soap bar being shaved into delicate, curling rose petals by a small chisel tool, soapy flakes dusting the workbench, bright macro photography --ar 9:16 --v 6.1",
+      "camera": "Macro drop shot following the curved chisel slicing off a translucent soap curl, 24fps"
+    },
+    {
+      "title": "The Radish Swan Masterpiece",
+      "character": "[precise, delicate] Turning a simple white root vegetable into an elegant floating swan.",
+      "visual": "Macro shot of a crisp white daikon radish being carved into delicate feathered wings, droplets of water glistening on the vegetable surface, clean studio lighting --ar 9:16 --v 6.1",
+      "camera": "Slow rotating macro orbit around the partially carved radish swan, glistening water droplets, 24fps"
+    },
+    {
+      "title": "The Avocado Rose Bloom",
+      "character": "[smooth, slow] Perfectly ripe, perfectly sliced, perfectly arranged.",
+      "visual": "Top-down macro shot of thin, fan-folded green avocado slices being curled into a blooming rose shape on a dark slate board, glistening olive oil sheen --ar 9:16 --v 6.1",
+      "camera": "Static macro top-down shot with slow tilt as the final avocado petal locks into place, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a vegetable & fruit carving video work?",
-        answer:
-          "Slow → Full Reveal Rotate pacing, one locked character (the blade artisan) and a consistent palette of watermelon red, cucumber green, ivory flesh. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit vegetable & fruit carving?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 92 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should vegetable & fruit carving videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the fruit and vegetable carving niche monetizable?",
+      "answer": "Yes. It is highly visual, culturally universal, and completely brand-safe, making it ideal for high AdSense RPMs and culinary brand sponsorships."
+    },
+    {
+      "question": "What tools do I need for carving ASMR videos?",
+      "answer": "Midjourney v6 for ultra-vibrant macro food photography, Kling or Runway for smooth knife motion, and crisp ASMR cutting/scraping audio effects."
+    },
+    {
+      "question": "How do I make the produce look glossy and fresh?",
+      "answer": "Add lighting and texture descriptors to your prompts: 'glistening water droplets, vibrant color saturation, glossy surface sheen, macro photography, shallow depth of field.'"
+    },
+    {
+      "question": "Why do carving shorts get high replay value?",
+      "answer": "Viewers often re-watch the beginning of the video once they see the final sculpted result, trying to figure out how the creator managed such precision from a raw vegetable."
+    }
+  ],
     relatedSlugs: [
-      "ai-car-wash-and-restoration",
-      "miniature-asmr-cooking",
-      "nostalgia-toy-unboxing",
-    ],
+    "miniature-asmr-cooking",
+    "ai-asmr-cooking-cleaning-restoration",
+    "diy-cardboard-and-miniature-builds"
+  ],
   },
   {
     slug: "ai-car-wash-and-restoration",
     name: "AI Car Wash & Restoration",
     niche: "AI Car Wash & Restoration",
-    seoTitle: "AI Car Wash & Restoration Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free ai car wash & restoration AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Car Wash & Restoration Video Prompts",
-    intro:
-      "AI Car Wash & Restoration is one of the strongest faceless formats right now: satisfying, methodical, transformative storytelling built around the detail perfectionist. Every blueprint below locks the same character, the deep gloss black, foam white, chrome blue palette and slow build → big reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI Car Wash & Restoration Prompts — Free Generator",
+    metaDescription: "Create hyper-satisfying AI car washing and vehicle restoration videos with our free AI prompt generator. Get Midjourney prompts and scripts.",
+    h1: "AI Car Wash & Restoration Prompt Generator",
+    primaryKeyword: "ai car wash video generator",
+    secondaryKeywords: [
+    "car restoration ai prompts",
+    "satisfying pressure washing shorts",
+    "midjourney automotive textures",
+    "how to make car cleaning videos",
+    "faceless vehicle detailing ai"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$4.00–$7.00",
+    intro: "The transformation from thick layers of mud, grime, and rust to mirror-finish chrome and pristine paint is one of the most satisfying visual arcs on the internet. AI car washing and deep vehicle restoration videos pull massive view counts because they trigger instant gratification. Whether it's a high-pressure foam wash blasting away decades of dirt or a classic truck getting a showroom polish, this niche thrives on tactile realism and rich reflections. Our free generator provides the exact syntax needed to render stunning automotive finishes. Use the blueprints below to launch your viral detailing channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Detail Perfectionist — satisfying, methodical, transformative tone. Voice: Low calm narrator, sparse, 104 WPM, Quiet satisfaction. Opening line: "This car hadn\'t moved in 20 years: [your topic]."',
-        visual:
-          "Vertical 9:16 image of detail perfectionist in detailing bay with wet concrete and overhead LEDs, full subject in frame, natural face and complete anatomy, black technician polo with rolled sleeves, palette of deep gloss black, foam white, chrome blue, hyperreal paint reflection, foam volumetrics, studio bay lighting, slow push-in, before/after split, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: detail perfectionist enters the frame, detailing bay with wet concrete, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Detail Perfectionist — satisfying, methodical, transformative tone. Voice: Low calm narrator, sparse, 104 WPM, Quiet satisfaction. Opening line: "[your topic] looked hopeless. Watch."',
-        visual:
-          "Vertical 9:16 image of detail perfectionist in sun-faded barn find under a dust sheet, full subject in frame, natural face and complete anatomy, foam-covered nitrile gloves, palette of deep gloss black, foam white, chrome blue, hyperreal paint reflection, foam volumetrics, studio bay lighting, slow push-in, before/after split, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: detail perfectionist reacts to the turn, sun-faded barn find under a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Detail Perfectionist — satisfying, methodical, transformative tone. Voice: Low calm narrator, sparse, 104 WPM, Quiet satisfaction. Opening line: "The dirtiest [your topic] I have ever cleaned."',
-        visual:
-          "Vertical 9:16 image of detail perfectionist in mirror-finish panel reflecting the light bar, full subject in frame, natural face and complete anatomy, microfibre towel over the shoulder, palette of deep gloss black, foam white, chrome blue, hyperreal paint reflection, foam volumetrics, studio bay lighting, slow push-in, before/after split, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: detail perfectionist moves toward the key prop, mirror-finish panel reflecting the light, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Detail Perfectionist — satisfying, methodical, transformative tone. Voice: Low calm narrator, sparse, 104 WPM, Quiet satisfaction. Opening line: "This car hadn\'t moved in 20 years: [your topic]."',
-        visual:
-          "Vertical 9:16 image of detail perfectionist in detailing bay with wet concrete and overhead LEDs, full subject in frame, natural face and complete anatomy, pressure wand held low, palette of deep gloss black, foam white, chrome blue, hyperreal paint reflection, foam volumetrics, studio bay lighting, slow push-in, before/after split, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: detail perfectionist holds the payoff beat, detailing bay with wet concrete, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Detail Perfectionist — satisfying, methodical, transformative tone. Voice: Low calm narrator, sparse, 104 WPM, Quiet satisfaction. Opening line: "[your topic] looked hopeless. Watch."',
-        visual:
-          "Vertical 9:16 image of detail perfectionist in sun-faded barn find under a dust sheet, full subject in frame, natural face and complete anatomy, black technician polo with rolled sleeves, palette of deep gloss black, foam white, chrome blue, hyperreal paint reflection, foam volumetrics, studio bay lighting, slow push-in, before/after split, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: detail perfectionist settles as the loop resets, sun-faded barn find under a, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Muddy Off-Road Foam Blast",
+      "character": "[whisper, satisfying] Watch that caked-on clay slide off the rocker panel in one thick sheet.",
+      "visual": "Macro close-up of a high-pressure spray nozzle blasting thick white snow foam off the muddy side panel of a matte-black off-road truck, water droplets glistening, cinematic lighting --ar 9:16 --v 6.1",
+      "camera": "Fast tracking pan left following the high-pressure water stream stripping away mud layers, 24fps"
+    },
+    {
+      "title": "The Vintage Porsche Paint Polish",
+      "character": "[smooth, calm] Twenty years of oxidation wiped away to reveal glass-like crimson paint.",
+      "visual": "Close-up of a rotary buffer spinning across the faded red hood of a vintage 1975 Porsche 911, white polishing compound swirling under studio overhead lights, hyper-realistic reflections --ar 9:16 --v 6.1",
+      "camera": "Macro push-in tracking the spinning polishing pad as dull paint instantly turns into mirror-gloss, 24fps"
+    },
+    {
+      "title": "The Rusted Wheel Hub Restoration",
+      "character": "[firm, satisfying] Stripping away thirty winters of road salt down to bare forged alloy.",
+      "visual": "Extreme macro shot of a wire brush wheel scrubbing heavy orange rust off a vintage wire wheel hub, sparks and iron dust flying, dark garage workshop lighting --ar 9:16 --v 6.1",
+      "camera": "Close-up macro tracking shot of wire bristles clearing rust flakes off the chrome spokes, 24fps"
+    },
+    {
+      "title": "The Crystal Clear Headlight Restoration",
+      "character": "[whisper] Yellowed, hazy plastic turned completely transparent with one swipe.",
+      "visual": "Macro shot of a mechanic's gloved hand wiping a specialized ceramic coating across a foggy, yellowed car headlight, half of the lens instantly turning crystal clear, sharp contrast --ar 9:16 --v 6.1",
+      "camera": "Slow lateral wipe tracking the microfiber cloth revealing the clear lens underneath, 24fps"
+    },
+    {
+      "title": "The Hydrophobic Water Beading",
+      "character": "[calm] Water doesn't even touch the paint. Pure ceramic protection.",
+      "visual": "Extreme macro shot of pure crystal water beads rolling effortlessly off a newly ceramic-coated midnight blue supercar hood, neon shop lights reflecting in every droplet --ar 9:16 --v 6.1",
+      "camera": "Slow motion macro drop shot as water droplets slide rapidly off the angled hood surface, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai car wash & restoration video work?",
-        answer:
-          "Slow Build → Big Reveal pacing, one locked character (the detail perfectionist) and a consistent palette of deep gloss black, foam white, chrome blue. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai car wash & restoration?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 104 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai car wash & restoration videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the car wash and restoration niche monetizable?",
+      "answer": "Yes, exceptionally well. Automotive content attracts high-paying advertisers (tools, detailing brands, insurance), leading to above-average AdSense RPMs."
+    },
+    {
+      "question": "What tools do I need for car detailing AI videos?",
+      "answer": "Midjourney v6 for hyper-realistic car paint reflections and textures, Kling or Runway for water spray and buffer motion, and crisp pressure washer/polisher audio effects."
+    },
+    {
+      "question": "How do I make automotive paint look realistic?",
+      "answer": "Include reflection and lighting keywords in your prompts: 'mirror-gloss paint finish, studio overhead light reflections, water bead physics, metallic flake clear coat.'"
+    },
+    {
+      "question": "Why do transformation videos perform so well?",
+      "answer": "The contrast between extreme decay (mud/rust) and extreme perfection (mirror polish) triggers a strong psychological reward loop in viewers, maximizing watch time."
+    }
+  ],
     relatedSlugs: [
-      "miniature-asmr-cooking",
-      "nostalgia-toy-unboxing",
-      "ranking-and-top-5-countdowns",
-    ],
+    "diy-cardboard-and-miniature-builds",
+    "ai-asmr-cooking-cleaning-restoration",
+    "miniature-asmr-cooking"
+  ],
   },
   {
     slug: "miniature-asmr-cooking",
     name: "Miniature ASMR Cooking",
     niche: "Miniature ASMR Cooking",
-    seoTitle: "Miniature ASMR Cooking AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free miniature asmr cooking AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Miniature ASMR Cooking AI Video Prompts",
-    intro:
-      "Miniature ASMR Cooking is one of the strongest faceless formats right now: adorable, precise, cozy storytelling built around the tiny kitchen hands. Every blueprint below locks the same character, the copper orange, cream tile, herb green palette and very slow → plating reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Miniature ASMR Cooking Prompts — Free Generator",
+    metaDescription: "Create viral miniature cooking ASMR videos with our free AI prompt generator. Get macro Midjourney prompts and satisfying recipe scripts.",
+    h1: "Miniature ASMR Cooking Prompt Generator",
+    primaryKeyword: "ai miniature cooking video generator",
+    secondaryKeywords: [
+    "miniature kitchen ASMR prompts",
+    "tiny cooking shorts AI",
+    "midjourney macro food photography prompts",
+    "how to make mini cooking videos",
+    "satisfying tiny food AI"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$3.50–$6.00",
+    intro: "Tiny kitchens, miniature working stoves, and tiny ingredients cooked into real, edible meals have captivated hundreds of millions of viewers worldwide. Miniature ASMR cooking combines the obsessive precision of scale models with the universal comfort of food preparation. Because everything is built on a micro scale, your AI prompts must emphasize shallow depth of field, tiny utensils, and macro food textures. Our free generator provides the exact syntax needed to render flawless miniature culinary scenes. Use the blueprints below to launch your viral tiny kitchen channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Tiny Kitchen Hands — adorable, precise, cozy tone. Voice: No narration, ambient only, 0 WPM, Neutral, observational. Opening line: "The world\'s smallest [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny kitchen hands in matchbox-scale kitchen set on a wooden board, full subject in frame, natural face and complete anatomy, thumb-sized apron on a doll-scale figure, palette of copper orange, cream tile, herb green, macro miniature, tilt-shift depth, warm practical flame, photoreal micro food, clean tabletop, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: tiny kitchen hands enters the frame, matchbox-scale kitchen set on a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Tiny Kitchen Hands — adorable, precise, cozy tone. Voice: No narration, ambient only, 0 WPM, Neutral, observational. Opening line: "[your topic], cooked in a matchbox kitchen."',
-        visual:
-          "Vertical 9:16 image of tiny kitchen hands in tiny stove with a real flame under a pan, full subject in frame, natural face and complete anatomy, two human fingers as the visible operator, palette of copper orange, cream tile, herb green, macro miniature, tilt-shift depth, warm practical flame, photoreal micro food, clean tabletop, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: tiny kitchen hands reacts to the turn, tiny stove with a real, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Tiny Kitchen Hands — adorable, precise, cozy tone. Voice: No narration, ambient only, 0 WPM, Neutral, observational. Opening line: "Real fire, real food, tiny [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny kitchen hands in miniature plating scene with tweezers, full subject in frame, natural face and complete anatomy, miniature copper pan, real and heated, palette of copper orange, cream tile, herb green, macro miniature, tilt-shift depth, warm practical flame, photoreal micro food, clean tabletop, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: tiny kitchen hands moves toward the key prop, miniature plating scene with tweezers, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Tiny Kitchen Hands — adorable, precise, cozy tone. Voice: No narration, ambient only, 0 WPM, Neutral, observational. Opening line: "The world\'s smallest [your topic]."',
-        visual:
-          "Vertical 9:16 image of tiny kitchen hands in matchbox-scale kitchen set on a wooden board, full subject in frame, natural face and complete anatomy, match-stick-sized wooden spoon, palette of copper orange, cream tile, herb green, macro miniature, tilt-shift depth, warm practical flame, photoreal micro food, clean tabletop, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: tiny kitchen hands holds the payoff beat, matchbox-scale kitchen set on a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Tiny Kitchen Hands — adorable, precise, cozy tone. Voice: No narration, ambient only, 0 WPM, Neutral, observational. Opening line: "[your topic], cooked in a matchbox kitchen."',
-        visual:
-          "Vertical 9:16 image of tiny kitchen hands in tiny stove with a real flame under a pan, full subject in frame, natural face and complete anatomy, thumb-sized apron on a doll-scale figure, palette of copper orange, cream tile, herb green, macro miniature, tilt-shift depth, warm practical flame, photoreal micro food, clean tabletop, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: tiny kitchen hands settles as the loop resets, tiny stove with a real, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Tiny Cast-Iron Pancake",
+      "character": "[whisper, soft] A drop of batter on a coin-sized skillet. Watch it bubble.",
+      "visual": "Extreme macro shot of a tiny copper skillet on a miniature working stove, a single silver-dollar-sized golden pancake bubbling, tiny pat of butter melting on top, shallow depth of field --ar 9:16 --v 6.1",
+      "camera": "Macro push-in tracking a tiny spatula flipping the miniature pancake over, 24fps"
+    },
+    {
+      "title": "The Micro Sushi Platter",
+      "character": "[whisper, crisp] Grain by grain. The smallest salmon nigiri you've ever seen.",
+      "visual": "Macro top-down view of a tiny wooden cutting board, tweezers placing a microscopic slice of salmon over a tiny ball of sushi rice, pristine studio lighting --ar 9:16 --v 6.1",
+      "camera": "Static top-down macro shot with a subtle focus pull onto the tiny salmon grain, 24fps"
+    },
+    {
+      "title": "The Tiny Teapot Brew",
+      "character": "[whisper, calming] Boiling water in a teapot no larger than your thumb.",
+      "visual": "Macro close-up of a tiny ceramic teapot resting over a miniature candle flame, delicate steam rising from the spout, rustic wooden counter background --ar 9:16 --v 6.1",
+      "camera": "Slow vertical tilt tracking the delicate steam trail rising from the tiny teapot spout, 24fps"
+    },
+    {
+      "title": "The Micro Burger Assembly",
+      "character": "[satisfying, slow] Lettuce, cheese, and a beef patty smaller than a dime.",
+      "visual": "Extreme macro cross-section view of tiny sesame seed bun halves stacked over a microscopic grilled beef patty and melted cheese square, vivid colors --ar 9:16 --v 6.1",
+      "camera": "Macro slow orbit shot circling the tiny assembled burger on a slate tile, 24fps"
+    },
+    {
+      "title": "The Miniature Honey Pot",
+      "character": "[whisper] Golden amber sweetness poured from a ceramic pot the size of a marble.",
+      "visual": "Macro shot of a tiny ceramic honey jar tilted over a miniature wooden waffle, a thick golden strand of honey pooling on the grid, hyper-detailed textures --ar 9:16 --v 6.1",
+      "camera": "Macro tracking shot following the heavy honey strand dripping onto the tiny waffle, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a miniature asmr cooking video work?",
-        answer:
-          "Very Slow → Plating Reveal pacing, one locked character (the tiny kitchen hands) and a consistent palette of copper orange, cream tile, herb green. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit miniature asmr cooking?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 0 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should miniature asmr cooking videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the miniature cooking niche monetizable?",
+      "answer": "Yes, exceptionally well. It transcends language barriers, appeals to all age groups, and commands high completion rates due to the hypnotic visual payoff."
+    },
+    {
+      "question": "What tools do I need for miniature cooking AI videos?",
+      "answer": "Midjourney v6 for macro food textures, Kling or Runway for subtle flame and motion rendering, and crisp ASMR cooking audio effects (frying sizzle, utensil clinks)."
+    },
+    {
+      "question": "How do I make food look convincing at a micro scale?",
+      "answer": "Use macro photography tags: 'extreme macro close-up, shallow depth of field, micro-scale props, macro lens bokeh, vibrant food textures.'"
+    },
+    {
+      "question": "Why do miniature videos hold attention so well?",
+      "answer": "The novelty of tiny, fully functional objects creates instant cognitive curiosity, keeping viewers locked in to see if the food actually comes together."
+    }
+  ],
     relatedSlugs: [
-      "nostalgia-toy-unboxing",
-      "ranking-and-top-5-countdowns",
-      "vox-style-paper-cut-commentary",
-    ],
+    "ai-animal-cooking",
+    "vegetable-and-fruit-carving",
+    "ai-asmr-cooking-cleaning-restoration"
+  ],
   },
   {
     slug: "nostalgia-toy-unboxing",
     name: "Nostalgia Toy Unboxing",
     niche: "Nostalgia Toy Unboxing",
-    seoTitle: "Nostalgia Toy Unboxing AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free nostalgia toy unboxing AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Nostalgia Toy Unboxing AI Video Prompts",
-    intro:
-      "Nostalgia Toy Unboxing is one of the strongest faceless formats right now: nostalgic, warm, reverent storytelling built around the time capsule collector. Every blueprint below locks the same character, the faded primary red, cardboard tan, retro teal palette and anticipation → reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Nostalgia Toy Unboxing Prompts — Free Generator",
+    metaDescription: "Create retro 90s and 2000s nostalgia toy unboxing videos with our free AI prompt generator. Get Midjourney vintage toy prompts and scripts.",
+    h1: "Nostalgia Toy Unboxing Prompt Generator",
+    primaryKeyword: "ai toy unboxing video generator",
+    secondaryKeywords: [
+    "nostalgia toy unboxing shorts",
+    "retro 90s toy prompts AI",
+    "midjourney vintage packaging prompts",
+    "how to make nostalgia content",
+    "faceless toy collecting AI"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$3.00–$5.50",
+    intro: "Nostalgia is one of the most powerful emotional drivers on social media. Videos unboxing pristine 90s and 2000s toys—vintage action figures, translucent electronics, Tamagotchis, and classic trading card packs—trigger an immediate wave of dopamine for millennial and Gen-Z viewers. Because AI can generate rare, mint-condition retro packaging that no longer exists in reality, creators can build massive collector communities from scratch. Our free generator provides the exact syntax needed to render hyper-detailed vintage toy packaging. Use the blueprints below to launch your retro unboxing channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Time Capsule Collector — nostalgic, warm, reverent tone. Voice: Warm male mid-tone, 134 WPM, Nostalgic excitement. Opening line: "Sealed since 1997: [your topic]."',
-        visual:
-          "Vertical 9:16 image of time capsule collector in bedroom carpet with the box lit by one lamp, full subject in frame, natural face and complete anatomy, faded band tee under an open flannel, palette of faded primary red, cardboard tan, retro teal, retro film grade, tabletop overhead, warm tungsten, product macro, 90s print texture, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: time capsule collector enters the frame, bedroom carpet with the box, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Time Capsule Collector — nostalgic, warm, reverent tone. Voice: Warm male mid-tone, 134 WPM, Nostalgic excitement. Opening line: "I found [your topic] in my parents\' attic."',
-        visual:
-          "Vertical 9:16 image of time capsule collector in shelf wall of boxed figures in order, full subject in frame, natural face and complete anatomy, careful hands lifting a sealed box, palette of faded primary red, cardboard tan, retro teal, retro film grade, tabletop overhead, warm tungsten, product macro, 90s print texture, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: time capsule collector reacts to the turn, shelf wall of boxed figures, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Time Capsule Collector — nostalgic, warm, reverent tone. Voice: Warm male mid-tone, 134 WPM, Nostalgic excitement. Opening line: "[your topic] was every kid\'s dream."',
-        visual:
-          "Vertical 9:16 image of time capsule collector in overhead desk shot with packing foam laid out, full subject in frame, natural face and complete anatomy, retro digital watch on the wrist, palette of faded primary red, cardboard tan, retro teal, retro film grade, tabletop overhead, warm tungsten, product macro, 90s print texture, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: time capsule collector moves toward the key prop, overhead desk shot with packing, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Time Capsule Collector — nostalgic, warm, reverent tone. Voice: Warm male mid-tone, 134 WPM, Nostalgic excitement. Opening line: "Sealed since 1997: [your topic]."',
-        visual:
-          "Vertical 9:16 image of time capsule collector in bedroom carpet with the box lit by one lamp, full subject in frame, natural face and complete anatomy, cotton gloves for the rarest pieces, palette of faded primary red, cardboard tan, retro teal, retro film grade, tabletop overhead, warm tungsten, product macro, 90s print texture, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: time capsule collector holds the payoff beat, bedroom carpet with the box, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Time Capsule Collector — nostalgic, warm, reverent tone. Voice: Warm male mid-tone, 134 WPM, Nostalgic excitement. Opening line: "I found [your topic] in my parents\' attic."',
-        visual:
-          "Vertical 9:16 image of time capsule collector in shelf wall of boxed figures in order, full subject in frame, natural face and complete anatomy, faded band tee under an open flannel, palette of faded primary red, cardboard tan, retro teal, retro film grade, tabletop overhead, warm tungsten, product macro, 90s print texture, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: time capsule collector settles as the loop resets, shelf wall of boxed figures, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Translucent 90s Handheld",
+      "character": "[excited, fast] Look at that atomic purple shell. They don't build them with clear plastic like this anymore.",
+      "visual": "Macro unboxing shot of a pristine translucent purple 90s handheld gaming console inside its original retro cardboard box with colorful neon graphics, mint condition, studio lighting --ar 9:16 --v 6.1",
+      "camera": "Handheld macro pull-back revealing the vintage console lifting out of its molded plastic insert, 24fps"
+    },
+    {
+      "title": "The Sealed Holographic Card Pack",
+      "character": "[whisper, tense] Twenty-five years old, and the foil wrapper is still factory sealed. Do we open it?",
+      "visual": "Close-up of a pair of hands holding a pristine 1999 holographic trading card booster pack under warm retail display lighting, sharp retro typography on foil wrapper --ar 9:16 --v 6.1",
+      "camera": "Slow push-in framing the foil pack with light reflecting off the holographic seal, 24fps"
+    },
+    {
+      "title": "The Cybernetic Action Figure",
+      "character": "[energetic] Chrome armor, spring-loaded missile launcher, and cardback art that belongs in a museum.",
+      "visual": "A vintage 90s action figure still sealed inside a mint-condition blister pack hanging on a peg, vibrant cartoon illustrations on cardboard backing, glossy plastic bubble --ar 9:16 --v 6.1",
+      "camera": "Pan right tracking across the blister pack bubble, catching vintage plastic glare, 24fps"
+    },
+    {
+      "title": "The Virtual Pet Keychain",
+      "character": "[nostalgic, warm] The beep when it hatched. The panic when you forgot to feed it at school.",
+      "visual": "Macro shot of a neon pink digital pet keychain resting on a colorful 90s geometric patterned desk mat, glowing LCD screen, retro packaging box blurred in background --ar 9:16 --v 6.1",
+      "camera": "Macro push-in on the glowing pixel screen as the virtual pet icon blinks, 24fps"
+    },
+    {
+      "title": "The Modular Racing Track Set",
+      "character": "[excited] Glow-in-the-dark loop tracks and blue plastic cars. Peak Saturday morning engineering.",
+      "visual": "A massive vintage 2000s toy box piled high with colorful modular track pieces and translucent cars, vibrant studio lighting, hyper-detailed cardboard texture --ar 9:16 --v 6.1",
+      "camera": "Low-angle tracking shot moving slowly past the towering retro toy box stack, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a nostalgia toy unboxing video work?",
-        answer:
-          "Anticipation → Reveal pacing, one locked character (the time capsule collector) and a consistent palette of faded primary red, cardboard tan, retro teal. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit nostalgia toy unboxing?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 134 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should nostalgia toy unboxing videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the nostalgia toy niche monetizable?",
+      "answer": "Yes. Nostalgia-driven content boasts high audience engagement, excellent watch retention from older demographics, and strong merchandising or affiliate revenue potential."
+    },
+    {
+      "question": "What tools do I need for nostalgia toy videos?",
+      "answer": "Midjourney v6 for rendering accurate retro packaging fonts and plastic textures, Runway or Kling for unboxing motions, and classic 90s background audio tracks."
+    },
+    {
+      "question": "How do I make vintage packaging look authentic?",
+      "answer": "Include era-specific design keywords in your prompts: '1990s retro packaging typography, translucent plastic blister pack, glossy cardboard box art, nostalgic toy aesthetic.'"
+    },
+    {
+      "question": "Why does nostalgia content perform so well?",
+      "answer": "Emotional resonance drives comments, shares, and high watch completion as viewers reminisce about their childhood items in the comment section."
+    }
+  ],
     relatedSlugs: [
-      "ranking-and-top-5-countdowns",
-      "vox-style-paper-cut-commentary",
-      "elderly-wisdom-and-stoic-long-form",
-    ],
+    "ai-influencer-product-reviews",
+    "ranking-and-top-5-countdowns",
+    "stickman-explainer-and-skits"
+  ],
   },
   {
     slug: "ranking-and-top-5-countdowns",
     name: "Ranking & Top 5 Countdowns",
     niche: "Ranking & Top 5 Countdowns",
-    seoTitle: "Ranking & Top 5 Countdowns AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free ranking & top 5 countdowns AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Ranking & Top 5 Countdowns AI Video Prompts",
-    intro:
-      "Ranking & Top 5 Countdowns is one of the strongest faceless formats right now: punchy, opinionated, fast storytelling built around the verdict host. Every blueprint below locks the same character, the jet black, alert yellow, signal white palette and punchy → escalating to #1 pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Ranking & Top 5 Countdown Prompts — Free Generator",
+    metaDescription: "Create viral top 5 ranking and countdown shorts with our free AI prompt generator. Get Midjourney comparison visuals and engaging script hooks.",
+    h1: "Ranking & Top 5 Countdown Prompt Generator",
+    primaryKeyword: "ai countdown video generator",
+    secondaryKeywords: [
+    "top 5 shorts prompts AI",
+    "ranking video script generator",
+    "midjourney comparison visual prompts",
+    "how to make top 10 countdowns",
+    "faceless listicle channel AI"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "Listicles and Top 5 countdowns form the structural backbone of viral social media video content. Whether ranking the most powerful historical empires, deepest ocean creatures, or futuristic tech concepts, countdowns harness an innate psychological curiosity that forces viewers to stay until #1. Because these videos require striking visual contrasts between each ranked item, your prompts must maintain thematic consistency while escalating in scale. Our free generator provides the exact syntax needed to build high-retention listicle content. Use the blueprints below to launch your ranking channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Verdict Host — punchy, opinionated, fast tone. Voice: Crisp male baritone, 152 WPM, Assured, competitive. Opening line: "Ranking the top 5 [your topic]."',
-        visual:
-          "Vertical 9:16 image of verdict host in dark studio with a floating number graphic, full subject in frame, natural face and complete anatomy, sharp black crew neck, no logo, palette of jet black, alert yellow, signal white, bold numeral overlay, high contrast studio, split comparison frame, motion graphic wipes, ultra clean, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: verdict host enters the frame, dark studio with a floating, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Verdict Host — punchy, opinionated, fast tone. Voice: Crisp male baritone, 152 WPM, Assured, competitive. Opening line: "Number one in [your topic] will annoy people."',
-        visual:
-          "Vertical 9:16 image of verdict host in split-screen comparison plate, full subject in frame, natural face and complete anatomy, hands gesturing over a numbered graphic, palette of jet black, alert yellow, signal white, bold numeral overlay, high contrast studio, split comparison frame, motion graphic wipes, ultra clean, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: verdict host reacts to the turn, split-screen comparison plate, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Verdict Host — punchy, opinionated, fast tone. Voice: Crisp male baritone, 152 WPM, Assured, competitive. Opening line: "Only one of these [your topic] is worth it."',
-        visual:
-          "Vertical 9:16 image of verdict host in podium-style ranking board with lit tiers, full subject in frame, natural face and complete anatomy, minimal steel watch, palette of jet black, alert yellow, signal white, bold numeral overlay, high contrast studio, split comparison frame, motion graphic wipes, ultra clean, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: verdict host moves toward the key prop, podium-style ranking board with lit, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Verdict Host — punchy, opinionated, fast tone. Voice: Crisp male baritone, 152 WPM, Assured, competitive. Opening line: "Ranking the top 5 [your topic]."',
-        visual:
-          "Vertical 9:16 image of verdict host in dark studio with a floating number graphic, full subject in frame, natural face and complete anatomy, clean studio silhouette, palette of jet black, alert yellow, signal white, bold numeral overlay, high contrast studio, split comparison frame, motion graphic wipes, ultra clean, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: verdict host holds the payoff beat, dark studio with a floating, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Verdict Host — punchy, opinionated, fast tone. Voice: Crisp male baritone, 152 WPM, Assured, competitive. Opening line: "Number one in [your topic] will annoy people."',
-        visual:
-          "Vertical 9:16 image of verdict host in split-screen comparison plate, full subject in frame, natural face and complete anatomy, sharp black crew neck, no logo, palette of jet black, alert yellow, signal white, bold numeral overlay, high contrast studio, split comparison frame, motion graphic wipes, ultra clean, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: verdict host settles as the loop resets, split-screen comparison plate, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Deep Sea Depth Scale (#1)",
+      "character": "[deep, dramatic] At eleven thousand meters down, pressure crushes steel like paper. And yet, something is moving.",
+      "visual": "Cinematic digital depth chart illustration showing a colossal bioluminescent leviathan lurking in the pitch-black abyss of the Mariana Trench, glowing blue accents, hyper-detailed --ar 9:16 --v 6.1",
+      "camera": "Slow vertical pull-up tracking from total darkness toward a faint blue surface light far above, 24fps"
+    },
+    {
+      "title": "The Most Expensive Supercar Ever Built (#1)",
+      "character": "[fast, hyped] Number one. A fifty-million-dollar custom hypercar crafted entirely from exposed carbon and titanium.",
+      "visual": "A sleek matte-black futuristic hypercar parked under neon display lights inside an underground Tokyo showroom, sharp geometric angles, photorealistic luxury automotive photography --ar 9:16 --v 6.1",
+      "camera": "Slow cinematic orbit shot circling the luxury hypercar, reflections gleaming off body panels, 24fps"
+    },
+    {
+      "title": "The Tallest Skyscraper Concept (#1)",
+      "character": "[awe-struck] Piercing the stratosphere at four thousand meters high. Look down at the clouds.",
+      "visual": "A colossal futuristic mega-skyscraper piercing through a blanket of white fluffy clouds into the upper atmosphere, golden hour sun setting against glass facade, sci-fi concept art --ar 9:16 --v 6.1",
+      "camera": "Low-angle tilt-up tracking shot scaling the immense height of the mega-skyscraper into the clouds, 24fps"
+    },
+    {
+      "title": "The Strongest Ancient Armor (#1)",
+      "character": "[commanding] Forged from meteorite iron, capable of deflecting a direct ballista bolt.",
+      "visual": "An ornate black steel suit of samurai armor glowing with faint red internal heat runes on a dark museum pedestal, dramatic single key light, hyper-detailed textures --ar 9:16 --v 6.1",
+      "camera": "Slow push-in framing the intricate helmet crest and shoulder guards of the armor, 24fps"
+    },
+    {
+      "title": "The Most Isolated Place on Earth (#1)",
+      "character": "[whisper, eerie] Two thousand miles from the nearest human settlement. Absolute silence.",
+      "visual": "An aerial view of a tiny frozen research outpost sitting alone on a massive sheet of white Antarctic ice under a green aurora borealis sky, epic scale --ar 9:16 --v 6.1",
+      "camera": "Slow high-altitude drone pull-back revealing the vast isolation of the polar ice shelf, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ranking & top 5 countdowns video work?",
-        answer:
-          "Punchy → Escalating to #1 pacing, one locked character (the verdict host) and a consistent palette of jet black, alert yellow, signal white. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ranking & top 5 countdowns?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 152 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ranking & top 5 countdowns videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the ranking countdown niche monetizable?",
+      "answer": "Yes. Listicles and countdowns enjoy some of the highest audience retention rates on social media because viewers want to see what claims the #1 spot, driving strong AdSense revenue."
+    },
+    {
+      "question": "What tools do I need for countdown videos?",
+      "answer": "Midjourney v6 for high-impact visual comparisons, a script generator for structured countdown scripts, and CapCut for dynamic number overlays and transition sound effects."
+    },
+    {
+      "question": "How do I keep engagement high throughout the video?",
+      "answer": "Tease the #1 spot immediately in your opening hook (e.g., 'Number one will completely change how you view...') and pace your script to escalate stakes with each step down."
+    },
+    {
+      "question": "Should countdowns go from 5 down to 1 or 1 up to 5?",
+      "answer": "Always count down from 5 to 1. Reaching the #1 spot at the very end of the video provides the psychological payoff that prevents viewers from swiping away early."
+    }
+  ],
     relatedSlugs: [
-      "vox-style-paper-cut-commentary",
-      "elderly-wisdom-and-stoic-long-form",
-      "ai-music-videos",
-    ],
+    "anime-fight-versus",
+    "stickman-explainer-and-skits",
+    "vox-style-paper-cut-commentary"
+  ],
   },
   {
     slug: "vox-style-paper-cut-commentary",
     name: "Vox-Style Paper-Cut Commentary",
     niche: "Vox-Style Paper-Cut Commentary",
-    seoTitle: "Vox-Style Paper-Cut Commentary AI Video Prompts",
-    metaDescription:
-      "Free vox-style paper-cut commentary AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Vox-Style Paper-Cut Commentary AI Video Prompts",
-    intro:
-      "Vox-Style Paper-Cut Commentary is one of the strongest faceless formats right now: analytical, clear, engaging storytelling built around the explainer journalist. Every blueprint below locks the same character, the newsprint cream, editorial red, slate navy palette and steady → argument build pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Vox-Style Paper-Cut Commentary Prompts — Free Generator",
+    metaDescription: "Create Vox-style paper-cut vector animation commentary videos with our free AI prompt generator. Get Midjourney vector prompts and essay scripts.",
+    h1: "Vox-Style Paper-Cut Commentary Prompt Generator",
+    primaryKeyword: "ai vox style video generator",
+    secondaryKeywords: [
+    "paper cut animation prompts AI",
+    "explanatory video style generator",
+    "midjourney vector infographic prompts",
+    "how to make vox style essays",
+    "faceless commentary video AI"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$5.00–$9.00",
+    intro: "Vox-style explanatory journalism—characterized by clean paper-cut vector graphics, bold typography callouts, isometric maps, and smooth animated layers—has set the gold standard for high-intellect video essays. This aesthetic breaks down complex economic, historical, and geopolitical topics into digestible, visually striking components. Because generating precise infographic art requires strict vector rules, your prompts must emphasize clean lines and layered paper textures. Our free generator provides the exact syntax needed to produce professional explanatory assets. Use the blueprints below to launch your intellectual commentary channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Explainer Journalist — analytical, clear, engaging tone. Voice: Clear neutral narrator, 148 WPM, Curious, explanatory. Opening line: "Here is why [your topic] actually happened."',
-        visual:
-          "Vertical 9:16 image of explainer journalist in flat paper desk with sliding chart cut-outs, full subject in frame, natural face and complete anatomy, paper-cut hand shapes moving on a flat plane, palette of newsprint cream, editorial red, slate navy, paper cut-out collage, layered drop shadow, flat editorial palette, snap transitions, infographic clarity, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: explainer journalist enters the frame, flat paper desk with sliding, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Explainer Journalist — analytical, clear, engaging tone. Voice: Clear neutral narrator, 148 WPM, Curious, explanatory. Opening line: "[your topic], explained in one chart."',
-        visual:
-          "Vertical 9:16 image of explainer journalist in cut-paper world map with pinned markers, full subject in frame, natural face and complete anatomy, layered card figures with drop shadow, palette of newsprint cream, editorial red, slate navy, paper cut-out collage, layered drop shadow, flat editorial palette, snap transitions, infographic clarity, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: explainer journalist reacts to the turn, cut-paper world map with pinned, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Explainer Journalist — analytical, clear, engaging tone. Voice: Clear neutral narrator, 148 WPM, Curious, explanatory. Opening line: "Everyone argues about [your topic]. The data doesn\'t."',
-        visual:
-          "Vertical 9:16 image of explainer journalist in stacked archive clippings under a soft light, full subject in frame, natural face and complete anatomy, highlight circles drawn in marker red, palette of newsprint cream, editorial red, slate navy, paper cut-out collage, layered drop shadow, flat editorial palette, snap transitions, infographic clarity, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: explainer journalist moves toward the key prop, stacked archive clippings under a, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Explainer Journalist — analytical, clear, engaging tone. Voice: Clear neutral narrator, 148 WPM, Curious, explanatory. Opening line: "Here is why [your topic] actually happened."',
-        visual:
-          "Vertical 9:16 image of explainer journalist in flat paper desk with sliding chart cut-outs, full subject in frame, natural face and complete anatomy, cut-out map pieces sliding into place, palette of newsprint cream, editorial red, slate navy, paper cut-out collage, layered drop shadow, flat editorial palette, snap transitions, infographic clarity, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: explainer journalist holds the payoff beat, flat paper desk with sliding, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Explainer Journalist — analytical, clear, engaging tone. Voice: Clear neutral narrator, 148 WPM, Curious, explanatory. Opening line: "[your topic], explained in one chart."',
-        visual:
-          "Vertical 9:16 image of explainer journalist in cut-paper world map with pinned markers, full subject in frame, natural face and complete anatomy, paper-cut hand shapes moving on a flat plane, palette of newsprint cream, editorial red, slate navy, paper cut-out collage, layered drop shadow, flat editorial palette, snap transitions, infographic clarity, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: explainer journalist settles as the loop resets, cut-paper world map with pinned, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Global Shipping Bottleneck",
+      "character": "[calm, analytical] When one cargo ship blocks a single canal, the price of coffee in three countries doubles overnight.",
+      "visual": "A stylized isometric paper-cut vector illustration of a massive cargo container ship wedged inside a narrow blue canal, miniature paper trees and container boxes lining the banks, clean flat design --ar 9:16 --v 6.1",
+      "camera": "Smooth isometric camera pan sliding across the paper-cut container ship and canal layout, 24fps"
+    },
+    {
+      "title": "The Urban Housing Crisis",
+      "character": "[narrator, steady] Zoning laws weren't designed to protect neighborhoods. They were designed to limit supply.",
+      "visual": "A layered paper-cut vector infographic showing miniature paper apartment buildings scaling upward against a clean grid background, bold red accent lines, flat vector art --ar 9:16 --v 6.1",
+      "camera": "Smooth digital zoom-in focusing on the shifting paper building heights on the grid, 24fps"
+    },
+    {
+      "title": "The Rise of Synthetic Currency",
+      "character": "[analytical] Fiat money relies on trust. Code relies on mathematics. Here is how the shift happened.",
+      "visual": "A minimalist paper-cut vector graphic of a golden physical coin dissolving into glowing digital binary code nodes, layered flat design, crisp shadows --ar 9:16 --v 6.1",
+      "camera": "Smooth pan right following the paper coin transforming into digital data nodes, 24fps"
+    },
+    {
+      "title": "The Psychology of Supermarkets",
+      "character": "[whisper, engaging] Why is milk always forced to the absolute back corner of every grocery store?",
+      "visual": "Top-down paper-cut vector blueprint of a grocery store floor plan, bright yellow and blue retail zones marked with tiny paper shopping cart icons, clean minimalism --ar 9:16 --v 6.1",
+      "camera": "Overhead static shot with a smooth push-in toward the dairy aisle at the back corner, 24fps"
+    },
+    {
+      "title": "The Lithium Battery Gold Rush",
+      "character": "[steady, urgent] Electric cars run on lithium. But mining it creates a geopolitical chessboard.",
+      "visual": "Layered paper-cut vector map of South America highlighting glittering mineral deposits with glowing isometric pins connected by thin dotted lines, clean editorial style --ar 9:16 --v 6.1",
+      "camera": "Smooth pan across the paper-cut topographical map following the connecting dotted lines, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a vox-style paper-cut commentary video work?",
-        answer:
-          "Steady → Argument Build pacing, one locked character (the explainer journalist) and a consistent palette of newsprint cream, editorial red, slate navy. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit vox-style paper-cut commentary?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 148 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should vox-style paper-cut commentary videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the Vox-style commentary niche monetizable?",
+      "answer": "Yes, exceptionally well. Explanatory journalism attracts highly educated audiences, commanding top-tier AdSense RPMs and lucrative sponsorship opportunities from tech and finance brands."
+    },
+    {
+      "question": "What tools do I need for Vox-style videos?",
+      "answer": "Midjourney v6 with vector keywords (`paper-cut vector art, flat design, isometric infographic`), a deep-dive scriptwriter (Claude/ChatGPT), and a timeline editor like Premiere or CapCut for motion graphics."
+    },
+    {
+      "question": "How do I make vector art look professional?",
+      "answer": "Use clean design language in your prompts: 'layered paper cutouts, flat vector illustration, isometric perspective, clean editorial color palette, drop shadows.'"
+    },
+    {
+      "question": "Why do explanatory video essays hold attention?",
+      "answer": "They answer burning curiosity questions with authoritative pacing and clean visual aids, keeping viewers hooked on the logic of the narrative from start to finish."
+    }
+  ],
     relatedSlugs: [
-      "elderly-wisdom-and-stoic-long-form",
-      "ai-music-videos",
-      "cartoon-horror-illustration",
-    ],
+    "stickman-explainer-and-skits",
+    "ranking-and-top-5-countdowns",
+    "elderly-wisdom-and-stoic-long-form"
+  ],
   },
   {
     slug: "elderly-wisdom-and-stoic-long-form",
     name: "Elderly Wisdom & Stoic Long-Form",
     niche: "Elderly Wisdom & Stoic Long-Form",
-    seoTitle: "Elderly Wisdom & Stoic Long-Form AI Video Prompts",
-    metaDescription:
-      "Free elderly wisdom & stoic long-form AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Elderly Wisdom & Stoic Long-Form AI Video Prompts",
-    intro:
-      "Elderly Wisdom & Stoic Long-Form is one of the strongest faceless formats right now: calm, deliberate, unshakeable storytelling built around the silent discipline keeper. Every blueprint below locks the same character, the bone white, warm amber, deep umber shadow palette and steady → contemplative pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Elderly Wisdom & Stoic Long-Form Prompts — Free",
+    metaDescription: "Create profound stoic philosophy and elderly wisdom long-form video essays with our free AI prompt generator. Get atmospheric prompts and scripts.",
+    h1: "Elderly Wisdom & Stoic Long-Form Prompt Generator",
+    primaryKeyword: "ai stoic philosophy video generator",
+    secondaryKeywords: [
+    "stoic wisdom video prompts AI",
+    "elderly mentor storytelling generator",
+    "midjourney cinematic cinematic portraits",
+    "how to make stoic YouTube channels",
+    "faceless philosophy video AI"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$6.00–$12.00",
+    intro: "Stoicism, contemplative philosophy, and deep life advice delivered by timeless cinematic mentors have captured billions of views across YouTube long-form content. Viewers turn to these channels for grounding, emotional resilience, and quiet reflection amidst a chaotic modern world. Because success hinges on profound atmosphere, weathered realism, and cinematic gravitas, your AI prompts must capture soulful textures and dramatic lighting. Our free generator provides the exact syntax needed to render unforgettable philosophical content. Use the blueprints below to build your wisdom channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Silent Discipline Keeper — calm, deliberate, unshakeable tone. Voice: Aged warm male baritone, 112 WPM, Composed conviction. Opening line: "At 80, he finally understood [your topic]."',
-        visual:
-          "Vertical 9:16 image of silent discipline keeper in colonnaded stone courtyard at dawn, faceless framing, head cropped or shadowed, hands in sharp focus, undyed linen tunic, loosely draped, palette of bone white, warm amber, deep umber shadow, marble chiaroscuro, golden hour shafts, muted stone, fine grain, sculptural, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: silent discipline keeper enters the frame, colonnaded stone courtyard at dawn, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Silent Discipline Keeper — calm, deliberate, unshakeable tone. Voice: Aged warm male baritone, 112 WPM, Composed conviction. Opening line: "[your topic] is a test, not a punishment."',
-        visual:
-          "Vertical 9:16 image of silent discipline keeper in candle-lit study with scrolls and one window, faceless framing, head cropped or shadowed, hands in sharp focus, leather-bound journal and iron stylus, palette of bone white, warm amber, deep umber shadow, marble chiaroscuro, golden hour shafts, muted stone, fine grain, sculptural, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: silent discipline keeper reacts to the turn, candle-lit study with scrolls and, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Silent Discipline Keeper — calm, deliberate, unshakeable tone. Voice: Aged warm male baritone, 112 WPM, Composed conviction. Opening line: "You do not control [your topic]. Only your reply."',
-        visual:
-          "Vertical 9:16 image of silent discipline keeper in windswept cliff edge above grey sea, faceless framing, head cropped or shadowed, hands in sharp focus, weathered hands with deep lines, palette of bone white, warm amber, deep umber shadow, marble chiaroscuro, golden hour shafts, muted stone, fine grain, sculptural, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: silent discipline keeper moves toward the key prop, windswept cliff edge above grey, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Silent Discipline Keeper — calm, deliberate, unshakeable tone. Voice: Aged warm male baritone, 112 WPM, Composed conviction. Opening line: "At 80, he finally understood [your topic]."',
-        visual:
-          "Vertical 9:16 image of silent discipline keeper in colonnaded stone courtyard at dawn, faceless framing, head cropped or shadowed, hands in sharp focus, plain marble ring, no ornament, palette of bone white, warm amber, deep umber shadow, marble chiaroscuro, golden hour shafts, muted stone, fine grain, sculptural, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: silent discipline keeper holds the payoff beat, colonnaded stone courtyard at dawn, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Silent Discipline Keeper — calm, deliberate, unshakeable tone. Voice: Aged warm male baritone, 112 WPM, Composed conviction. Opening line: "[your topic] is a test, not a punishment."',
-        visual:
-          "Vertical 9:16 image of silent discipline keeper in candle-lit study with scrolls and one window, faceless framing, head cropped or shadowed, hands in sharp focus, undyed linen tunic, loosely draped, palette of bone white, warm amber, deep umber shadow, marble chiaroscuro, golden hour shafts, muted stone, fine grain, sculptural, negative space in the top third for captions --ar 9:16 --no blurry, lowres, visible face, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: silent discipline keeper settles as the loop resets, candle-lit study with scrolls and, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Weight of Silence",
+      "character": "[deep, gravelly, slow] You are suffering more in imagination than in reality. Sit down. Let me tell you what my grandfather taught me.",
+      "visual": "Cinematic portrait of an elderly wise mentor with deep silver beard and weathered lines on his face sitting by a hearth fire inside a stone cabin, warm dramatic rim lighting, 85mm anamorphic lens --ar 16:9 --v 6.1",
+      "camera": "Slow, ultra-subtle push-in framing the mentor's expressive eyes, fire embers flickering, 24fps"
+    },
+    {
+      "title": "The Art of Letting Go",
+      "character": "[calm, measured] Control what is within your power. Everything else belongs to the wind.",
+      "visual": "An elderly monk standing on a high mountain cliff overlooking a misty valley at sunrise, wearing simple robes, dramatic god-rays piercing through clouds, photorealistic --ar 16:9 --v 6.1",
+      "camera": "Slow crane shot rising slowly past the monk toward the vast horizon at sunrise, 24fps"
+    },
+    {
+      "title": "On Facing Hardship",
+      "character": "[wise, steady] Obstacles are not blocking the path. The obstacle *is* the path.",
+      "visual": "Cinematic close-up of weathered hands carving a wooden figure in a quiet dimly lit workshop, dust motes dancing in a single window beam, deep cinematic shadows --ar 16:9 --v 6.1",
+      "camera": "Macro slow pan tracking the carving knife shaving thin wood curls, contemplative pacing, 24fps"
+    },
+    {
+      "title": "The Illusion of Urgency",
+      "character": "[deep, reflective] Most men spend their lives preparing to live, while forgetting how to draw a single breath.",
+      "visual": "An elderly scholar sitting at a heavy oak desk filled with ancient leather-bound books and an oil lamp burning low, midnight blue atmospheric grading, cinematic masterwork --ar 16:9 --v 6.1",
+      "camera": "Static shot with a slow focal shift from the oil lamp flame to the scholar's contemplative face, 24fps"
+    },
+    {
+      "title": "The Final Legacy",
+      "character": "[warm, solemn] When your time comes, make sure the only thing empty is your potential.",
+      "visual": "Cinematic wide shot of an old man walking down a tranquil stone pathway lined by ancient cypress trees under a golden autumn twilight sky, melancholic beauty --ar 16:9 --v 6.1",
+      "camera": "Slow tracking shot walking backwards ahead of the old man down the tranquil path, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a elderly wisdom & stoic long-form video work?",
-        answer:
-          "Steady → Contemplative pacing, one locked character (the silent discipline keeper) and a consistent palette of bone white, warm amber, deep umber shadow. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit elderly wisdom & stoic long-form?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 112 WPM.",
-      },
-      {
-        question: "How do I keep the character consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Keep the face hidden the same way in each shot so the silhouette reads as one person.",
-      },
-      {
-        question: "How long should elderly wisdom & stoic long-form videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
-    relatedSlugs: ["ai-music-videos", "cartoon-horror-illustration", "pixel-game-pov"],
+    {
+      "question": "Is the stoic philosophy niche monetizable?",
+      "answer": "Yes, exceptionally well. Philosophical and long-form advisory content attracts mature, engaged audiences, resulting in some of the highest AdSense RPMs on YouTube."
+    },
+    {
+      "question": "What tools do I need for stoic wisdom videos?",
+      "answer": "Midjourney v6 for cinematic, soulful portraiture (typically in 16:9 horizontal format), ElevenLabs for deep, commanding mentor voiceovers, and atmospheric ambient soundtracks."
+    },
+    {
+      "question": "Should wisdom videos be Shorts or Long-form?",
+      "answer": "While shorts help build rapid initial subscriber counts, 10-to-20 minute long-form video essays are where this niche thrives, generating massive watch time and peak RPMs."
+    },
+    {
+      "question": "How do I make the AI characters look genuinely wise?",
+      "answer": "Incorporate soulful descriptors into your prompts: 'weathered facial lines, contemplative expression, cinematic rim lighting, anamorphic lens, deep emotional gravitas.'"
+    }
+  ],
+    relatedSlugs: [
+    "lullaby-and-sleep-music",
+    "bible-and-mythology-anime",
+    "vox-style-paper-cut-commentary"
+  ],
   },
   {
     slug: "ai-music-videos",
     name: "AI Music Videos",
     niche: "AI Music Videos",
-    seoTitle: "AI Music Videos Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free ai music videos AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "AI Music Videos Video Prompts",
-    intro:
-      "AI Music Videos is one of the strongest faceless formats right now: stylised, rhythmic, surreal storytelling built around the faceless performer. Every blueprint below locks the same character, the electric magenta, deep violet, chrome silver palette and beat-synced → chorus drop pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "AI Music Video Prompts — Free Generator",
+    metaDescription: "Create stunning cinematic AI music videos with our free prompt generator. Get Midjourney visual style prompts and dynamic Runway/Kling motion settings.",
+    h1: "AI Music Video Prompt Generator",
+    primaryKeyword: "ai music video generator",
+    secondaryKeywords: [
+    "ai music video prompts",
+    "midjourney surreal visual prompts",
+    "how to make ai music videos",
+    "runway gen 3 music video settings",
+    "faceless visualizer ai"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "Music videos have entered a radical new era where surrealism, hyper-detailed dreamscapes, and rapid cinematic editing can be generated entirely with AI. Whether producing Lofi hip-hop loops, electronic dance tracks, or atmospheric dark ambient scores, creators use synchronized visualizers to hook viewers instantly. Because music videos require a cohesive artistic world, your prompts must maintain unified lighting and thematic color grades across every sequence. Our free generator provides the exact syntax needed to produce professional musical art. Use the blueprints below to launch your AI music channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Faceless Performer — stylised, rhythmic, surreal tone. Voice: Sung vocal, no spoken narration, Tempo-locked, Stylised intensity. Opening line: "This song about [your topic] was made by AI."',
-        visual:
-          "Vertical 9:16 image of faceless performer in rain-lit rooftop with neon signage behind, full subject in frame, natural face and complete anatomy, mirror-visor helmet reflecting the stage lights, palette of electric magenta, deep violet, chrome silver, music video grade, beat-synced cuts, neon practicals, lens flare streaks, surreal composite, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: faceless performer enters the frame, rain-lit rooftop with neon signage, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Faceless Performer — stylised, rhythmic, surreal tone. Voice: Sung vocal, no spoken narration, Tempo-locked, Stylised intensity. Opening line: "[your topic], turned into a music video."',
-        visual:
-          "Vertical 9:16 image of faceless performer in infinite mirrored corridor pulsing with light, full subject in frame, natural face and complete anatomy, oversized metallic trench with hard shoulders, palette of electric magenta, deep violet, chrome silver, music video grade, beat-synced cuts, neon practicals, lens flare streaks, surreal composite, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: faceless performer reacts to the turn, infinite mirrored corridor pulsing with, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Faceless Performer — stylised, rhythmic, surreal tone. Voice: Sung vocal, no spoken narration, Tempo-locked, Stylised intensity. Opening line: "Wait for the drop: [your topic]."',
-        visual:
-          "Vertical 9:16 image of faceless performer in desert highway at night lit by headlights, full subject in frame, natural face and complete anatomy, chrome rings across gloved fingers, palette of electric magenta, deep violet, chrome silver, music video grade, beat-synced cuts, neon practicals, lens flare streaks, surreal composite, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: faceless performer moves toward the key prop, desert highway at night lit, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Faceless Performer — stylised, rhythmic, surreal tone. Voice: Sung vocal, no spoken narration, Tempo-locked, Stylised intensity. Opening line: "This song about [your topic] was made by AI."',
-        visual:
-          "Vertical 9:16 image of faceless performer in rain-lit rooftop with neon signage behind, full subject in frame, natural face and complete anatomy, boots with light strips along the sole, palette of electric magenta, deep violet, chrome silver, music video grade, beat-synced cuts, neon practicals, lens flare streaks, surreal composite, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: faceless performer holds the payoff beat, rain-lit rooftop with neon signage, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Faceless Performer — stylised, rhythmic, surreal tone. Voice: Sung vocal, no spoken narration, Tempo-locked, Stylised intensity. Opening line: "[your topic], turned into a music video."',
-        visual:
-          "Vertical 9:16 image of faceless performer in infinite mirrored corridor pulsing with light, full subject in frame, natural face and complete anatomy, mirror-visor helmet reflecting the stage lights, palette of electric magenta, deep violet, chrome silver, music video grade, beat-synced cuts, neon practicals, lens flare streaks, surreal composite, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: faceless performer settles as the loop resets, infinite mirrored corridor pulsing with, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Neon Cyberpunk Synthwave Ride",
+      "character": "[beat drop, energetic] Feel the bass line hit as we cruise through an endless neon expressway above a flooded futuristic metropolis.",
+      "visual": "A vintage sports car driving fast down an elevated glowing pink neon highway slicing through a towering cyberpunk city, heavy rain reflections, synthwave aesthetic, cinematic 35mm --ar 16:9 --v 6.1",
+      "camera": "Fast forward-tracking shot driving right behind the sports car, neon lights blurring past, 24fps"
+    },
+    {
+      "title": "The Surreal Dreamscape Ballad",
+      "character": "[slow tempo, dreamy] Floating weightless in a sea of forgotten memories and golden starlight.",
+      "visual": "A lone astronaut floating peacefully inside a vast baroque cathedral where massive trees grow from the stone floor and the ceiling is open to a glowing nebula, surrealism art --ar 16:9 --v 6.1",
+      "camera": "Slow, ultra-smooth orbital tracking shot circling the floating astronaut inside the surreal cathedral, 24fps"
+    },
+    {
+      "title": "The Dark Techno Underground",
+      "character": "[heavy bass, aggressive] Strobe lights, concrete pillars, and a rhythm you can't escape.",
+      "visual": "Silhouetted crowd dancing inside an industrial brutalist concrete warehouse illuminated by harsh flashing white strobe lights and deep crimson laser beams, high contrast --ar 16:9 --v 6.1",
+      "camera": "Handheld fast whip-pan tracking across the dancing silhouette crowd, intense strobe lighting flicker, 24fps"
+    },
+    {
+      "title": "The Ethereal Forest Awakening",
+      "character": "[ambient chords, light] When the first morning rays touch the ancient canopy, the magic begins to breathe.",
+      "visual": "A glowing mystical deer with crystalline antlers standing inside an enchanted forest surrounded by floating amber light spores, hyper-detailed fantasy art, volumetric god-rays --ar 16:9 --v 6.1",
+      "camera": "Slow push-in toward the mystical deer as light spores drift past the camera lens, 24fps"
+    },
+    {
+      "title": "The Lo-Fi Rainy Window",
+      "character": "[chill beats, nostalgic] Coffee cooling on the desk while the city sleeps outside the glass.",
+      "visual": "Close-up of a steaming coffee mug sitting on a wooden windowsill inside a cozy bedroom, blurred Tokyo streetlights glowing through rain-streaked window glass, cozy lofi aesthetic --ar 16:9 --v 6.1",
+      "camera": "Static camera shot with gentle condensation droplets sliding down the window glass, lofi vibe, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a ai music videos video work?",
-        answer:
-          "Beat-Synced → Chorus Drop pacing, one locked character (the faceless performer) and a consistent palette of electric magenta, deep violet, chrome silver. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit ai music videos?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly Tempo-locked.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should ai music videos videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the AI music video niche monetizable?",
+      "answer": "Yes. Music channels command dedicated listener bases and high repeat-viewing rates, making them exceptionally strong for long-term AdSense growth and streaming distribution partnerships."
+    },
+    {
+      "question": "What tools do I need for AI music videos?",
+      "answer": "Midjourney v6 for hyper-stylized visual frames (typically 16:9 horizontal), Suno or Udio for original AI music composition, and Runway or Kling for synced motion sequences."
+    },
+    {
+      "question": "How do I sync visuals to the music beat?",
+      "answer": "Use video editing software like Premiere or CapCut to cut your generated AI clips precisely on the snare or bass drop, matching the pacing of the track."
+    },
+    {
+      "question": "Should music video aspect ratios be 16:9 or 9:16?",
+      "answer": "16:9 horizontal is the standard for YouTube music video premieres, while vertical 9:16 edits are essential for promoting song snippets on TikTok and YouTube Shorts."
+    }
+  ],
     relatedSlugs: [
-      "cartoon-horror-illustration",
-      "pixel-game-pov",
-      "celebrity-evolution-and-glow-up",
-    ],
+    "lullaby-and-sleep-music",
+    "ai-music-videos",
+    "pov-immersive-vlogs"
+  ],
   },
   {
     slug: "cartoon-horror-illustration",
     name: "Cartoon Horror Illustration",
     niche: "Cartoon Horror Illustration",
-    seoTitle: "Cartoon Horror Illustration AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free cartoon horror illustration AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Cartoon Horror Illustration AI Video Prompts",
-    intro:
-      "Cartoon Horror Illustration is one of the strongest faceless formats right now: eerie, playful, sinister storytelling built around the storybook narrator with a secret. Every blueprint below locks the same character, the bruised purple, sickly yellow, ink black palette and whimsical → sudden dread pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Cartoon Horror Illustration Prompts — Free Generator",
+    metaDescription: "Create chilling vintage 1930s rubber-hose cartoon horror illustrations with our free AI generator. Get eerie Midjourney prompts and spooky scripts.",
+    h1: "Cartoon Horror Illustration Prompt Generator",
+    primaryKeyword: "ai cartoon horror generator",
+    secondaryKeywords: [
+    "rubber hose horror prompts AI",
+    "creepy 1930s cartoon generator",
+    "midjourney vintage horror prompts",
+    "how to make creepy cartoon shorts",
+    "faceless horror animation AI"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "The juxtaposition of cheerful, classic 1930s rubber-hose cartoon aesthetics with deeply unsettling, psychological horror elements has become a massive viral phenomenon. Inspired by retro animation styles and indie horror gaming tropes, this niche draws viewers in with nostalgic character designs before pulling the rug out with twisted, eerie transformations. Because the visual style requires precise retro ink-and-paint framing, your prompts must specify black-and-white grain or faded sepia tones. Our free generator provides the exact syntax needed to produce haunting animated art. Use the blueprints below to launch your creepy cartoon channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Storybook Narrator with a Secret — eerie, playful, sinister tone. Voice: Soft storybook narrator turning cold, 122 WPM, Sweet then unsettling. Opening line: "This bedtime story about [your topic] is real."',
-        visual:
-          "Vertical 9:16 image of storybook narrator with a secret in crooked house interior with tilted walls, full subject in frame, natural face and complete anatomy, long-limbed cartoon figure with a stitched grin, palette of bruised purple, sickly yellow, ink black, illustrated storybook horror, ink line texture, hand-painted shadow, distorted perspective, uncanny cute, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: storybook narrator with a secret enters the frame, crooked house interior with tilted, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Storybook Narrator with a Secret — eerie, playful, sinister tone. Voice: Soft storybook narrator turning cold, 122 WPM, Sweet then unsettling. Opening line: "[your topic] is not supposed to be drawn."',
-        visual:
-          "Vertical 9:16 image of storybook narrator with a secret in moonlit forest path drawn in ink and wash, full subject in frame, natural face and complete anatomy, faded striped coat too long at the sleeves, palette of bruised purple, sickly yellow, ink black, illustrated storybook horror, ink line texture, hand-painted shadow, distorted perspective, uncanny cute, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: storybook narrator with a secret reacts to the turn, moonlit forest path drawn in, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Storybook Narrator with a Secret — eerie, playful, sinister tone. Voice: Soft storybook narrator turning cold, 122 WPM, Sweet then unsettling. Opening line: "The nice version of [your topic] is a lie."',
-        visual:
-          "Vertical 9:16 image of storybook narrator with a secret in children's bedroom with one door left open, full subject in frame, natural face and complete anatomy, button eyes catching the candlelight, palette of bruised purple, sickly yellow, ink black, illustrated storybook horror, ink line texture, hand-painted shadow, distorted perspective, uncanny cute, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: storybook narrator with a secret moves toward the key prop, children's bedroom with one door, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Storybook Narrator with a Secret — eerie, playful, sinister tone. Voice: Soft storybook narrator turning cold, 122 WPM, Sweet then unsettling. Opening line: "This bedtime story about [your topic] is real."',
-        visual:
-          "Vertical 9:16 image of storybook narrator with a secret in crooked house interior with tilted walls, full subject in frame, natural face and complete anatomy, wide brim hat casting a hard shadow, palette of bruised purple, sickly yellow, ink black, illustrated storybook horror, ink line texture, hand-painted shadow, distorted perspective, uncanny cute, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: storybook narrator with a secret holds the payoff beat, crooked house interior with tilted, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Storybook Narrator with a Secret — eerie, playful, sinister tone. Voice: Soft storybook narrator turning cold, 122 WPM, Sweet then unsettling. Opening line: "[your topic] is not supposed to be drawn."',
-        visual:
-          "Vertical 9:16 image of storybook narrator with a secret in moonlit forest path drawn in ink and wash, full subject in frame, natural face and complete anatomy, long-limbed cartoon figure with a stitched grin, palette of bruised purple, sickly yellow, ink black, illustrated storybook horror, ink line texture, hand-painted shadow, distorted perspective, uncanny cute, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: storybook narrator with a secret settles as the loop resets, moonlit forest path drawn in, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Smiling Feline's Secret",
+      "character": "[cheerful, distorted] Welcome to the clubhouse! We've been waiting for you to join our forever party.",
+      "visual": "A vintage 1930s rubber-hose cartoon cat character with oversized pie-cut eyes and exaggerated wide grin standing on a stark white stage, ink splatter, retro cel animation style --ar 9:16 --v 6.1",
+      "camera": "Static vintage projector frame with slow jitter, suddenly snap-zooming into the cartoon cat's black eyes, 24fps"
+    },
+    {
+      "title": "The Abandoned Animation Studio",
+      "character": "[whisper, eerie] The ink dried forty years ago. But someone is still drawing new frames on the desk.",
+      "visual": "A dilapidated 1930s animation studio room covered in thick black ink drips, an old wooden desk with a glowing drafting board showing a terrifying sketch, sepia tone --ar 9:16 --v 6.1",
+      "camera": "Slow handheld push-in panning across the ink-splattered drafting desk, eerie shadows, 24fps"
+    },
+    {
+      "title": "The Creepy Singing Teapot",
+      "character": "[high-pitched, glitching] Pour yourself a cup of liquid sorrow! It never gets cold!",
+      "visual": "A classic rubber-hose cartoon teapot with a grinning human face pouring black ink instead of tea into a cracked porcelain teacup, surreal horror illustration --ar 9:16 --v 6.1",
+      "camera": "Macro tracking shot following the thick black ink pouring out of the teapot spout, 24fps"
+    },
+    {
+      "title": "The Distorted Mickey Blueprint",
+      "character": "[deep laugh, glitching] You thought this was a children's show? Look closer at the background.",
+      "visual": "A vintage monochrome character poster peeling off a damp brick wall, revealing razor-sharp teeth and hollow eye sockets underneath, distressed grain texture --ar 9:16 --v 6.1",
+      "camera": "Slow vertical tilt down past the peeling poster edges revealing the terrifying illustration underneath, 24fps"
+    },
+    {
+      "title": "The Midnight Projection Room",
+      "character": "[film crackle] The film reel is playing backwards. And the character on screen is walking toward the audience.",
+      "visual": "A dark movie projection room illuminated only by a bright cone of dusty projector light shining toward an empty screen, vintage horror atmosphere --ar 9:16 --v 6.1",
+      "camera": "Slow push-in tracking forward through the dusty projector light beam toward the blank screen, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a cartoon horror illustration video work?",
-        answer:
-          "Whimsical → Sudden Dread pacing, one locked character (the storybook narrator with a secret) and a consistent palette of bruised purple, sickly yellow, ink black. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit cartoon horror illustration?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 122 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should cartoon horror illustration videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the cartoon horror niche monetizable?",
+      "answer": "Yes. Creepy animation and analog horror subgenres command high viewer engagement and loyal subscriber communities, keeping AdSense performance strong."
+    },
+    {
+      "question": "What tools do I need for creepy cartoon videos?",
+      "answer": "Midjourney v6 for 1930s rubber-hose character generation, video editors with vintage film grain and projector flicker plugins, and eerie voice modulation tools."
+    },
+    {
+      "question": "How do I get the authentic 1930s cartoon look?",
+      "answer": "Include vintage animation descriptors in your prompts: '1930s rubber-hose cartoon, pie-cut eyes, monochrome ink texture, vintage cel animation, sepia film grain.'"
+    },
+    {
+      "question": "Why does cartoon horror resonate so well?",
+      "answer": "It subverts wholesome childhood nostalgia into psychological dread, creating an instant curiosity gap that viewers watch until the very end."
+    }
+  ],
     relatedSlugs: [
-      "pixel-game-pov",
-      "celebrity-evolution-and-glow-up",
-      "poor-vs-rich-animals-ai-skits",
-    ],
+    "analog-horror-and-unsolved-mysteries",
+    "anime-fight-versus",
+    "zombie-apocalypse-drama"
+  ],
   },
   {
     slug: "pixel-game-pov",
     name: "Pixel Game POV",
     niche: "Pixel Game POV",
-    seoTitle: "Pixel Game POV AI Video Prompts | The Faceless Prompts",
-    metaDescription:
-      "Free pixel game pov AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Pixel Game POV AI Video Prompts",
-    intro:
-      "Pixel Game POV is one of the strongest faceless formats right now: retro, immersive, escalating storytelling built around the player character. Every blueprint below locks the same character, the cobalt blue, pixel gold, dungeon grey palette and level-by-level → boss spike pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Pixel Game POV Prompts — Free Generator",
+    metaDescription: "Create immersive retro pixel art RPG and survival game POV videos with our free AI prompt generator. Get Midjourney pixel prompts and adventure scripts.",
+    h1: "Pixel Game POV Prompt Generator",
+    primaryKeyword: "ai pixel art video generator",
+    secondaryKeywords: [
+    "pixel art game POV prompts",
+    "retro RPG video generator AI",
+    "midjourney 16 bit pixel prompts",
+    "how to make pixel art shorts",
+    "faceless gaming content AI"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.00–$4.00",
+    intro: "Retro 16-bit and 32-bit pixel art evokes an intense wave of gaming nostalgia while offering a clean, hypnotic aesthetic for modern social media feeds. Pixel Game POV videos place the viewer directly inside legendary fantasy RPGs, cozy farming sims, or cyberpunk dungeon crawlers through a first-person perspective. Because pixel art requires rigorous grid alignment and color palette restraint, your prompts must specify precise retro resolutions. Our free generator provides the exact syntax needed to render stunning pixel landscapes. Use the blueprints below to launch your retro gaming channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Player Character — retro, immersive, escalating tone. Voice: Energetic narrator or text-box captions, 144 WPM, Playful tension. Opening line: "You are playing [your topic]. Level one."',
-        visual:
-          "Vertical 9:16 image of player character in side-scroll dungeon corridor with torch sprites, full subject in frame, natural face and complete anatomy, 16-bit sprite armour in four-colour ramp, palette of cobalt blue, pixel gold, dungeon grey, 16-bit pixel art, limited palette ramp, scanline overlay, parallax scroll, hud framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: player character enters the frame, side-scroll dungeon corridor with torch, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Player Character — retro, immersive, escalating tone. Voice: Energetic narrator or text-box captions, 144 WPM, Playful tension. Opening line: "[your topic] but it\'s a retro game."',
-        visual:
-          "Vertical 9:16 image of player character in overworld map with parallax mountain layers, full subject in frame, natural face and complete anatomy, pixel sword held at the bottom of frame, palette of cobalt blue, pixel gold, dungeon grey, 16-bit pixel art, limited palette ramp, scanline overlay, parallax scroll, hud framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: player character reacts to the turn, overworld map with parallax mountain, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Player Character — retro, immersive, escalating tone. Voice: Energetic narrator or text-box captions, 144 WPM, Playful tension. Opening line: "Can you beat [your topic] without dying?"',
-        visual:
-          "Vertical 9:16 image of player character in boss arena with a shaking screen effect, full subject in frame, natural face and complete anatomy, health bar and inventory hud overlay, palette of cobalt blue, pixel gold, dungeon grey, 16-bit pixel art, limited palette ramp, scanline overlay, parallax scroll, hud framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: player character moves toward the key prop, boss arena with a shaking, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Player Character — retro, immersive, escalating tone. Voice: Energetic narrator or text-box captions, 144 WPM, Playful tension. Opening line: "You are playing [your topic]. Level one."',
-        visual:
-          "Vertical 9:16 image of player character in side-scroll dungeon corridor with torch sprites, full subject in frame, natural face and complete anatomy, cape animated on a 4-frame loop, palette of cobalt blue, pixel gold, dungeon grey, 16-bit pixel art, limited palette ramp, scanline overlay, parallax scroll, hud framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: player character holds the payoff beat, side-scroll dungeon corridor with torch, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Player Character — retro, immersive, escalating tone. Voice: Energetic narrator or text-box captions, 144 WPM, Playful tension. Opening line: "[your topic] but it\'s a retro game."',
-        visual:
-          "Vertical 9:16 image of player character in overworld map with parallax mountain layers, full subject in frame, natural face and complete anatomy, 16-bit sprite armour in four-colour ramp, palette of cobalt blue, pixel gold, dungeon grey, 16-bit pixel art, limited palette ramp, scanline overlay, parallax scroll, hud framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: player character settles as the loop resets, overworld map with parallax mountain, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Cozy RPG Tavern Fireplace",
+      "character": "[chiptune ambient, warm] Outside, a blizzard is burying the village. Inside, the hearth is burning bright.",
+      "visual": "First-person POV in a 16-bit pixel art medieval tavern, sitting at a wooden table looking at a glowing stone fireplace and a mug of ale, warm amber pixel shading, retro RPG style --ar 9:16 --v 6.1",
+      "camera": "Static 16-bit pixel art frame with subtle flame flickering animation and floating dust pixels, 24fps"
+    },
+    {
+      "title": "The Cyberpunk Street Vendor",
+      "character": "[synth beat, dark] Rain is pouring on the lower blocks. Time for a bowl of synthetic noodles.",
+      "visual": "First-person POV in a 32-bit pixel art cyberpunk Tokyo alleyway, looking at a glowing neon noodle cart vendor shrouded in rain, intricate pixel details --ar 9:16 --v 6.1",
+      "camera": "Subtle pixelated vertical bobbing motion mimicking first-person walking approach toward the noodle cart, 24fps"
+    },
+    {
+      "title": "The Haunted Dungeon Entrance",
+      "character": "[tense chiptune] The torch is flickering out. Step lightly down the stone steps.",
+      "visual": "First-person POV holding a pixelated flickering torch looking down dark dungeon stone steps, eerie green slime on walls, retro gothic RPG aesthetic --ar 9:16 --v 6.1",
+      "camera": "Slow pixelated forward creep down the dungeon stone steps, torch light swaying rhythmically, 24fps"
+    },
+    {
+      "title": "The Midnight Fishing Trip",
+      "character": "[relaxing synth] Just you, the calm lake, and whatever is biting under the moonlight.",
+      "visual": "First-person POV looking out over a calm pixelated lake under a giant 16-bit full moon, holding a wooden fishing rod, peaceful indie game aesthetic --ar 9:16 --v 6.1",
+      "camera": "Subtle water ripple pixel animation shifting across the calm lake surface under moonlight, 24fps"
+    },
+    {
+      "title": "The Spaceship Cockpit Launch",
+      "character": "[sci-fi alert] Initiating hyperdrive sequence. Hold onto your controls.",
+      "visual": "First-person POV sitting inside a retro 16-bit spaceship cockpit looking out the front window at a massive glowing star system, blinking control panel buttons --ar 9:16 --v 6.1",
+      "camera": "Rapid forward starfield stretch effect as spaceship engages hyperdrive, pixel art style, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a pixel game pov video work?",
-        answer:
-          "Level-by-Level → Boss Spike pacing, one locked character (the player character) and a consistent palette of cobalt blue, pixel gold, dungeon grey. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit pixel game pov?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 144 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should pixel game pov videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
+    {
+      "question": "Is the pixel game POV niche monetizable?",
+      "answer": "Yes. Gaming and retro nostalgia communities are exceptionally active, driving strong subscriber growth, high share rates, and solid AdSense revenue."
+    },
+    {
+      "question": "What tools do I need for pixel art videos?",
+      "answer": "Midjourney v6 with explicit pixel art descriptors, retro chiptune background tracks, and video editors to maintain crisp pixel scaling without blurring."
+    },
+    {
+      "question": "How do I make AI generate clean pixel art?",
+      "answer": "Incorporate strict pixel art tags in your prompts: '16-bit pixel art, retro RPG aesthetic, clean pixel grid, limited color palette, 90s video game style.'"
+    },
+    {
+      "question": "Why do pixel art videos attract high engagement?",
+      "answer": "They combine immersive game storytelling with visual comfort, making them ideal background loops for gaming enthusiasts and chill-hop listeners."
+    }
+  ],
     relatedSlugs: [
-      "celebrity-evolution-and-glow-up",
-      "poor-vs-rich-animals-ai-skits",
-      "ai-cat-and-pet-stories",
-    ],
+    "pov-immersive-vlogs",
+    "analog-horror-and-unsolved-mysteries",
+    "nostalgia-toy-unboxing"
+  ],
   },
   {
     slug: "celebrity-evolution-and-glow-up",
     name: "Celebrity Evolution & Glow-Up",
     niche: "Celebrity Evolution & Glow-Up",
-    seoTitle: "Celebrity Evolution & Glow-Up AI Video Prompts",
-    metaDescription:
-      "Free celebrity evolution & glow-up AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Celebrity Evolution & Glow-Up AI Video Prompts",
-    intro:
-      "Celebrity Evolution & Glow-Up is one of the strongest faceless formats right now: slick, curious, comparative storytelling built around the timeline curator. Every blueprint below locks the same character, the monochrome grey, spotlight white, accent gold palette and steady timeline → final reveal pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Celebrity Evolution & Glow-Up Prompts — Free Generator",
+    metaDescription: "Create viral celebrity evolution and fictional character glow-up transition videos with our free AI prompt generator. Get Midjourney prompts and scripts.",
+    h1: "Celebrity Evolution & Glow-Up Prompt Generator",
+    primaryKeyword: "ai celebrity evolution video generator",
+    secondaryKeywords: [
+    "glow up transition prompts AI",
+    "character evolution video generator",
+    "midjourney age progression prompts",
+    "how to make glow up shorts",
+    "faceless pop culture content AI"
+  ],
+    difficulty: "Medium",
+    estimatedRpm: "$3.00–$5.50",
+    intro: "Before they were icons, how did legendary figures, historical legends, or fictional characters evolve? Celebrity evolution and glow-up comparison videos capture massive social media traffic by showcasing dramatic visual transformations across time, status, or style eras. Because AI can seamlessly generate age progression and alternative styling for iconic archetypes, creators can build addictive chronological journey shorts. Our free generator provides the exact syntax needed to render consistent character evolution across decades. Use the blueprints below to launch your pop-culture channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Timeline Curator — slick, curious, comparative tone. Voice: Smooth mid-range narrator, 140 WPM, Intrigued, upbeat. Opening line: "[your topic], from age 5 to today."',
-        visual:
-          "Vertical 9:16 image of timeline curator in black studio plate with one centred portrait, full subject in frame, natural face and complete anatomy, clean black studio silhouette, palette of monochrome grey, spotlight white, accent gold, portrait morph transition, year card overlay, archive grain blend, studio key light, timeline framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: timeline curator enters the frame, black studio plate with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Timeline Curator — slick, curious, comparative tone. Voice: Smooth mid-range narrator, 140 WPM, Intrigued, upbeat. Opening line: "Nobody expected [your topic] to look like this now."',
-        visual:
-          "Vertical 9:16 image of timeline curator in timeline strip scrolling with dated frames, full subject in frame, natural face and complete anatomy, year labels floating beside each portrait, palette of monochrome grey, spotlight white, accent gold, portrait morph transition, year card overlay, archive grain blend, studio key light, timeline framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: timeline curator reacts to the turn, timeline strip scrolling with dated, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Timeline Curator — slick, curious, comparative tone. Voice: Smooth mid-range narrator, 140 WPM, Intrigued, upbeat. Opening line: "The full glow-up of [your topic]."',
-        visual:
-          "Vertical 9:16 image of timeline curator in side-by-side then-and-now comparison plate, full subject in frame, natural face and complete anatomy, split-frame divider in thin white, palette of monochrome grey, spotlight white, accent gold, portrait morph transition, year card overlay, archive grain blend, studio key light, timeline framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: timeline curator moves toward the key prop, side-by-side then-and-now comparison plate, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Timeline Curator — slick, curious, comparative tone. Voice: Smooth mid-range narrator, 140 WPM, Intrigued, upbeat. Opening line: "[your topic], from age 5 to today."',
-        visual:
-          "Vertical 9:16 image of timeline curator in black studio plate with one centred portrait, full subject in frame, natural face and complete anatomy, archive photo borders in soft grain, palette of monochrome grey, spotlight white, accent gold, portrait morph transition, year card overlay, archive grain blend, studio key light, timeline framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: timeline curator holds the payoff beat, black studio plate with one, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Timeline Curator — slick, curious, comparative tone. Voice: Smooth mid-range narrator, 140 WPM, Intrigued, upbeat. Opening line: "Nobody expected [your topic] to look like this now."',
-        visual:
-          "Vertical 9:16 image of timeline curator in timeline strip scrolling with dated frames, full subject in frame, natural face and complete anatomy, clean black studio silhouette, palette of monochrome grey, spotlight white, accent gold, portrait morph transition, year card overlay, archive grain blend, studio key light, timeline framing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: timeline curator settles as the loop resets, timeline strip scrolling with dated, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Streetwear Icon Evolution",
+      "character": "[upbeat, fast] From thrift store hustler to global fashion week headliner. Watch the evolution.",
+      "visual": "A hyper-realistic 25-year-old male fashion designer wearing vintage 90s oversized denim and thrift jacket standing against a raw urban brick wall, photoreal portrait --ar 9:16 --v 6.1",
+      "camera": "Smooth portrait framing with micro head tilt, natural studio lighting, 24fps"
+    },
+    {
+      "title": "The Cyberpunk Hacker Glow-Up",
+      "character": "[confident, sleek] Started in a basement with a cracked monitor. Now running the grid.",
+      "visual": "A hyper-realistic female tech prodigy with glowing augmented reality glasses and sleek futuristic jacket standing inside a glowing neon server room, cinematic lighting --ar 9:16 --v 6.1",
+      "camera": "Slow push-in framing the subject as neon reflections glow across her glasses lens, 24fps"
+    },
+    {
+      "title": "The Medieval Knight to Emperor",
+      "character": "[deep, authoritative] A foot soldier in rusted chainmail. Ten years later, crowned ruler of the realm.",
+      "visual": "A weathered medieval warlord wearing ornate black steel armor inlaid with gold filigree, standing inside a grand stone throne room, dramatic god-rays --ar 9:16 --v 6.1",
+      "camera": "Low-angle majestic push-in tracking the emperor standing tall in the throne room, 24fps"
+    },
+    {
+      "title": "The Vintage Starlet Transformation",
+      "character": "[glamorous, smooth] Hollywood's golden age created stars. But she redefined the standard.",
+      "visual": "A cinematic portrait of a 1950s classic Hollywood actress with vintage pin-up hairstyle and diamond necklace under moody retro spotlight, 35mm film grain --ar 9:16 --v 6.1",
+      "camera": "Slow cinematic pan across her face catching sparkling diamond reflections, 24fps"
+    },
+    {
+      "title": "The Athlete's Championship Journey",
+      "character": "[intense, motivational] Sweat, setbacks, and endless repetition until the trophy was in his hands.",
+      "visual": "An athletic sports star in a high-tech athletic training kit standing inside a massive packed stadium under bright floodlights, hyper-detailed sweat sheen --ar 9:16 --v 6.1",
+      "camera": "Slow tracking orbit shot circling the athlete inside the glowing stadium arena, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a celebrity evolution & glow-up video work?",
-        answer:
-          "Steady Timeline → Final Reveal pacing, one locked character (the timeline curator) and a consistent palette of monochrome grey, spotlight white, accent gold. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit celebrity evolution & glow-up?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 140 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should celebrity evolution & glow-up videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
-    relatedSlugs: ["poor-vs-rich-animals-ai-skits", "ai-cat-and-pet-stories", "ai-animal-cooking"],
+    {
+      "question": "Is the celebrity evolution niche monetizable?",
+      "answer": "Yes. Pop culture, fashion, and character transformation content enjoy massive algorithmic reach and strong viewer retention, leading to solid AdSense earnings."
+    },
+    {
+      "question": "What tools do I need for evolution videos?",
+      "answer": "Midjourney v6 with Character Reference (`--cref`) to maintain facial structure across different ages/eras, and CapCut for smooth morphing or hard-cut transition editing."
+    },
+    {
+      "question": "How do I maintain character consistency across transformations?",
+      "answer": "Lock your character seed number and use Midjourney's `--cref` parameter while changing only the clothing, setting, and age markers in each prompt."
+    },
+    {
+      "question": "Why do glow-up videos hook viewers instantly?",
+      "answer": "The visual contrast between humble beginnings and ultimate success triggers instant psychological gratification, prompting users to watch until the final transformation."
+    }
+  ],
+    relatedSlugs: [
+    "ai-influencer-product-reviews",
+    "anime-fight-versus",
+    "ranking-and-top-5-countdowns"
+  ],
   },
   {
     slug: "poor-vs-rich-animals-ai-skits",
     name: "Poor vs. Rich Animals",
     niche: "Poor vs. Rich Animals (AI Skits)",
-    seoTitle: "Poor vs. Rich Animals AI Video Prompts | Faceless Prompts",
-    metaDescription:
-      "Free poor vs. rich animals AI video prompts: character, image and camera prompts you can paste into Midjourney, Veo, Runway and ElevenLabs to make faceless videos.",
-    h1: "Poor vs. Rich Animals AI Video Prompts",
-    intro:
-      "Poor vs. Rich Animals is one of the strongest faceless formats right now: comedic, contrasting, charming storytelling built around the two-sided animal cast. Every blueprint below locks the same character, the gold and cream on one side, grey and rust on the other palette and back-and-forth → heart beat pacing, so your channel looks like one show instead of twenty unrelated clips. Copy a prompt, paste it straight into your image, video or voice engine, and swap only the topic.",
+    seoTitle: "Poor vs. Rich Animals AI Skits Prompts — Free Generator",
+    metaDescription: "Create viral poor vs rich animal comparison skit videos with our free AI prompt generator. Get Midjourney funny animal prompts and comedy scripts.",
+    h1: "Poor vs. Rich Animals AI Skits Prompt Generator",
+    primaryKeyword: "ai animal skits video generator",
+    secondaryKeywords: [
+    "poor vs rich animal prompts AI",
+    "funny animal comparison shorts generator",
+    "midjourney comedic animal prompts",
+    "how to make animal skits YouTube",
+    "faceless animal comedy AI"
+  ],
+    difficulty: "Easy",
+    estimatedRpm: "$2.50–$4.50",
+    intro: "Comparative skits—specifically contrasting the absurdly pampered lifestyles of wealthy pets with the scrappy antics of street animals—form one of the funniest and most viral content formats in the animal niche. These videos lean heavily into humorous anthropomorphism, putting golden retrievers in silk bathrobes or tuxedo cats in miniature mansions. Because success relies on clean comedic contrast and expressive animal reactions, your prompts must highlight clothing and setting details. Our free generator provides the exact syntax needed to produce hilarious animal comedy. Use the blueprints below to launch your viral animal skit channel.",
     prompts: [
-      {
-        title: "Cold open",
-        character:
-          'The Two-Sided Animal Cast — comedic, contrasting, charming tone. Voice: Dual character voices, comedic, 150 WPM, Broad comedy with a soft ending. Opening line: "Poor dog versus rich dog: [your topic]."',
-        visual:
-          "Vertical 9:16 image of two-sided animal cast in split frame: marble penthouse against a rainy alley, full subject in frame, natural face and complete anatomy, poor side: patched brown coat and taped shoes, palette of gold and cream on one side, grey and rust on the other, pixar-style 3d, split screen contrast, warm vs cold grade, expressive animal rig, punchy comedy timing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow push-in: two-sided animal cast enters the frame, split frame: marble penthouse against, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Setup",
-        character:
-          'The Two-Sided Animal Cast — comedic, contrasting, charming tone. Voice: Dual character voices, comedic, 150 WPM, Broad comedy with a soft ending. Opening line: "Same animal, two worlds: [your topic]."',
-        visual:
-          "Vertical 9:16 image of two-sided animal cast in restaurant table set twice, luxury and scraps, full subject in frame, natural face and complete anatomy, rich side: velvet blazer, gold chain, tiny sunglasses, palette of gold and cream on one side, grey and rust on the other, pixar-style 3d, split screen contrast, warm vs cold grade, expressive animal rig, punchy comedy timing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Lateral dolly: two-sided animal cast reacts to the turn, restaurant table set twice, luxury, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Turn",
-        character:
-          'The Two-Sided Animal Cast — comedic, contrasting, charming tone. Voice: Dual character voices, comedic, 150 WPM, Broad comedy with a soft ending. Opening line: "Guess which one is happier in [your topic]."',
-        visual:
-          "Vertical 9:16 image of two-sided animal cast in shared street where both animals meet, full subject in frame, natural face and complete anatomy, both animals share the same species and build, palette of gold and cream on one side, grey and rust on the other, pixar-style 3d, split screen contrast, warm vs cold grade, expressive animal rig, punchy comedy timing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Handheld orbit: two-sided animal cast moves toward the key prop, shared street where both animals, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Payoff",
-        character:
-          'The Two-Sided Animal Cast — comedic, contrasting, charming tone. Voice: Dual character voices, comedic, 150 WPM, Broad comedy with a soft ending. Opening line: "Poor dog versus rich dog: [your topic]."',
-        visual:
-          "Vertical 9:16 image of two-sided animal cast in split frame: marble penthouse against a rainy alley, full subject in frame, natural face and complete anatomy, props: dented tin bowl versus crystal plate, palette of gold and cream on one side, grey and rust on the other, pixar-style 3d, split screen contrast, warm vs cold grade, expressive animal rig, punchy comedy timing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Low-angle rise: two-sided animal cast holds the payoff beat, split frame: marble penthouse against, continuous motion, cinematic 24fps --motion 3",
-      },
-      {
-        title: "Loop-back",
-        character:
-          'The Two-Sided Animal Cast — comedic, contrasting, charming tone. Voice: Dual character voices, comedic, 150 WPM, Broad comedy with a soft ending. Opening line: "Same animal, two worlds: [your topic]."',
-        visual:
-          "Vertical 9:16 image of two-sided animal cast in restaurant table set twice, luxury and scraps, full subject in frame, natural face and complete anatomy, poor side: patched brown coat and taped shoes, palette of gold and cream on one side, grey and rust on the other, pixar-style 3d, split screen contrast, warm vs cold grade, expressive animal rig, punchy comedy timing, negative space in the top third for captions --ar 9:16 --no blurry, lowres, mutated anatomy, text, watermark, extra limbs",
-        camera:
-          "Slow pull-back: two-sided animal cast settles as the loop resets, restaurant table set twice, luxury, continuous motion, cinematic 24fps --motion 3",
-      },
-    ],
+    {
+      "title": "The Diamond Collar Breakfast",
+      "character": "[snobby, posh] Caviar and organic goat milk served on fine porcelain. Anything less gives me allergies.",
+      "visual": "A pampered white Persian cat wearing a tiny diamond-studded collar sitting at a miniature mahogany dining table eating gourmet salmon from a gold bowl inside a luxury penthouse, bright lighting --ar 9:16 --v 6.1",
+      "camera": "Slow macro push-in on the posh cat looking down its nose at the gold dining bowl, 24fps"
+    },
+    {
+      "title": "The Cardboard Box Mansion",
+      "character": "[cheerful, proud] Who needs a mansion when you have a pristine refrigerator box and a piece of string?",
+      "visual": "A happy scruffy stray dog wearing a makeshift bandana sitting proudly inside a cardboard box fort decorated with old tennis balls, cozy alleyway background, warm sunlight --ar 9:16 --v 6.1",
+      "camera": "Handheld micro-shake tracking shot smiling at the dog inside its cozy cardboard castle, 24fps"
+    },
+    {
+      "title": "The Spa Day Pampering",
+      "character": "[relaxed, pampered] Cucumber slices on the eyes, blueberry facial mask. Just a standard Tuesday.",
+      "visual": "A fluffy golden retriever puppy lying comfortably in a marble spa bathtub wearing a fluffy white bathrobe and cucumber slices over its eyes, luxury spa interior --ar 9:16 --v 6.1",
+      "camera": "Slow panning shot across the relaxed puppy in the luxury marble spa bath, 24fps"
+    },
+    {
+      "title": "The Street Smart Hustle",
+      "character": "[street-smart, fast] You buy your chew toys at the pet store. I negotiate mine directly from the neighborhood butcher.",
+      "visual": "A sly-looking street cat wearing a tiny leather jacket sitting atop a stack of vintage wooden crates in a bustling outdoor market, cinematic golden hour lighting --ar 9:16 --v 6.1",
+      "camera": "Low-angle tracking shot looking up at the cool street cat on the wooden crates, 24fps"
+    },
+    {
+      "title": "The Private Jet Nap",
+      "character": "[sleepy, rich] Flying first class is exhausting when your custom velvet seat is so plush.",
+      "visual": "A pampered French bulldog wearing tiny aviator sunglasses sleeping soundly on a plush leather armchair inside a private jet cabin, sun streaming through oval window --ar 9:16 --v 6.1",
+      "camera": "Slow macro push-in on the sleeping bulldog wearing aviator sunglasses, 24fps"
+    }
+  ],
     faqs: [
-      {
-        question: "What makes a poor vs. rich animals video work?",
-        answer:
-          "Back-and-Forth → Heart Beat pacing, one locked character (the two-sided animal cast) and a consistent palette of gold and cream on one side, grey and rust on the other. Keep the spoken script under 30 seconds and let the visuals carry the turn.",
-      },
-      {
-        question: "Which AI tools suit poor vs. rich animals?",
-        answer:
-          "Generate the stills in Midjourney, Leonardo, Flux or Imagen, animate them in Veo, Runway, Kling or Luma, and narrate with ElevenLabs at roughly 150 WPM.",
-      },
-      {
-        question: "How do I keep the subject consistent between shots?",
-        answer:
-          "Reuse the same description and a fixed seed in every prompt. Describe the same markings, proportions and colours every time so the subject never mutates.",
-      },
-      {
-        question: "How long should poor vs. rich animals videos be?",
-        answer:
-          "30 to 60 seconds for Shorts, Reels and TikTok — roughly 65 to 80 spoken words with four shots. Long-form works once the format is proven.",
-      },
-    ],
-    relatedSlugs: ["ai-cat-and-pet-stories", "ai-animal-cooking", "pov-immersive-vlogs"],
-  },
+    {
+      "question": "Is the poor vs. rich animal skit niche monetizable?",
+      "answer": "Yes, exceptionally well. Animal comedy attracts massive family-friendly audiences across global markets, driving high view counts and robust AdSense performance."
+    },
+    {
+      "question": "What tools do I need for animal skit videos?",
+      "answer": "Midjourney v6 for humorous anthropomorphic animal styling, Kling or Runway for subtle expressions, and ElevenLabs for comedic, expressive voiceovers."
+    },
+    {
+      "question": "How do I make the animal comedy land successfully?",
+      "answer": "Pair absurd human luxury items (tiny sunglasses, gold bowls, silk bathrobes) with deadpan, serious voiceover delivery to maximize comedic contrast."
+    },
+    {
+      "question": "Why do animal comparison videos go viral?",
+      "answer": "They combine cute pet imagery with relatable social satire, prompting viewers to tag friends and share the content widely across social platforms."
+    }
+  ],
+    relatedSlugs: [
+    "ai-cat-and-pet-stories",
+    "ai-animal-cooking",
+    "nostalgia-toy-unboxing"
+  ],
+  }
 ];
+
 
 export const NICHE_SLUGS = NICHE_PAGES.map((n) => n.slug);
 
