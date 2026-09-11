@@ -1421,11 +1421,13 @@ export function generatePackage({
     ),
   )} --ar ${ar}`;
 
-  // Standard cinematographic camera commands only — never pacing adjectives.
+  // Niche-specific camera vocabulary first; generic cinematography as the fallback.
   const shotMotions =
-    st.pacing.id === "fast"
-      ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
-      : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
+    scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
+      ? scaffold.cameraMotionSet
+      : st.pacing.id === "fast"
+        ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
+        : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
