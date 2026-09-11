@@ -1274,8 +1274,8 @@ export function generatePackage({
 
   const leonardoPrompt = buildParagraph(
     [
-      `${orient} ${ar} still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `face fully obscured by shadow and framing, shot from behind at chest height, hands in sharp focus`,
+      `${orient} ${ar} still of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      framing,
       wardrobeLead,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
@@ -1286,8 +1286,8 @@ export function generatePackage({
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
     buildParagraph(
       [
-        `faceless ${archetypeNoun}, ${lowTopic}`,
-        `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus`,
+        `${subjPrefix}${archetypeNoun}, ${lowTopic}`,
+        `${env2}, ${framing}`,
         `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
         `${st.vibe.lighting}, ${st.vibe.style}`,
       ],
@@ -1295,31 +1295,32 @@ export function generatePackage({
     ),
     s,
     ar,
+    midjourneyNegativeFor(niche),
   );
 
   const googleFlowPrompt = buildParagraph(
     [
-      `${orient} ${ar} shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
-      `face hidden by shadow and framing, ${(profile.wardrobe[0] ?? "").toLowerCase()}, hands in focus`,
+      `${orient} ${ar} shot of a ${subjPrefix}${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}`,
       `camera motion: ${st.pacing.camera}`,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
-      `no visible face, no text, no watermark, no warped hands`,
+      `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
     ],
     100,
   );
 
-  const masterPrompt = buildParagraph(
+  const masterPrompt = `${buildParagraph(
     [
-      `${orient} ${ar} image of a faceless ${archetypeNoun}, subject of ${lowTopic}`,
-      `face never visible — head cropped or hidden in shadow, hands and posture in sharp focus`,
+      `${orient} ${ar} image of a ${subjPrefix}${archetypeNoun}, subject of ${lowTopic}`,
+      framing,
       wardrobeLead,
       `environment: ${env}, ${env2}`,
       lightingLine,
       `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
     ],
     100,
-  );
+  )} --ar ${ar}`;
 
   const shotMotions =
     st.pacing.id === "fast"
