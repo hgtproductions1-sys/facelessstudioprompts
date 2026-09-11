@@ -207,7 +207,7 @@ function Index() {
       return;
     }
     setError("");
-    run(niche, topic);
+    run(niche, topic, { format, vibe, pacing });
     scrollToResults();
   };
 
@@ -215,7 +215,7 @@ function Index() {
     setNiche(q.niche);
     setTopic(q.topic);
     setError("");
-    run(q.niche, q.topic);
+    run(q.niche, q.topic, { format, vibe, pacing });
     scrollToResults();
   };
 
