@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { StepPanels } from "@/components/site/StepPanels";
@@ -168,9 +169,17 @@ function Index() {
   const [pacing, setPacing] = useState<string>(PACINGS[0]!.id);
   const resultsRef = useRef<HTMLDivElement>(null);
   const autoRan = useRef(false);
+  const topicRef = useRef<HTMLTextAreaElement>(null);
   const { pkg, loading, step, slow, run, regenerate, totalMs } = usePackageGenerator();
   const styleRef = useRef({ format, vibe, pacing });
   styleRef.current = { format, vibe, pacing };
+
+  useEffect(() => {
+    const el = topicRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [topic]);
 
   useEffect(() => {
     if (autoRan.current) return;
