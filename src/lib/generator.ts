@@ -1352,12 +1352,12 @@ const VARIATION_OPTIONS = {
   ],
 } as const;
 
-function buildVariationPlan(seed: number, niche: string, topic: string) {
+function buildVariationPlan(seed: number, niche: string, topic: string, profile: NicheProfile) {
   const hookStyle = pick([...VARIATION_OPTIONS.hookStyle], seed, 1);
   const storyStructure = pick([...VARIATION_OPTIONS.storyStructure], seed, 3);
   const pacingProfile = pick([...VARIATION_OPTIONS.pacingProfile], seed, 5);
   const editingStyle = pick([...VARIATION_OPTIONS.editingStyle], seed, 7);
-  const emotionalTone = pick([...VARIATION_OPTIONS.emotionalTone], seed, 11);
+  const emotionalTone = profile.variationTone;
 
   return {
     hookStyle,
@@ -1365,23 +1365,17 @@ function buildVariationPlan(seed: number, niche: string, topic: string) {
     pacingProfile,
     editingStyle,
     emotionalTone,
-    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the core channel identity, but change the opening device, sequence of information, shot rhythm, transitions, and emotional framing so this upload feels deliberately original rather than copied from an earlier video.`,
+    copyPastePrompt: `For this ${niche} video about ${topic}, follow the opening device ${profile.hookFormat.toLowerCase()}. Use ${hookStyle.toLowerCase()}, structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the niche voice while changing the information order, shot rhythm, transitions, and framing so this upload feels deliberately original.`,
   };
 }
 
-function variationMatchesNiche(
-  variation: ReturnType<typeof buildVariationPlan>,
-  niche: string,
-  emotionalRegister: string,
-): boolean {
-  if (niche !== ANIMAL_SKIT_NICHE) return true;
-  const text = `${variation.storyStructure} ${variation.emotionalTone}`.toLowerCase();
-  const contradictsComedy = /investigat|urgent|uncanny|suspense|evidence|verdict|clues|withheld/.test(text);
-  const needsWarmComedy = /comedy|comedic|playful/.test(text) && /warm|soft|heart/.test(text);
-  return /comedy/i.test(emotionalRegister) && needsWarmComedy && !contradictsComedy;
+function variationMatchesNiche(variation: ReturnType<typeof buildVariationPlan>, profile: NicheProfile): boolean {
+  const tone = variation.emotionalTone.toLowerCase();
+  const required = profile.variationTone.toLowerCase().split(/\s+(?:and|with)\s+/).filter((word) => word.length > 3);
+  return required.some((word) => tone.includes(word)) && !profile.forbiddenVocabulary.some((word) => tone.includes(word.toLowerCase()));
 }
 
-function rebuildVariationForNiche(seed: number, niche: string, topic: string) {
+function rebuildVariationForNiche(seed: number, niche: string, topic: string, profile: NicheProfile) {
   const hookStyle = pick(
     ["Comedic contrast in the opening frame", "Character voice-swap cold open", "Reaction-first rich-versus-poor reveal"],
     seed,
@@ -1406,18 +1400,14 @@ function rebuildVariationForNiche(seed: number, niche: string, topic: string) {
     seed,
     7,
   );
-  const emotionalTone = pick(
-    ["Broad comedy with a soft ending", "Playfully competitive with a warm ending", "Comedic and heartfelt"],
-    seed,
-    11,
-  );
+  const emotionalTone = profile.variationTone;
   return {
     hookStyle,
     storyStructure,
     pacingProfile,
     editingStyle,
     emotionalTone,
-    copyPastePrompt: `For this ${niche} video about ${topic}, use a ${hookStyle.toLowerCase()}. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the playful character contrast and finish on an earned moment of warmth so the upload feels original without contradicting the channel voice.`,
+    copyPastePrompt: `For this ${niche} video about ${topic}, use ${profile.hookFormat.toLowerCase()} as the opening pattern. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the niche's ${profile.voEmotionalRegister.toLowerCase()} voice while changing the execution enough to feel original.`,
   };
 }
 
@@ -1432,7 +1422,7 @@ export function generatePackage({
   seed?: number;
   style?: StyleSelection;
 }): ProductionPackage {
-  const profile = (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
+  const profile = getNicheProfile(niche);
   const st = resolveStyle(style);
   const ar = st.format.aspectRatio;
   const orient = st.format.orientation;
@@ -1479,10 +1469,10 @@ export function generatePackage({
     return template.replace(/\{(?:topic|lowTopic)\}/g, () => pair[i++ % 2] ?? phrase);
   };
 
-  const hookSource = scaffold?.hookTemplates ?? profile.hooks;
+  const hookSource = [profile.hookFormat, ...profile.hooks.slice(0, 2)];
   const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: scaffold ? fill(h) : renderTemplate(h, cleanTopic),
+    text: fill(h),
   }));
 
   const rawCueSheet = scaffold
@@ -1533,7 +1523,7 @@ export function generatePackage({
     })
     .filter((x): x is string => Boolean(x));
 
-  const negativePrompt = negativePromptFor(niche);
+  const negativePrompt = `${profile.imageNegativePrompt}, text, watermark`;
 
   const archetypeNoun = profile.archetype.toLowerCase().replace(/^the /, "");
 
@@ -1551,10 +1541,14 @@ export function generatePackage({
     animalSkits && pair.length === 2
       ? `A rich ${pair[0]} and a poor ${pair[1]}, both with full expressive animal features, stage a playful side-by-side comedy contrast`
       : heroSubject;
-  const imageSubjectLead = animalSkits ? animalImageOpening : heroSubject;
+  const imageSubjectLead = animalSkits
+    ? animalImageOpening
+    : human
+      ? `A cinematic scene featuring ${heroSubject} connected to ${lowTopic}`
+      : `A complete ${topicSubject} presented as the central subject`;
 
   // Art direction comes from the niche scaffold so each niche renders in its own medium.
-  const styleFlags = scaffold?.imageStyleFlags ?? profile.styleDNA.join(", ").toLowerCase();
+  const styleFlags = profile.imageStyleFlags;
 
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
@@ -1586,7 +1580,7 @@ export function generatePackage({
       [
         `${imageSubjectLead} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
-        `camera motion: ${normalizeCameraMove(scaffold?.cameraMotionSet?.[0] ?? st.pacing.camera)}`,
+        `camera motion: ${normalizeCameraMove(profile.cameraMotions[0] ?? st.pacing.camera)}`,
         lightingLine,
         styleFlags,
         `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
@@ -1610,30 +1604,14 @@ export function generatePackage({
   )} --ar ${ar}`;
 
   // Niche-specific camera vocabulary first; generic cinematography as the fallback.
-  const animalMotionSet =
-    pair.length === 2
-      ? [
-          `Whip pan from wide to rich ${pair[0]}`,
-          `Snap zoom on poor ${pair[1]}'s reaction`,
-          `Split-screen slide-in comparing rich ${pair[0]} and poor ${pair[1]}`,
-          `Low-angle hero shot of rich ${pair[0]}`,
-          `Slow tilt from rich ${pair[0]}'s side to poor ${pair[1]}'s side`,
-        ]
-      : [
-          "Whip pan between characters",
-          "Snap zoom on the poor animal's reaction",
-          "Split-screen slide-in comparing both sides",
-          "Low-angle hero shot of the rich animal",
-          "Slow tilt from the rich side to the poor side",
-        ];
-  const shotMotions =
-    animalSkits
-      ? animalMotionSet
-      : scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
-        ? scaffold.cameraMotionSet
-      : st.pacing.id === "fast"
-        ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
-        : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
+  const shotMotions = profile.cameraMotions.map((motion) => {
+    if (!animalSkits || pair.length !== 2) return motion;
+    return motion
+      .replace("between characters", `from rich ${pair[0]} to poor ${pair[1]}`)
+      .replace("on reaction", `on poor ${pair[1]}'s reaction`)
+      .replace("rich side", `rich ${pair[0]}'s side`)
+      .replace("poor side", `poor ${pair[1]}'s side`);
+  });
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
@@ -1689,14 +1667,10 @@ export function generatePackage({
         : `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
     };
   });
-  const initialVariation = buildVariationPlan(s, niche, cleanTopic);
-  const variation = variationMatchesNiche(
-    initialVariation,
-    niche,
-    profile.voice["Emotional Register"] ?? "",
-  )
+  const initialVariation = buildVariationPlan(s, niche, cleanTopic, profile);
+  const variation = variationMatchesNiche(initialVariation, profile)
     ? initialVariation
-    : rebuildVariationForNiche(s, niche, cleanTopic);
+    : rebuildVariationForNiche(s, niche, cleanTopic, profile);
 
   return {
     niche,
@@ -1709,23 +1683,19 @@ export function generatePackage({
       toneTags: profile.toneTags,
       physicalDescription,
       wardrobe: profile.wardrobe,
-      voiceSpec: { ...profile.voice, "Pace (WPM)": st.pacing.wpm },
+      voiceSpec: {
+        ...profile.voice,
+        "Voice Type": profile.voVoiceType,
+        "Emotional Register": profile.voEmotionalRegister,
+        "Pace (WPM)": st.pacing.wpm,
+      },
       hooks,
       cueSheet,
-      retentionBeats: animalSkits
-        ? [
-            "0:00 — Setup beat: establish the rich-versus-poor contrast immediately.",
-            "0:11 — Reaction beat: hold on the poor character's generous choice.",
-            "0:18 — Pattern interrupt: swap the expected winner and pause on the rich character's stare.",
-            "0:25 — Payoff beat: reveal that sharing makes the smaller meal feel richer.",
-          ]
-        : [
-            `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
-            `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
-            isInvestigativeNiche(niche)
-              ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
-              : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
-          ],
+      retentionBeats: [
+        `${cueSheet[0]?.timestamp ?? "0:00"} — ${profile.retentionBeatLabels[0]}: establish ${lowTopic}.`,
+        `${cueSheet[2]?.timestamp ?? "0:12"} — ${profile.retentionBeatLabels[1]}: develop the central turn.`,
+        `${cueSheet.at(-1)?.timestamp ?? "0:25"} — ${profile.retentionBeatLabels[2]}: land the final moment.`,
+      ],
     },
     visual: {
       styleDNA: profile.styleDNA,
@@ -1770,7 +1740,12 @@ export function generatePackage({
         "Render at 24 FPS for film feel, then interpolate to 60 FPS for the platform upload.",
         `Lock camera seed to ${s} across every shot so ${titleCase(desc)} framing stays consistent.`,
       ],
-      soundDesign: [...(scaffold?.soundDesignDefaults ?? profile.sound), ...mixCues],
+      soundDesign: [
+        `Bed track: ${profile.soundDesign.bedTrack}`,
+        `SFX: ${profile.soundDesign.sfx.join(", ")}`,
+        `Silence: ${profile.soundDesign.silenceCue}`,
+        ...mixCues,
+      ],
     },
     variation,
   };
