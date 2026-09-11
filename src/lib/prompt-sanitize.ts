@@ -270,6 +270,16 @@ export function stripTransitions(text: string): string {
     .trim();
 }
 
+const DANGLING =
+  /\s+(?:the|a|an|of|in|on|into|onto|outside|inside|beside|with|and|to|from|for|at|as|by|over|under|near|through|while|that|which|its|his|her|their)$/i;
+
+/** Drops trailing connector words left behind by word clamping. */
+function trimDangling(text: string): string {
+  let out = text.replace(/[.:,;]+$/, "").trim();
+  while (DANGLING.test(out)) out = out.replace(DANGLING, "");
+  return out.replace(/[.:,;]+$/, "").trim();
+}
+
 export interface ShotPromptInput {
   motion: string;
   subjectAction: string;
