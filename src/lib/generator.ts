@@ -1,6 +1,5 @@
 import {
   buildParagraph,
-  buildShotPrompt,
   dedupePhrases,
   extractMixDirective,
   normalizeCameraMove,
@@ -1449,6 +1448,12 @@ export function generatePackage({
   // Non-human niches anchor on the actual topic subject, never a human persona.
   const topicSubject = stripArticle(lowTopic) || archetypeNoun;
   const heroSubject = human ? `${subjPrefix}${archetypeNoun}` : topicSubject;
+  const animalSkits = niche === ANIMAL_SKIT_NICHE;
+  const animalImageOpening =
+    animalSkits && pair.length === 2
+      ? `A rich ${pair[0]} and a poor ${pair[1]}, both with full expressive animal features, stage a playful side-by-side comedy contrast`
+      : heroSubject;
+  const imageSubjectLead = animalSkits ? animalImageOpening : heroSubject;
 
   // Art direction comes from the niche scaffold so each niche renders in its own medium.
   const styleFlags = scaffold?.imageStyleFlags ?? profile.styleDNA.join(", ").toLowerCase();
@@ -1456,7 +1461,7 @@ export function generatePackage({
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
       [
-        `${heroSubject} in ${env}`,
+        `${imageSubjectLead} in ${env}`,
         framing,
         human ? wardrobeLead : "",
         lightingLine,
@@ -1469,7 +1474,7 @@ export function generatePackage({
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
     stripFormatSpecs(
       buildParagraph(
-        [`${heroSubject}`, `${env2}, ${framing}`, `${styleFlags}, ${profile.palette}`],
+        [`${imageSubjectLead}`, `${env2}, ${framing}`, `${styleFlags}, ${profile.palette}`],
         80,
       ),
     ),
@@ -1481,7 +1486,7 @@ export function generatePackage({
   const googleFlowPrompt = stripFormatSpecs(
     buildParagraph(
       [
-        `${heroSubject} in ${env}`,
+        `${imageSubjectLead} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
         `camera motion: ${normalizeCameraMove(scaffold?.cameraMotionSet?.[0] ?? st.pacing.camera)}`,
         lightingLine,
@@ -1495,7 +1500,7 @@ export function generatePackage({
   const masterPrompt = `${stripFormatSpecs(
     buildParagraph(
       [
-        `${heroSubject}`,
+        `${imageSubjectLead}`,
         framing,
         human ? wardrobeLead : "",
         `environment: ${env}, ${env2}`,
@@ -1507,9 +1512,27 @@ export function generatePackage({
   )} --ar ${ar}`;
 
   // Niche-specific camera vocabulary first; generic cinematography as the fallback.
+  const animalMotionSet =
+    pair.length === 2
+      ? [
+          `Whip pan from wide to rich ${pair[0]}`,
+          `Snap zoom on poor ${pair[1]}'s reaction`,
+          `Split-screen slide-in comparing rich ${pair[0]} and poor ${pair[1]}`,
+          `Low-angle hero shot of rich ${pair[0]}`,
+          `Slow tilt from rich ${pair[0]}'s side to poor ${pair[1]}'s side`,
+        ]
+      : [
+          "Whip pan between characters",
+          "Snap zoom on the poor animal's reaction",
+          "Split-screen slide-in comparing both sides",
+          "Low-angle hero shot of the rich animal",
+          "Slow tilt from the rich side to the poor side",
+        ];
   const shotMotions =
-    scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
-      ? scaffold.cameraMotionSet
+    animalSkits
+      ? animalMotionSet
+      : scaffold?.cameraMotionSet && scaffold.cameraMotionSet.length >= 4
+        ? scaffold.cameraMotionSet
       : st.pacing.id === "fast"
         ? ["Snap-zoom", "Tracking shot", "Push-in", "Pull-out", "Orbit", "Pan right", "Crane shot"]
         : ["Push-in", "Tracking shot", "Tilt up", "Pull-out", "Orbit", "Pan left", "Crane shot"];
@@ -1549,26 +1572,33 @@ export function generatePackage({
   const environmentLighting = [env, env2];
 
   const shotCount = 4;
+  const orderedMotions = orderDistinctMotions(shotMotions, s, shotCount);
   const shots = Array.from({ length: shotCount }, (_, i) => {
-    const start = i * 7;
-    const end = start + 7;
-    const fmt = (n: number) => `0:${String(n).padStart(2, "0")}`;
-    const motion = pick(shotMotions, s, i);
+    const cue = cueSheet[i] ?? cueSheet[cueSheet.length - 1];
+    const start = cue?.timestamp ?? "0:00";
+    const end = cueEndTime(cueSheet, i);
+    const motion = orderedMotions[i] ?? shotMotions[i % shotMotions.length] ?? "Push-in";
+    const voLine = cue?.line ?? hooks[0]?.text ?? cleanTopic;
+    const storyboardPrompt = `Shot ${String(i + 1).padStart(2, "0")} — ${start}–${end} | VO: '${voLine}' | Motion: ${motion}`;
     return {
       index: i + 1,
-      timecode: `${fmt(start)}–${fmt(end)}`,
+      timecode: `${start}–${end}`,
       motion,
       transition: pick(transitions, s, i * 3),
       animationCue: pick(cues, s, i * 5),
-      prompt: buildShotPrompt({
-        motion,
-        subjectAction: pick(subjectActions, s, i),
-        environmentLighting: pick(environmentLighting, s, i),
-        motionStrength: st.pacing.id === "fast" ? 4 : 3,
-      }),
+      prompt: animalSkits
+        ? storyboardPrompt
+        : `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
     };
   });
-  const variation = buildVariationPlan(s, niche, cleanTopic);
+  const initialVariation = buildVariationPlan(s, niche, cleanTopic);
+  const variation = variationMatchesNiche(
+    initialVariation,
+    niche,
+    profile.voice["Emotional Register"] ?? "",
+  )
+    ? initialVariation
+    : rebuildVariationForNiche(s, niche, cleanTopic);
 
   return {
     niche,
@@ -1584,13 +1614,20 @@ export function generatePackage({
       voiceSpec: { ...profile.voice, "Pace (WPM)": st.pacing.wpm },
       hooks,
       cueSheet,
-      retentionBeats: [
-        `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
-        `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
-        isInvestigativeNiche(niche)
-          ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
-          : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
-      ],
+      retentionBeats: animalSkits
+        ? [
+            "0:00 — Setup beat: establish the rich-versus-poor contrast immediately.",
+            "0:11 — Reaction beat: hold on the poor character's generous choice.",
+            "0:18 — Pattern interrupt: swap the expected winner and pause on the rich character's stare.",
+            "0:25 — Payoff beat: reveal that sharing makes the smaller meal feel richer.",
+          ]
+        : [
+            `0:03 — Open loop: promise the ${desc} detail but withhold it until 0:27.`,
+            `0:18 — Pattern interrupt: change shot scale and drop the music bed for one beat.`,
+            isInvestigativeNiche(niche)
+              ? `0:28 — Cliffhanger: tease the follow-up on ${lowTopic} before the CTA lands.`
+              : `0:28 — Payoff beat: land the ${desc2} moment of ${lowTopic}, then cut on the reaction.`,
+          ],
     },
     visual: {
       styleDNA: profile.styleDNA,
