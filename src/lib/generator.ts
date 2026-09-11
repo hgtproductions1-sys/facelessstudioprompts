@@ -1363,6 +1363,9 @@ export function generatePackage({
   const topicSubject = stripArticle(lowTopic) || archetypeNoun;
   const heroSubject = human ? `${subjPrefix}${archetypeNoun}` : topicSubject;
 
+  // Art direction comes from the niche scaffold so each niche renders in its own medium.
+  const styleFlags = scaffold?.imageStyleFlags ?? profile.styleDNA.join(", ").toLowerCase();
+
   const leonardoPrompt = stripFormatSpecs(
     buildParagraph(
       [
@@ -1370,7 +1373,7 @@ export function generatePackage({
         framing,
         human ? wardrobeLead : "",
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
+        `${styleFlags}, negative space at the top third for captions`,
       ],
       100,
     ),
@@ -1379,12 +1382,7 @@ export function generatePackage({
   const midjourneyPrompt = sanitizeMidjourneyPrompt(
     stripFormatSpecs(
       buildParagraph(
-        [
-          `${heroSubject}`,
-          `${env2}, ${framing}`,
-          `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
-          `${st.vibe.lighting}, ${st.vibe.style}`,
-        ],
+        [`${heroSubject}`, `${env2}, ${framing}`, `${styleFlags}, ${profile.palette}`],
         80,
       ),
     ),
@@ -1398,9 +1396,9 @@ export function generatePackage({
       [
         `${heroSubject} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
-        `camera motion: ${normalizeCameraMove(st.pacing.camera)}`,
+        `camera motion: ${normalizeCameraMove(pick(shotMotionSet, s))}`,
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
+        styleFlags,
         `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
       ],
       100,
@@ -1415,7 +1413,7 @@ export function generatePackage({
         human ? wardrobeLead : "",
         `environment: ${env}, ${env2}`,
         lightingLine,
-        `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
+        `${styleFlags}, negative space in the top third for captions`,
       ],
       100,
     ),
