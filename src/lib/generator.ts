@@ -1384,7 +1384,7 @@ export function generatePackage({
       toneTags: profile.toneTags,
       physicalDescription,
       wardrobe: profile.wardrobe,
-      voiceSpec: profile.voice,
+      voiceSpec: { ...profile.voice, "Pace (WPM)": st.pacing.wpm },
       hooks,
       cueSheet,
       retentionBeats: [
@@ -1395,8 +1395,8 @@ export function generatePackage({
     },
     visual: {
       styleDNA: profile.styleDNA,
-      aspectRatio: "9:16",
-      resolution: "1080x1920",
+      aspectRatio: ar,
+      resolution: st.format.resolution,
       model: "Leonardo Phoenix / MJ v6.1",
       stylize: 250,
       chaos: 12,
