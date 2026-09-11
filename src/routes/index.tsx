@@ -42,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { StepPanels } from "@/components/site/StepPanels";
@@ -168,9 +169,17 @@ function Index() {
   const [pacing, setPacing] = useState<string>(PACINGS[0]!.id);
   const resultsRef = useRef<HTMLDivElement>(null);
   const autoRan = useRef(false);
+  const topicRef = useRef<HTMLTextAreaElement>(null);
   const { pkg, loading, step, slow, run, regenerate, totalMs } = usePackageGenerator();
   const styleRef = useRef({ format, vibe, pacing });
   styleRef.current = { format, vibe, pacing };
+
+  useEffect(() => {
+    const el = topicRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [topic]);
 
   useEffect(() => {
     if (autoRan.current) return;
@@ -302,23 +311,23 @@ function Index() {
                   >
                     Topic or Video Angle
                   </label>
-                  <div className="relative">
-                    <input
-                      id="topic"
-                      value={topic}
-                      maxLength={140}
-                      onChange={(e) => setTopic(e.target.value)}
-                      placeholder="e.g., The man who faked his own death for insurance money"
-                      className="bg-surface2 border-line-hover h-12 w-full rounded-xl border px-3 pr-14 text-sm text-ink placeholder:text-ink-muted focus:border-purple focus:ring-2 focus:ring-purple focus:outline-none"
-                    />
-                    <span
-                      className={`pointer-events-none absolute right-3 bottom-1.5 text-[10px] ${
-                        topic.length > 120 ? "text-warning" : "text-ink-muted"
-                      }`}
-                    >
-                      {topic.length}/140
-                    </span>
-                  </div>
+                  <Textarea
+                    ref={topicRef}
+                    id="topic"
+                    rows={3}
+                    value={topic}
+                    maxLength={500}
+                    onChange={(e) => setTopic(e.target.value)}
+                    placeholder="e.g., The man who faked his own death for insurance money"
+                    className="bg-surface2 border-line-hover w-full resize-none rounded-xl border px-3 py-3 text-sm leading-relaxed text-ink shadow-none placeholder:text-ink-muted focus:border-purple focus:ring-2 focus:ring-purple focus:outline-none focus-visible:ring-0"
+                  />
+                  <span
+                    className={`mt-1.5 block text-right text-[10px] tabular-nums ${
+                      topic.length > 450 ? "text-warning" : "text-ink-muted"
+                    }`}
+                  >
+                    {topic.length}/500
+                  </span>
                 </div>
 
               </div>

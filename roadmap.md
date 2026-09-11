@@ -14,6 +14,7 @@
 ## Next
 - [x] Replace all shared niche-generation scaffolding with 24 complete profiles and enforce each profile across local and AI output.
 - [x] Make Poor vs. Rich Animals outputs storyboard-synced: varied motions, contextual image opening, timed comedy beats, and matching variation tone.
+- [x] Turn the generator topic field into an auto-growing multi-line box with a 500-character limit and matching counter.
 - [ ] Publish the engine order + loading copy (in progress) and confirm the honesty edits and the guide serve on https://www.thefacelessprompts.com.
 - [ ] Request indexing in Search Console for /faceless-youtube-automation once it serves on the domain.
 - [ ] Remaining content directions not selected: 24 Faceless Niche Ideas page, Midjourney Character Consistency guide.
