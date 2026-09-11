@@ -15,6 +15,11 @@ import {
   toElevenLabsCue,
   toRawLine,
 } from "@/lib/prompt-sanitize";
+import {
+  getScaffold,
+  hasTrueCrimeLeak,
+  isInvestigativeNiche,
+} from "@/lib/nicheScaffolds";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
 import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
 
