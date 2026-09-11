@@ -56,6 +56,7 @@ import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
 import { copyText, PrimaryButton, SecondaryButton } from "@/components/site/primitives";
 import { usePackageGenerator } from "@/hooks/usePackageGenerator";
 import { NICHES, packageToText, slugify } from "@/lib/generator";
+import { FORMATS, PACINGS, VIBES } from "@/lib/styleOptions";
 
 const TITLE = "The Faceless Prompts | Free AI Video Generator";
 const DESC =
