@@ -287,9 +287,10 @@ export function buildShotPrompt({
   environmentLighting,
   motionStrength = 3,
 }: ShotPromptInput): string {
-  const m = stripTransitions(motion).replace(/[.:,]+$/, "");
-  const subject = stripTransitions(subjectAction).replace(/[.,]+$/, "");
-  const env = stripTransitions(environmentLighting).replace(/[.,]+$/, "");
+  const m = clampWords(stripTransitions(motion), 10).replace(/[.:,]+$/, "");
+  const subject = clampWords(stripTransitions(subjectAction), 14).replace(/[.,]+$/, "");
+  // Scene setting stays brief — no repeated lighting/style essays per shot.
+  const env = clampWords(stripTransitions(environmentLighting), 8).replace(/[.,]+$/, "");
   const strength = Math.min(4, Math.max(3, Math.round(motionStrength)));
   return dedupePhrases(
     `${m}: ${subject}, ${env}, continuous motion, cinematic 24fps --motion ${strength}`,
