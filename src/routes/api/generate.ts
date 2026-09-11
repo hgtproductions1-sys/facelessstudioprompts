@@ -114,9 +114,33 @@ function referenceBlock(niche: string): string {
     .join("\n\n");
 }
 
+/** Hard niche-archetype instructions built from the per-niche scaffold. */
+function nicheRules(niche: string): string[] {
+  const sc = getScaffold(niche);
+  const rules: string[] = [];
+  if (sc) {
+    rules.push(
+      `NICHE ARCHETYPE — match this scaffolding EXACTLY. Hook format must follow these shapes: ${sc.hookTemplates.join(" | ")}.`,
+      `VOICEOVER STYLE: ${sc.voStyle}`,
+      `CUE STRUCTURE — mirror these timestamps, beat purpose and delivery tags exactly (rewrite the wording for the given topic, keep the structure): ${sc.voCuePattern
+        .map((r) => `${r.timestamp} ${r.cue} "${r.line}"`)
+        .join(" | ")}.`,
+      `ART STYLE — every image prompt must read as: ${sc.imageStyleFlags}. Never use an art style from a different niche.`,
+      `CAMERA VOCABULARY — draw the four shots from these niche motions: ${sc.cameraMotionSet.join(", ")}.`,
+      `SOUND DESIGN — base the bed track, SFX and silence on: ${sc.soundDesignDefaults.join(" | ")}.`,
+    );
+  }
+  if (!isInvestigativeNiche(niche)) {
+    rules.push(
+      'FORBIDDEN VOCABULARY: this is not a true-crime or investigative niche. Never use investigative or case-file language anywhere in the output — no "timeline", "one source", "lied"/"lying", "the record shows", "case", "evidence", "part two", or cliffhanger CTAs. Comedy and skit niches use comedic narration and reaction beats instead.',
+    );
+  }
+  return rules;
+}
+
 /** Turns the user's format / vibe / pacing choices into hard model instructions. */
 function styleRules(st: ResolvedStyle, niche: string): string[] {
-  return [subjectRule(niche), ..._styleRules(st)];
+  return [subjectRule(niche), ...nicheRules(niche), ..._styleRules(st)];
 }
 
 function _styleRules(st: ResolvedStyle): string[] {
