@@ -250,10 +250,11 @@ async function generateWithLovableAi(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
+              ...styleRules(st),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
-          { role: "user", content: userInstruction(niche, topic) },
+          { role: "user", content: userInstruction(niche, topic, st) },
         ],
       }),
     });
