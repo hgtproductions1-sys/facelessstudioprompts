@@ -70,14 +70,13 @@ const PRODUCTION_RULES = [
   "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
   "HARD LIMIT — SCRIPT LENGTH: the cueSheet is a maximum of 30 seconds of spoken audio. Return EXACTLY 5 cue rows whose spoken lines total between 65 and 80 words in all. Never write a long or multi-minute script. Timestamps must stay within 0:00 to 0:30.",
   "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine flags, no --parameters and no engine names. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
-  "negativePrompt is a single comma-separated list of things to exclude, always including visible face, text and watermark.",
+  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine names. The app appends the --ar flag. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
+  "negativePrompt is a single comma-separated list of things to exclude, always including text and watermark.",
   "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
   "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
-  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE sentence following [Camera Motion] + [Subject Action] + [Environment & Lighting].",
+  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE short sentence using the strict syntax [Specific Camera Movement] + [Subject Action] + [Brief Scene Setting]. Keep the scene setting to a few words and NEVER repeat long lighting, palette or style descriptions in every shot.",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
-  "Face never visible in any prompt.",
 ];
 
 function fallbackPackage(niche: string, topic: string, style?: StyleSelection): ProductionPackage {
