@@ -31,8 +31,8 @@ const SCHEMA_SHAPE = `{
     "wardrobe": string[4],
     "voiceSpec": { "Voice Type": string, "Pace (WPM)": string, "Pitch": string, "Accent": string, "Emotional Register": string, "Signature Pause": string },
     "hooks": [{ "label": string, "text": string }] (3 items),
-    "cueSheet": [{ "timestamp": string, "line": string, "cue": string }] (6 items),
-    "retentionBeats": string[4]
+    "cueSheet": [{ "timestamp": string, "line": string, "cue": string }] (exactly 5 items, 65-80 spoken words total, max 30 seconds),
+    "retentionBeats": string[3]
   },
   "visual": {
     "styleDNA": string[5],
