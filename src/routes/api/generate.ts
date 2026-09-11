@@ -7,7 +7,9 @@ import {
   dedupePhrases,
   extractMixDirective,
   sanitizeMidjourneyPrompt,
+  normalizeCameraMove,
   sanitizeTopic,
+  stripFormatSpecs,
   stripMarkdown,
   stripPromptFlags,
   toElevenLabsCue,
@@ -77,6 +79,9 @@ const PRODUCTION_RULES = [
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
   "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
   "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE short sentence using the strict syntax [Specific Camera Movement] + [Subject Action] + [Brief Scene Setting]. Keep the scene setting to a few words and NEVER repeat long lighting, palette or style descriptions in every shot.",
+  "CAMERA TERMINOLOGY: every shot must begin with exactly one of these standard cinematographic movements — Push-in, Pull-out, Pan left, Pan right, Tilt up, Tilt down, Tracking shot, Orbit, Crane shot, Snap-zoom. Never use a pacing adjective such as snappy, fast, quick or slow as the camera command.",
+  "SUBJECT ANCHORING: never invent a human persona (mechanic, chef, investigator, narrator) for a topic about an object, vehicle, animal or food. Anchor every shot action directly to the actual topic subject, e.g. \"Tracking shot: past the Mustang's rusted front grille, dust motes swirling\".",
+  "IMAGE PROMPT CLEANLINESS: never write resolution or aspect-ratio prose such as \"vertical 9:16 frame at 1080x1920\" inside masterPrompt or any image prompt. The app appends the single --ar parameter at the end.",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
 ];
 
@@ -102,7 +107,7 @@ function styleRules(st: ResolvedStyle, niche: string): string[] {
 
 function _styleRules(st: ResolvedStyle): string[] {
   return [
-    `OUTPUT FORMAT: ${st.format.label}. Every image and video prompt must describe a ${st.format.orientation} ${st.format.aspectRatio} frame at ${st.format.resolution}. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
+    `OUTPUT FORMAT: ${st.format.label}. Compose every image and video prompt for a ${st.format.orientation} frame, but never write the aspect ratio or pixel resolution inside the prompt text. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
     `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
     `PACING: ${st.pacing.label}. Camera motion must be ${st.pacing.camera}. Average shot length about ${st.pacing.avgShotLength}, and the voice pace (voiceSpec "Pace (WPM)") must be ${st.pacing.wpm}.`,
   ];
@@ -202,13 +207,16 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
   const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
     index: i + 1,
-    motion: toRawLine(s.motion ?? ""),
+    motion: normalizeCameraMove(s.motion ?? st.pacing.camera),
     prompt: buildShotPrompt({
       motion: s.motion ?? st.pacing.camera,
+      // Non-human niches anchor the action on the real topic subject, not a persona.
       subjectAction: dedupePhrases(
         clampWords(
-          `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}`,
-          5,
+          human
+            ? `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}`
+            : `the ${sanitizeTopic(pkg.topic).toLowerCase()}`,
+          6,
         ) + ` ${clampWords(toRawLine(s.animationCue ?? ""), 10)}`,
       ),
       // Brief scene setting only — no repeated lighting essays per shot.
@@ -236,26 +244,28 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       negativePrompt: sanitizeNegative(pkg.visual.negativePrompt ?? "", human),
       // The master image prompt always carries the selected aspect ratio.
       masterPrompt: `${clampWords(
-        deFaceless(
-          stripPromptFlags(
-            dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+        stripFormatSpecs(
+          deFaceless(
+            stripPromptFlags(
+              dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+            ),
+            human,
           ),
-          human,
         ),
         100,
       )} --ar ${st.format.aspectRatio}`,
       leonardoPrompt: clampWords(
-        deFaceless(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), human),
+        stripFormatSpecs(deFaceless(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), human)),
         100,
       ),
       midjourneyPrompt: sanitizeMidjourneyPrompt(
-        deFaceless(pkg.visual.midjourneyPrompt ?? "", human),
+        stripFormatSpecs(deFaceless(pkg.visual.midjourneyPrompt ?? "", human)),
         seed,
         st.format.aspectRatio,
         midjourneyNegativeFor(pkg.niche),
       ),
       googleFlowPrompt: clampWords(
-        deFaceless(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), human),
+        stripFormatSpecs(deFaceless(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), human)),
         100,
       ),
     },
