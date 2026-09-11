@@ -15,11 +15,6 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   });
 
   const prompt1 = [
-    c.physicalDescription,
-    "",
-    "Wardrobe & props:",
-    ...c.wardrobe.map((w) => `- ${w}`),
-    "",
     "Voice & delivery:",
     ...Object.entries(c.voiceSpec).map(([k, val]) => `- ${k}: ${val}`),
     "",
@@ -28,21 +23,15 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
   ].join("\n");
 
   const prompt2 = [
-    v.leonardoPrompt,
+    v.masterPrompt || v.leonardoPrompt,
     "",
-    v.midjourneyPrompt,
-    "",
-    "Google Flow (Veo 3):",
-    v.googleFlowPrompt,
+    "Negative prompt:",
+    v.negativePrompt,
   ].join("\n");
 
   const prompt3 = cam.shots
-    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.timecode}\n${sh.prompt}`)
+    .map((sh) => `${String(sh.index).padStart(2, "0")}\n${sh.prompt}`)
     .join("\n\n");
-
-  const editPoints = cam.shots
-    .map((sh) => `${String(sh.index).padStart(2, "0")} | ${sh.transition} | ${sh.animationCue}`)
-    .join("\n");
 
   return [
     line,
@@ -55,47 +44,23 @@ export function buildBlueprintText(pkg: ProductionPackage): string {
     "",
     line,
     "",
-    "── COPY-PASTE PROMPT #1: CHARACTER + VOICEOVER ──",
+    "── STEP 1: SCRIPT & VOICEOVER ──",
     "",
     prompt1,
-    "",
-    "── COPY-PASTE PROMPT #2: VISUAL STYLE ──",
-    "",
-    prompt2,
-    "",
-    "── COPY-PASTE PROMPT #3: CAMERA MOTION ──",
-    "",
-    prompt3,
-    "",
-    "── DETAILED REFERENCE ──",
-    "",
-    "[CHARACTER]",
-    `Archetype: ${c.archetype}`,
-    `Tone: ${c.toneTags.join(", ")}`,
-    `Voice Spec: ${Object.entries(c.voiceSpec)
-      .map(([k, val]) => `${k} ${val}`)
-      .join(", ")}`,
-    c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n"),
     "",
     "VO Cue Sheet (ElevenLabs v3 tags only):",
     c.cueSheet.map((r) => `${r.timestamp} | ${r.cue} ${r.line}`).join("\n"),
     "",
-    "[VISUAL]",
-    `Style DNA: ${v.styleDNA.join(", ")}`,
-    `Aspect Ratio: ${v.aspectRatio}`,
-    `Model / Flags: ${v.model} · stylize ${v.stylize} · chaos ${v.chaos} · seed ${v.seedValue}`,
-    `Negative Prompt: ${v.negativePrompt}`,
+    "Retention beats:",
+    c.retentionBeats.map((b) => `- ${b}`).join("\n"),
     "",
-    "[CAMERA]",
-    `Overview: ${Object.entries(cam.overview)
-      .map(([k, val]) => `${k}: ${val}`)
-      .join(" · ")}`,
+    "── STEP 2: MASTER IMAGE PROMPT ──",
     "",
-    "Shot List (engine-ready):",
+    prompt2,
+    "",
+    "── STEP 3: VIDEO GENERATION PROMPTS ──",
+    "",
     prompt3,
-    "",
-    "Edit Points & Animation Cues (NLE only):",
-    editPoints,
     "",
     "[SOUND DESIGN & MUSIC CUES]",
     cam.soundDesign.map((sd) => `- ${sd}`).join("\n"),

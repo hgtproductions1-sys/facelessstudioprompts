@@ -44,14 +44,11 @@ import {
 } from "@/components/ui/select";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { CharacterCard } from "@/components/site/CharacterCard";
-import { VisualCard } from "@/components/site/VisualCard";
-import { CameraCard } from "@/components/site/CameraCard";
+import { StepPanels } from "@/components/site/StepPanels";
 import { ProgressStepper, SkeletonCards } from "@/components/site/LoadingState";
 import { FinalCta, HowItWorks, TrustStrip } from "@/components/site/Sections";
 import { EmptyState } from "@/components/site/EmptyState";
 import { BlueprintCard } from "@/components/site/BlueprintCard";
-import { EnginePrompts } from "@/components/site/EnginePrompts";
 import { LeaderboardAd, NativeAd } from "@/components/site/AdSlot";
 import { Playbook } from "@/components/site/Playbook";
 
@@ -392,26 +389,7 @@ function Index() {
                   </SecondaryButton>
                 </div>
 
-                <div className="mx-auto mt-6 grid max-w-7xl grid-cols-1 gap-6 lg:grid-cols-3">
-                  {[
-                    <CharacterCard key="c1" pkg={pkg} />,
-                    <VisualCard key="c2" pkg={pkg} />,
-                    <CameraCard key="c3" pkg={pkg} />,
-                  ].map((card, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: i * 0.12 }}
-                    >
-                      {card}
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="mx-auto mt-6 max-w-7xl">
-                  <EnginePrompts pkg={pkg} />
-                </div>
+                <StepPanels pkg={pkg} />
               </>
             ) : null}
           </div>

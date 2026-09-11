@@ -1,87 +1,46 @@
 import { AFFILIATES } from "@/config/affiliates";
-import { ArrowRight, UserRound } from "lucide-react";
+import { ArrowRight, Mic } from "lucide-react";
 import type { ProductionPackage } from "@/lib/generator";
 import { CardShell } from "./CardShell";
 import { AffiliateCta, BlockLabel, CopyButton, FooterCta, MonoBlock, SpecGrid } from "./primitives";
 
 export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
   const c = pkg.character;
+  const hooksText = c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n");
+  const cueText = c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n");
+
   const allText = [
-    `MASTER CHARACTER PROFILE — ${c.archetype}`,
-    `Tone: ${c.toneTags.join(", ")} | Consistency Score: ${c.consistencyScore}/100`,
-    ``,
-    c.physicalDescription,
-    ``,
-    c.wardrobe.map((w) => `- ${w}`).join("\n"),
-    ``,
+    "SCRIPT & VOICEOVER",
     Object.entries(c.voiceSpec)
       .map(([k, v]) => `${k}: ${v}`)
       .join("\n"),
-    ``,
-    c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n"),
-    ``,
-    c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n"),
-    ``,
+    "",
+    hooksText,
+    "",
+    cueText,
+    "",
     c.retentionBeats.map((b) => `- ${b}`).join("\n"),
   ].join("\n");
 
   return (
     <CardShell
-      icon={UserRound}
+      icon={Mic}
       step="STEP 01"
-      title="Master Character Profile"
-      subtitle="Your recurring faceless persona + VO delivery script."
+      title="Script & Voiceover"
+      subtitle="Voice delivery profile plus a ready-to-record cue sheet."
       copyAllValue={allText}
       rail="pc"
     >
       <div>
-        <BlockLabel>Archetype</BlockLabel>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="border-purple/40 bg-purple/10 rounded-full border px-3 py-1 text-xs font-medium text-purple-bright">
-            {c.archetype}
-          </span>
-          {c.toneTags.map((t) => (
-            <span
-              key={t}
-              className="border-line bg-surface2 rounded-full border px-3 py-1 text-xs text-ink-dim"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-        <div className="mt-3">
-          <div className="flex items-center justify-between text-[11px] text-ink-dim">
-            <span>Consistency Score</span>
-            <span className="text-ink">{c.consistencyScore}/100</span>
-          </div>
-          <div className="bg-surface2 mt-1.5 h-1.5 w-full overflow-hidden rounded-full">
-            <div
-              className="from-purple to-cyan h-full rounded-full bg-gradient-to-r"
-              style={{ width: `${c.consistencyScore}%` }}
-            />
-          </div>
-        </div>
+        <BlockLabel>Voice &amp; Delivery Profile</BlockLabel>
+        <SpecGrid rows={Object.entries(c.voiceSpec) as [string, string][]} />
       </div>
 
       <div>
-        <BlockLabel action={<CopyButton value={c.physicalDescription} />}>
-          Physical Description
+        <BlockLabel action={<CopyButton value={hooksText} />}>
+          Hook Script (First 3 Seconds)
         </BlockLabel>
-        <MonoBlock>{c.physicalDescription}</MonoBlock>
-      </div>
-
-      <div>
-        <BlockLabel action={<CopyButton value={c.wardrobe.join("\n")} />}>
-          Wardrobe &amp; Props
-        </BlockLabel>
-        <ul className="space-y-1.5 text-sm text-ink-dim">
-          {c.wardrobe.map((w) => (
-            <li key={w} className="flex gap-2">
-              <span className="text-cyan">•</span>
-              <span>{w}</span>
-            </li>
-          ))}
-        </ul>
+        <MonoBlock>{hooksText}</MonoBlock>
       </div>
 
       <AffiliateCta ctaKey="card1Mid" className="w-full">
@@ -90,24 +49,8 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
       </AffiliateCta>
 
       <div>
-        <BlockLabel>Voice &amp; Delivery Profile</BlockLabel>
-        <SpecGrid rows={Object.entries(c.voiceSpec) as [string, string][]} />
-      </div>
-
-      <div>
-        <BlockLabel
-          action={<CopyButton value={c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")} />}
-        >
-          Hook Script (First 3 Seconds)
-        </BlockLabel>
-        <MonoBlock>{c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}</MonoBlock>
-      </div>
-
-      <div>
-        <BlockLabel
-          action={<CopyButton value={c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n")} />}
-        >
-          Voiceover Script (ElevenLabs v3 tags)
+        <BlockLabel action={<CopyButton value={cueText} />}>
+          Voiceover Cue Sheet (ElevenLabs v3 tags)
         </BlockLabel>
         <div className="border-line divide-line divide-y rounded-lg border">
           {c.cueSheet.map((r) => (
@@ -120,9 +63,6 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
             </div>
           ))}
         </div>
-        <p className="mt-1.5 text-[11px] text-ink-muted">
-          Music and mixing notes live in the Sound Design &amp; Music Cues block on Step 03.
-        </p>
       </div>
 
       <div>
