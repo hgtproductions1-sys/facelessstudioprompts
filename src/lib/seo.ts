@@ -31,6 +31,7 @@ export const SITE_ROUTES = [
   "/",
   "/faceless-youtube-automation",
   "/library",
+  "/free-tools",
   "/niches",
   "/ai-tools-hub",
   "/contact",
