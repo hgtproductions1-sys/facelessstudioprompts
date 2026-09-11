@@ -1396,7 +1396,7 @@ export function generatePackage({
       [
         `${heroSubject} in ${env}`,
         human ? `${framing}, ${(profile.wardrobe[0] ?? "").toLowerCase()}` : framing,
-        `camera motion: ${normalizeCameraMove(pick(shotMotionSet, s))}`,
+        `camera motion: ${normalizeCameraMove(scaffold?.cameraMotionSet?.[0] ?? st.pacing.camera)}`,
         lightingLine,
         styleFlags,
         `no text, no watermark${human ? ", no visible face, no warped hands" : ", no deformed anatomy"}`,
