@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generatePackage, hashSeed, type ProductionPackage } from "@/lib/generator";
+import {
+  generatePackage,
+  getNicheProfile,
+  hashSeed,
+  type ProductionPackage,
+} from "@/lib/generator";
 import { getTopPromptsForNiche } from "@/data/promptLibrary";
 import {
   buildShotPrompt,
@@ -15,11 +20,6 @@ import {
   toElevenLabsCue,
   toRawLine,
 } from "@/lib/prompt-sanitize";
-import {
-  getScaffold,
-  hasTrueCrimeLeak,
-  isInvestigativeNiche,
-} from "@/lib/nicheScaffolds";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
 import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
 
@@ -121,26 +121,17 @@ function referenceBlock(niche: string): string {
 
 /** Hard niche-archetype instructions built from the per-niche scaffold. */
 function nicheRules(niche: string): string[] {
-  const sc = getScaffold(niche);
-  const rules: string[] = [];
-  if (sc) {
-    rules.push(
-      `NICHE ARCHETYPE — match this scaffolding EXACTLY. Hook format must follow these shapes: ${sc.hookTemplates.join(" | ")}.`,
-      `VOICEOVER STYLE: ${sc.voStyle}`,
-      `CUE STRUCTURE — mirror these timestamps, beat purpose and delivery tags exactly (rewrite the wording for the given topic, keep the structure): ${sc.voCuePattern
-        .map((r) => `${r.timestamp} ${r.cue} "${r.line}"`)
-        .join(" | ")}.`,
-      `ART STYLE — every image prompt must read as: ${sc.imageStyleFlags}. Never use an art style from a different niche.`,
-      `CAMERA VOCABULARY — draw the four shots from these niche motions: ${sc.cameraMotionSet.join(", ")}.`,
-      `SOUND DESIGN — base the bed track, SFX and silence on: ${sc.soundDesignDefaults.join(" | ")}.`,
-    );
-  }
-  if (!isInvestigativeNiche(niche)) {
-    rules.push(
-      'FORBIDDEN VOCABULARY: this is not a true-crime or investigative niche. Never use investigative or case-file language anywhere in the output — no "timeline", "one source", "lied"/"lying", "the record shows", "case", "evidence", "part two", or cliffhanger CTAs. Comedy and skit niches use comedic narration and reaction beats instead.',
-    );
-  }
-  return rules;
+  const profile = getNicheProfile(niche);
+  return [
+    `NICHE PROFILE — follow this profile exactly and never borrow language from another niche. Hook format: ${profile.hookFormat}`,
+    `VOICE TYPE: ${profile.voVoiceType}. EMOTIONAL REGISTER: ${profile.voEmotionalRegister}.`,
+    `CAMERA MOTIONS — use four distinct motions selected only from this list, with no adjacent motion type repeated: ${profile.cameraMotions.join(" | ")}.`,
+    `RETENTION LABELS — use these three labels in order and attach them to exact cue-sheet timestamps: ${profile.retentionBeatLabels.join(" | ")}. No retention beat may occur after the final cue.`,
+    `SOUND DESIGN — bed track: ${profile.soundDesign.bedTrack}; SFX: ${profile.soundDesign.sfx.join(", ")}; silence cue: ${profile.soundDesign.silenceCue}.`,
+    `IMAGE STYLE: ${profile.imageStyleFlags}. IMAGE NEGATIVES: ${profile.imageNegativePrompt}. Never start an image prompt with the raw topic fragment; rewrite it as a complete visual sentence.`,
+    `VARIATION TONE: emotionalTone must be exactly compatible with "${profile.variationTone}" and the variation copy must match "${profile.voEmotionalRegister}".`,
+    `FORBIDDEN VOCABULARY — none of these terms may appear anywhere in the JSON: ${profile.forbiddenVocabulary.map((word) => `"${word}"`).join(", ")}.`,
+  ];
 }
 
 /** Turns the user's format / vibe / pacing choices into hard model instructions. */
@@ -336,25 +327,26 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       storyStructure: toRawLine(pkg.variation.storyStructure),
       pacingProfile: toRawLine(pkg.variation.pacingProfile),
       editingStyle: toRawLine(pkg.variation.editingStyle),
-      emotionalTone: toRawLine(pkg.variation.emotionalTone),
-      copyPastePrompt: dedupePhrases(toRawLine(pkg.variation.copyPastePrompt)),
+      emotionalTone: getNicheProfile(niche).variationTone,
+      copyPastePrompt: dedupePhrases(
+        `${toRawLine(pkg.variation.copyPastePrompt)} Keep the emotional tone ${getNicheProfile(niche).variationTone.toLowerCase()} and the narration ${getNicheProfile(niche).voEmotionalRegister.toLowerCase()}.`,
+      ),
     },
   };
 }
 
-const STRICT_RETRY_RULES = [
-  "PREVIOUS ATTEMPT FAILED VALIDATION: it used true-crime / investigative vocabulary in a niche that must never use it. Rewrite completely in this niche's own voice. Banned strings anywhere in the JSON: \"timeline only works\", \"one source\", \"lied\", \"is lying\", \"part two\", \"cold case\", \"the record actually shows\". Use the niche's hook shapes, cue structure and art style exactly as specified.",
-];
+function strictRetryRules(niche: string, detected: string[]): string[] {
+  const profile = getNicheProfile(niche);
+  const banned = detected.length ? detected : profile.forbiddenVocabulary;
+  return [
+    `PREVIOUS ATTEMPT FAILED NICHE VALIDATION. Rewrite the complete JSON in the ${niche} profile only. These detected terms are explicitly banned everywhere: ${banned.map((word) => `"${word}"`).join(", ")}. Use hook format "${profile.hookFormat}", voice "${profile.voVoiceType}", retention labels ${profile.retentionBeatLabels.join(", ")}, image style "${profile.imageStyleFlags}", and variation tone "${profile.variationTone}".`,
+  ];
+}
 
 /** True when the model leaked investigative language into a non-investigative niche. */
-function packageLeaks(pkg: ProductionPackage, niche: string): boolean {
-  const text = [
-    ...pkg.character.hooks.map((h) => h.text),
-    ...pkg.character.cueSheet.map((r) => `${r.line} ${r.cue}`),
-    ...pkg.character.retentionBeats,
-    pkg.variation.copyPastePrompt,
-  ].join(" ");
-  return hasTrueCrimeLeak(text, niche);
+function forbiddenTermsInPackage(pkg: ProductionPackage, niche: string): string[] {
+  const text = JSON.stringify(pkg).toLowerCase();
+  return getNicheProfile(niche).forbiddenVocabulary.filter((term) => text.includes(term.toLowerCase()));
 }
 
 /** Streams a production package out of the Lovable AI gateway Responses API. */
@@ -554,11 +546,12 @@ export const Route = createFileRoute("/api/generate")({
           let pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
           // One stricter retry when the model leaks true-crime language into a
           // niche that should never use it.
-          if (pkg && packageLeaks(pkg, niche)) {
-            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
-            pkg = await generateWithGlm(niche, topic, st, seed, glmKey, STRICT_RETRY_RULES);
+          const glmForbidden = pkg ? forbiddenTermsInPackage(pkg, niche) : [];
+          if (pkg && glmForbidden.length) {
+            console.warn("[generate] forbidden niche vocabulary detected, retrying with stricter prompt");
+            pkg = await generateWithGlm(niche, topic, st, seed, glmKey, strictRetryRules(niche, glmForbidden));
           }
-          if (pkg && !packageLeaks(pkg, niche)) {
+          if (pkg && forbiddenTermsInPackage(pkg, niche).length === 0) {
             return Response.json({ package: pkg, source: "glm" });
           }
           if (pkg) {
@@ -581,8 +574,9 @@ export const Route = createFileRoute("/api/generate")({
             gatewayKey,
             initialRunId,
           );
-          if (result && packageLeaks(result.pkg, niche)) {
-            console.warn("[generate] true-crime leak detected, retrying with stricter prompt");
+          const lovableForbidden = result ? forbiddenTermsInPackage(result.pkg, niche) : [];
+          if (result && lovableForbidden.length) {
+            console.warn("[generate] forbidden niche vocabulary detected, retrying with stricter prompt");
             result = await generateWithLovableAi(
               niche,
               topic,
@@ -590,10 +584,10 @@ export const Route = createFileRoute("/api/generate")({
               seed,
               gatewayKey,
               initialRunId,
-              STRICT_RETRY_RULES,
+              strictRetryRules(niche, lovableForbidden),
             );
           }
-          if (result && packageLeaks(result.pkg, niche)) {
+          if (result && forbiddenTermsInPackage(result.pkg, niche).length > 0) {
             return Response.json({
               package: fallbackPackage(niche, topic, selection, seed),
               source: "local",

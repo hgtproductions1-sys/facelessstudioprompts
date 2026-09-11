@@ -78,7 +78,7 @@ export interface ProductionPackage {
   };
 }
 
-interface NicheProfile {
+export interface NicheProfile {
   archetype: string;
   toneTags: string[];
   wardrobe: string[];
