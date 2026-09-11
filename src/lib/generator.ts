@@ -11,7 +11,7 @@ import {
   topicPhrase,
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
-import { fillTemplate, getScaffold } from "@/lib/nicheScaffolds";
+import { fillTemplate } from "@/lib/nicheScaffolds";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
 import {
   isHumanSubject,
@@ -1413,6 +1413,15 @@ function rebuildVariationForNiche(seed: number, niche: string, topic: string, pr
   };
 }
 
+function scrubVariation(
+  variation: ReturnType<typeof buildVariationPlan>,
+  profile: NicheProfile,
+): ReturnType<typeof buildVariationPlan> {
+  return Object.fromEntries(
+    Object.entries(variation).map(([key, value]) => [key, scrubForbiddenVocabulary(value, profile)]),
+  ) as ReturnType<typeof buildVariationPlan>;
+}
+
 export function generatePackage({
   niche,
   topic,
@@ -1455,8 +1464,6 @@ export function generatePackage({
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
 
-  const scaffold = getScaffold(niche);
-
   // "a whale and a rat" -> ["whale", "rat"] so versus-style hooks read cleanly.
   const versusNiche = /poor vs|versus/i.test(niche);
   const pair = versusNiche
@@ -1477,39 +1484,33 @@ export function generatePackage({
     text: scrubForbiddenVocabulary(fill(h), profile),
   }));
 
-  const rawCueSheet = scaffold
-    ? scaffold.voCuePattern.map((r) => ({
-        timestamp: r.timestamp,
-        line: fill(r.line),
-        cue: r.cue,
-      }))
-    : [
-        {
-          timestamp: "0:00",
-          line: hooks[0]?.text ?? "",
-          cue: "cold open, no music, dry close-mic",
-        },
-        {
-          timestamp: "0:05",
-          line: `Here is what makes ${lowTopic} worth watching.`,
-          cue: "pause 0.5s",
-        },
-        {
-          timestamp: "0:12",
-          line: `The ${desc} detail is easy to miss the first time.`,
-          cue: "bed track enters, lift energy 10%",
-        },
-        {
-          timestamp: "0:19",
-          line: `Watch what happens next with ${lowTopic}.`,
-          cue: "accelerate",
-        },
-        {
-          timestamp: "0:26",
-          line: `That ${desc2} moment is the whole point.`,
-          cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
-        },
-      ];
+  const rawCueSheet = [
+    {
+      timestamp: "0:00",
+      line: hooks[0]?.text ?? "",
+      cue: `cold open, ${profile.voEmotionalRegister.toLowerCase()}`,
+    },
+    {
+      timestamp: "0:05",
+      line: `${profile.retentionBeatLabels[0]} begins as ${lowTopic} reveals one ${desc} detail worth noticing.`,
+      cue: "pause 0.4s",
+    },
+    {
+      timestamp: "0:11",
+      line: `${profile.retentionBeatLabels[1]} changes the rhythm, bringing the ${desc2} contrast clearly into view.`,
+      cue: "increase pace slightly",
+    },
+    {
+      timestamp: "0:18",
+      line: `Now ${lowTopic} shifts again, and the central idea becomes impossible to overlook.`,
+      cue: "pause 0.3s",
+    },
+    {
+      timestamp: "0:25",
+      line: `${profile.retentionBeatLabels[2]} lands with a final ${desc} image that completes the moment.`,
+      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, intimate finish`,
+    },
+  ];
 
   // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
   const cueSheet = rawCueSheet.map((r) => ({
@@ -1669,10 +1670,10 @@ export function generatePackage({
         : `${storyboardPrompt} | Scene: ${pick(subjectActions, s, i)} in ${pick(environmentLighting, s, i)}, ${st.vibe.lighting}, continuous natural motion, 24fps`,
     };
   });
-  const initialVariation = buildVariationPlan(s, niche, cleanTopic, profile);
+  const initialVariation = scrubVariation(buildVariationPlan(s, niche, cleanTopic, profile), profile);
   const variation = variationMatchesNiche(initialVariation, profile)
     ? initialVariation
-    : rebuildVariationForNiche(s, niche, cleanTopic, profile);
+    : scrubVariation(rebuildVariationForNiche(s, niche, cleanTopic, profile), profile);
 
   return {
     niche,
