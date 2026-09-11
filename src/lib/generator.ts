@@ -1214,24 +1214,14 @@ export function generatePackage({
       cue: "bed track enters, lift energy 10%",
     },
     {
-      timestamp: "0:19",
-      line: `Detail one: ${lowTopic} does not behave the way the story requires.`,
+      timestamp: "0:17",
+      line: `${lowTopic} does not behave the way the story requires, and the timeline only works if someone is lying.`,
       cue: "accelerate, build tension",
     },
     {
-      timestamp: "0:27",
-      line: `Detail two: the timeline only works if someone is lying.`,
-      cue: "clip consonants, forward placement",
-    },
-    {
-      timestamp: "0:35",
-      line: `Which leaves one ${desc2} explanation.`,
-      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, full stop`,
-    },
-    {
-      timestamp: "0:41",
-      line: `Follow for part two on ${lowTopic}.`,
-      cue: "drop to intimate volume, music out",
+      timestamp: "0:24",
+      line: `Which leaves one ${desc2} explanation. Follow for part two on ${lowTopic}.`,
+      cue: `${profile.voice["Signature Pause"] ?? "pause 0.8s"}, drop to intimate volume`,
     },
   ];
 
@@ -1346,7 +1336,7 @@ export function generatePackage({
   ];
   const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
 
-  const shotCount = 6 + (s % 2);
+  const shotCount = 4;
   const shots = Array.from({ length: shotCount }, (_, i) => {
     const start = i * 7;
     const end = start + 7;

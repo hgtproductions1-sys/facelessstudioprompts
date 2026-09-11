@@ -31,8 +31,8 @@ const SCHEMA_SHAPE = `{
     "wardrobe": string[4],
     "voiceSpec": { "Voice Type": string, "Pace (WPM)": string, "Pitch": string, "Accent": string, "Emotional Register": string, "Signature Pause": string },
     "hooks": [{ "label": string, "text": string }] (3 items),
-    "cueSheet": [{ "timestamp": string, "line": string, "cue": string }] (6 items),
-    "retentionBeats": string[4]
+    "cueSheet": [{ "timestamp": string, "line": string, "cue": string }] (exactly 5 items, 65-80 spoken words total, max 30 seconds),
+    "retentionBeats": string[3]
   },
   "visual": {
     "styleDNA": string[5],
@@ -52,7 +52,7 @@ const SCHEMA_SHAPE = `{
   },
   "camera": {
     "overview": { "Shot Count": string, "Avg Shot Length": string, "Pacing Arc": string, "Transition Style": string },
-    "shots": [{ "index": number, "timecode": string, "motion": string, "transition": string, "animationCue": string }] (8 items),
+    "shots": [{ "index": number, "timecode": string, "motion": string, "transition": string, "animationCue": string }] (exactly 4 items),
     "rigCheatSheet": string[4],
     "soundDesign": string[3]
   }
@@ -64,12 +64,14 @@ const PRODUCTION_RULES = [
   "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
   "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
   "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
+  "HARD LIMIT — SCRIPT LENGTH: the cueSheet is a maximum of 30 seconds of spoken audio. Return EXACTLY 5 cue rows whose spoken lines total between 65 and 80 words in all. Never write a long or multi-minute script. Timestamps must stay within 0:00 to 0:30.",
   "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-  "masterPrompt is the primary output: ONE universal, engine-neutral image prompt of 80-100 words that works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model. It combines subject, wardrobe/prop detail, environment, lighting, lens and style in a single paragraph, with no engine flags, no --parameters and no engine names.",
+  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine flags, no --parameters and no engine names. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
   "negativePrompt is a single comma-separated list of things to exclude, always including visible face, text and watermark.",
   "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
   "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
   "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one shot, vertical 9:16.",
+  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE sentence following [Camera Motion] + [Subject Action] + [Environment & Lighting].",
   "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
   "Face never visible in any prompt.",
 ];
@@ -124,7 +126,8 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
   const seed = pkg.visual.seedValue || pkg.seed;
   const mixCues: string[] = [];
 
-  const cueSheet = (pkg.character.cueSheet ?? []).map((r) => {
+  // Hard caps: max 30s of script (5 rows) and exactly 4 shots.
+  const cueSheet = (pkg.character.cueSheet ?? []).slice(0, 5).map((r) => {
     const mix = extractMixDirective(r.cue ?? "");
     if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
     return {
@@ -134,8 +137,9 @@ function sanitizePackage(pkg: ProductionPackage): ProductionPackage {
     };
   });
 
-  const shots = (pkg.camera.shots ?? []).map((s, i) => ({
+  const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
     ...s,
+    index: i + 1,
     prompt: buildShotPrompt({
       motion: s.motion ?? "slow push in",
       subjectAction: dedupePhrases(
