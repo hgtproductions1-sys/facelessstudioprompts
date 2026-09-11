@@ -200,18 +200,20 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       ...pkg.visual,
       aspectRatio: st.format.aspectRatio,
       resolution: st.format.resolution,
-      negativePrompt: toRawLine(pkg.visual.negativePrompt ?? ""),
-      masterPrompt: clampWords(
+      negativePrompt: sanitizeNegative(pkg.visual.negativePrompt ?? "", human),
+      // The master image prompt always carries the selected aspect ratio.
+      masterPrompt: `${clampWords(
         stripPromptFlags(
           dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
         ),
         100,
-      ),
+      )} --ar ${st.format.aspectRatio}`,
       leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
       midjourneyPrompt: sanitizeMidjourneyPrompt(
         pkg.visual.midjourneyPrompt ?? "",
         seed,
         st.format.aspectRatio,
+        midjourneyNegativeFor(pkg.niche),
       ),
       googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
     },
