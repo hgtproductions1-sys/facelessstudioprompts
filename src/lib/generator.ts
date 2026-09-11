@@ -35,6 +35,8 @@ export interface ProductionPackage {
     chaos: number;
     seedValue: number;
     negativePrompt: string;
+    /** One universal, engine-neutral image prompt that works in any image model. */
+    masterPrompt: string;
     leonardoPrompt: string;
     midjourneyPrompt: string;
     googleFlowPrompt: string;
@@ -1294,6 +1296,20 @@ export function generatePackage({
     100,
   );
 
+  const masterPrompt = buildParagraph(
+    [
+      `Cinematic vertical 9:16 image of a faceless ${archetypeNoun}, subject of ${lowTopic}`,
+      `face never visible — head cropped or hidden in shadow, hands and posture in sharp focus`,
+      wardrobeLead,
+      `environment: ${env}, ${env2}`,
+      lightingLine,
+      `${profile.styleDNA.join(", ").toLowerCase()}, 35mm lens, shallow depth of field, fine film grain, photoreal texture, negative space in the top third for captions`,
+    ],
+    100,
+  );
+
+
+
   const shotMotions = [
     "Slow push-in, 5% scale over 4s",
     "Lateral dolly right, 3% drift with parallax",
@@ -1380,6 +1396,7 @@ export function generatePackage({
       chaos: 12,
       seedValue: s,
       negativePrompt,
+      masterPrompt,
       leonardoPrompt,
       midjourneyPrompt,
       googleFlowPrompt,
@@ -1416,25 +1433,16 @@ export function packageToText(pkg: ProductionPackage): string {
   const div = "\n\n===============================\n\n";
   return [
     `FACELESS STUDIO PRO — PRODUCTION PACKAGE\nNiche: ${pkg.niche}\nTopic: ${pkg.topic}\nSeed: ${pkg.seed}\nGenerated: ${pkg.generatedAt}`,
-    `CARD 1 — MASTER CHARACTER PROFILE\nArchetype: ${c.archetype}\nTone: ${c.toneTags.join(", ")}\nConsistency Score: ${c.consistencyScore}/100\n\nPHYSICAL DESCRIPTION\n${c.physicalDescription}\n\nWARDROBE & PROPS\n${c.wardrobe.map((w) => `- ${w}`).join("\n")}\n\nVOICE & DELIVERY\n${Object.entries(
-      c.voiceSpec,
-    )
+    `STEP 1 — SCRIPT & VOICEOVER\n\nVOICE & DELIVERY\n${Object.entries(c.voiceSpec)
       .map(([k, val]) => `${k}: ${val}`)
       .join(
         "\n",
       )}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\nVOICEOVER CUE SHEET\n${c.cueSheet
-      .map((r) => `${r.timestamp} | ${r.line} | ${r.cue}`)
+      .map((r) => `${r.timestamp} | ${r.cue} ${r.line}`)
       .join("\n")}\n\nRETENTION BEATS\n${c.retentionBeats.map((b) => `- ${b}`).join("\n")}`,
-    `CARD 2 — VISUAL STYLE PROMPTS\nStyle DNA: ${v.styleDNA.join(", ")}\nAspect Ratio: ${v.aspectRatio}\nResolution: ${v.resolution}\nModel: ${v.model}\nStylize: ${v.stylize}\nChaos: ${v.chaos}\nSeed: ${v.seedValue}\nNegative Prompt: ${v.negativePrompt}\n\nLEONARDO.AI PROMPT\n${v.leonardoPrompt}\n\nMIDJOURNEY PROMPT\n${v.midjourneyPrompt}\n\nGOOGLE FLOW (VEO 3) PROMPT\n${v.googleFlowPrompt}\n\nCHARACTER CONSISTENCY TOKEN\n${v.consistencyToken}\n\nNEGATIVE PROMPT LIBRARY\n${v.negativeLibrary.map((n) => `- ${n}`).join("\n")}`,
-    `CARD 3 — CAMERA MOTION PLAN\n${Object.entries(cam.overview)
-      .map(([k, val]) => `${k}: ${val}`)
-      .join("\n")}\n\nSHOT LIST\n${cam.shots
-      .map(
-        (sh) =>
-          `Shot ${String(sh.index).padStart(2, "0")} — ${sh.timecode}\n  Prompt: ${sh.prompt}\n  Animation Cue: ${sh.animationCue}\n  Edit point (NLE only): ${sh.transition}`,
-      )
-      .join(
-        "\n",
-      )}\n\nCAMERA RIG CHEAT SHEET\n${cam.rigCheatSheet.map((r) => `- ${r}`).join("\n")}\n\nSOUND DESIGN LAYER\n${cam.soundDesign.map((r) => `- ${r}`).join("\n")}`,
+    `STEP 2 — MASTER IMAGE PROMPT\n\nMASTER PROMPT\n${v.masterPrompt}\n\nNEGATIVE PROMPT\n${v.negativePrompt}`,
+    `STEP 3 — VIDEO GENERATION PROMPTS\n${cam.shots
+      .map((sh) => `Shot ${String(sh.index).padStart(2, "0")}\n${sh.prompt}`)
+      .join("\n\n")}\n\nSOUND DESIGN & MUSIC CUES\n${cam.soundDesign.map((r) => `- ${r}`).join("\n")}`,
   ].join(div);
 }
