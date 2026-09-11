@@ -1247,6 +1247,28 @@ export function getNicheProfile(niche: string): NicheProfile {
   return (NICHE_PROFILES[niche] ?? NICHE_PROFILES[NICHES[0]]) as NicheProfile;
 }
 
+const SAFE_TERM_REPLACEMENTS: Record<string, string> = {
+  cinematic: "film-grade",
+  emotional: "expressive",
+  heartfelt: "warm",
+  moving: "affecting",
+  hook: "opening",
+  cliffhanger: "unresolved beat",
+  payoff: "resolution",
+  countdown: "sequence",
+  narrative: "sequence",
+  character: "subject",
+  story: "concept",
+};
+
+function scrubForbiddenVocabulary(text: string, profile: NicheProfile): string {
+  return profile.forbiddenVocabulary.reduce((output, term) => {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const replacement = SAFE_TERM_REPLACEMENTS[term.toLowerCase()] ?? "excluded concept";
+    return output.replace(new RegExp(`\\b${escaped}\\b`, "gi"), replacement);
+  }, text);
+}
+
 export function slugify(input: string): string {
   return input
     .toLowerCase()
@@ -1387,7 +1409,7 @@ function rebuildVariationForNiche(seed: number, niche: string, topic: string, pr
     pacingProfile,
     editingStyle,
     emotionalTone,
-    copyPastePrompt: `For this ${niche} video about ${topic}, use ${profile.hookFormat.toLowerCase()} as the opening pattern. Structure the story as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the emotional tone ${emotionalTone.toLowerCase()}. Preserve the niche's ${profile.voEmotionalRegister.toLowerCase()} voice while changing the execution enough to feel original.`,
+    copyPastePrompt: scrubForbiddenVocabulary(`For this ${niche} video about ${topic}, use ${profile.hookFormat.toLowerCase()} as the opening pattern. Structure the sequence as ${storyStructure.toLowerCase()}, shape the pacing as ${pacingProfile.toLowerCase()}, edit with ${editingStyle.toLowerCase()}, and keep the tone ${emotionalTone.toLowerCase()}. Preserve the niche's ${profile.voEmotionalRegister.toLowerCase()} voice while changing the execution enough to feel original.`, profile),
   };
 }
 
@@ -1452,7 +1474,7 @@ export function generatePackage({
   const hookSource = [profile.hookFormat, ...profile.hooks.slice(0, 2)];
   const hooks = hookSource.map((h, i) => ({
     label: `Hook ${["A", "B", "C"][i] ?? String(i + 1)}`,
-    text: fill(h),
+    text: scrubForbiddenVocabulary(fill(h), profile),
   }));
 
   const rawCueSheet = scaffold
@@ -1492,7 +1514,7 @@ export function generatePackage({
   // Voiceover script keeps ElevenLabs-supported tags only; mixing notes move to sound design.
   const cueSheet = rawCueSheet.map((r) => ({
     timestamp: r.timestamp,
-    line: dedupePhrases(r.line),
+    line: scrubForbiddenVocabulary(dedupePhrases(r.line), profile),
     cue: toElevenLabsCue(r.cue),
   }));
 
@@ -1511,7 +1533,7 @@ export function generatePackage({
     .filter(Boolean)
     .join(", ")
     .toLowerCase();
-  const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
+  const lightingLine = scrubForbiddenVocabulary(`${st.vibe.lighting}, palette of ${profile.palette}`, profile);
 
   // Non-human niches anchor on the actual topic subject, never a human persona.
   const topicSubject = stripArticle(lowTopic) || archetypeNoun;
