@@ -1336,7 +1336,7 @@ export function generatePackage({
   ];
   const environmentLighting = [`${env}, ${lightingLine}`, `${env2}, ${lightingLine}`];
 
-  const shotCount = 6 + (s % 2);
+  const shotCount = 4;
   const shots = Array.from({ length: shotCount }, (_, i) => {
     const start = i * 7;
     const end = start + 7;
