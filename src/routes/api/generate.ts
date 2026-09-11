@@ -233,19 +233,28 @@ function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionP
       negativePrompt: sanitizeNegative(pkg.visual.negativePrompt ?? "", human),
       // The master image prompt always carries the selected aspect ratio.
       masterPrompt: `${clampWords(
-        stripPromptFlags(
-          dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+        deFaceless(
+          stripPromptFlags(
+            dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
+          ),
+          human,
         ),
         100,
       )} --ar ${st.format.aspectRatio}`,
-      leonardoPrompt: clampWords(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), 100),
+      leonardoPrompt: clampWords(
+        deFaceless(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), human),
+        100,
+      ),
       midjourneyPrompt: sanitizeMidjourneyPrompt(
-        pkg.visual.midjourneyPrompt ?? "",
+        deFaceless(pkg.visual.midjourneyPrompt ?? "", human),
         seed,
         st.format.aspectRatio,
         midjourneyNegativeFor(pkg.niche),
       ),
-      googleFlowPrompt: clampWords(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), 100),
+      googleFlowPrompt: clampWords(
+        deFaceless(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), human),
+        100,
+      ),
     },
     camera: {
       ...pkg.camera,
