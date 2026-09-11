@@ -1234,8 +1234,14 @@ const NICHE_RULES: Record<Niche, NicheRules> = {
   "Poor vs. Rich Animals (AI Skits)": R("Rich {topic} vs Poor {topic} — the twist changes everything.", "Dual comedic character voices, contrasting pitch", "Broad comedy with a soft ending", ["whip pan between characters", "snap zoom on reaction", "split-screen slide-in", "low-angle hero shot", "slow tilt from rich side to poor side", "hard cut on punchline"], ["Setup beat", "Reaction beat", "Payoff beat"], "116 BPM comedic orchestral swap", ["cash register on rich cuts", "tin clatter on poor cuts"], "1.0s before the kind ending", "Pixar-style 3D cartoon render, expressive animal rig, split-screen warm vs cold grade, punchy comedy lighting", "gore, realistic, dark, horror", "Comedic and warm", ["timeline", "investigation", "evidence", "part two", "one source"]),
 };
 
-export const NICHE_PROFILES: Record<string, NicheProfile> = Object.fromEntries(
-  NICHES.map((niche) => [niche, { ...BASE_NICHE_PROFILES[niche], ...NICHE_RULES[niche] }]),
+export const NICHE_PROFILES: Record<string, NicheProfile> = NICHES.reduce<Record<string, NicheProfile>>(
+  (profiles, niche) => {
+    const base = BASE_NICHE_PROFILES[niche];
+    if (!base) throw new Error(`Missing base profile for ${niche}`);
+    profiles[niche] = { ...base, ...NICHE_RULES[niche] };
+    return profiles;
+  },
+  {},
 );
 
 export function getNicheProfile(niche: string): NicheProfile {
