@@ -1296,10 +1296,13 @@ export function generatePackage({
   const scaffold = getScaffold(niche);
 
   // "a whale and a rat" -> ["whale", "rat"] so versus-style hooks read cleanly.
-  const pair = stripArticle(lowTopic)
-    .split(/\s+(?:and|versus|vs\.?)\s+/i)
-    .map((part) => stripArticle(part.trim()))
-    .filter(Boolean);
+  const versusNiche = /poor vs|versus/i.test(niche);
+  const pair = versusNiche
+    ? stripArticle(lowTopic)
+        .split(/\s+(?:and|versus|vs\.?)\s+/i)
+        .map((part) => stripArticle(part.trim()))
+        .filter(Boolean)
+    : [];
   const fill = (template: string): string => {
     if (pair.length !== 2) return fillTemplate(template, phrase);
     let i = 0;
