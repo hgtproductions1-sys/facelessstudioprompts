@@ -88,14 +88,15 @@ const ACTION_VERBS = new Set([
  * Reduces a topic to its object phrase so sentences that already contain the
  * subject and verb don't repeat them: "bear cooks campfire ramen" → "campfire ramen".
  */
+function isActionVerb(word: string): boolean {
+  const base = stem(normalizeWord(word));
+  return ACTION_VERBS.has(base) || ACTION_VERBS.has(`${base}e`);
+}
+
 export function topicPhrase(topic: string): string {
   const words = sanitizeTopic(topic).split(" ").filter(Boolean);
-  if (words.length >= 3) {
-    const second = stem(normalizeWord(words[1] ?? ""));
-    if (ACTION_VERBS.has(second)) return words.slice(2).join(" ");
-  }
-  const first = stem(normalizeWord(words[0] ?? ""));
-  if (words.length >= 2 && ACTION_VERBS.has(first)) return words.slice(1).join(" ");
+  if (words.length >= 3 && isActionVerb(words[1] ?? "")) return words.slice(2).join(" ");
+  if (words.length >= 2 && isActionVerb(words[0] ?? "")) return words.slice(1).join(" ");
   return words.join(" ");
 }
 
