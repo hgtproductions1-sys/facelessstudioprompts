@@ -10,6 +10,13 @@ import {
   toElevenLabsCue,
 } from "@/lib/prompt-sanitize";
 import { resolveStyle, type StyleSelection } from "@/lib/styleOptions";
+import {
+  isHumanSubject,
+  midjourneyNegativeFor,
+  negativePromptFor,
+  subjectFramingClause,
+  subjectPrefix,
+} from "@/lib/subject";
 
 export interface ProductionPackage {
   niche: string;
