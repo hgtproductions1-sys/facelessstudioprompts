@@ -356,7 +356,8 @@ export function buildShotPrompt({
   environmentLighting,
   motionStrength = 3,
 }: ShotPromptInput): string {
-  const m = trimDangling(clampWords(stripTransitions(motion), 12));
+  // Camera command is always a standard cinematographic term, never a pacing adjective.
+  const m = normalizeCameraMove(motion);
   const subject = trimDangling(clampWords(stripTransitions(subjectAction), 14));
   // Scene setting stays brief — no repeated lighting/style essays per shot.
   const env = trimDangling(clampWords(stripTransitions(environmentLighting), 8));
