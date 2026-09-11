@@ -14,6 +14,7 @@ import {
   toRawLine,
 } from "@/lib/prompt-sanitize";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
+import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
 const GLM_MODEL = "glm-5.3-flash";
@@ -253,7 +254,7 @@ async function generateWithLovableAi(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
-              ...styleRules(st),
+              ...styleRules(st, niche),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
@@ -349,7 +350,7 @@ async function generateWithGlm(
             role: "system",
             content: [
               ...PRODUCTION_RULES,
-              ...styleRules(st),
+              ...styleRules(st, niche),
               `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
             ].join(" "),
           },
