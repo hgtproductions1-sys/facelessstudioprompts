@@ -90,7 +90,31 @@ interface NicheProfile {
   sound: string[];
   hooks: string[];
   descriptors: string[];
+  hookFormat: string;
+  voVoiceType: string;
+  voEmotionalRegister: string;
+  cameraMotions: [string, string, string, string, string, string];
+  retentionBeatLabels: [string, string, string];
+  soundDesign: { bedTrack: string; sfx: string[]; silenceCue: string };
+  imageStyleFlags: string;
+  imageNegativePrompt: string;
+  variationTone: string;
+  forbiddenVocabulary: string[];
 }
+
+type LegacyNicheProfile = Omit<
+  NicheProfile,
+  | "hookFormat"
+  | "voVoiceType"
+  | "voEmotionalRegister"
+  | "cameraMotions"
+  | "retentionBeatLabels"
+  | "soundDesign"
+  | "imageStyleFlags"
+  | "imageNegativePrompt"
+  | "variationTone"
+  | "forbiddenVocabulary"
+>;
 
 export const NICHES = [
   "AI Cat & Pet Stories",
@@ -121,7 +145,7 @@ export const NICHES = [
 
 export type Niche = (typeof NICHES)[number];
 
-export const NICHE_PROFILES: Record<string, NicheProfile> = {
+const BASE_NICHE_PROFILES: Record<string, LegacyNicheProfile> = {
   "AI Cat & Pet Stories": {
     archetype: "The Tiny Hero Cat",
     toneTags: ["Heartwarming", "Playful", "Cinematic"],
