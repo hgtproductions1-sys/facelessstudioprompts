@@ -95,7 +95,11 @@ function referenceBlock(niche: string): string {
 }
 
 /** Turns the user's format / vibe / pacing choices into hard model instructions. */
-function styleRules(st: ResolvedStyle): string[] {
+function styleRules(st: ResolvedStyle, niche: string): string[] {
+  return [subjectRule(niche), ..._styleRules(st)];
+}
+
+function _styleRules(st: ResolvedStyle): string[] {
   return [
     `OUTPUT FORMAT: ${st.format.label}. Every image and video prompt must describe a ${st.format.orientation} ${st.format.aspectRatio} frame at ${st.format.resolution}. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
     `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
