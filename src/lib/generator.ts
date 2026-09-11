@@ -1373,7 +1373,12 @@ const VARIATION_OPTIONS = {
   ],
 } as const;
 
-function buildVariationPlan(seed: number, niche: string, topic: string, profile: NicheProfile) {
+function buildVariationPlan(
+  seed: number,
+  niche: string,
+  topic: string,
+  profile: NicheProfile,
+): ProductionPackage["variation"] {
   const hookStyle = pick([...VARIATION_OPTIONS.hookStyle], seed, 1);
   const storyStructure = pick([...VARIATION_OPTIONS.storyStructure], seed, 3);
   const pacingProfile = pick([...VARIATION_OPTIONS.pacingProfile], seed, 5);
@@ -1390,14 +1395,19 @@ function buildVariationPlan(seed: number, niche: string, topic: string, profile:
   };
 }
 
-function variationMatchesNiche(variation: ReturnType<typeof buildVariationPlan>, profile: NicheProfile): boolean {
+function variationMatchesNiche(variation: ProductionPackage["variation"], profile: NicheProfile): boolean {
   const tone = variation.emotionalTone.toLowerCase();
   const variationText = Object.values(variation).join(" ").toLowerCase();
   const required = profile.variationTone.toLowerCase().split(/\s+(?:and|with)\s+/).filter((word) => word.length > 3);
   return required.some((word) => tone.includes(word)) && !profile.forbiddenVocabulary.some((word) => variationText.includes(word.toLowerCase()));
 }
 
-function rebuildVariationForNiche(seed: number, niche: string, topic: string, profile: NicheProfile) {
+function rebuildVariationForNiche(
+  seed: number,
+  niche: string,
+  topic: string,
+  profile: NicheProfile,
+): ProductionPackage["variation"] {
   const hookStyle = `Niche-specific opening based on: ${profile.hookFormat}`;
   const storyStructure = `${profile.retentionBeatLabels.join(" to ")} progression`;
   const pacingProfile = `${profile.voEmotionalRegister} pacing with a controlled final beat`;
@@ -1414,12 +1424,12 @@ function rebuildVariationForNiche(seed: number, niche: string, topic: string, pr
 }
 
 function scrubVariation(
-  variation: ReturnType<typeof buildVariationPlan>,
+  variation: ProductionPackage["variation"],
   profile: NicheProfile,
-): ReturnType<typeof buildVariationPlan> {
+): ProductionPackage["variation"] {
   return Object.fromEntries(
     Object.entries(variation).map(([key, value]) => [key, scrubForbiddenVocabulary(value, profile)]),
-  ) as ReturnType<typeof buildVariationPlan>;
+  ) as unknown as ProductionPackage["variation"];
 }
 
 export function generatePackage({
