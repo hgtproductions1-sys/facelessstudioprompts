@@ -78,11 +78,16 @@ function Bar({ w }: { w: string }) {
   return <div className={`bg-surface2 h-3 rounded ${w}`} />;
 }
 
-const SKELETON_LABELS = ["Script & Voiceover", "Master Image Prompt", "Video Generation Prompts"];
+const SKELETON_LABELS = [
+  "Script & Voiceover",
+  "Master Image Prompt",
+  "Video Generation Prompts",
+  "Variation & Anti-Generic Plan",
+];
 
 export function SkeletonCards() {
   return (
-    <div className="mx-auto mt-6 grid max-w-7xl grid-cols-1 items-stretch gap-6 lg:grid-cols-3">
+    <div className="mx-auto mt-6 grid max-w-[1600px] grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-4">
       {SKELETON_LABELS.map((label, i) => (
         <div
           key={label}
