@@ -7,6 +7,7 @@ const PRODUCT = [
   { label: "AI Tools Hub", href: "/ai-tools-hub" },
   { label: "Playbook", href: "/#playbook" },
   { label: "Prompt Library", href: "/library" },
+  { label: "Free Tools Vault", href: "/free-tools" },
 ];
 
 const RESOURCES = [
