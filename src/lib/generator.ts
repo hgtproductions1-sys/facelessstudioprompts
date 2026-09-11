@@ -1254,15 +1254,15 @@ export function generatePackage({
     .filter(Boolean)
     .join(", ")
     .toLowerCase();
-  const lightingLine = `single hard key light with deep falloff, atmospheric haze, palette of ${profile.palette}`;
+  const lightingLine = `${st.vibe.lighting}, palette of ${profile.palette}`;
 
   const leonardoPrompt = buildParagraph(
     [
-      `Cinematic vertical 9:16 still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `${orient} ${ar} still of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
       `face fully obscured by shadow and framing, shot from behind at chest height, hands in sharp focus`,
       wardrobeLead,
       lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, fine film grain, shallow depth of field, negative space at the top third for captions`,
+      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space at the top third for captions`,
     ],
     100,
   );
@@ -1273,20 +1273,21 @@ export function generatePackage({
         `faceless ${archetypeNoun}, ${lowTopic}`,
         `${env2}, anonymous silhouette, head cropped out of frame, hands in sharp focus`,
         `${profile.styleDNA.slice(0, 3).join(", ").toLowerCase()}, ${profile.palette}`,
-        `volumetric light shafts, 35mm anamorphic, high micro-contrast, editorial photography`,
+        `${st.vibe.lighting}, ${st.vibe.style}`,
       ],
       80,
     ),
     s,
+    ar,
   );
 
   const googleFlowPrompt = buildParagraph(
     [
-      `Vertical 9:16 cinematic shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
+      `${orient} ${ar} shot of a faceless ${archetypeNoun} in ${env}, theme ${lowTopic}`,
       `face hidden by shadow and framing, ${(profile.wardrobe[0] ?? "").toLowerCase()}, hands in focus`,
-      `camera slowly pushes in with subtle parallax on foreground atmosphere`,
+      `camera motion: ${st.pacing.camera}`,
       lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, 35mm film grain, photoreal texture`,
+      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}`,
       `no visible face, no text, no watermark, no warped hands`,
     ],
     100,
@@ -1294,27 +1295,36 @@ export function generatePackage({
 
   const masterPrompt = buildParagraph(
     [
-      `Cinematic vertical 9:16 image of a faceless ${archetypeNoun}, subject of ${lowTopic}`,
+      `${orient} ${ar} image of a faceless ${archetypeNoun}, subject of ${lowTopic}`,
       `face never visible — head cropped or hidden in shadow, hands and posture in sharp focus`,
       wardrobeLead,
       `environment: ${env}, ${env2}`,
       lightingLine,
-      `${profile.styleDNA.join(", ").toLowerCase()}, 35mm lens, shallow depth of field, fine film grain, photoreal texture, negative space in the top third for captions`,
+      `${profile.styleDNA.join(", ").toLowerCase()}, ${st.vibe.style}, negative space in the top third for captions`,
     ],
     100,
   );
 
-
-
-  const shotMotions = [
-    "Slow push-in, 5% scale over 4s",
-    "Lateral dolly right, 3% drift with parallax",
-    "Static locked-off with 2% breathing zoom",
-    "Slow tilt up from hands to shoulders",
-    "Handheld micro-shake, 1.5% amplitude",
-    "Pull-back reveal, 8% scale over 5s",
-    "Orbit left, 6 degrees, subject centred",
-  ];
+  const shotMotions =
+    st.pacing.id === "fast"
+      ? [
+          "Fast punch-in, 12% scale over 1.5s",
+          "Snap lateral dolly right with hard parallax",
+          "Quick whip-in from the hands to the prop",
+          "Rapid pull-back reveal, 18% scale over 2s",
+          "Energetic handheld push, 4% shake",
+          "Fast orbit left, 14 degrees, subject centred",
+          "Speed-driven tilt up from hands to shoulders",
+        ]
+      : [
+          "Very slow push-in, 3% scale over 8s",
+          "Gentle lateral drift, 2% with soft parallax",
+          "Static locked-off with 1% breathing zoom",
+          "Slow tilt up from hands to shoulders over 7s",
+          "Barely-there handheld float, 0.5% amplitude",
+          "Creeping pull-back reveal, 4% scale over 9s",
+          "Slow orbit left, 3 degrees, subject centred",
+        ];
   const transitions = [
     "Hard cut on beat",
     "Whip-pan blur, 4 frames",
