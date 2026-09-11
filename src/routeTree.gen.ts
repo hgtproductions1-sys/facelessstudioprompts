@@ -23,6 +23,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as DotwellKnownAgenticVerifyDottxtRouteImport } from './routes/[.]well-known/agentic-verify[.]txt'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
+import { Route as NichesIndexRouteImport } from './routes/niches.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -96,6 +97,11 @@ const ApiGenerateRoute = ApiGenerateRouteImport.update({
   path: '/api/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NichesIndexRoute = NichesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NichesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,12 +112,13 @@ export interface FileRoutesByFullPath {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
-  '/niches': typeof NichesRoute
+  '/niches': typeof NichesRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches/': typeof NichesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,12 +129,12 @@ export interface FileRoutesByTo {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
-  '/niches': typeof NichesRoute
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches': typeof NichesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,12 +146,13 @@ export interface FileRoutesById {
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
-  '/niches': typeof NichesRoute
+  '/niches': typeof NichesRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/niches/': typeof NichesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -163,6 +171,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,12 +182,12 @@ export interface FileRouteTypes {
     | '/faceless-youtube-automation'
     | '/free-tools'
     | '/library'
-    | '/niches'
     | '/privacy'
     | '/sitemap.xml'
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches'
   id:
     | '__root__'
     | '/'
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/niches/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -206,7 +216,7 @@ export interface RootRouteChildren {
   FacelessYoutubeAutomationRoute: typeof FacelessYoutubeAutomationRoute
   FreeToolsRoute: typeof FreeToolsRoute
   LibraryRoute: typeof LibraryRoute
-  NichesRoute: typeof NichesRoute
+  NichesRoute: typeof NichesRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -314,8 +324,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/niches/': {
+      id: '/niches/'
+      path: '/'
+      fullPath: '/niches/'
+      preLoaderRoute: typeof NichesIndexRouteImport
+      parentRoute: typeof NichesRoute
+    }
   }
 }
+
+interface NichesRouteChildren {
+  NichesIndexRoute: typeof NichesIndexRoute
+}
+
+const NichesRouteChildren: NichesRouteChildren = {
+  NichesIndexRoute: NichesIndexRoute,
+}
+
+const NichesRouteWithChildren =
+  NichesRoute._addFileChildren(NichesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -326,7 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   FacelessYoutubeAutomationRoute: FacelessYoutubeAutomationRoute,
   FreeToolsRoute: FreeToolsRoute,
   LibraryRoute: LibraryRoute,
-  NichesRoute: NichesRoute,
+  NichesRoute: NichesRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
