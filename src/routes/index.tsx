@@ -264,7 +264,7 @@ function Index() {
               onSubmit={submit}
               className="glass-card top-rail-pc relative mx-auto mt-10 max-w-3xl overflow-hidden p-6 md:p-8"
             >
-              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-[1fr_1.4fr_auto]">
+              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-[1fr_1.4fr]">
                 <div>
                   <label
                     htmlFor="niche"
