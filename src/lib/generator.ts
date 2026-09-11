@@ -1190,10 +1190,20 @@ export function generatePackage({
   const desc = pick(profile.descriptors, s);
   const desc2 = pick(profile.descriptors, s, 2);
 
+  const human = isHumanSubject(niche);
+  const framing = subjectFramingClause(niche);
+  const subjPrefix = subjectPrefix(niche);
+
   const physicalDescription = [
-    `Faceless figure, shot from behind and at chest height — the face is never visible, always cropped, shadowed, or turned away.`,
-    `Silhouette: ${pick(["tall and still", "broad and grounded", "lean and deliberate"], s)}, shoulders squared, head slightly lowered.`,
-    `Hands are the hero: close macro on ${pick(["gloved fingers", "bare knuckles", "steady hands"], s, 3)} handling material tied to ${lowTopic}.`,
+    human
+      ? `Faceless figure, shot from behind and at chest height — the face is never visible, always cropped, shadowed, or turned away.`
+      : `${titleCase(profile.archetype.toLowerCase().replace(/^the /, ""))} shown complete and in full detail — natural face and anatomy clearly visible, consistent markings and proportions in every shot.`,
+    human
+      ? `Silhouette: ${pick(["tall and still", "broad and grounded", "lean and deliberate"], s)}, shoulders squared, head slightly lowered.`
+      : `Silhouette: ${pick(["compact and rounded", "sturdy and grounded", "sleek and defined"], s)}, instantly recognisable at thumbnail size.`,
+    human
+      ? `Hands are the hero: close macro on ${pick(["gloved fingers", "bare knuckles", "steady hands"], s, 3)} handling material tied to ${lowTopic}.`
+      : `Hero detail: close macro on the ${desc} surface tied to ${lowTopic}.`,
     `Environment: ${env}; secondary set-up in ${env2}.`,
     `Lighting: single hard key from ${pick(["camera left", "camera right", "behind the subject"], s, 4)}, deep falloff, ${profile.palette}.`,
   ].join("\n");
