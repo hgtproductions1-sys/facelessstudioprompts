@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { ADSENSE_CLIENT } from "@/config/adsense";
 
 function NotFoundComponent() {
   return (
@@ -98,6 +99,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
+        async: true,
+        src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`,
+        crossOrigin: "anonymous",
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
@@ -108,6 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: SITE_NAME,
               url: `${SITE_URL}/`,
               logo: `${SITE_URL}/favicon.png`,
+              email: "hgtproductions1@gmail.com",
             },
             {
               "@type": "WebSite",
@@ -118,9 +125,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "WebApplication",
-              name: `${SITE_NAME} AI Video Generator`,
+              name: `${SITE_NAME} Script and Video Prompt Generator`,
               url: `${SITE_URL}/`,
               applicationCategory: "MultimediaApplication",
+              description: "Create AI-written scripts, visual prompts, and shot plans for faceless videos.",
               operatingSystem: "Web",
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
             },
@@ -160,16 +168,6 @@ function ScrollToTop() {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  useEffect(() => {
-    if (document.querySelector('script[data-adsense="true"]')) return;
-    const script = document.createElement("script");
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3120853344446369";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    script.dataset["adsense"] = "true";
-    document.head.appendChild(script);
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

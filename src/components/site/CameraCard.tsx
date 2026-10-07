@@ -31,7 +31,7 @@ export function CameraCard({ pkg }: { pkg: ProductionPackage }) {
             <li key={s.index} className="border-line bg-surface2/50 rounded-lg border p-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-semibold text-ink">
-                  Shot {String(s.index).padStart(2, "0")}
+                  Shot {String(s.index).padStart(2, "0")} <span className="ml-2 font-normal text-ink-muted">{s.timecode}</span>
                 </p>
                 <CopyButton value={s.prompt} label="" className="px-1" />
               </div>

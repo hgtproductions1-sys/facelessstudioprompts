@@ -21,6 +21,7 @@ import {
 } from "@/lib/subject";
 
 export interface ProductionPackage {
+  narrationMode?: "voiceover" | "ambient";
   niche: string;
   topic: string;
   seed: number;
@@ -1775,11 +1776,11 @@ export function packageToText(pkg: ProductionPackage): string {
   const div = "\n\n===============================\n\n";
   return [
     `FACELESS STUDIO PRO — PRODUCTION PACKAGE\nNiche: ${pkg.niche}\nTopic: ${pkg.topic}\nSeed: ${pkg.seed}\nGenerated: ${pkg.generatedAt}`,
-    `STEP 1 — SCRIPT & VOICEOVER\n\nVOICE & DELIVERY\n${Object.entries(c.voiceSpec)
+    `STEP 1 — ${pkg.narrationMode === "ambient" ? "VISUAL OPENING — NO VOICEOVER" : "SCRIPT & VOICEOVER"}\n\nVOICE & DELIVERY\n${Object.entries(c.voiceSpec)
       .map(([k, val]) => `${k}: ${val}`)
       .join(
         "\n",
-      )}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\nVOICEOVER CUE SHEET\n${c.cueSheet
+      )}\n\nHOOKS\n${c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n")}\n\n${pkg.narrationMode === "ambient" ? "NO SPOKEN NARRATION" : "VOICEOVER CUE SHEET"}\n${c.cueSheet
       .map((r) => `${r.timestamp} | ${r.cue} ${r.line}`)
       .join("\n")}\n\nRETENTION BEATS\n${c.retentionBeats.map((b) => `- ${b}`).join("\n")}`,
     `STEP 2 — MASTER IMAGE PROMPT\n\nMASTER PROMPT\n${v.masterPrompt}\n\nNEGATIVE PROMPT\n${v.negativePrompt}`,

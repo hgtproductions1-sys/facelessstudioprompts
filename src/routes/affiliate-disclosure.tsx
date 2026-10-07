@@ -1,66 +1,32 @@
-import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Affiliate Disclosure — The Faceless Prompts";
-const DESC =
-  "Plain-English, FTC-compliant disclosure of how The Faceless Prompts earns affiliate commissions and why that never changes our recommendations.";
-
 export const Route = createFileRoute("/affiliate-disclosure")({
-  head: () => pageHead({ path: "/affiliate-disclosure", title: TITLE, description: DESC, type: "article" }),
-  component: DisclosurePage,
+  head: () => pageHead({ path: "/affiliate-disclosure", title: "Affiliate Disclosure — The Faceless Prompts", description: "How referral links and advertising may support The Faceless Prompts." }),
+  component: Page,
 });
 
-function DisclosurePage() {
+function Page() {
   return (
-    <LegalLayout title="Affiliate Disclosure" updated="1 January 2025">
-      <LegalSection heading="The Short Version">
-        <p>
-          The Faceless Prompts is free to use because some of the links on this site are affiliate
-          links. If you click one and buy something, we may earn a commission. It costs you nothing
-          extra — the price is the same whether you use our link or go direct.
-        </p>
+    <LegalLayout title="Affiliate Disclosure" updated="6 October 2026">
+      <LegalSection heading="Some links can earn us a commission">
+        <p>{"Some links on The Faceless Prompts are affiliate or referral links. If you follow one and make a qualifying purchase or sign up, we may receive a commission or other referral benefit. This can help support the site."}</p>
+        <p>{"A referral commission does not add a separate fee from us to your purchase. The provider sets the final price, discounts, and subscription conditions, so check those details before paying."}</p>
       </LegalSection>
-
-      <LegalSection heading="FTC Compliance Statement">
-        <p>
-          In accordance with the U.S. Federal Trade Commission's 16 CFR Part 255 guidelines on
-          endorsements and testimonials, we disclose that a material connection exists between this
-          site and certain products and services mentioned on it. Where such a connection exists,
-          the link is labelled as an affiliate link at or near the point of click.
-        </p>
+      <LegalSection heading="What a mention means">
+        <p>{"Our guides and tool listings help you explore options for image generation, video production, voiceover, and related tasks. A listing does not mean that we have personally tested every feature or that a tool will suit every creator. Compare current features, pricing, licensing, and terms with your needs."}</p>
       </LegalSection>
-
-      <LegalSection heading="Programs We Participate In">
-        <p>We may earn commissions from these categories of partners:</p>
-        <ul className="list-disc space-y-1.5 pl-5">
-          <li>AI video generation and animation tools</li>
-          <li>AI voiceover, voice cloning, and audio software</li>
-          <li>Image generation platforms and prompt marketplaces</li>
-          <li>Web hosting, domains, and creator infrastructure</li>
-          <li>Courses, templates, and digital products for content creators</li>
-        </ul>
+      <LegalSection heading="Independent of the tools we list">
+        <p>{"Mentioning a platform does not mean that it owns, approves, or sponsors this site. Referral relationships may exist where we use affiliate links. Product names and trademarks belong to their respective owners."}</p>
       </LegalSection>
-
-      <LegalSection heading="How Commissions Affect Recommendations">
-        <p>
-          They don't. We feature tools we consider genuinely useful for faceless creators, and the
-          existence or size of a commission never determines placement, wording, or ranking. Some
-          tools we recommend pay us nothing at all.
-        </p>
-        <p>
-          We are also not affiliated with, endorsed by, or sponsored by any platform named on this
-          site, including Leonardo.ai, Midjourney, TikTok, YouTube, and Instagram.
-        </p>
+      <LegalSection heading="Advertising and your choice">
+        <p>{"Where advertising appears, it is separate from the content and generator results. An ad is not a guarantee about the advertiser or its product. You are free to visit a provider directly, use a different tool, or decide not to buy."}</p>
       </LegalSection>
-
-      <LegalSection heading="Questions">
-        <p>
-          If anything here is unclear, or you want to know whether a specific link is monetised,
-          email <span className="text-cyan">privacy@facelessstudiopro.com</span> and we will tell
-          you plainly.
-        </p>
+      <LegalSection heading="Ask about a link">
+        <p>{"If you want to know whether a particular link is a referral link, send us its page address and the tool name. Questions about a purchase, cancellation, or refund should go to the provider that took your payment."}</p>
       </LegalSection>
+      <div className="border-line bg-surface2 rounded-xl border p-6"><p className="text-sm text-ink-muted">Contact The Faceless Prompts</p><a href="mailto:hgtproductions1@gmail.com" className="mt-2 inline-block break-all text-base font-medium text-cyan underline underline-offset-4">hgtproductions1@gmail.com</a></div>
     </LegalLayout>
   );
 }

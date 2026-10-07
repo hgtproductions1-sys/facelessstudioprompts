@@ -10,25 +10,38 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdsDottxtRouteImport } from './routes/ads[.]txt'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AiToolsHubRouteImport } from './routes/ai-tools-hub'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EditorialPolicyRouteImport } from './routes/editorial-policy'
 import { Route as FacelessYoutubeAutomationRouteImport } from './routes/faceless-youtube-automation'
 import { Route as FreeToolsRouteImport } from './routes/free-tools'
+import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as NichesRouteImport } from './routes/niches'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PromptsRouteImport } from './routes/prompts'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as DotwellKnownAgenticVerifyDottxtRouteImport } from './routes/[.]well-known/agentic-verify[.]txt'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
+import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as NichesIndexRouteImport } from './routes/niches.index'
 import { Route as NichesSlugRouteImport } from './routes/niches.$slug'
+import { Route as PromptsIndexRouteImport } from './routes/prompts.index'
+import { Route as PromptsSlugRouteImport } from './routes/prompts.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdsDottxtRoute = AdsDottxtRouteImport.update({
@@ -51,6 +64,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EditorialPolicyRoute = EditorialPolicyRouteImport.update({
+  id: '/editorial-policy',
+  path: '/editorial-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FacelessYoutubeAutomationRoute =
   FacelessYoutubeAutomationRouteImport.update({
     id: '/faceless-youtube-automation',
@@ -60,6 +78,11 @@ const FacelessYoutubeAutomationRoute =
 const FreeToolsRoute = FreeToolsRouteImport.update({
   id: '/free-tools',
   path: '/free-tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesRoute = GuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -75,6 +98,11 @@ const NichesRoute = NichesRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptsRoute = PromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -98,6 +126,16 @@ const ApiGenerateRoute = ApiGenerateRouteImport.update({
   path: '/api/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GuidesRoute,
+} as any)
+const GuidesSlugRoute = GuidesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => GuidesRoute,
+} as any)
 const NichesIndexRoute = NichesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -108,31 +146,51 @@ const NichesSlugRoute = NichesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => NichesRoute,
 } as any)
+const PromptsIndexRoute = PromptsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PromptsRoute,
+} as any)
+const PromptsSlugRoute = PromptsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PromptsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
+  '/guides': typeof GuidesRouteWithChildren
   '/library': typeof LibraryRoute
   '/niches': typeof NichesRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/prompts': typeof PromptsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/niches/$slug': typeof NichesSlugRoute
+  '/prompts/$slug': typeof PromptsSlugRoute
+  '/guides/': typeof GuidesIndexRoute
   '/niches/': typeof NichesIndexRoute
+  '/prompts/': typeof PromptsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
   '/library': typeof LibraryRoute
@@ -141,54 +199,76 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/niches/$slug': typeof NichesSlugRoute
+  '/prompts/$slug': typeof PromptsSlugRoute
+  '/guides': typeof GuidesIndexRoute
   '/niches': typeof NichesIndexRoute
+  '/prompts': typeof PromptsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ads.txt': typeof AdsDottxtRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/ai-tools-hub': typeof AiToolsHubRoute
   '/contact': typeof ContactRoute
+  '/editorial-policy': typeof EditorialPolicyRoute
   '/faceless-youtube-automation': typeof FacelessYoutubeAutomationRoute
   '/free-tools': typeof FreeToolsRoute
+  '/guides': typeof GuidesRouteWithChildren
   '/library': typeof LibraryRoute
   '/niches': typeof NichesRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/prompts': typeof PromptsRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/.well-known/agentic-verify.txt': typeof DotwellKnownAgenticVerifyDottxtRoute
   '/api/generate': typeof ApiGenerateRoute
+  '/guides/$slug': typeof GuidesSlugRoute
   '/niches/$slug': typeof NichesSlugRoute
+  '/prompts/$slug': typeof PromptsSlugRoute
+  '/guides/': typeof GuidesIndexRoute
   '/niches/': typeof NichesIndexRoute
+  '/prompts/': typeof PromptsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/editorial-policy'
     | '/faceless-youtube-automation'
     | '/free-tools'
+    | '/guides'
     | '/library'
     | '/niches'
     | '/privacy'
+    | '/prompts'
     | '/sitemap.xml'
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/guides/$slug'
     | '/niches/$slug'
+    | '/prompts/$slug'
+    | '/guides/'
     | '/niches/'
+    | '/prompts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/editorial-policy'
     | '/faceless-youtube-automation'
     | '/free-tools'
     | '/library'
@@ -197,39 +277,55 @@ export interface FileRouteTypes {
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/guides/$slug'
     | '/niches/$slug'
+    | '/prompts/$slug'
+    | '/guides'
     | '/niches'
+    | '/prompts'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/ads.txt'
     | '/affiliate-disclosure'
     | '/ai-tools-hub'
     | '/contact'
+    | '/editorial-policy'
     | '/faceless-youtube-automation'
     | '/free-tools'
+    | '/guides'
     | '/library'
     | '/niches'
     | '/privacy'
+    | '/prompts'
     | '/sitemap.xml'
     | '/terms'
     | '/.well-known/agentic-verify.txt'
     | '/api/generate'
+    | '/guides/$slug'
     | '/niches/$slug'
+    | '/prompts/$slug'
+    | '/guides/'
     | '/niches/'
+    | '/prompts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdsDottxtRoute: typeof AdsDottxtRoute
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   AiToolsHubRoute: typeof AiToolsHubRoute
   ContactRoute: typeof ContactRoute
+  EditorialPolicyRoute: typeof EditorialPolicyRoute
   FacelessYoutubeAutomationRoute: typeof FacelessYoutubeAutomationRoute
   FreeToolsRoute: typeof FreeToolsRoute
+  GuidesRoute: typeof GuidesRouteWithChildren
   LibraryRoute: typeof LibraryRoute
   NichesRoute: typeof NichesRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  PromptsRoute: typeof PromptsRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   DotwellKnownAgenticVerifyDottxtRoute: typeof DotwellKnownAgenticVerifyDottxtRoute
@@ -243,6 +339,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ads.txt': {
@@ -273,6 +376,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/editorial-policy': {
+      id: '/editorial-policy'
+      path: '/editorial-policy'
+      fullPath: '/editorial-policy'
+      preLoaderRoute: typeof EditorialPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faceless-youtube-automation': {
       id: '/faceless-youtube-automation'
       path: '/faceless-youtube-automation'
@@ -285,6 +395,13 @@ declare module '@tanstack/react-router' {
       path: '/free-tools'
       fullPath: '/free-tools'
       preLoaderRoute: typeof FreeToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides': {
+      id: '/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof GuidesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -306,6 +423,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompts': {
+      id: '/prompts'
+      path: '/prompts'
+      fullPath: '/prompts'
+      preLoaderRoute: typeof PromptsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -336,6 +460,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/': {
+      id: '/guides/'
+      path: '/'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof GuidesRoute
+    }
+    '/guides/$slug': {
+      id: '/guides/$slug'
+      path: '/$slug'
+      fullPath: '/guides/$slug'
+      preLoaderRoute: typeof GuidesSlugRouteImport
+      parentRoute: typeof GuidesRoute
+    }
     '/niches/': {
       id: '/niches/'
       path: '/'
@@ -350,8 +488,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NichesSlugRouteImport
       parentRoute: typeof NichesRoute
     }
+    '/prompts/': {
+      id: '/prompts/'
+      path: '/'
+      fullPath: '/prompts/'
+      preLoaderRoute: typeof PromptsIndexRouteImport
+      parentRoute: typeof PromptsRoute
+    }
+    '/prompts/$slug': {
+      id: '/prompts/$slug'
+      path: '/$slug'
+      fullPath: '/prompts/$slug'
+      preLoaderRoute: typeof PromptsSlugRouteImport
+      parentRoute: typeof PromptsRoute
+    }
   }
 }
+
+interface GuidesRouteChildren {
+  GuidesSlugRoute: typeof GuidesSlugRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
+}
+
+const GuidesRouteChildren: GuidesRouteChildren = {
+  GuidesSlugRoute: GuidesSlugRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
+}
+
+const GuidesRouteWithChildren =
+  GuidesRoute._addFileChildren(GuidesRouteChildren)
 
 interface NichesRouteChildren {
   NichesSlugRoute: typeof NichesSlugRoute
@@ -366,17 +531,34 @@ const NichesRouteChildren: NichesRouteChildren = {
 const NichesRouteWithChildren =
   NichesRoute._addFileChildren(NichesRouteChildren)
 
+interface PromptsRouteChildren {
+  PromptsSlugRoute: typeof PromptsSlugRoute
+  PromptsIndexRoute: typeof PromptsIndexRoute
+}
+
+const PromptsRouteChildren: PromptsRouteChildren = {
+  PromptsSlugRoute: PromptsSlugRoute,
+  PromptsIndexRoute: PromptsIndexRoute,
+}
+
+const PromptsRouteWithChildren =
+  PromptsRoute._addFileChildren(PromptsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdsDottxtRoute: AdsDottxtRoute,
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   AiToolsHubRoute: AiToolsHubRoute,
   ContactRoute: ContactRoute,
+  EditorialPolicyRoute: EditorialPolicyRoute,
   FacelessYoutubeAutomationRoute: FacelessYoutubeAutomationRoute,
   FreeToolsRoute: FreeToolsRoute,
+  GuidesRoute: GuidesRouteWithChildren,
   LibraryRoute: LibraryRoute,
   NichesRoute: NichesRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  PromptsRoute: PromptsRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   DotwellKnownAgenticVerifyDottxtRoute: DotwellKnownAgenticVerifyDottxtRoute,

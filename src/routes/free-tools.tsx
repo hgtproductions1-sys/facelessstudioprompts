@@ -4,13 +4,12 @@ import { useMemo, useState } from "react";
 import { pageHead } from "@/lib/seo";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
-import { LeaderboardAd } from "@/components/site/AdSlot";
-import { TOOL_CATEGORIES, VAULT_HACKS } from "@/data/freeTools";
+import { TOOL_CATEGORIES, VAULT_HACKS, VERIFIED_PLANS } from "@/data/freeTools";
 import { cn } from "@/lib/utils";
 
-const TITLE = "The Zero-Budget Creator Vault — Free AI Tools for Faceless Creators";
+const TITLE = "Creator Tools Vault — Plans, Trials & Tools";
 const DESC =
-  "Every free AI tool a faceless creator needs: video & image generators, AI voices, editors, YouTube SEO utilities, and workflow hacks — sorted into one searchable vault.";
+  "Explore creator tools with clear plan labels, trial limitations, and links to check current pricing.";
 
 export const Route = createFileRoute("/free-tools")({
   head: () => pageHead({ path: "/free-tools", title: TITLE, description: DESC, type: "website" }),
@@ -35,25 +34,21 @@ function FreeToolsPage() {
     );
   }, [activeCategory, q]);
 
-  const tabs = [...TOOL_CATEGORIES.map((c) => ({ id: c.id, label: c.label })), { id: HACKS_TAB, label: "Hacks & Tutorials" }];
+  const tabs = [...TOOL_CATEGORIES.map((c) => ({ id: c.id, label: c.label })), { id: HACKS_TAB, label: "Budget & Workflow Tips" }];
 
   return (
     <div className="bg-canvas min-h-screen overflow-x-hidden text-ink">
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 py-20 pt-28">
-        <p className="text-[11px] font-medium tracking-[0.25em] text-ink-muted uppercase">
-          Zero-Budget Creator Vault
+        <p className="text-sm font-medium tracking-[0.25em] text-ink-muted uppercase">
+          Creator Tools Vault
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">
-          The <span className="gradient-text">Zero-Budget Creator Vault</span>
+          The <span className="gradient-text">Creator Tools Vault</span>
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-ink-dim md:text-base">
-          Every free tool that runs a zero-budget faceless channel — sorted by job, searchable, and
-          one click away. Some links are affiliate links; we may earn a commission at no cost to
-          you.
+          Tools grouped by production task. Some offer limited free access, some are trials, and others require payment. Unverified plans are labeled so you can check the provider before signing up. The ElevenLabs referral link may earn us a commission.
         </p>
-
-        <LeaderboardAd className="mt-10" />
 
         {/* Search */}
         <div className="relative mt-10 max-w-md">
@@ -99,26 +94,19 @@ function FreeToolsPage() {
         {active !== HACKS_TAB ? (
           <section aria-label={activeCategory?.label} className="mt-8">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {visibleTools.map((tool) => (
-                <a
-                  key={tool.name}
-                  href={tool.url}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="glass-card group flex items-center justify-between gap-3 p-4 transition-shadow hover:shadow-[0_0_36px_-16px_rgba(139,92,246,0.75)]"
-                >
-                  <div className="min-w-0">
-                    <h3 className="truncate text-sm font-semibold text-ink group-hover:text-white">
-                      {tool.name}
-                    </h3>
-                    <p className="mt-0.5 truncate text-xs text-ink-dim">{tool.blurb}</p>
-                  </div>
-                  <ArrowUpRight
-                    className="h-4 w-4 shrink-0 text-ink-muted transition-colors group-hover:text-cyan"
-                    aria-hidden
-                  />
-                </a>
-              ))}
+              {visibleTools.map((tool) => {
+                const plan = VERIFIED_PLANS[tool.name];
+                return (
+                  <article key={tool.name} className="glass-card flex min-w-0 flex-col gap-3 p-5">
+                    <h3 className="text-base font-semibold text-ink">{tool.name}</h3>
+                    <p className="text-sm leading-relaxed text-ink-dim">{tool.blurb}</p>
+                    <p className="border-line rounded-lg border p-2 text-sm font-medium text-cyan">{plan?.label ?? "Pricing not verified"}</p>
+                    <p className="flex-1 text-sm leading-relaxed text-ink-dim">{plan?.note ?? "Check current plans, trial limits, export restrictions, and commercial-use rights with the provider. A free plan is not confirmed here."}</p>
+                    {plan ? <p className="text-sm text-ink-muted">Plan information checked 6 October 2026. <a href={plan.url} target="_blank" rel="noopener noreferrer" className="text-cyan underline">View pricing</a></p> : null}
+                    <a href={tool.url} target="_blank" rel={tool.name === "ElevenLabs" ? "noopener noreferrer sponsored" : "noopener noreferrer"} className="border-line mt-2 inline-flex min-h-11 items-center justify-center rounded-xl border px-4 py-2 text-sm text-ink">Visit provider</a>
+                  </article>
+                );
+              })}
             </div>
             {visibleTools.length === 0 ? (
               <p className="mt-8 text-sm text-ink-muted">
@@ -161,8 +149,6 @@ function FreeToolsPage() {
             })}
           </section>
         )}
-
-        <LeaderboardAd className="mt-14" />
 
         <div className="mt-14">
           <Link

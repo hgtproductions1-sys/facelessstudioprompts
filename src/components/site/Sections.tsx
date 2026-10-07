@@ -11,13 +11,13 @@ const STEPS = [
     Icon: Compass,
   },
   {
-    title: "2. Lock Your Persona",
-    copy: "Copy the consistency token into every prompt so your character, wardrobe, and lighting never drift.",
+    title: "2. Describe Your Subject",
+    copy: "Reuse a clear description and supported references, then review each frame for continuity.",
     Icon: Layers,
   },
   {
-    title: "3. Publish & Scale",
-    copy: "Follow the shot list and cue sheet, export the package, and ship a video a day without ever being on camera.",
+    title: "3. Produce & Review",
+    copy: "Export the plan, create your media in external tools, and review the edit before publishing.",
     Icon: Rocket,
   },
 ];
@@ -25,7 +25,7 @@ const STEPS = [
 const FEATURES = [
   {
     title: "Recurring character profile",
-    copy: "Archetype, physical description, wardrobe and voice spec written once so you can paste the same block into every prompt and stop the character drifting between shots.",
+    copy: "Archetype, physical description, wardrobe and voice spec written once so you can paste the same block into every prompt as a reference when reviewing each shot.",
     Icon: Sparkles,
   },
   {
@@ -112,17 +112,16 @@ export function FinalCta() {
       <div className="from-purple/40 to-cyan/40 mx-auto max-w-5xl rounded-2xl bg-gradient-to-r p-px">
         <div className="glass-card rounded-2xl px-6 py-14 text-center">
           <h2 className="text-2xl font-bold md:text-3xl">
-            Ready to scale your <span className="gradient-text">faceless channel?</span>
+            Ready to plan your <span className="gradient-text">faceless channel?</span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-ink-dim md:text-base">
-            Everything you need to run a faceless page at volume — voice, visuals, motion, and the
-            offers that monetise the traffic.
+            Find tools for the next step in your production workflow: images, motion, or narration.
           </p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <AffiliateCta ctaKey="finalBanner" className="w-full px-7 py-3.5 sm:w-auto" />
           </div>
           <p className="mt-4 text-xs text-ink-muted">
-            Free tier available · No credit card required.
+            Provider plans, pricing, and availability vary.
           </p>
         </div>
       </div>

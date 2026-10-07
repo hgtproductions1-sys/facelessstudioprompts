@@ -1,382 +1,144 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  generatePackage,
-  getNicheProfile,
-  hashSeed,
-  type ProductionPackage,
-} from "@/lib/generator";
-import { getTopPromptsForNiche } from "@/data/promptLibrary";
-import {
-  buildShotPrompt,
-  clampWords,
-  dedupePhrases,
-  extractMixDirective,
-  sanitizeMidjourneyPrompt,
-  normalizeCameraMove,
-  sanitizeTopic,
-  stripFormatSpecs,
-  stripMarkdown,
-  stripPromptFlags,
-  toElevenLabsCue,
-  toRawLine,
-} from "@/lib/prompt-sanitize";
+import { z } from "zod";
+import { getNicheProfile, hashSeed, type ProductionPackage } from "@/lib/generator";
+import { dedupePhrases, normalizeCameraMove, sanitizeMidjourneyPrompt, stripFormatSpecs, stripPromptFlags, toElevenLabsCue, toRawLine } from "@/lib/prompt-sanitize";
 import { resolveStyle, type ResolvedStyle, type StyleSelection } from "@/lib/styleOptions";
-import { isHumanSubject, midjourneyNegativeFor, subjectPrefix, subjectRule } from "@/lib/subject";
+import { isHumanSubject, midjourneyNegativeFor, subjectRule } from "@/lib/subject";
 
 const GLM_ENDPOINT = "https://api.hcnsec.cn/v1/chat/completions";
-const GLM_MODEL = "glm-5.3-flash";
-const TIMEOUT_MS = 60_000;
-
+const TIMEOUT_MS = 85_000;
 const GATEWAY_RESPONSES_ENDPOINT = "https://ai.gateway.lovable.dev/v1/responses";
 const LOVABLE_MODEL = "openai/gpt-6-astra";
 const RUN_ID_HEADER = "X-Lovable-AIG-Run-ID";
 
-const SCHEMA_SHAPE = `{
-  "niche": string,
-  "topic": string,
-  "character": {
-    "archetype": string,
-    "consistencyScore": number (85-99),
-    "toneTags": string[3],
-    "physicalDescription": string,
-    "wardrobe": string[4],
-    "voiceSpec": { "Voice Type": string, "Pace (WPM)": string, "Pitch": string, "Accent": string, "Emotional Register": string, "Signature Pause": string },
-    "hooks": [{ "label": string, "text": string }] (3 items),
-    "cueSheet": [{ "timestamp": string, "line": string, "cue": string }] (exactly 5 items, 65-80 spoken words total, max 30 seconds),
-    "retentionBeats": string[3]
-  },
-  "visual": {
-    "styleDNA": string[5],
-    "aspectRatio": "9:16",
-    "resolution": string,
-    "model": string,
-    "stylize": number,
-    "chaos": number,
-    "seedValue": number,
-    "negativePrompt": string,
-    "masterPrompt": string,
-    "leonardoPrompt": string,
-    "midjourneyPrompt": string,
-    "googleFlowPrompt": string,
-    "consistencyToken": string,
-    "negativeLibrary": string[5]
-  },
-  "camera": {
-    "overview": { "Shot Count": string, "Avg Shot Length": string, "Pacing Arc": string, "Transition Style": string },
-    "shots": [{ "index": number, "timecode": string, "motion": string, "transition": string, "animationCue": string }] (exactly 4 items),
-    "rigCheatSheet": string[4],
-    "soundDesign": string[3]
-  },
-  "variation": {
-    "hookStyle": string,
-    "storyStructure": string,
-    "pacingProfile": string,
-    "editingStyle": string,
-    "emotionalTone": string,
-    "copyPastePrompt": string
-  }
-}`;
+const line = z.string().trim().min(1);
+const strings = z.array(line);
+const packageSchema = z.object({
+  character: z.object({
+    archetype: line, physicalDescription: line,
+    consistencyScore: z.coerce.number().finite().optional().default(0),
+    toneTags: strings.optional().default([]), wardrobe: strings.optional().default([]),
+    voiceSpec: z.record(z.union([z.string(), z.number()]).transform(String)),
+    hooks: z.array(z.object({ label: line, text: line })).min(1).max(3),
+    cueSheet: z.array(z.object({ timestamp: line, line, cue: z.string().optional().default("") })),
+    retentionBeats: strings.min(1),
+  }),
+  visual: z.object({
+    styleDNA: strings.min(1), aspectRatio: z.string().optional().default(""), resolution: z.string().optional().default(""),
+    model: z.string().optional().default(""), stylize: z.coerce.number().optional().default(0),
+    chaos: z.coerce.number().optional().default(0), seedValue: z.coerce.number().optional().default(0),
+    negativePrompt: line, masterPrompt: line, leonardoPrompt: line, midjourneyPrompt: line, googleFlowPrompt: line,
+    consistencyToken: z.string().optional().default(""), negativeLibrary: strings.optional().default([]),
+  }),
+  camera: z.object({
+    overview: z.record(z.union([z.string(), z.number()]).transform(String)).optional().default({}),
+    shots: z.array(z.object({
+      index: z.coerce.number().optional().default(0), timecode: z.string().optional().default(""),
+      motion: line, transition: line, animationCue: line,
+    })).length(4),
+    rigCheatSheet: strings.optional().default([]), soundDesign: strings.min(1),
+  }),
+  variation: z.object({ hookStyle: line, storyStructure: line, pacingProfile: line, editingStyle: line, emotionalTone: line, copyPastePrompt: line }),
+});
+
+// A valid JSON example is easier for compatible models to follow than pseudocode types.
+const SCHEMA_SHAPE = JSON.stringify({
+  character: { archetype: "Specific subject", physicalDescription: "Subject appearance and unchanging identifying details", toneTags: ["tone"], wardrobe: ["Relevant props or clothing, omit for objects"], voiceSpec: { "Voice Type": "Appropriate voice or None", "Pace (WPM)": "180", "Emotional Register": "Specific tone" }, hooks: [{ label: "Opening", text: "A specific short opening line" }], cueSheet: [{ timestamp: "0:00", line: "Write real spoken words here", cue: "[excited]" }], retentionBeats: ["0:00 — Specific opening beat"] },
+  visual: { styleDNA: ["Selected visual style"], masterPrompt: "Complete single-scene image prompt", negativePrompt: "text, watermark, unwanted artifacts", leonardoPrompt: "Complete image prompt", midjourneyPrompt: "Complete image prompt without flags", googleFlowPrompt: "One single-shot video prompt" },
+  camera: { shots: [{ motion: "Push-in", transition: "Hard cut", animationCue: "A complete sentence naming the specific subject, stable identifying details, action and location." }], soundDesign: ["Relevant audible sounds or appropriate music"], rigCheatSheet: ["Practical shooting note"] },
+  variation: { hookStyle: "Specific hook", storyStructure: "Specific sequence", pacingProfile: "Specific pacing", editingStyle: "Specific editing", emotionalTone: "Specific tone", copyPastePrompt: "A practical variation plan that preserves all user constraints" },
+});
 
 const PRODUCTION_RULES = [
-  "You are a senior faceless-video producer for TikTok/Shorts/Reels. Return ONLY valid JSON matching the ProductionPackage shape (character, visual, camera, variation). No markdown, no code fences, no commentary.",
-  "OUTPUT SANITISATION: every string value is pure raw plain text. Never use markdown — no asterisks, no bold, no italics, no hashtags or headings, no backticks, no code fences, no bullet characters, no numbered list prefixes. Prompts must be copy-paste ready for external engines exactly as written.",
-  "Match the structure, tone, and specificity of these reference examples when generating the production package. Be equally detailed and concrete — no generic filler.",
-  "Every field must be concrete and shoot-ready, specific to the given niche and topic — never generic filler.",
-  "Rules: physicalDescription and wardrobe must be precise enough to redraw the same character every time (fabrics, colors, props, silhouette).",
-  "hooks must be scroll-stopping spoken lines under 12 words with clean grammar; never repeat a phrase already present in the sentence.",
-  "HARD LIMIT — SCRIPT LENGTH: the cueSheet is a maximum of 30 seconds of spoken audio. Return EXACTLY 5 cue rows whose spoken lines total between 65 and 80 words in all. Never write a long or multi-minute script. Timestamps must stay within 0:00 to 0:30.",
-  "cueSheet lines are natural spoken dialogue only. The cue field may contain ONLY ElevenLabs v3 delivery tags such as [whisper], [pause], [sigh], [firm], [drawn out], [excited]. Never put music, mixing, bed-track, dB, BPM or microphone directions in cueSheet — those belong in camera.soundDesign.",
-  "HARD LIMIT — IMAGE PROMPT: masterPrompt is the primary output and must be EXACTLY ONE dense paragraph of comma-separated visual descriptors (80-100 words). No bullet points, no line breaks, no headings, no engine names. The app appends the --ar flag. It works unchanged in Midjourney, Leonardo, Flux, Imagen or any image model and covers subject, wardrobe/prop detail, environment, lighting, lens and style.",
-  "negativePrompt is a single comma-separated list of things to exclude, always including text and watermark.",
-  "leonardoPrompt, midjourneyPrompt and googleFlowPrompt must each be ONE concise coherent paragraph of 80-100 words combining subject, environment, lighting and camera. Never repeat the same descriptive block twice.",
-  "midjourneyPrompt must contain no --flags at all; flags are appended by the app.",
-  "googleFlowPrompt must be a Google Flow (Veo 3) text-to-video scene prompt: one single shot.",
-  "HARD LIMIT — SHOT COUNT: camera.shots must contain EXACTLY 4 essential shots. Never 5, 7 or 8. Each shot is exactly ONE short sentence using the strict syntax [Specific Camera Movement] + [Subject Action] + [Brief Scene Setting]. Keep the scene setting to a few words and NEVER repeat long lighting, palette or style descriptions in every shot.",
-  "CAMERA TERMINOLOGY: every shot must begin with exactly one of these standard cinematographic movements — Push-in, Pull-out, Pan left, Pan right, Tilt up, Tilt down, Tracking shot, Orbit, Crane shot, Snap-zoom. Never use a pacing adjective such as snappy, fast, quick or slow as the camera command.",
-  "SUBJECT ANCHORING: never invent a human persona (mechanic, chef, investigator, narrator) for a topic about an object, vehicle, animal or food. Anchor every shot action directly to the actual topic subject, e.g. \"Tracking shot: past the Mustang's rusted front grille, dust motes swirling\".",
-  "IMAGE PROMPT CLEANLINESS: never write resolution or aspect-ratio prose such as \"vertical 9:16 frame at 1080x1920\" inside masterPrompt or any image prompt. The app appends the single --ar parameter at the end.",
-  "Each camera shot's motion must be pure camera movement with no editing transitions (no dissolve, whip-pan, hard cut, frames counts) inside it; put those only in the transition field.",
-  "VARIATION PLAN: create a distinctive combination of hook device, story structure, pacing arc, editing grammar, and emotional tone for this exact niche and topic. Do not recycle one universal template across niches. copyPastePrompt must be one practical plain-text paragraph that tells the creator how to execute this combination while preserving channel identity and changing the opening, information order, shot rhythm, transitions, and emotional framing.",
+  "Return ONLY one complete JSON object. No markdown fences or commentary. All content is in English unless the user requests another language.",
+  "Explicit user requirements and selected visual style override niche conventions. Preserve subject colors, clothing, props and factual constraints across all outputs. Do not invent historical claims, statistics or guaranteed outcomes.",
+  "Write natural complete sentences. Never insert the raw topic as a noun phrase. Do not use placeholder text from the example schema. Do not split or truncate sentences.",
+  "Create a 30-second production plan with exactly FOUR shots covering 0:00–0:30. Each shot lasts 7–8 seconds. Fast pacing means energetic action within those shots, NOT a false claim that four shots of 1.5 seconds cover 30 seconds. Slow pacing means restrained movement and longer pauses.",
+  "Each shot has one camera movement in motion and a full visual sentence in animationCue. Name the subject, recurring appearance, action and brief setting in EVERY animationCue so each copied prompt is independently usable. Never put camera movement or editing commands in animationCue. Put editing in transition.",
+  "Use one of: Push-in, Pull-out, Pan left, Pan right, Tilt up, Tilt down, Tracking shot, Orbit, Crane shot, Snap-zoom, Static shot. No model-specific command-line flags in text.",
+  "For narrated videos, write exactly FIVE cue rows. Follow the word budget supplied below, count the words, and revise before returning. cueSheet line contains spoken words only; cue contains optional delivery tags, never music or visual directions. Start at 0:00 and finish within 30 seconds.",
+  "For videos with NO narration, cueSheet must be an EMPTY array and Voice Type must be None. Hooks describe visual openings. All actions belong in the shots. Do not introduce speech, narration or a voiceover call to action anywhere.",
+  "Return 1–3 hooks of at most 12 words each. For narration these must be actual spoken opening lines, never visual directions. For ambient videos they are short visual opening descriptions. Return three timestamped retention beats. The master image prompt describes one frame in 60–100 words, not a whole film. Other image prompts describe that same subject and frame; the Flow prompt describes ONLY ONE of the four shots, not the full story or a sequence of multiple events. No engine flags, resolution or aspect-ratio parameters in prose.",
+  "The variation plan may change camera angles, framing or the opening order ONLY. It must preserve the specific subject, colors, clothes, props, setting, facts and audio constraints in the user brief. Never suggest swapping the character, changing its scarf or repainting a vehicle when those details were specified. This is a variation of the same brief, not a different story.",
+  "For factual explainers, the visual demonstration must show the same cause described in the narration. Do not animate a supposedly stationary object in a way that contradicts the explanation. Keep any text labels out of generated images and shots; optional labels may be added later during editing.",
+  "Keep each image prompt below 110 words and the variation paragraph below 100 words. Sound design must fit the scene and obey any no-music or ambient-only requirement. Do not substitute unrelated preset sounds.",
 ];
 
-function fallbackPackage(
-  niche: string,
-  topic: string,
-  style?: StyleSelection,
-  seed?: number,
-): ProductionPackage {
-  return generatePackage({
-    niche,
-    topic,
-    seed: seed ?? hashSeed(`${niche}::${topic}`),
-    ...(style ? { style } : {}),
-  });
+function ambientOnly(niche: string, topic: string): boolean {
+  if (/\b(?:no|without)\s+(?:any\s+)?(?:voice[ -]?over|narration|dialogue|speech)\b|\bsilent video\b/i.test(topic)) return true;
+  if (/\b(?:with (?:a )?(?:voice[ -]?over|narration)|narrate)\b/i.test(topic)) return false;
+  return /no narration/i.test(getNicheProfile(niche).voVoiceType);
 }
-
-function referenceBlock(niche: string): string {
-  return getTopPromptsForNiche(niche, 3)
-    .map((p, i) => `${i + 1}. "${p.title}"${p.niche ? ` (${p.niche})` : ""}:\n${p.prompt}`)
-    .join("\n\n");
+function noMusic(topic: string): boolean {
+  return /\b(?:no|without)\s+(?:any\s+)?music\b|\bonly\b[^.!?]*(?:sounds?|sfx)\b/i.test(topic);
 }
-
-/** Hard niche-archetype instructions built from the per-niche scaffold. */
-function nicheRules(niche: string): string[] {
-  const profile = getNicheProfile(niche);
-  return [
-    `NICHE PROFILE — follow this profile exactly and never borrow language from another niche. Hook format: ${profile.hookFormat}`,
-    `VOICE TYPE: ${profile.voVoiceType}. EMOTIONAL REGISTER: ${profile.voEmotionalRegister}.`,
-    `CAMERA MOTIONS — use four distinct motions selected only from this list, with no adjacent motion type repeated: ${profile.cameraMotions.join(" | ")}.`,
-    `RETENTION LABELS — use these three labels in order and attach them to exact cue-sheet timestamps: ${profile.retentionBeatLabels.join(" | ")}. No retention beat may occur after the final cue.`,
-    `SOUND DESIGN — bed track: ${profile.soundDesign.bedTrack}; SFX: ${profile.soundDesign.sfx.join(", ")}; silence cue: ${profile.soundDesign.silenceCue}.`,
-    `IMAGE STYLE: ${profile.imageStyleFlags}. IMAGE NEGATIVES: ${profile.imageNegativePrompt}. Never start an image prompt with the raw topic fragment; rewrite it as a complete visual sentence.`,
-    `VARIATION TONE: emotionalTone must be exactly compatible with "${profile.variationTone}" and the variation copy must match "${profile.voEmotionalRegister}".`,
-    `FORBIDDEN VOCABULARY — none of these terms may appear anywhere in the JSON: ${profile.forbiddenVocabulary.map((word) => `"${word}"`).join(", ")}.`,
-  ];
-}
-
-/** Turns the user's format / vibe / pacing choices into hard model instructions. */
 function styleRules(st: ResolvedStyle, niche: string): string[] {
-  return [subjectRule(niche), ...nicheRules(niche), ..._styleRules(st)];
-}
-
-function _styleRules(st: ResolvedStyle): string[] {
-  return [
-    `OUTPUT FORMAT: ${st.format.label}. Compose every image and video prompt for a ${st.format.orientation} frame, but never write the aspect ratio or pixel resolution inside the prompt text. visual.aspectRatio must be "${st.format.aspectRatio}" and visual.resolution must be "${st.format.resolution}". Never mention any other aspect ratio.`,
-    `VISUAL VIBE: ${st.vibe.label}. Lighting keywords to use: ${st.vibe.lighting}. Style keywords to use: ${st.vibe.style}. Every image prompt must clearly read as this look.`,
-    `PACING: ${st.pacing.label}. Camera motion must be ${st.pacing.camera}. Average shot length about ${st.pacing.avgShotLength}, and the voice pace (voiceSpec "Pace (WPM)") must be ${st.pacing.wpm}.`,
+  return [subjectRule(niche),
+    `Visual style: ${st.vibe.label}; ${st.vibe.style}; ${st.vibe.lighting}. Use the selected style consistently even if the niche often uses another style.`,
+    `Frame: ${st.format.aspectRatio}, ${st.format.resolution}. Pacing: ${st.pacing.label}. Four shots total, average 7.5 seconds.`,
   ];
 }
-
 function userInstruction(niche: string, topic: string, st: ResolvedStyle, seed: number): string {
-  return `Niche: ${niche}\nTopic: ${topic}\nVariation seed: ${seed}\nFormat: ${st.format.label} (${st.format.aspectRatio})\nVisual vibe: ${st.vibe.label}\nPacing: ${st.pacing.label}\n\nUse the variation seed to choose a fresh combination for this run. Return a single json object matching exactly this shape:\n${SCHEMA_SHAPE}`;
+  const silent = ambientOnly(niche, topic);
+  return `Niche: ${niche}\nUser brief: ${topic}\nVariation seed: ${seed}\nAudio: ${silent ? "NO NARRATION. Empty cueSheet, visual hooks only." : `Narration required: exactly five cue rows with ${st.pacing.id === "slow" ? "40–50" : "65–80"} spoken words IN TOTAL.`}\n${noMusic(topic) ? "NO MUSIC. Only the sounds specified by the user." : "Choose sound to match the user's scene."}\nFollow this JSON structure, replacing the example values with real content. Expand camera.shots to FOUR objects; use FIVE cueSheet rows for narration, or [] for no narration:\n${SCHEMA_SHAPE}`;
 }
+function parseJsonLoose(text: string): unknown {
+  const cleaned = text.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+  try { return JSON.parse(cleaned); } catch {
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    try { return match ? JSON.parse(match[0]) : null; } catch { return null; }
+  }
+}
+const clean = (s: string) => dedupePhrases(toRawLine(stripPromptFlags(s)));
+const wordCount = (s: string) => s.match(/\b[\w’'-]+\b/g)?.length ?? 0;
 
-/** Parses model output that may be wrapped in prose or code fences. */
-function parseJsonLoose(text: string): unknown | null {
-  try {
-    return JSON.parse(text);
-  } catch {
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) return null;
-    try {
-      return JSON.parse(match[0]);
-    } catch {
-      return null;
+function normalizePackage(raw: unknown, niche: string, topic: string, st: ResolvedStyle, seed: number): ProductionPackage | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const r = raw as Record<string, any>;
+  if (r["character"] && typeof r["character"] === "object") {
+    for (const key of ["cueSheet", "retentionBeats"]) {
+      if (!r["character"][key] && Array.isArray(r[key])) r["character"][key] = r[key];
     }
+    // The explicit no-narration choice is authoritative, even if a model adds a script.
+    if (ambientOnly(niche, topic)) r["character"]["cueSheet"] = [];
   }
-}
-
-function normalizePackage(
-  raw: unknown,
-  niche: string,
-  topic: string,
-  st: ResolvedStyle,
-  seed: number,
-): ProductionPackage | null {
-  if (!raw || typeof raw !== "object") return null;
-  const p = raw as Record<string, unknown>;
-  if (!p["character"] || !p["visual"] || !p["camera"]) return null;
-  const fallback = fallbackPackage(
-    niche,
-    topic,
-    {
-      format: st.format.id,
-      vibe: st.vibe.id,
-      pacing: st.pacing.id,
-    },
-    seed,
-  );
-  const rawVariation =
-    p["variation"] && typeof p["variation"] === "object"
-      ? (p["variation"] as Partial<ProductionPackage["variation"]>)
-      : {};
-  const merged = {
-    ...fallback,
-    ...p,
-    variation: { ...fallback.variation, ...rawVariation },
-    niche,
-    topic,
-    seed,
-    generatedAt: new Date().toISOString(),
-  } as ProductionPackage;
-
-  return sanitizePackage(merged, st);
-}
-
-const FACELESS_TERMS =
-  /\b(faceless|anonymous silhouette|head cropped(?: out of frame)?|face (?:is )?(?:never |not )?visible|no visible face|face hidden[^,.]*|hidden face|face obscured[^,.]*|visible face)\b[^,.]*/gi;
-
-/** Removes faceless language from prompts whose subject is not human. */
-function deFaceless(text: string, human: boolean): string {
-  if (human) return text;
-  return text
-    .replace(FACELESS_TERMS, "")
-    .replace(/\s*,\s*,/g, ",")
-    .replace(/\s+([,.])/g, "$1")
-    .replace(/([,.])\1+/g, "$1")
-    .replace(/\s{2,}/g, " ")
-    .replace(/^[\s,.-]+/, "")
-    .trim();
-}
-
-/** Negative prompt: only human subjects exclude a visible face. */
-function sanitizeNegative(raw: string, human: boolean): string {
-  const list = toRawLine(raw)
-    .split(",")
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .filter((p) => human || !/face/i.test(p));
-  for (const must of ["text", "watermark"]) {
-    if (!list.some((p) => p.toLowerCase().includes(must))) list.push(must);
+  const parsed = packageSchema.safeParse(r);
+  if (!parsed.success) {
+    console.warn("[generate] Invalid fields: " + parsed.error.issues.map(i => i.path.join(".")).join(", "));
+    return null;
   }
-  if (human && !list.some((p) => /visible face/i.test(p))) list.push("visible face");
-  return list.join(", ");
-}
-
-/** Applies the shared sanitisation rules to any package (local or model-generated). */
-function sanitizePackage(pkg: ProductionPackage, st: ResolvedStyle): ProductionPackage {
-  const seed = pkg.visual.seedValue || pkg.seed;
-  const profile = getNicheProfile(pkg.niche);
-  const mixCues: string[] = [];
-
-  // Hard caps: max 30s of script (5 rows) and exactly 4 shots.
-  const cueSheet = (pkg.character.cueSheet ?? []).slice(0, 5).map((r) => {
-    const mix = extractMixDirective(r.cue ?? "");
-    if (mix) mixCues.push(`${r.timestamp} — ${mix}`);
-    return {
-      timestamp: toRawLine(r.timestamp ?? ""),
-      line: dedupePhrases(toRawLine(r.line ?? "")),
-      cue: toElevenLabsCue(r.cue ?? ""),
-    };
+  const p = parsed.data;
+  const silent = ambientOnly(niche, topic);
+  const cueSheet = p.character.cueSheet.map((row, i) => ({ ...row, timestamp: `0:${String(i * 6).padStart(2, "0")}`, line: clean(row.line), cue: toElevenLabsCue(row.cue) }));
+  const times = ["0:00–0:07", "0:07–0:15", "0:15–0:22", "0:22–0:30"];
+  const shots = p.camera.shots.map((shot, i) => {
+    const motion = /static|locked/i.test(shot.motion) ? "Static shot" : normalizeCameraMove(shot.motion);
+    const action = clean(shot.animationCue);
+    return { ...shot, index: i + 1, timecode: times[i]!, motion, animationCue: action, prompt: `${motion}: ${action}` };
   });
-
-  const human = isHumanSubject(pkg.niche);
-  const shots = (pkg.camera.shots ?? []).slice(0, 4).map((s, i) => ({
-    ...s,
-    index: i + 1,
-    motion: profile.cameraMotions[(seed + i) % profile.cameraMotions.length] ?? normalizeCameraMove(s.motion ?? st.pacing.camera),
-    prompt: buildShotPrompt({
-      motion: s.motion ?? st.pacing.camera,
-      // Non-human niches anchor the action on the real topic subject, not a persona.
-      subjectAction: dedupePhrases(
-        clampWords(
-          human
-            ? `${subjectPrefix(pkg.niche)}${pkg.character.archetype.toLowerCase().replace(/^the /, "")}`
-            : `the ${sanitizeTopic(pkg.topic).toLowerCase()}`,
-          6,
-        ) + ` ${clampWords(toRawLine(s.animationCue ?? ""), 10)}`,
-      ),
-      // Brief scene setting only — no repeated lighting essays per shot.
-      environmentLighting: clampWords(pkg.visual.styleDNA[0] ?? st.vibe.style, 5),
-      motionStrength: st.pacing.id === "fast" ? 4 : 3,
-    }),
-  }));
-
-  return {
-    ...pkg,
-    topic: sanitizeTopic(pkg.topic),
-    character: {
-      ...pkg.character,
-      voiceSpec: {
-        ...pkg.character.voiceSpec,
-        "Voice Type": profile.voVoiceType,
-        "Emotional Register": profile.voEmotionalRegister,
-        "Pace (WPM)": st.pacing.wpm,
-      },
-      hooks: (pkg.character.hooks ?? []).map((h) => ({
-        label: h.label,
-        text: dedupePhrases(toRawLine(h.text ?? "")),
-      })),
-      cueSheet,
-      retentionBeats: profile.retentionBeatLabels.map((label, i) => {
-        const cueIndex = i === 0 ? 0 : i === 1 ? 2 : Math.max(0, cueSheet.length - 1);
-        const timestamp = cueSheet[cueIndex]?.timestamp ?? ["0:00", "0:12", "0:25"][i];
-        return `${timestamp} — ${label}: ${toRawLine(pkg.character.retentionBeats?.[i] ?? "Advance the niche-specific story beat.").replace(/^\d+:\d+\s*[—-]\s*[^:]+:\s*/, "")}`;
-      }),
-    },
-    visual: {
-      ...pkg.visual,
-      aspectRatio: st.format.aspectRatio,
-      resolution: st.format.resolution,
-      negativePrompt: sanitizeNegative(pkg.visual.negativePrompt ?? "", human),
-      // The master image prompt always carries the selected aspect ratio.
-      masterPrompt: `${clampWords(
-        stripFormatSpecs(
-          deFaceless(
-            stripPromptFlags(
-              dedupePhrases(toRawLine(pkg.visual.masterPrompt || pkg.visual.leonardoPrompt || "")),
-            ),
-            human,
-          ),
-        ),
-        100,
-      )} --ar ${st.format.aspectRatio}`,
-      leonardoPrompt: clampWords(
-        stripFormatSpecs(deFaceless(stripPromptFlags(pkg.visual.leonardoPrompt ?? ""), human)),
-        100,
-      ),
-      midjourneyPrompt: sanitizeMidjourneyPrompt(
-        stripFormatSpecs(deFaceless(pkg.visual.midjourneyPrompt ?? "", human)),
-        seed,
-        st.format.aspectRatio,
-        midjourneyNegativeFor(pkg.niche),
-      ),
-      googleFlowPrompt: clampWords(
-        stripFormatSpecs(deFaceless(stripPromptFlags(pkg.visual.googleFlowPrompt ?? ""), human)),
-        100,
-      ),
-    },
-    camera: {
-      ...pkg.camera,
-      shots,
-      soundDesign: [
-        `Bed track: ${profile.soundDesign.bedTrack}`,
-        `SFX: ${profile.soundDesign.sfx.join(", ")}`,
-        `Silence: ${profile.soundDesign.silenceCue}`,
-        ...mixCues,
-      ].map((line) => stripMarkdown(line)),
-    },
-    variation: {
-      hookStyle: toRawLine(pkg.variation.hookStyle),
-      storyStructure: toRawLine(pkg.variation.storyStructure),
-      pacingProfile: toRawLine(pkg.variation.pacingProfile),
-      editingStyle: toRawLine(pkg.variation.editingStyle),
-      emotionalTone: profile.variationTone,
-      copyPastePrompt: dedupePhrases(
-        `${toRawLine(pkg.variation.copyPastePrompt)} Keep the emotional tone ${profile.variationTone.toLowerCase()} and the narration ${profile.voEmotionalRegister.toLowerCase()}.`,
-      ),
-    },
+  const image = (s: string) => clean(stripFormatSpecs(s));
+  let negative = clean(p.visual.negativePrompt);
+  if (!isHumanSubject(niche)) negative = negative.split(",").filter(s => !/faceless|anonymous silhouette|head cropped|hidden face|visible face/i.test(s)).join(",").trim();
+  const result: ProductionPackage = {
+    ...p, niche, topic, seed, generatedAt: new Date().toISOString(), narrationMode: silent ? "ambient" : "voiceover",
+    character: { ...p.character, cueSheet, voiceSpec: { ...p.character.voiceSpec, "Voice Type": silent ? "None — ambient sound only" : p.character.voiceSpec["Voice Type"] || "Narrator", "Pace (WPM)": silent ? "Not applicable" : st.pacing.wpm }, hooks: p.character.hooks.map(h => ({ label: clean(h.label), text: clean(h.text) })) },
+    visual: { ...p.visual, aspectRatio: st.format.aspectRatio, resolution: st.format.resolution, seedValue: seed, masterPrompt: image(p.visual.masterPrompt), negativePrompt: negative, leonardoPrompt: image(p.visual.leonardoPrompt), midjourneyPrompt: sanitizeMidjourneyPrompt(image(p.visual.midjourneyPrompt), seed, st.format.aspectRatio, midjourneyNegativeFor(niche)), googleFlowPrompt: image(p.visual.googleFlowPrompt) },
+    camera: { ...p.camera, shots, overview: { ...p.camera.overview, "Shot Count": "4", "Avg Shot Length": "7.5s", "Pacing Arc": st.pacing.label }, soundDesign: p.camera.soundDesign.map(clean) },
+    variation: { ...p.variation, copyPastePrompt: clean(p.variation.copyPastePrompt) },
   };
+  return result;
 }
-
-function strictRetryRules(niche: string, detected: string[]): string[] {
-  const profile = getNicheProfile(niche);
-  const banned = detected.length ? detected : profile.forbiddenVocabulary;
-  return [
-    `PREVIOUS ATTEMPT FAILED NICHE VALIDATION. Rewrite the complete JSON in the ${niche} profile only. These detected terms are explicitly banned everywhere: ${banned.map((word) => `"${word}"`).join(", ")}. Use hook format "${profile.hookFormat}", voice "${profile.voVoiceType}", retention labels ${profile.retentionBeatLabels.join(", ")}, image style "${profile.imageStyleFlags}", and variation tone "${profile.variationTone}".`,
-  ];
-}
-
-/** True when the model leaked investigative language into a non-investigative niche. */
-function forbiddenTermsInPackage(pkg: ProductionPackage, niche: string): string[] {
-  // Negative prompts intentionally name excluded concepts, so validate only
-  // creative output that an engine or narrator will positively execute.
-  const text = [
-    ...pkg.character.hooks.map((hook) => hook.text),
-    ...pkg.character.cueSheet.map((row) => row.line),
-    ...pkg.character.retentionBeats,
-    pkg.visual.masterPrompt,
-    pkg.visual.leonardoPrompt,
-    pkg.visual.googleFlowPrompt,
-    ...pkg.camera.shots.map((shot) => `${shot.motion} ${shot.prompt}`),
-    pkg.variation.hookStyle,
-    pkg.variation.storyStructure,
-    pkg.variation.pacingProfile,
-    pkg.variation.editingStyle,
-    pkg.variation.emotionalTone,
-    pkg.variation.copyPastePrompt,
-  ].join(" ").toLowerCase();
-  return getNicheProfile(niche).forbiddenVocabulary.filter((term) => text.includes(term.toLowerCase()));
+function qualityIssues(p: ProductionPackage, st: ResolvedStyle): string[] {
+  const issues: string[] = [];
+  if (p.character.hooks.some(h => wordCount(h.text) > 12)) issues.push("Each hook must contain at most 12 words. Write a short spoken opening for narrated videos, not stage directions.");
+  if (p.narrationMode !== "ambient") {
+    const words = wordCount(p.character.cueSheet.map(r => r.line).join(" "));
+    const [min, max] = st.pacing.id === "slow" ? [40, 50] : [65, 80];
+    if (p.character.cueSheet.length !== 5 || words < min! || words > max!) issues.push(`Write exactly five cue rows totaling ${min}–${max} spoken words; you returned ${words} words in ${p.character.cueSheet.length} rows.`);
+  }
+  if (p.camera.shots.some(s => wordCount(s.animationCue) < 7 || /\bthe (?:a|an|the)\b/i.test(s.animationCue))) issues.push("Every shot needs a complete grammatical sentence naming its subject, identifying details, action and setting.");
+  if (noMusic(p.topic) && p.camera.soundDesign.some(s => /music|bed track|piano|soundtrack|bpm/i.test(s) && !/\b(?:no|none|without|omit)\b/i.test(s))) issues.push("Remove music entirely. Use only the sounds the user requested.");
+  return issues;
 }
 
 /** Streams a production package out of the Lovable AI gateway Responses API. */
@@ -392,6 +154,7 @@ async function generateWithLovableAi(
   try {
     const res = await fetch(GATEWAY_RESPONSES_ENDPOINT, {
       method: "POST",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
       headers: {
         "Content-Type": "application/json",
         "Lovable-API-Key": apiKey,
@@ -411,7 +174,7 @@ async function generateWithLovableAi(
               ...PRODUCTION_RULES,
               ...styleRules(st, niche),
               ...extraRules,
-              `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
+
             ].join(" "),
           },
           { role: "user", content: userInstruction(niche, topic, st, seed) },
@@ -481,167 +244,74 @@ async function generateWithLovableAi(
   }
 }
 
-async function generateWithGlm(
-  niche: string,
-  topic: string,
-  st: ResolvedStyle,
-  seed: number,
-  apiKey: string,
-  extraRules: string[] = [],
-): Promise<ProductionPackage | null> {
+class GenerationError extends Error {
+  constructor(message: string, public status = 502, public retryable = true) { super(message); }
+}
+async function generateWithGlm(niche: string, topic: string, st: ResolvedStyle, seed: number, apiKey: string, extraRules: string[] = [], compatibility = false): Promise<ProductionPackage | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
     const res = await fetch(GLM_ENDPOINT, {
-      method: "POST",
-      signal: controller.signal,
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: GLM_MODEL,
-        temperature: 0.6,
-        response_format: { type: "json_object" },
-        messages: [
-          {
-            role: "system",
-            content: [
-              ...PRODUCTION_RULES,
-              ...styleRules(st, niche),
-              ...extraRules,
-              `Reference style examples from successful creators:\n${referenceBlock(niche)}`,
-            ].join(" "),
-          },
-          { role: "user", content: userInstruction(niche, topic, st, seed) },
-        ],
+      method: "POST", signal: controller.signal,
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: process.env["AI_MODEL"] || "auto", max_tokens: 10000, temperature: 0.4,
+        ...(!compatibility ? { reasoning_effort: "low", response_format: { type: "json_object" } } : {}),
+        messages: [{ role: "system", content: [...PRODUCTION_RULES, ...styleRules(st, niche), ...extraRules].join("\n") }, { role: "user", content: userInstruction(niche, topic, st, seed) }],
       }),
     });
     if (!res.ok) {
-      console.warn(`[generate] GLM responded with HTTP ${res.status}`);
-      return null;
+      console.warn(`[generate] Provider HTTP ${res.status}`);
+      if (res.status === 401 || res.status === 403) throw new GenerationError("The AI service credentials need attention. Please contact the site owner.", 503, false);
+      if (res.status === 429) throw new GenerationError("The AI provider is at its usage limit. Please try again later.", 429, false);
+      throw new GenerationError("The AI provider is temporarily unavailable. Please try again.", 502);
     }
-    const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) {
-      console.warn("[generate] GLM response had no message content");
-      return null;
-    }
-    return normalizePackage(parseJsonLoose(content), niche, topic, st, seed);
-  } catch (err) {
-    console.warn(`[generate] GLM call failed: ${err instanceof Error ? err.name : "unknown"}`);
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+    const data = await res.json() as { model?: string; choices?: { finish_reason?: string; message?: { content?: string | { type?: string; text?: string }[] } }[] };
+    const choice = data.choices?.[0];
+    const content = choice?.message?.content;
+    const text = typeof content === "string" ? content : Array.isArray(content) ? content.map(b => b.text || "").join("") : "";
+    console.info(`[generate] Provider completed: model=${data.model || "unknown"}, finish=${choice?.finish_reason || "unknown"}, content=${text.length}`);
+    if (!text || choice?.finish_reason === "length") return null;
+    return normalizePackage(parseJsonLoose(text), niche, topic, st, seed);
+  } catch (error) {
+    if (error instanceof GenerationError) throw error;
+    if (controller.signal.aborted) throw new GenerationError("The AI provider took too long. Your topic is still here; please try again.", 504);
+    throw new GenerationError("The AI connection was interrupted. Please try again.", 502);
+  } finally { clearTimeout(timer); }
 }
 
 export const Route = createFileRoute("/api/generate")({
-  server: {
-    handlers: {
-      POST: async ({ request }) => {
-        let body: {
-          niche?: unknown;
-          topic?: unknown;
-          format?: unknown;
-          vibe?: unknown;
-          pacing?: unknown;
-          seed?: unknown;
-        };
+  server: { handlers: {
+    GET: () => Response.json({ mode: process.env["GLM_API_KEY"] || process.env["LOVABLE_API_KEY"] ? "ai" : "unavailable" }, { headers: { "Cache-Control": "no-store" } }),
+    POST: async ({ request }) => {
+      let body: Record<string, unknown>;
+      try { body = await request.json(); } catch { return Response.json({ error: "Invalid request." }, { status: 400 }); }
+      if (!body || typeof body !== "object") return Response.json({ error: "Invalid request." }, { status: 400 });
+      const niche = typeof body["niche"] === "string" ? body["niche"].trim() : "";
+      const topic = typeof body["topic"] === "string" ? body["topic"].replace(/\s+/g, " ").trim() : "";
+      if (!niche || topic.length < 3 || niche.length > 200 || topic.length > 300) return Response.json({ error: "Choose a niche and enter a topic between 3 and 300 characters." }, { status: 400 });
+      const selection: StyleSelection = { ...(typeof body["format"] === "string" ? { format: body["format"] } : {}), ...(typeof body["vibe"] === "string" ? { vibe: body["vibe"] } : {}), ...(typeof body["pacing"] === "string" ? { pacing: body["pacing"] } : {}) };
+      const st = resolveStyle(selection);
+      const seed = typeof body["seed"] === "number" && Number.isFinite(body["seed"]) ? Math.trunc(body["seed"]) : hashSeed(`${niche}::${topic}`);
+      const key = process.env["GLM_API_KEY"], gatewayKey = process.env["LOVABLE_API_KEY"];
+      if (!key && !gatewayKey) return Response.json({ error: "AI generation is not configured. Please contact the site owner." }, { status: 503 });
+      let feedback: string[] = [], lastError = new GenerationError("The AI returned an incomplete draft twice. Please try again.");
+      // Exactly one bounded retry for empty, incomplete, invalid or transient responses.
+      for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          body = await request.json();
-        } catch {
-          return Response.json({ error: "Invalid JSON body" }, { status: 400 });
-        }
-        const niche = typeof body.niche === "string" ? body.niche.trim() : "";
-        const topic = typeof body.topic === "string" ? sanitizeTopic(body.topic) : "";
-        if (!niche || !topic || niche.length > 200 || topic.length > 300) {
-          return Response.json({ error: "niche and topic are required" }, { status: 400 });
-        }
-
-        const selection: StyleSelection = {
-          ...(typeof body.format === "string" ? { format: body.format } : {}),
-          ...(typeof body.vibe === "string" ? { vibe: body.vibe } : {}),
-          ...(typeof body.pacing === "string" ? { pacing: body.pacing } : {}),
-        };
-        const st = resolveStyle(selection);
-        const seed =
-          typeof body.seed === "number" && Number.isFinite(body.seed)
-            ? Math.trunc(body.seed)
-            : hashSeed(`${niche}::${topic}`);
-
-        const initialRunId = request.headers.get(RUN_ID_HEADER)?.trim() || undefined;
-        const glmKey = process.env["GLM_API_KEY"];
-        if (glmKey) {
-          let pkg = await generateWithGlm(niche, topic, st, seed, glmKey);
-          // One stricter retry when the model leaks true-crime language into a
-          // niche that should never use it.
-          const glmForbidden = pkg ? forbiddenTermsInPackage(pkg, niche) : [];
-          if (pkg && glmForbidden.length) {
-            console.warn("[generate] forbidden niche vocabulary detected, retrying with stricter prompt");
-            pkg = await generateWithGlm(niche, topic, st, seed, glmKey, strictRetryRules(niche, glmForbidden));
-          }
-          if (pkg && forbiddenTermsInPackage(pkg, niche).length === 0) {
-            return Response.json({ package: pkg, source: "glm" });
-          }
+          const extra = feedback.length ? ["Correct these issues before returning the complete JSON: " + feedback.join(" ")] : [];
+          const pkg = key ? await generateWithGlm(niche, topic, st, seed, key, extra, attempt > 0)
+            : (await generateWithLovableAi(niche, topic, st, seed, gatewayKey!, request.headers.get(RUN_ID_HEADER) || undefined, extra))?.pkg;
           if (pkg) {
-            return Response.json({
-              package: fallbackPackage(niche, topic, selection, seed),
-              source: "local",
-            });
-          }
-        } else {
-          console.warn("[generate] GLM_API_KEY is not set");
+            feedback = qualityIssues(pkg, st);
+            if (!feedback.length) return Response.json({ package: pkg, source: key ? "trustedrouter" : "lovable" }, { headers: { "Cache-Control": "no-store" } });
+            console.warn("[generate] Quality correction: " + feedback.join(" "));
+          } else feedback = ["Return all required fields with complete content. Ensure valid JSON, exactly four shots and the specified narration word count. Do not return reasoning without the final JSON."];
+        } catch (error) {
+          lastError = error instanceof GenerationError ? error : new GenerationError("AI generation failed. Please try again.");
+          if (!lastError.retryable) break;
         }
-
-        const gatewayKey = process.env["LOVABLE_API_KEY"];
-        if (gatewayKey) {
-          let result = await generateWithLovableAi(
-            niche,
-            topic,
-            st,
-            seed,
-            gatewayKey,
-            initialRunId,
-          );
-          const lovableForbidden = result ? forbiddenTermsInPackage(result.pkg, niche) : [];
-          if (result && lovableForbidden.length) {
-            console.warn("[generate] forbidden niche vocabulary detected, retrying with stricter prompt");
-            result = await generateWithLovableAi(
-              niche,
-              topic,
-              st,
-              seed,
-              gatewayKey,
-              initialRunId,
-              strictRetryRules(niche, lovableForbidden),
-            );
-          }
-          if (result && forbiddenTermsInPackage(result.pkg, niche).length > 0) {
-            return Response.json({
-              package: fallbackPackage(niche, topic, selection, seed),
-              source: "local",
-            });
-          }
-          if (result) {
-            return Response.json(
-              { package: result.pkg, source: "lovable" },
-              {
-                headers: result.runId
-                  ? { [RUN_ID_HEADER]: result.runId, "Access-Control-Expose-Headers": RUN_ID_HEADER }
-                  : {},
-              },
-            );
-          }
-        } else {
-          console.warn("[generate] LOVABLE_API_KEY is not set");
-        }
-
-        return Response.json({
-          package: fallbackPackage(niche, topic, selection, seed),
-          source: "local",
-        });
-      },
+      }
+      return Response.json({ error: lastError.message }, { status: lastError.status, headers: { "Cache-Control": "no-store" } });
     },
-  },
+  } },
 });

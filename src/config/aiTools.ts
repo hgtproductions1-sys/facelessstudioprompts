@@ -24,7 +24,7 @@ const style = (pkg: ProductionPackage) => pkg.visual.styleDNA.join(", ");
 export const AI_TOOLS: AiTool[] = [
   {
     id: "midjourney",
-    name: "Midjourney v6",
+    name: "Midjourney",
     category: "image",
     blurb: "Best-in-class stylised stills with strong character consistency.",
     url: "https://www.midjourney.com",
@@ -80,7 +80,7 @@ export const AI_TOOLS: AiTool[] = [
   },
   {
     id: "runway",
-    name: "Runway Gen-3",
+    name: "Runway",
     category: "video",
     blurb: "Image-to-video with precise camera motion control.",
     url: "https://runwayml.com",

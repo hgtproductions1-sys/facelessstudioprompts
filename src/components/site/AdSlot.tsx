@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { ADSENSE_CLIENT, ADSENSE_SLOTS, isAdSenseSlotConfigured } from "@/config/adsense";
 import { cn } from "@/lib/utils";
 
 declare global {
@@ -8,28 +9,23 @@ declare global {
   }
 }
 
-export const ADSENSE_CLIENT = "ca-pub-3120853344446369";
-/** Replace with the ad-unit slot IDs from your AdSense dashboard. */
-export const ADSENSE_SLOTS = {
-  leaderboard: "0000000000",
-  inArticle: "0000000000",
-} as const;
-
-function pushAd(ref: React.RefObject<HTMLModElement | null>) {
+function usePushAd(ref: React.RefObject<HTMLModElement | null>, slot: string) {
   useEffect(() => {
     const el = ref.current;
-    if (!el || el.dataset["adStatus"] === "done") return;
+    if (!isAdSenseSlotConfigured(slot) || !el || el.dataset["adStatus"] === "done") return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
       // AdSense not loaded yet (e.g. ad blocker) — slot collapses gracefully.
     }
-  }, [ref]);
+  }, [ref, slot]);
 }
 
 export function LeaderboardAd({ className }: { className?: string }) {
   const insRef = useRef<HTMLModElement>(null);
-  pushAd(insRef);
+  usePushAd(insRef, ADSENSE_SLOTS.leaderboard);
+
+  if (!isAdSenseSlotConfigured(ADSENSE_SLOTS.leaderboard)) return null;
 
   return (
     <aside
@@ -51,7 +47,9 @@ export function LeaderboardAd({ className }: { className?: string }) {
 
 export function NativeAd({ className }: { className?: string }) {
   const insRef = useRef<HTMLModElement>(null);
-  pushAd(insRef);
+  usePushAd(insRef, ADSENSE_SLOTS.inArticle);
+
+  if (!isAdSenseSlotConfigured(ADSENSE_SLOTS.inArticle)) return null;
 
   return (
     <aside aria-label="Advertisement" className={cn("mx-auto w-full max-w-4xl px-4", className)}>

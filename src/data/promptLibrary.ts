@@ -22,7 +22,7 @@ export const PROMPTS: Prompt[] = [
   // ---------------------------------------------------------------- SEO
   {
     id: "seo-title-generator",
-    title: "YouTube Title Generator (CTR-Optimized)",
+    title: "YouTube Title Generator (Title Ideas)",
     category: "SEO",
     reactions: 412,
     tips: "Paste your topic in the brackets. Pick the title with the strongest curiosity gap, not the cleverest one.",
@@ -39,7 +39,7 @@ Write 15 video titles. Rules:
 - No emojis, no ALL CAPS words except one optional power word.
 - Include the primary keyword in the first 3 words for at least 5 of them.
 
-Output as a numbered list. After each title, append a pipe and the predicted CTR band (LOW / MID / HIGH) and a 6-word reason.`,
+Output as a numbered list. After each title, append a pipe and a clarity and curiosity assessment (LOW / MID / HIGH), not a predicted click-through rate and a 6-word reason.`,
   },
   {
     id: "seo-description-generator",

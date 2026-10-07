@@ -49,10 +49,10 @@ export const AFFILIATES = {
     internal: false,
   },
   card4Mid: {
-    label: "Get 50 Done-For-You Video Hooks",
-    url: "https://example.com/hooks",
+    label: "Browse Script & Hook Prompts",
+    url: "/library",
     id: "card4-mid",
-    internal: false,
+    internal: true,
   },
   finalBanner: {
     label: "Explore Every AI Tool We Prompt For",

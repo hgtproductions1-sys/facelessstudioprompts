@@ -1,29 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Twitter, Youtube, Music2 } from "lucide-react";
 import { LogoLockup } from "./Navbar";
 
 const PRODUCT = [
   { label: "Generator", href: "/#generator" },
   { label: "AI Tools Hub", href: "/ai-tools-hub" },
   { label: "Playbook", href: "/#playbook" },
+  { label: "Prompt Guides", href: "/prompts" },
+  { label: "Creator Guides", href: "/guides" },
   { label: "Prompt Library", href: "/library" },
   { label: "Niche Directory", href: "/niches" },
-  { label: "Free Tools Vault", href: "/free-tools" },
+  { label: "Creator Tools Vault", href: "/free-tools" },
 ];
 
 const RESOURCES = [
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Faceless YouTube Automation", href: "/faceless-youtube-automation" },
+  { label: "Choose a Faceless Niche", href: "/guides/choose-faceless-youtube-niche" },
+  { label: "YouTube AI & Monetization", href: "/guides/youtube-ai-content-monetization" },
+  { label: "YouTube Prompts", href: "/prompts/youtube" },
+  { label: "Image Prompts", href: "/prompts/image-generation" },
+  { label: "Video Prompts", href: "/prompts/video-generation" },
   { label: "Image Generators", href: "/ai-tools-hub" },
   { label: "Video Animators", href: "/ai-tools-hub" },
   { label: "Voice & Audio", href: "/ai-tools-hub" },
-];
-
-const SOCIALS = [
-  { Icon: Youtube, label: "YouTube" },
-  { Icon: Music2, label: "TikTok" },
-  { Icon: Twitter, label: "X" },
-  { Icon: Instagram, label: "Instagram" },
 ];
 
 export function Footer() {
@@ -34,28 +33,19 @@ export function Footer() {
           <div>
             <LogoLockup />
             <p className="mt-4 max-w-xs text-sm text-ink-dim">
-              Build the blueprint. Stay faceless. Scale the traffic.
+              Scripts, visual prompts, and shot plans for your next video.
             </p>
-            <div className="mt-5 flex gap-2">
-              {SOCIALS.map(({ Icon, label }) => (
-                <button
-                  key={label}
-                  type="button"
-                  aria-label={label}
-                  className="border-line bg-surface2 hover:border-purple flex h-9 w-9 items-center justify-center rounded-full border text-ink-muted transition-colors hover:text-purple-bright"
-                >
-                  <Icon className="h-4 w-4" aria-hidden />
-                </button>
-              ))}
-            </div>
+
           </div>
 
           <FooterCol title="Product" links={PRODUCT} />
           <FooterCol title="Resources" links={RESOURCES} />
 
           <div>
-            <h3 className="text-xs font-medium tracking-widest text-ink-dim uppercase">Legal</h3>
+            <h3 className="text-sm font-medium tracking-widest text-ink-dim uppercase">About & Legal</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
+              <li><Link to="/about" className="text-ink-dim hover:text-white">About Us</Link></li>
+              <li><Link to="/editorial-policy" className="text-ink-dim hover:text-white">Editorial Policy</Link></li>
               <li>
                 <Link to="/privacy" className="text-ink-dim hover:text-white">
                   Privacy Policy

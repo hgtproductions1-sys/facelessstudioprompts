@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { LeaderboardAd, NativeAd } from "@/components/site/AdSlot";
+import { EditorialByline } from "@/components/site/EditorialByline";
 import { Footer } from "@/components/site/Footer";
 import { Navbar } from "@/components/site/Navbar";
 import { ScrollToTopButton } from "@/components/site/ScrollToTopButton";
@@ -33,7 +34,7 @@ const STAGES = [
   {
     title: "Fix the niche before you make anything",
     Icon: Compass,
-    body: "One niche decides your character, palette, pacing and audience, so pick it once and stop re-deciding. A faceless channel that publishes cat-drama on Monday and finance listicles on Thursday teaches the algorithm nothing about who to show it to. Choose from the twenty-four niches the generator already knows, or use the same list as faceless TikTok niche ideas — the verticals overlap almost completely.",
+    body: "One niche decides your character, palette, pacing and audience, so pick it once and stop re-deciding. A faceless channel that jumps from cat drama to finance listicles makes it harder to build a recognizable viewer promise and reusable production system. Choose from the twenty-four niches the generator already knows, or use the same list as faceless TikTok niche ideas — the verticals overlap almost completely.",
     action: { label: "Pick a niche in the generator", to: "/" as const, hash: "generator" },
   },
   {
@@ -51,13 +52,13 @@ const STAGES = [
   {
     title: "Narrate and design the sound",
     Icon: AudioLines,
-    body: "Keep the spoken script separate from the sound design. Your voiceover copy should hold natural dialogue plus a few emotional and pacing tags; the music beds, whooshes and mix notes belong in a second list the editor reads. ElevenLabs viral voiceover scripts are written for exactly that split, and it is the difference between a clean narration track and an editor guessing what you meant.",
+    body: "Keep the spoken script separate from the sound design. Your voiceover copy should hold natural dialogue plus a few emotional and pacing tags; the music beds, whooshes and mix notes belong in a second list the editor reads. Voiceover drafts are written for exactly that split, and it is the difference between a clean narration track and an editor guessing what you meant.",
     action: { label: "Voice and audio tools", to: "/ai-tools-hub" as const },
   },
   {
     title: "Publish on a fixed cadence",
     Icon: Clapperboard,
-    body: "Pick a slot you can hold for ninety days — one short a day beats three on Sunday — and batch the work: script, stills, motion and voice in one sitting, uploads on the schedule. YouTube Short automation is mostly scheduling discipline; the creative decisions should already be made before you sit down.",
+    body: "Pick a publishing rhythm you can sustain and batch the work: script, stills, motion and voice in focused sessions, then schedule finished uploads consistently. The goal is not a magic posting frequency; it is a workflow that protects quality while reducing last-minute decisions.",
     action: { label: "Generate tomorrow's blueprint", to: "/" as const, hash: "generator" },
   },
 ];
@@ -126,7 +127,7 @@ const KEEP_HUMAN = [
 ];
 
 const PITFALLS = [
-  ["Re-deciding the niche every week", "Nine videos across four topics teaches the algorithm nothing and resets your own templates. Pick one lane and give it fifty uploads."],
+  ["Re-deciding the niche every week", "Constant topic switching resets your own templates and makes the channel promise harder to recognize. Test a clear lane with several genuinely different topics before you decide whether the format itself is the problem."],
   ["Rewriting the character from memory", "Every re-typed description drifts, and the audience notices a face that changes. Store the block and paste it."],
   ["Automating the taste", "Tools produce options, not judgement. Shipping the first draft is how an automated channel ends up sounding like everyone else's."],
   ["Waiting for permission to start", "No threshold stops you publishing. Build the library first; the eligibility numbers only matter once people are watching."],
@@ -139,11 +140,11 @@ const FAQ = [
   ],
   [
     "How many videos a week?",
-    "One short a day is the default recommendation because cadence is what the ranking systems reward, but a sustainable five a week beats a burnout sprint of twenty-one. Batch production makes the difference: make a week of blueprints in one sitting.",
+    "There is no universal posting number that guarantees growth. Choose a cadence you can sustain without lowering research, originality, or editing quality, then batch similar production tasks to reduce context switching.",
   ],
   [
     "Which tools do I actually have to pay for?",
-    "You can start free: this generator needs no signup, and most image, video and voice tools offer a free tier or trial. Pay for the one thing that becomes the bottleneck — usually video generation minutes or voice characters.",
+    "This generator is free to use. Third-party image, video, and voice tools change their pricing and trial limits frequently, so compare their current plans before building a workflow around one provider. Spend only when a specific production bottleneck justifies it.",
   ],
   [
     "Can I reuse one blueprint across platforms?",
@@ -151,7 +152,7 @@ const FAQ = [
   ],
   [
     "Is faceless YouTube automation allowed?",
-    "Automating production is fine; republishing someone else's material or mass-producing repetitive, low-effort uploads is what gets channels demonetised. Original scripts, original visuals and a real editorial decision on every upload keep you on the right side of that line.",
+    "YouTube does not treat AI-assisted production as an automatic monetization ban. Its monetization policies focus on original, authentic value and include separate rules for inauthentic or mass-produced content and reused content. Review the current YouTube Help guidance before making monetization decisions.",
   ],
 ];
 
@@ -164,8 +165,10 @@ function JsonLd() {
         headline: "Faceless YouTube Automation: The Start-a-Channel Guide",
         description: DESC,
         inLanguage: "en",
-        author: { "@type": "Organization", name: SITE_NAME },
-        publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+        datePublished: "2026-10-07",
+        dateModified: "2026-10-07",
+        author: { "@type": "Organization", name: SITE_NAME, url: `${SITE_URL}/about` },
+        publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: `${SITE_URL}/favicon.png` },
         mainEntityOfPage: `${SITE_URL}${PATH}`,
         about: [
           "Faceless YouTube automation",
@@ -213,6 +216,7 @@ function FacelessYouTubeAutomationGuide() {
               cadence — using a short-form video prompt generator so the only thing you decide each
               day is the topic.
             </p>
+            <EditorialByline updated="October 7, 2026" className="mt-4 justify-center" />
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 to="/"
@@ -390,20 +394,22 @@ function FacelessYouTubeAutomationGuide() {
             <div className="mt-4 space-y-4 text-sm leading-relaxed text-ink-dim md:text-base">
               <p>
                 <Wallet className="mr-1 inline h-4 w-4 text-cyan" aria-hidden />
-                Three sources, usually in this order. Ad revenue first: YouTube's Partner Program
-                currently opens at 1,000 subscribers plus either 4,000 public watch hours in the last
-                year or 10 million Shorts views in the last 90 days, and the exact numbers do move,
-                so read{" "}
+                Three sources, usually in this order. Ad revenue first: as of October 7, 2026,
+                YouTube's ad-revenue threshold is 1,000 subscribers plus either 4,000 qualified
+                public watch hours in the last 12 months or 10 million qualified public Shorts views
+                in the last 90 days. YouTube has announced higher entry thresholds for new creators
+                beginning February 1, 2027, so read{" "}
                 <a
-                  href="https://support.google.com/youtube/answer/13443954"
+                  href="https://support.google.com/youtube/answer/72851"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-cyan underline decoration-cyan/40 underline-offset-2 hover:decoration-cyan"
                 >
                   the current eligibility terms
                 </a>{" "}
-                rather than trusting a screenshot. Shorts pays far less per thousand views than
-                long-form does, which is the part most "automation" content leaves out.
+                before planning around a number. Revenue per view can also differ materially between
+                Shorts and long-form content, so treat revenue estimates as scenarios rather than
+                promises.
               </p>
               <p>
                 Affiliate income second: recommend tools you genuinely use, disclose it, and put the

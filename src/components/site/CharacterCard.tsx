@@ -6,11 +6,12 @@ import { AffiliateCta, BlockLabel, CopyButton, FooterCta, MonoBlock, SpecGrid } 
 
 export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
   const c = pkg.character;
+  const ambient = pkg.narrationMode === "ambient";
   const hooksText = c.hooks.map((h) => `${h.label}: ${h.text}`).join("\n");
   const cueText = c.cueSheet.map((r) => `${r.cue} ${r.line}`).join("\n");
 
   const allText = [
-    "SCRIPT & VOICEOVER",
+    ambient ? "VISUAL OPENING — NO VOICEOVER" : "SCRIPT & VOICEOVER",
     Object.entries(c.voiceSpec)
       .map(([k, v]) => `${k}: ${v}`)
       .join("\n"),
@@ -26,29 +27,30 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
     <CardShell
       icon={Mic}
       step="STEP 01"
-      title="Script & Voiceover"
-      subtitle="Voice delivery profile plus a ready-to-record cue sheet."
+      title={ambient ? "Visual Opening & Audio" : "Script & Voiceover"}
+      subtitle={ambient ? "Visual hooks and scene beats. No spoken narration." : "Voice delivery profile plus a ready-to-record cue sheet."}
       copyAllValue={allText}
       rail="pc"
     >
-      <div>
+      {!ambient && <div>
         <BlockLabel>Voice &amp; Delivery Profile</BlockLabel>
         <SpecGrid rows={Object.entries(c.voiceSpec) as [string, string][]} />
-      </div>
+      </div>}
+      {ambient && <p className="text-sm text-ink-dim">Use the shot list and sound cues below. This plan has no voiceover.</p>}
 
       <div>
         <BlockLabel action={<CopyButton value={hooksText} />}>
-          Hook Script (First 3 Seconds)
+          {ambient ? "Visual Opening Ideas" : "Hook Script (First 3 Seconds)"}
         </BlockLabel>
         <MonoBlock>{hooksText}</MonoBlock>
       </div>
 
-      <AffiliateCta ctaKey="card1Mid" className="w-full">
+      {!ambient && <AffiliateCta ctaKey="card1Mid" className="w-full">
         {AFFILIATES.card1Mid.label}
         <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
-      </AffiliateCta>
+      </AffiliateCta>}
 
-      <div>
+      {!ambient && <div>
         <BlockLabel action={<CopyButton value={cueText} />}>
           Voiceover Cue Sheet (ElevenLabs v3 tags)
         </BlockLabel>
@@ -63,7 +65,7 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
 
       <div>
         <BlockLabel>Retention Beats</BlockLabel>
@@ -77,11 +79,11 @@ export function CharacterCard({ pkg }: { pkg: ProductionPackage }) {
         </ul>
       </div>
 
-      <FooterCta
+      {!ambient && <FooterCta
         ctaKey="card1Foot"
         headline="Your voice is the only asset you can't fake."
         copy="Clone a broadcast-quality AI voice in under 3 minutes — free tier inside."
-      />
+      />}
     </CardShell>
   );
 }

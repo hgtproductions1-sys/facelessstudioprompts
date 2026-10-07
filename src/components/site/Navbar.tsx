@@ -6,12 +6,13 @@ import { AFFILIATES } from "@/config/affiliates";
 import { AffiliateCta } from "./primitives";
 
 const NAV_LINKS = [
-  { label: "Generator", href: "/#generator" },
-  { label: "AI Tools Hub", href: "/ai-tools-hub" },
+  { label: "Prompts", href: "/prompts" },
+  { label: "Guides", href: "/guides" },
   { label: "Niches", href: "/niches" },
-  { label: "Free Vault", href: "/free-tools" },
-  { label: "Playbook", href: "/#playbook" },
-  { label: "Affiliate Disclosure", href: "/affiliate-disclosure" },
+  { label: "Generator", href: "/#generator" },
+  { label: "Free Tools", href: "/free-tools" },
+  { label: "AI Tools", href: "/ai-tools-hub" },
+  { label: "About", href: "/about" },
 ];
 
 export function LogoLockup() {
@@ -33,7 +34,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         <LogoLockup />
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-5 xl:flex" aria-label="Main">
           {NAV_LINKS.map((l) => (
             <a
               key={l.label}
@@ -50,19 +51,19 @@ export function Navbar() {
           <AffiliateCta
             ctaKey="navbarCreatorStack"
             variant="secondary"
-            className="hidden py-2 sm:inline-flex"
+            className="hidden py-2 2xl:inline-flex"
           >
             {AFFILIATES.navbarCreatorStack.label}
             <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden />
           </AffiliateCta>
           <button
             type="button"
-            className="border-line bg-surface2 rounded-lg border p-2 text-ink-dim md:hidden"
+            className="border-line bg-surface2 rounded-lg border p-2 text-ink-dim xl:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <Menu className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -70,7 +71,7 @@ export function Navbar() {
       <div className="via-purple/40 h-px bg-gradient-to-r from-transparent to-transparent" />
 
       {open ? (
-        <div className="border-line bg-elevated/95 border-b px-4 pt-2 pb-5 backdrop-blur-xl md:hidden">
+        <div className="border-line bg-elevated/95 border-b px-4 pt-2 pb-5 backdrop-blur-xl xl:hidden">
           <div className="mb-3 flex justify-end">
             <button
               type="button"

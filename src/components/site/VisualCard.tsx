@@ -21,7 +21,7 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
       icon={ImageIcon}
       step="STEP 02"
       title="Master Image Prompt"
-      subtitle="One universal prompt that works in any AI image engine."
+      subtitle="An engine-neutral scene prompt. Set the aspect ratio in your image tool."
       copyAllValue={allText}
       rail="cp"
     >
@@ -29,6 +29,7 @@ export function VisualCard({ pkg }: { pkg: ProductionPackage }) {
         <BlockLabel action={<CopyButton value={master} label="Copy Prompt" />}>
           Master Prompt
         </BlockLabel>
+        <p className="mb-2 text-sm text-ink-dim">Set your image tool to {v.aspectRatio} ({v.resolution}).</p>
         <MonoBlock className="max-h-none">{master}</MonoBlock>
       </div>
 

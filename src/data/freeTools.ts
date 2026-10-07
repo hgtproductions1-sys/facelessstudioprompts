@@ -20,11 +20,11 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     id: "video-image",
     label: "Video & Image AI",
     tools: [
-      { name: "PicLumen", blurb: "Free AI image generator", url: "https://www.piclumen.com" },
+      { name: "PicLumen", blurb: "AI image generator", url: "https://www.piclumen.com" },
       { name: "Leonardo.ai", blurb: "Batch image generation platform", url: "https://leonardo.ai" },
       { name: "Ideogram", blurb: "Text-accurate AI images", url: "https://ideogram.ai" },
       { name: "Kling AI", blurb: "Long-form AI video clips", url: "https://klingai.com" },
-      { name: "DeepSeek", blurb: "Free reasoning chat model", url: "https://chat.deepseek.com" },
+      { name: "DeepSeek", blurb: "Reasoning chat model", url: "https://chat.deepseek.com" },
       { name: "Qwen", blurb: "Alibaba open AI models", url: "https://chat.qwen.ai" },
       { name: "Google ImageFX", blurb: "Photoreal AI image generation", url: "https://labs.google/fx/tools/image-fx" },
       { name: "HeyGen", blurb: "AI avatar video creation", url: "https://www.heygen.com" },
@@ -67,14 +67,14 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { name: "PlayHT", blurb: "Realistic text-to-speech API", url: "https://play.ht" },
       { name: "Murf.ai", blurb: "Studio-quality AI voices", url: "https://murf.ai" },
       { name: "Resemble.AI", blurb: "Custom voice cloning", url: "https://www.resemble.ai" },
-      { name: "VoiceMaker", blurb: "Free online TTS", url: "https://voicemaker.in" },
+      { name: "VoiceMaker", blurb: "Online text-to-speech", url: "https://voicemaker.in" },
       { name: "Suno", blurb: "AI music generation", url: "https://suno.com" },
       { name: "MusicFX", blurb: "Google AI music tool", url: "https://labs.google/fx/tools/music-fx" },
       { name: "Kokoro", blurb: "Open-source TTS model", url: "https://github.com/hexgrad/kokoro" },
       { name: "Text-to-speech.online", blurb: "Instant free TTS", url: "https://text-to-speech.online" },
       { name: "AllVoiceLab", blurb: "AI voice cloning lab", url: "https://www.allvoicelab.com" },
       { name: "Typecast.ai", blurb: "Character voice generator", url: "https://typecast.ai" },
-      { name: "Voiceaispace", blurb: "Free AI voice space", url: "https://voiceaispace.com" },
+      { name: "Voiceaispace", blurb: "AI voice space", url: "https://voiceaispace.com" },
       { name: "LuvVoice", blurb: "Simple free TTS", url: "https://luvvoice.com" },
       { name: "NaturalReaders", blurb: "Natural-sounding TTS reader", url: "https://www.naturalreaders.com" },
       { name: "OpenAI.fm", blurb: "OpenAI speech demo", url: "https://www.openai.fm" },
@@ -86,15 +86,15 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { name: "Voicebox.sh", blurb: "Open voice generation", url: "https://voicebox.sh" },
       { name: "Sonauto", blurb: "AI song creation", url: "https://sonauto.ai" },
       { name: "MusicGPT", blurb: "Prompt-based music AI", url: "https://musicgpt.com" },
-      { name: "Poppop.ai", blurb: "Free AI sound effects", url: "https://poppop.ai" },
-      { name: "Pixabay", blurb: "Free stock SFX library", url: "https://pixabay.com/sound-effects/" },
+      { name: "Poppop.ai", blurb: "AI sound effects", url: "https://poppop.ai" },
+      { name: "Pixabay", blurb: "stock SFX library", url: "https://pixabay.com/sound-effects/" },
       { name: "Freesound", blurb: "Community sound library", url: "https://freesound.org" },
       { name: "MyInstants", blurb: "Meme sound buttons", url: "https://www.myinstants.com" },
       { name: "Uppbeat", blurb: "Copyright-free creator music", url: "https://uppbeat.io" },
-      { name: "Zapsplat", blurb: "Free SFX and music", url: "https://www.zapsplat.com" },
+      { name: "Zapsplat", blurb: "SFX and music", url: "https://www.zapsplat.com" },
       { name: "Epidemic Sound", blurb: "Premium creator music", url: "https://www.epidemicsound.com" },
       { name: "Pond5", blurb: "Stock media marketplace", url: "https://www.pond5.com" },
-      { name: "Chosic", blurb: "Free music discovery", url: "https://www.chosic.com" },
+      { name: "Chosic", blurb: "music discovery", url: "https://www.chosic.com" },
       { name: "Bensound", blurb: "Royalty-free background music", url: "https://www.bensound.com" },
     ],
   },
@@ -102,7 +102,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
     id: "editing",
     label: "Editing & Post-Production",
     tools: [
-      { name: "CapCut", blurb: "Free all-platform editor", url: "https://www.capcut.com" },
+      { name: "CapCut", blurb: "all-platform editor", url: "https://www.capcut.com" },
       { name: "DaVinci Resolve", blurb: "Pro-grade free editor", url: "https://www.blackmagicdesign.com/products/davinciresolve" },
       { name: "VN Editor", blurb: "Mobile-friendly video editor", url: "https://www.vlognow.me" },
       { name: "Shotcut", blurb: "Open-source video editor", url: "https://shotcut.org" },
@@ -118,7 +118,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { name: "YouTube Create", blurb: "YouTube's mobile editor", url: "https://www.youtube.com/create" },
       { name: "Online-video-cutter", blurb: "Quick browser trimming", url: "https://online-video-cutter.com" },
       { name: "Pixelcut", blurb: "AI product photo editor", url: "https://www.pixelcut.ai" },
-      { name: "Imgupscaler", blurb: "Free image upscaling", url: "https://imgupscaler.com" },
+      { name: "Imgupscaler", blurb: "image upscaling", url: "https://imgupscaler.com" },
       { name: "Remove.bg", blurb: "Instant background removal", url: "https://www.remove.bg" },
       { name: "Gstory.ai", blurb: "AI photo restoration", url: "https://gstory.ai" },
       { name: "EZRemove.ai", blurb: "One-click object removal", url: "https://ezremove.ai" },
@@ -152,7 +152,7 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       { name: "YoutubeToTranscript", blurb: "Extract video transcripts", url: "https://youtubetotranscript.com" },
       { name: "Urltoany", blurb: "Convert URLs anywhere", url: "https://urltoany.com" },
       { name: "PromptOS", blurb: "Prompt management system", url: "https://promptos.ai" },
-      { name: "SEOstudio.tools", blurb: "Free SEO tool suite", url: "https://seostudio.tools" },
+      { name: "SEOstudio.tools", blurb: "SEO tool suite", url: "https://seostudio.tools" },
     ],
   },
   {
@@ -178,32 +178,14 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
 ];
 
 export const VAULT_HACKS: VaultHack[] = [
-  {
-    title: "Kling AI Unlimited Credit Trick",
-    body: "Delete your account in profile settings. Input the code sent to your Gmail. Log in again and click 'Try Now' for 166 fresh credits.",
-  },
-  {
-    title: "CapCut PC Watermark Removal",
-    body: "Navigate to your PC folders: C:\\Users\\\"username\"\\AppData\\Local\\CapCut\\Apps\\\"capcutversion\"\\Resources and manually delete the two 'watermark' folders.",
-  },
-  {
-    title: "Claude Code Shorts Automation",
-    body: "Upload random images to Claude Code and prompt it to create 'presentation style' edits (including camera movements, pointers, hand gestures, and zoom-ins) to automatically generate highly engaging 9:16 vertical shorts.",
-  },
-  {
-    title: "Free Unlimited Email Aliases (For Trials)",
-    body: "Use Temp-mail.org or Freegmail.netlify.app to generate disposable or dot-variant emails to endlessly abuse free trial AI credits.",
-  },
-  {
-    title: "Canva Object Removal",
-    body: "Upload your image, select Magic Eraser, click the object you want to remove, and save.",
-  },
-  {
-    title: "CapCut Chroma Key",
-    body: "Add your greenscreen video to the timeline, select 'Remove BG' > 'Chroma Key', and use the color picker to select the green background.",
-  },
-  {
-    title: "CapCut Blur Effect Hack",
-    body: "Add your video, apply the blur effect to the timeline, duplicate the video (or add a new one), and adjust the scale over it.",
-  },
+  { title: "Test one scene before buying a plan", body: "Use the provider's permitted trial or free allowance to test one representative scene. Check export resolution, watermarks, and commercial-use terms before committing to a subscription." },
+  { title: "Budget for revisions", body: "A first generation may need several attempts. Plan a small number of shots, reuse approved references, and record which prompts produced useful results before scaling up." },
+  { title: "Check the final export", body: "Make a short test export before editing a whole video. Confirm that the plan supports the format, audio, resolution, and watermark options you need." },
+  { title: "Keep your project portable", body: "Save approved prompts, scripts, references, and your own source media. Organize them by scene so you can revise a shot without rebuilding the entire project." },
 ];
+
+export const VERIFIED_PLANS: Record<string, { label: string; note: string; url: string }> = {
+  "Runway ML": { label: "Limited free plan + paid plans", note: "Free access has model and credit limits. Check eligibility and current allowances.", url: "https://runwayml.com/pricing" },
+  "ElevenLabs": { label: "Free non-commercial tier + paid plans", note: "A commercial license is included on paid plans; the free tier is for non-commercial use.", url: "https://elevenlabs.io/pricing" },
+  "Pictory": { label: "Free trial, then paid", note: "Continued exports require a paid plan after the trial.", url: "https://pictory.ai/pricing/" },
+};

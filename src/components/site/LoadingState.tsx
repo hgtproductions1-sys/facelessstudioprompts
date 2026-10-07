@@ -64,7 +64,7 @@ export function ProgressStepper({
         </div>
         {finished ? (
           <p className="text-ink-muted mt-3 text-xs">
-            Still writing — a real AI blueprint takes 30&ndash;60 seconds. Keep this tab open and
+            Still waiting for the AI provider. This can take up to 3 minutes per attempt. Keep this tab open and
             your blueprint will appear here.
           </p>
         ) : null}

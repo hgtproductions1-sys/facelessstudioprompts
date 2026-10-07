@@ -1,88 +1,38 @@
-import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { LegalLayout, LegalSection } from "@/components/site/LegalLayout";
 
-const TITLE = "Terms of Service — The Faceless Prompts";
-const DESC =
-  "The terms covering use of the The Faceless Prompts generator: acceptable use, output ownership, no guarantee of results, and liability limits.";
-
 export const Route = createFileRoute("/terms")({
-  head: () => pageHead({ path: "/terms", title: TITLE, description: DESC, type: "article" }),
-  component: TermsPage,
+  head: () => pageHead({ path: "/terms", title: "Terms of Service — The Faceless Prompts", description: "The terms for using The Faceless Prompts and its creative planning resources." }),
+  component: Page,
 });
 
-function TermsPage() {
+function Page() {
   return (
-    <LegalLayout title="Terms of Service" updated="1 January 2025">
-      <LegalSection heading="1. Acceptance of Terms">
-        <p>
-          By accessing or using The Faceless Prompts you agree to these terms. If you do not agree,
-          do not use the site. We may update these terms at any time, and continued use after an
-          update constitutes acceptance of the revised version.
-        </p>
+    <LegalLayout title="Terms of Service" updated="6 October 2026">
+      <LegalSection heading="Using this site">
+        <p>{"These terms apply to The Faceless Prompts and its generator, prompt library, guides, and other resources. By using the site, you agree to these terms. If you do not agree, please stop using it."}</p>
       </LegalSection>
-
-      <LegalSection heading="2. Acceptable Use">
-        <p>
-          You agree not to use the tool to produce content that is unlawful, defamatory, harassing,
-          hateful, sexually exploitative, or that infringes someone else's rights. You also agree
-          not to scrape, resell, or automate bulk access to the generator, and not to misrepresent
-          generated output as verified fact.
-        </p>
+      <LegalSection heading="Use it responsibly">
+        <p>{"Use the site lawfully and respect other people’s privacy and intellectual property. Do not use it to create unlawful or exploitative material, impersonate someone deceptively, or infringe another person’s rights. Do not attempt to bypass protections, disrupt the service, or overload the generator with abusive requests."}</p>
       </LegalSection>
-
-      <LegalSection heading="3. No Guarantee of Results">
-        <p>
-          The Faceless Prompts produces creative starting points, not outcomes. We make no
-          representation that using the output will produce views, followers, revenue, or any
-          commercial result. Results vary by effort, niche, execution, and platform conditions
-          outside our control.
-        </p>
+      <LegalSection heading="Prompts and generated drafts">
+        <p>{"You may adapt the prompts and production drafts for your own creative projects, including commercial projects, subject to applicable law and any third-party terms. We do not promise that an output is unique, accurate, copyrightable, or free of third-party rights. You are responsible for reviewing your final content and securing any necessary permissions."}</p>
+        <p>{"This permission does not grant ownership of the site’s design, software, branding, or collected resources. Third-party names and trademarks belong to their respective owners."}</p>
       </LegalSection>
-
-      <LegalSection heading="4. Intellectual Property">
-        <p>
-          You own the production packages you generate and may use them commercially without
-          attribution. The site itself — its code, design, wording, and curated niche datasets —
-          remains our property and may not be copied or redistributed as a competing tool.
-        </p>
-        <p>
-          You remain responsible for complying with the terms of any third-party AI service into
-          which you paste generated prompts.
-        </p>
+      <LegalSection heading="External tools and affiliate links">
+        <p>{"Links to other tools are provided for convenience. Some are affiliate links, as explained in our Affiliate Disclosure. External services control their own pricing, subscriptions, refunds, availability, and policies. Review their terms before signing up or uploading material."}</p>
       </LegalSection>
-
-      <LegalSection heading="5. Third-Party Links">
-        <p>
-          The site links to third-party tools and offers, some of them affiliate links. We do not
-          control those services and are not responsible for their content, pricing, availability,
-          or conduct. Any transaction is strictly between you and the third party.
-        </p>
+      <LegalSection heading="Availability and results">
+        <p>{"The service is provided as available. Features and resources may change, and we cannot promise uninterrupted access or error-free output. Prompts are creative starting points, not professional advice or guarantees of views, revenue, monetization, or advertising approval."}</p>
       </LegalSection>
-
-      <LegalSection heading="6. Limitation of Liability">
-        <p>
-          The site is provided "as is" and "as available" without warranties of any kind. To the
-          maximum extent permitted by law, we are not liable for indirect, incidental, special, or
-          consequential damages, or for lost profits, revenue, data, or goodwill arising from your
-          use of the site or its output.
-        </p>
+      <LegalSection heading="Responsibility and your rights">
+        <p>{"To the extent permitted by applicable law, we are not responsible for indirect losses arising from your use of the site or reliance on its output. Nothing in these terms removes rights or protections that applicable law does not allow to be excluded."}</p>
       </LegalSection>
-
-      <LegalSection heading="7. Changes to Terms">
-        <p>
-          We may modify or discontinue any part of the service at any time without notice. Material
-          changes to these terms will be reflected in the "Last updated" date above.
-        </p>
+      <LegalSection heading="Updates and questions">
+        <p>{"Changes to these terms will be published here with an updated date. Review this page when using the service. For questions about these terms or a concern about the site, contact us below."}</p>
       </LegalSection>
-
-      <LegalSection heading="8. Governing Law">
-        <p>
-          These terms are governed by the laws of [Governing Jurisdiction Placeholder], without
-          regard to conflict-of-law principles. Disputes will be handled in the courts of that
-          jurisdiction.
-        </p>
-      </LegalSection>
+      <div className="border-line bg-surface2 rounded-xl border p-6"><p className="text-sm text-ink-muted">Contact The Faceless Prompts</p><a href="mailto:hgtproductions1@gmail.com" className="mt-2 inline-block break-all text-base font-medium text-cyan underline underline-offset-4">hgtproductions1@gmail.com</a></div>
     </LegalLayout>
   );
 }

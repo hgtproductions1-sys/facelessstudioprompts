@@ -1,156 +1,34 @@
 import { Link } from "@tanstack/react-router";
-import consistencyImg from "@/assets/playbook-consistency.jpg";
-import nichesImg from "@/assets/playbook-niches.jpg";
-import workflowImg from "@/assets/playbook-workflow.jpg";
+import { YouTubeTutorial } from "./YouTubeTutorial";
 
-const figure = "mt-8 overflow-hidden rounded-2xl border border-line bg-surface2";
-const img = "h-auto w-full";
-const caption = "border-line border-t px-4 py-3 text-xs text-ink-muted";
-const link = "text-cyan underline underline-offset-2 hover:text-white";
-
+const videos = [
+  { id: "MsVl_CKu_gk", title: "Using Workflows | Runway Academy", description: "See how Runway connects generation steps into a repeatable workflow. Use it as a practical follow-up once your script and shot plan are ready." },
+  { id: "lfiASPH1lvE", title: "Gen-4 References | Runway Academy", description: "Explore how reference images can guide recurring subjects and settings. Compare each result with your own reference before using it in a sequence." },
+  { id: "OLWd5O1O66s", title: "Gen-4 Image to Video | Runway Academy", description: "Watch an image-to-video walkthrough, then try one simple subject action and camera movement from your shot plan." },
+];
+const sections = [
+  { title: "Start with one idea you can explain", text: "Choose a topic and write its payoff in one sentence. A tiny robot growing its first plant gives you a visible ending; a broad topic like success needs a more specific story. Decide what the viewer should understand or feel by the final shot before selecting tools." },
+  { title: "Build the script, then plan the shots", text: "Draft a short opening, one clear development, and an ending. Read the script aloud and time it. Remove anything you cannot show or explain in the available time. Give each shot a purpose: introduce the setting, show an action, reveal a change, or deliver the payoff. The worked examples above show two complete text plans.", video: videos[0] },
+  { title: "Keep visual details consistent", text: "Write down the subject's distinctive features, wardrobe or surface details, props, lighting, and setting. Reuse that description and reference images where your chosen tool supports them. Check every output against your reference; a seed or a made-up character token cannot guarantee the same appearance across different prompts.", video: videos[1], source: "https://docs.midjourney.com/hc/en-us/articles/32604356340877-Seeds", sourceTitle: "Midjourney's guide to seeds" },
+  { title: "Animate one action at a time", text: "For an image-to-video shot, focus on the movement you want rather than repeating the entire image description. Try a single subject action and a clear camera direction. If the result changes the subject unexpectedly, simplify the action and test again. Combine separate clips in your editor rather than asking one generation to handle a whole story.", source: "https://help.runwayml.com/hc/en-us/articles/48324313115155-Image-to-Video-Prompting-Guide", sourceTitle: "Runway's image-to-video prompting guide", video: videos[2] },
+  { title: "Review the edit before you publish", text: "Listen to the narration, check names and factual statements, inspect captions, and watch the sequence on a phone. Check licenses for music and imagery and follow the rules of the platform where you publish. A useful prompt does not establish rights to the final output or guarantee monetization." },
+  { title: "Improve one choice per video", text: "Keep a note of what you changed: the opening, shot length, visual style, or ending. Compare your own published results before deciding what to repeat. Tool lists and niche suggestions are starting points, not forecasts of audience demand or income." },
+];
 export function Playbook() {
   return (
-    <section id="playbook" className="border-line mt-20 border-t">
-      <article className="mx-auto max-w-3xl px-4 py-20">
-        <p className="text-[11px] tracking-widest text-cyan uppercase">Free guide</p>
-        <h2 className="mt-3 text-2xl font-bold md:text-3xl">
-          The <span className="gradient-text">Faceless Creator Playbook</span>
-        </h2>
-        <p className="mt-2 text-sm text-ink-muted">
-          How faceless YouTube automation actually works, from niche selection to a repeatable daily
-          publishing loop — and how to use a short-form video prompt generator to run it.
-        </p>
-
-        <div className="mt-8 space-y-6 text-sm leading-relaxed text-ink-dim md:text-base">
-          <h3 className="text-lg font-semibold text-ink">
-            Faceless YouTube Automation: Why a Blueprint Beats Inspiration
-          </h3>
-          <p>
-            A faceless channel is a production line, not a personality. The creators who publish
-            every single day are not more talented — they have removed every decision that has to be
-            made twice. Their niche is fixed, their character is locked to one description, their
-            colour palette never moves, and their shot grammar is a template rather than a choice.
-            That is why a blueprint matters more than inspiration: once the archetype, wardrobe,
-            palette, and pacing are written down, the only variable left each day is the topic, and
-            a topic takes ninety seconds to pick. A short-form video prompt generator turns that
-            fixed blueprint into a full YouTube Shorts automation kit — script, stills, motion, and
-            narration — in a single pass.
-          </p>
-          <h3 className="text-lg font-semibold text-ink">
-            The Four-Stage Short-Form Video Prompt Generator Workflow
-          </h3>
-          <p>
-            The workflow itself splits into four stages that map cleanly onto four tools. First,
-            script and hook: you need three competing openings for every video, because the first
-            two seconds decide whether the algorithm keeps testing your upload. Second, stills: an
-            image model such as Midjourney, Leonardo, Flux, or Imagen produces the keyframes, and
-            the same seed plus the same character token keeps the face, wardrobe, and lighting from
-            drifting between frames. Third, motion: an animator such as Runway, Kling, Luma, or Veo
-            turns those keyframes into shots with deliberate camera movement instead of random
-            wobble. Fourth, voice: a narration engine such as ElevenLabs reads the script with fixed
-            stability and similarity settings so episode twelve sounds exactly like episode one. See{" "}
-            <Link to="/ai-tools-hub" className={link}>
-              which AI image, video and voice engines fit each stage
-            </Link>{" "}
-            before you commit to a toolchain.
-          </p>
-          <figure className={figure}>
-            <img
-              src={workflowImg}
-              alt="Four-stage faceless video workflow: script page, AI keyframe, camera motion, then voiceover waveform"
-              loading="lazy"
-              width={1280}
-              height={720}
-              className={img}
-            />
-            <figcaption className={caption}>
-              The four-stage faceless workflow: script and hook, still keyframes, camera motion, then
-              narration.
-            </figcaption>
-          </figure>
-          <h3 className="text-lg font-semibold text-ink">
-            Midjourney Character Consistency Prompts and ElevenLabs Viral Voiceover Scripts
-          </h3>
-          <p>
-            Consistency is the entire retention strategy. Midjourney character consistency prompts —
-            one locked seed, one character token, one negative prompt list — keep the same face and
-            wardrobe across every frame, while ElevenLabs viral voiceover scripts with fixed
-            stability and style settings keep the narration identical from episode one to episode
-            fifty. Viewers do not subscribe to a video, they
-            subscribe to a pattern they can recognise in a scrolling feed — the same character, the
-            same colour grade, the same rhythm of cuts, the same closing line. Practically, that
-            means writing your negative prompts once and reusing them forever, keeping a single seed
-            value per character, and reusing a shot list of five to seven beats: hook frame, context
-            wide, escalation push-in, turn, payoff close-up, and a final hold long enough for a
-            comment to form. Retention graphs improve far more from removing dead air at second
-            three than from any change in visual quality. Our{" "}
-            <Link to="/library" className={link}>
-              copy-and-paste library of character consistency prompts
-            </Link>{" "}
-            has the exact seed and negative-prompt wording to start from.
-          </p>
-          <figure className={figure}>
-            <img
-              src={consistencyImg}
-              alt="Four frames of the same hooded faceless character with identical wardrobe and lighting, showing character consistency"
-              loading="lazy"
-              width={1280}
-              height={720}
-              className={img}
-            />
-            <figcaption className={caption}>
-              One locked seed and one character token keep the same face, wardrobe and lighting across
-              every frame.
-            </figcaption>
-          </figure>
-          <h3 className="text-lg font-semibold text-ink">
-            Monetisation: Ads for Reach, Affiliates for Intent
-          </h3>
-          <p>
-            Monetisation follows volume, but only if the back end is set up before the traffic
-            arrives. Display advertising rewards depth of content, so a channel that also publishes
-            written breakdowns and prompt libraries earns from readers who never watch a video.
-            Affiliate revenue rewards specificity: recommending the exact image model, animator, and
-            voice engine you genuinely used converts far better than a generic tool roundup, because
-            the reader is already mid-workflow and needs the next step. Combine the two — ads for
-            reach, affiliate links for intent — and a faceless operation can run profitably long
-            before it reaches platform payout thresholds.
-          </p>
-          <h3 className="text-lg font-semibold text-ink">
-            Faceless TikTok Niche Ideas and YouTube Short Automation
-          </h3>
-          <p>
-            The faceless TikTok niche ideas that travel best in 2026 are the ones with a repeatable
-            visual gimmick: AI pet stories, animal cooking, POV immersive vlogs, ASMR restoration,
-            miniature builds, analog horror, and ranking countdowns. Each of those runs as YouTube
-            Short automation too — the same blueprint exports one vertical master that you publish to
-            Shorts, TikTok, and Reels the same morning. Pick one niche, generate thirty blueprints in
-            a sitting, batch the stills, batch the voiceovers, and schedule a week at a time; that
-            batching loop, not raw creativity, is what separates channels that survive month three
-            from the ones that stall at video nine. Read the full{" "}
-            <Link to="/faceless-youtube-automation" className={link}>
-              step-by-step guide to starting a faceless YouTube automation channel
-            </Link>
-            , or{" "}
-            <Link to="/" hash="generator" className={link}>
-              generate a blueprint for one of the 24 niches
-            </Link>{" "}
-            right now.
-          </p>
-          <figure className={figure}>
-            <img
-              src={nichesImg}
-              alt="Grid of vertical phone screens representing faceless niches: pet stories, cooking, ASMR restoration, miniature builds, horror and countdowns"
-              loading="lazy"
-              width={1280}
-              height={720}
-              className={img}
-            />
-            <figcaption className={caption}>
-              Repeatable visual gimmicks — pet stories, cooking, ASMR restoration, miniature builds,
-              analog horror and countdowns — travel best on Shorts, TikTok and Reels.
-            </figcaption>
-          </figure>
+    <section id="playbook" className="border-line mt-20 scroll-mt-24 border-t">
+      <article className="mx-auto max-w-3xl px-4 py-16">
+        <p className="text-sm text-cyan">Practical creator guide</p>
+        <h2 className="mt-3 text-3xl font-bold">The Faceless Creator Playbook</h2>
+        <p className="mt-4 text-sm text-ink-muted">Selected tutorials from Runway Academy. These demonstrate the versions shown in each video; interfaces and available features may have changed.</p>
+        <div className="mt-8 space-y-8 text-base leading-relaxed text-ink-dim">
+          {sections.map((section) => <section key={section.title}>
+            <h3 className="text-xl font-semibold text-ink">{section.title}</h3>
+            <p className="mt-3">{section.text}</p>
+            {section.source ? <p className="mt-3 text-sm">Provider guidance: <a href={section.source} className="text-cyan underline">{section.sourceTitle}</a></p> : null}
+            {section.video ? <YouTubeTutorial {...section.video} /> : null}
+          </section>)}
+          <p>For your next step, browse the <Link to="/library" className="text-cyan underline">prompt library</Link> or compare the <Link to="/ai-tools-hub" className="text-cyan underline">tools for each production stage</Link>.</p>
         </div>
       </article>
     </section>

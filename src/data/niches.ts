@@ -33,7 +33,6 @@ export interface NichePage {
   primaryKeyword: string;
   secondaryKeywords: string[];
   difficulty: "Easy" | "Medium" | "Hard";
-  estimatedRpm: string;
   intro: string;
   prompts: NichePrompt[];
   faqs: NicheFaq[];
@@ -46,7 +45,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI Cat & Pet Stories",
     niche: "AI Cat & Pet Stories",
     seoTitle: "AI Cat & Pet Stories Prompts — Free Generator",
-    metaDescription: "Generate viral AI cat and pet story videos in seconds. Get free Midjourney, ElevenLabs, and Veo 3 prompts to build a faceless animal channel today.",
+    metaDescription: "Explore AI Cat & Pet Stories with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI Cat & Pet Stories Prompt Generator",
     primaryKeyword: "AI cat video prompt generator",
     secondaryKeywords: [
@@ -58,8 +57,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai animal story generator"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "The pet niche is a massive traffic driver on YouTube and TikTok, but creating original animal content without a real pet used to be impossible. Today, AI cat and pet stories are dominating the faceless video space. Viewers are captivated by emotional narratives, heroic rescue tales, and humorous feline antics. If you want to capitalize on this high-retention niche, you need the right tools to keep character consistency and hyper-realistic fur textures. This page provides a free prompt generator tailored specifically for AI animal content. Use the blueprints below to instantly generate voiceovers, visuals, and camera motions for your faceless channel.",
+    intro: "This format may suit animal-story viewers. Start with a specific idea, such as a stray cat finding shelter. Keep fur markings and proportions consistent, and label fictional scenes clearly. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Stray's First Winter",
@@ -95,7 +93,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the AI pet niche monetizable?",
-      "answer": "Yes, the pet niche is highly monetizable on both YouTube and TikTok. Advertisers heavily target pet content, leading to stable AdSense rates, and the emotional storytelling nature of the videos results in high viewer retention."
+      "answer": "It can support ads, sponsorships, affiliates, or pet-related offers, but revenue varies by audience, geography, originality, watch behavior, and platform eligibility. Treat monetization as something to test after you have a consistent format and real viewer data."
     },
     {
       "question": "What tools do I need to make AI cat stories?",
@@ -107,7 +105,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "Do pet stories perform better on Shorts or Long-form?",
-      "answer": "Shorts are excellent for rapid subscriber growth and viral reach, while 5-to-8 minute long-form compilations of these stories generate significantly higher AdSense revenue and watch time."
+      "answer": "Shorts are useful for testing characters and story hooks quickly. Longer compilations can create more watch time when viewers already care about the series, but neither format guarantees growth or higher revenue. Compare retention and returning-viewer data on your own channel."
     }
   ],
     relatedSlugs: [
@@ -121,7 +119,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI Animal Cooking",
     niche: "AI Animal Cooking",
     seoTitle: "AI Animal Cooking Prompts — Free Generator",
-    metaDescription: "Create viral faceless videos of animals cooking with our free AI prompt generator. Get Midjourney, Veo 3, and ElevenLabs scripts to start your channel.",
+    metaDescription: "Explore AI Animal Cooking with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI Animal Cooking Prompt Generator",
     primaryKeyword: "AI animal cooking video generator",
     secondaryKeywords: [
@@ -132,8 +130,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai food video generator"
   ],
     difficulty: "Hard",
-    estimatedRpm: "$3.00–$5.50",
-    intro: "Combining the universal appeal of food content with the viral nature of animals, the AI animal cooking niche is a goldmine for high-retention faceless channels. Audiences are mesmerized by bizarre, cozy visuals of bears baking bread or cats tossing pizza dough. This highly satisfying sub-niche requires precise prompting to ensure the AI doesn't warp the animal's paws while handling utensils. Our free generator provides the exact syntax needed to create consistent, high-quality culinary scenes. Use the blueprints below to instantly generate voiceovers, cooking visuals, and dynamic camera movements for your faceless chef channel.",
+    intro: "This format may suit viewers who enjoy playful food stories. Start with a specific idea, such as a bear preparing campfire ramen. Keep utensils, ingredient scale, and the cooking sequence readable. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Bear Baker",
@@ -169,7 +166,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the AI animal cooking niche monetizable?",
-      "answer": "Yes. Because it is highly visual and brand-safe, it performs exceptionally well with AdSense and brand sponsorships. It also transcends language barriers, allowing for global viewership."
+      "answer": "It can be suitable for ads, food or kitchen sponsorships, and affiliate links when the content is original and advertiser-friendly. Visual storytelling may travel across languages, but actual revenue and reach depend on the audience and platform."
     },
     {
       "question": "What tools do I need for AI cooking videos?",
@@ -195,7 +192,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "POV Immersive Vlogs",
     niche: "POV Immersive Vlogs",
     seoTitle: "POV Immersive Vlog Prompts — Free Generator",
-    metaDescription: "Generate cinematic POV faceless vlogs using AI. Get free prompts for ElevenLabs, Midjourney, and Runway Gen-3 to build immersive first-person video content.",
+    metaDescription: "Explore POV Immersive Vlogs with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "POV Immersive Vlog Prompt Generator",
     primaryKeyword: "POV AI video generator",
     secondaryKeywords: [
@@ -207,8 +204,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless travel vlog ai"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.00–$4.00",
-    intro: "POV (Point of View) immersive vlogs are revolutionizing how creators build parasocial relationships without ever showing their faces. By placing the viewer directly in the eyes of the protagonist—whether wandering through a cyberpunk city or exploring a quiet rainy forest—this format drives massive engagement through pure atmosphere. The secret to a viral POV video is perfectly syncing realistic first-person camera sway with environmental sound design. Our free generator ensures your AI tools understand first-person framing. Use the blueprints below to instantly generate immersive voiceovers, precise POV visuals, and realistic walking camera motions for your next faceless vlog.",
+    intro: "This format may suit viewers who enjoy immersive scenes. Start with a specific idea, such as a quiet walk through a miniature night market. Keep viewpoint and spatial direction consistent between shots. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Rainy Cyberpunk Walk",
@@ -244,7 +240,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the POV immersive vlog niche monetizable?",
-      "answer": "Yes. POV vlogs build incredibly strong communities. Because they rely on high-quality visuals and storytelling rather than controversial topics, they maintain high AdSense RPMs and are perfect for ambient channel monetization."
+      "answer": "It can be monetized through ads, sponsorships, affiliates, or longer ambient videos if the channel develops an audience. RPM and eligibility vary widely, so build around viewer satisfaction and original production rather than assuming a particular rate."
     },
     {
       "question": "What tools do I need for AI POV videos?",
@@ -256,7 +252,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "How long should POV vlogs be?",
-      "answer": "Shorts (30-60 seconds) work well for intense or aesthetic moments. However, 10-to-30 minute long-form videos with ambient soundscapes (like 'A Rainy Walk in Cyberpunk Tokyo') can generate massive watch time and revenue."
+      "answer": "Shorts can test intense or aesthetic moments efficiently, while longer ambient videos give interested viewers more time in the setting. Use your own retention and watch-time data to decide which format deserves more production effort."
     }
   ],
     relatedSlugs: [
@@ -270,7 +266,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Anime Fight Versus",
     niche: "Anime Fight Versus",
     seoTitle: "Anime Fight Versus Prompts — Free Generator",
-    metaDescription: "Create viral anime character versus battles with our free AI prompt generator. Get Midjourney anime styles, Veo 3 combat motions, and high-energy voiceover scripts.",
+    metaDescription: "Explore Anime Fight Versus with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Anime Fight Versus Prompt Generator",
     primaryKeyword: "AI anime fight generator",
     secondaryKeywords: [
@@ -281,8 +277,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai combat video generator"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$1.50–$3.00",
-    intro: "The 'Who Would Win?' anime debate is one of the most passionate and highly-searched topics on social media. Anime Fight Versus videos pit legendary archetypes against each other, comparing stats, abilities, and power scaling. For faceless creators, this niche guarantees high engagement, debates in the comments, and endless content opportunities. However, generating consistent anime aesthetics requires specific knowledge of AI models like Midjourney's Niji. Our free generator provides the exact prompts to output stunning 2D animation styles, dynamic combat camera angles, and hype-building narrator scripts. Use the blueprints below to launch your viral anime debate channel today.",
+    intro: "This format may suit animation and action fans. Start with a specific idea, such as a friendly contest between two original characters. Choreograph one readable action at a time and use characters you have rights to depict. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Fire Mage vs. The Ice Swordsman",
@@ -318,7 +313,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the anime versus niche monetizable?",
-      "answer": "Yes, but you must be careful with copyright. If you use AI to generate original archetypes (e.g., 'Fire Mage vs Ice Knight') rather than exact copyrighted characters (e.g., 'Naruto vs Goku'), you will have zero issues securing AdSense approval."
+      "answer": "Original fighters reduce some intellectual-property risk compared with copying protected characters, but monetization approval is never automatic. Keep designs, names, music, footage, and story elements original and review the platform's current monetization and reused-content rules before publishing."
     },
     {
       "question": "What tools do I need for AI anime videos?",
@@ -330,7 +325,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "How do I drive engagement in versus videos?",
-      "answer": "Always end your Shorts with a call to action asking the viewers to debate the winner in the comments. Pinned comments asking 'Did I miss a hidden ability?' will drive your algorithm metrics sky-high."
+      "answer": "A specific question can encourage genuine discussion, such as asking which ability changed the matchup. Use calls to action only when they fit the episode; judge them by your own comment quality and retention rather than assuming an algorithm boost."
     }
   ],
     relatedSlugs: [
@@ -344,7 +339,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Stickman Explainer & Skits",
     niche: "Stickman Explainer & Skits",
     seoTitle: "Stickman Explainer & Skits Prompts — Free Generator",
-    metaDescription: "Create viral stickman explainer videos and comedy skits with our free AI prompt generator. Get Midjourney styles, Veo 3 motions, and voiceover scripts.",
+    metaDescription: "Explore Stickman Explainer & Skits with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Stickman Explainer & Skits Prompt Generator",
     primaryKeyword: "stickman video generator ai",
     secondaryKeywords: [
@@ -355,8 +350,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless sketch comedy ai"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.50–$4.00",
-    intro: "Stickman explainers and comedic skits have quietly become one of the highest-converting formats on YouTube Shorts and TikTok. Their minimalist design strips away visual distractions, forcing the viewer to focus entirely on the witty storytelling, fast-paced educational breakdowns, or absurd hypothetical scenarios. Because these videos rely heavily on clean 2D vector aesthetics and expressive white-board or minimalist framing, they require precise prompting to avoid messy AI artifacts. Our free generator provides the exact syntax needed to create sharp, scalable stickman content. Use the blueprints below to instantly generate voiceovers, crisp vector visuals, and dynamic whiteboard motions for your channel.",
+    intro: "This format may suit viewers who like concise visual explanations. Start with a specific idea, such as a stick figure learning to organize a busy day. Give each scene one point and check that the visuals explain it. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The 3-Second Rule of Focus",
@@ -392,7 +386,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the stickman explainer niche monetizable?",
-      "answer": "Yes. Explainer and educational sketch channels achieve high retention rates because viewers stay to see the punchline or conclusion, which maximizes AdSense performance and sponsorship potential."
+      "answer": "Explainer channels can support ads and sponsorships when the material is original, useful, and suitable for advertisers. Retention depends on the topic and execution, so prioritize clarity and evidence instead of stretching a video for monetization."
     },
     {
       "question": "What tools do I need for stickman AI videos?",
@@ -403,8 +397,8 @@ export const NICHE_PAGES: NichePage[] = [
       "answer": "Include terms like 'pure white background, vector line art, flat design, minimalist' in your visual prompts and use negative prompts to block gradients, shading, and realistic textures."
     },
     {
-      "question": "Why do stickman skits go viral so often?",
-      "answer": "They rely on universal human frustrations or relatable behavioral loops. When a viewer sees themselves in a funny stickman skit, they immediately share it."
+      "question": "How should I evaluate this format?",
+      "answer": "Test a specific idea with your intended audience, review your own results, and improve one choice at a time. This format does not guarantee views or earnings."
     }
   ],
     relatedSlugs: [
@@ -418,7 +412,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI ASMR",
     niche: "AI ASMR (Cooking, Cleaning, Restoration)",
     seoTitle: "AI ASMR Prompts (Cooking, Cleaning, Restoration) — Free",
-    metaDescription: "Generate hyper-satisfying AI ASMR videos featuring cooking, deep cleaning, and artifact restoration. Get free Midjourney and Kling prompts.",
+    metaDescription: "Explore AI ASMR with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI ASMR Prompt Generator",
     primaryKeyword: "ai asmr video generator",
     secondaryKeywords: [
@@ -429,8 +423,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless satisfying shorts ai"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$3.50–$6.00",
-    intro: "The human brain loves satisfying loops, tactile textures, and crisp auditory triggers. AI ASMR—spanning deep cleaning, antique object restoration, and hyper-detailed cooking preparation—is one of the most hypnotic content genres online. Viewers will watch a rusty relic transform into pristine chrome or a dusty stone slab scrubbed clean on loop for minutes at a time. Because success relies heavily on visual texture rendering, your prompts must emphasize micro-details like soap suds, metal flakes, and smooth glides. Use our free generator blueprints below to create immersive, tactile ASMR scenes that keep retention pinned at 100%.",
+    intro: "This format may suit viewers who enjoy texture and quiet motion. Start with a specific idea, such as rain falling on a tiny greenhouse. Plan the sound separately and keep motion simple. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Rusty Pocket Watch Restoration",
@@ -466,7 +459,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the AI ASMR niche monetizable?",
-      "answer": "Yes, exceptionally well. Because ASMR videos attract a global audience across all languages and generate high watch time loops, AdSense earnings are strong and brand partnerships with lifestyle brands are frequent."
+      "answer": "ASMR can support ads, sponsorships, or product affiliates, but earnings vary and repetitive or low-value generated content may not qualify for monetization. Original sound design, visible transformation, and meaningful editing make the format more defensible."
     },
     {
       "question": "What tools do I need for AI ASMR content?",
@@ -492,7 +485,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Zombie Apocalypse Drama",
     niche: "Zombie Apocalypse Drama",
     seoTitle: "Zombie Apocalypse Drama Prompts — Free Generator",
-    metaDescription: "Create cinematic zombie apocalypse narrative shorts with our free AI prompt generator. Get atmospheric Midjourney prompts and survival voiceover scripts.",
+    metaDescription: "Explore Zombie Apocalypse Drama with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Zombie Apocalypse Drama Prompt Generator",
     primaryKeyword: "ai zombie video generator",
     secondaryKeywords: [
@@ -503,8 +496,7 @@ export const NICHE_PAGES: NichePage[] = [
     "how to make survival horror shorts"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "Survival horror and post-apocalyptic storytelling hold a permanent grip on internet culture. Zombie apocalypse dramas allow creators to build intense, high-stakes narratives about isolation, human choice, and survival against impossible odds—all without showing a human face. By focusing on atmospheric details like overgrown highways, flickering emergency radios, and shadowy figures lurking in fog, AI video tools can produce Hollywood-grade cinematic trailers and dramatic shorts. Our free generator provides the exact prompts needed to build gritty, cinematic survival content. Use the blueprints below to launch your dystopian drama channel.",
+    intro: "This format may suit fiction and suspense viewers. Start with a specific idea, such as a survivor finding a working radio. Maintain the setting and keep fictional events separate from real reporting. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Last Radio Broadcast",
@@ -540,7 +532,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the zombie apocalypse niche monetizable?",
-      "answer": "Yes. Post-apocalyptic survival content enjoys high viewer retention due to suspenseful pacing. However, ensure your prompts focus on atmosphere and drama rather than graphic gore to remain fully compliant with AdSense guidelines."
+      "answer": "It can be advertiser-friendly when the focus stays on story, atmosphere, and non-graphic suspense, but ad suitability is assessed per platform and sometimes per video. Review current violence and monetization policies rather than assuming compliance."
     },
     {
       "question": "What tools do I need for AI zombie videos?",
@@ -552,7 +544,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "Do zombie stories work better as continuous series?",
-      "answer": "Episodic storytelling (\"Day 1,\" \"Day 2\") performs exceptionally well in this niche because viewers subscribe and return to see how the protagonist survives the next obstacle."
+      "answer": "Episodic labels such as \"Day 1\" and \"Day 2\" can make continuity easy to understand. Whether viewers return depends on the characters and unresolved stakes, so compare returning-viewer and completion data before committing to a long season."
     }
   ],
     relatedSlugs: [
@@ -566,7 +558,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Bible & Mythology Anime",
     niche: "Bible & Mythology Anime",
     seoTitle: "Bible & Mythology Anime Prompts — Free Generator",
-    metaDescription: "Create epic anime-style biblical and mythological stories with our free AI prompt generator. Get Midjourney Niji prompts and cinematic voiceovers.",
+    metaDescription: "Explore Bible & Mythology Anime with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Bible & Mythology Anime Prompt Generator",
     primaryKeyword: "ai mythology anime generator",
     secondaryKeywords: [
@@ -577,8 +569,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless anime storytelling ai"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.00–$4.00",
-    intro: "Epic tales from ancient mythologies and biblical history—from Mount Olympus and Valhalla to Old Testament narratives—possess timeless narrative weight. When translated into high-end modern anime aesthetics, these stories pull massive engagement across YouTube and TikTok. Creators are leveraging AI to bring towering titans, legendary deities, and ancient prophets to life with breathtaking visual scale. Our free generator provides the exact prompts needed to output epic 2D anime framing, divine lighting effects, and dramatic narrator scripts. Use the blueprints below to launch your mythical storytelling channel.",
+    intro: "This format may suit viewers interested in religious stories or mythology. Start with a specific idea, such as a scene adapted from a chosen source passage. Name the source and distinguish quotations from creative interpretation. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Wrath of Poseidon",
@@ -614,7 +605,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the mythology and biblical anime niche monetizable?",
-      "answer": "Yes. Mythology and historical-religious narratives have universal appeal and high retention rates, securing strong AdSense performance. Respectful, narrative-driven framing ensures brand safety."
+      "answer": "Mythology and religious-story content can support ads or sponsorships when it is original, accurate about its sources, and handled respectfully. Monetization and ad suitability still depend on the specific treatment, audience, and platform review."
     },
     {
       "question": "What tools do I need for mythology anime videos?",
@@ -626,7 +617,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "Do single-myth videos or multi-part series perform better?",
-      "answer": "Episodic character deep-dives (e.g., 'The Complete History of Hades') build deep subscriber loyalty, while standalone epic battles drive viral discovery through Shorts."
+      "answer": "Character deep-dives can reward viewers who want context, while standalone visual shorts are easier to sample. Test both and compare search traffic, completion, and returning viewers rather than assuming one format will go viral."
     }
   ],
     relatedSlugs: [
@@ -640,7 +631,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI Influencer Product Reviews",
     niche: "AI Influencer Product Reviews",
     seoTitle: "AI Influencer Product Review Prompts — Free Generator",
-    metaDescription: "Create viral virtual influencer product review videos with our free AI prompt generator. Get Midjourney hyper-realism and engaging script templates.",
+    metaDescription: "Explore AI Influencer Product Reviews with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI Influencer Product Review Prompt Generator",
     primaryKeyword: "ai influencer video generator",
     secondaryKeywords: [
@@ -651,8 +642,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai affiliate marketing shorts generator"
   ],
     difficulty: "Hard",
-    estimatedRpm: "$4.00–$8.00",
-    intro: "Virtual influencers and AI-generated User Generated Content (UGC) are transforming digital marketing and affiliate e-commerce. Brands are eager for hyper-realistic virtual creators who can review products, unbox gadgets, and showcase lifestyle items on TikTok and Instagram Reels without logistical overhead. Creating consistent virtual characters requires advanced prompt structuring to maintain facial identity across different lighting conditions and outfits. Our free generator provides the exact blueprints needed to output photorealistic influencer footage and persuasive script hooks. Use the prompts below to build your automated UGC review channel.",
+    intro: "This format may suit people comparing products. Start with a specific idea, such as a clearly labeled demonstration of a desk accessory. Do not invent first-hand testing, testimonials, or product capabilities. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Minimalist Skincare Unboxing",
@@ -688,7 +678,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the AI influencer product review niche monetizable?",
-      "answer": "Extremely high monetization potential. Beyond AdSense, this niche is tailor-made for affiliate marketing (TikTok Shop, Amazon Associates) and direct brand sponsorship deals."
+      "answer": "Product content can support ads, affiliate links, and sponsorships, but it also requires careful disclosure and accurate claims. An AI presenter should not imply personal use or testing that never occurred, and affiliate eligibility varies by program and location."
     },
     {
       "question": "What tools do I need for virtual influencer videos?",
@@ -714,7 +704,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Lullaby & Sleep Music",
     niche: "Lullaby & Sleep Music",
     seoTitle: "Lullaby & Sleep Music Prompts — Free Generator",
-    metaDescription: "Create soothing ambient sleep music and lullaby videos with our free AI prompt generator. Get Midjourney calming visual prompts and audio scripts.",
+    metaDescription: "Explore Lullaby & Sleep Music with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Lullaby & Sleep Music Prompt Generator",
     primaryKeyword: "ai sleep music video generator",
     secondaryKeywords: [
@@ -725,8 +715,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless ambient video ai"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$1.50–$3.00",
-    intro: "Ambient sleep music and lullaby channels generate some of the most passive, long-term watch time on YouTube. Viewers leave these streams or looping videos running for eight hours straight to cope with insomnia, anxiety, or to help babies sleep. Because the content relies on hypnotic, slow-moving visuals paired with calming frequencies, your AI prompts must emphasize soft color palettes, gentle motion, and zero jarring transitions. Our free generator provides the exact syntax needed to create serene, dreamlike visual loops. Use the blueprints below to launch your automated ambient sleep channel.",
+    intro: "This format may suit listeners seeking a quiet background soundtrack. Start with a specific idea, such as a gentle instrumental bedtime scene. Use licensed audio and avoid promises about sleep or health outcomes. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Floating Cloud Kingdom",
@@ -762,7 +751,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the sleep music niche monetizable?",
-      "answer": "Yes, exceptionally well for long-term watch time. Because users stream 8-to-10 hour looping videos overnight, watch hours accumulate rapidly, leading to strong AdSense performance."
+      "answer": "Long ambient videos can accumulate watch time when listeners choose to keep them on, but watch hours do not guarantee monetization or strong RPM. Use original or properly licensed audio and avoid mass-produced near-duplicate uploads."
     },
     {
       "question": "What tools do I need for sleep channels?",
@@ -788,7 +777,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Analog Horror & Unsolved Mysteries",
     niche: "Analog Horror & Unsolved Mysteries",
     seoTitle: "Analog Horror Series Prompts — Free Generator",
-    metaDescription: "Create chilling VHS-style analog horror and unsolved mystery videos with our free AI prompt generator. Get eerie Midjourney prompts and scripts.",
+    metaDescription: "Explore Analog Horror & Unsolved Mysteries with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Analog Horror & Unsolved Mysteries Prompt Generator",
     primaryKeyword: "ai analog horror generator",
     secondaryKeywords: [
@@ -799,8 +788,7 @@ export const NICHE_PAGES: NichePage[] = [
     "how to make analog horror"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "Analog horror has taken over internet culture by leveraging the unsettling aesthetic of 1980s and 90s VHS tapes, distorted emergency broadcast warnings, and corrupted archival footage. This niche relies heavily on psychological dread, cryptic anomalies, and uncanny imagery rather than jump scares. Because the visual style requires specific vintage artifacts, scanlines, and muted color grading, your prompts must capture that classic magnetic tape decay. Our free generator provides the exact syntax needed to create deeply eerie narrative content. Use the blueprints below to build your viral horror channel.",
+    intro: "This format may suit fictional mystery and atmospheric horror viewers. Start with a specific idea, such as an invented broadcast from an abandoned station. Label fiction and avoid presenting invented events as real evidence. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Emergency Broadcast Override",
@@ -836,7 +824,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the analog horror niche monetizable?",
-      "answer": "Yes. Analog horror channels command extremely loyal subscriber bases. While extreme gore can restrict AdSense, atmospheric psychological horror remains fully eligible for monetization."
+      "answer": "Atmospheric horror can be more advertiser-friendly than graphic material, but no horror format is automatically eligible for monetization. Keep violence restrained, label fiction clearly, and review current ad-suitability rules for each platform."
     },
     {
       "question": "What tools do I need for analog horror?",
@@ -862,7 +850,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "DIY Cardboard & Miniature Builds",
     niche: "DIY Cardboard & Miniature Builds",
     seoTitle: "DIY Cardboard & Miniature Build Prompts — Free Generator",
-    metaDescription: "Create viral DIY miniature cardboard creation videos with our free AI prompt generator. Get macro Midjourney prompts and crafting script guides.",
+    metaDescription: "Explore DIY Cardboard & Miniature Builds with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "DIY Cardboard & Miniature Build Prompt Generator",
     primaryKeyword: "ai miniature build video generator",
     secondaryKeywords: [
@@ -873,8 +861,7 @@ export const NICHE_PAGES: NichePage[] = [
     "satisfying craft shorts ai"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$3.00–$5.00",
-    intro: "Watching raw cardboard, hot glue, and everyday household materials transform into intricate working miniature castles, arcade cabinets, or sports cars is mesmerizing. The DIY miniature build niche captures millions of views because it combines crafty ingenuity with deeply satisfying ASMR pacing. Creators often present these builds from a macro first-person perspective, showcasing every precise cut and glue drop. Our free generator provides the exact syntax needed to render hyper-realistic miniature structures and crafting tools. Use the blueprints below to launch your viral crafting channel.",
+    intro: "This format may suit craft and miniature enthusiasts. Start with a specific idea, such as a cardboard room with a working-looking lamp. Distinguish generated concept imagery from a build you actually completed. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Cardboard Cyberpunk Arcade",
@@ -910,7 +897,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the DIY miniature building niche monetizable?",
-      "answer": "Yes. Crafting and DIY content is highly brand-safe, family-friendly, and attracts strong advertiser demand, resulting in stable AdSense revenue."
+      "answer": "Craft content can support ads, tool or material affiliates, and sponsorships when the videos are original and safe. Revenue is not inherently stable; it depends on audience, geography, advertiser demand, and the platform's monetization review."
     },
     {
       "question": "What tools do I need for miniature AI videos?",
@@ -936,7 +923,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Vegetable & Fruit Carving",
     niche: "Vegetable & Fruit Carving",
     seoTitle: "Vegetable & Fruit Carving Prompts — Free Generator",
-    metaDescription: "Create mesmerizing fruit and vegetable carving ASMR shorts with our free AI prompt generator. Get macro Midjourney prompts and satisfying scripts.",
+    metaDescription: "Explore Vegetable & Fruit Carving with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Vegetable & Fruit Carving Prompt Generator",
     primaryKeyword: "ai fruit carving video generator",
     secondaryKeywords: [
@@ -947,8 +934,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless food craft ai"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$3.00–$5.50",
-    intro: "The ancient art of fruit and vegetable carving transforms ordinary watermelons, pumpkins, and soaps into breathtaking floral sculptures and intricate 3D dragons. When presented as ASMR-style macro shorts, these videos captivate millions of viewers who love watching raw produce transform into masterpieces under a razor-sharp carving knife. Because the aesthetic depends entirely on vibrant color contrast and precise blade work, your prompts must highlight glossy textures and clean cuts. Our free generator provides the exact syntax needed to render stunning culinary art. Use the blueprints below to launch your carving channel.",
+    intro: "This format may suit viewers interested in decorative food presentation. Start with a specific idea, such as a carved apple flower concept. Show clear stages and avoid presenting generated imagery as a tested tutorial. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Watermelon Dragon Lotus",
@@ -984,7 +970,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the fruit and vegetable carving niche monetizable?",
-      "answer": "Yes. It is highly visual, culturally universal, and completely brand-safe, making it ideal for high AdSense RPMs and culinary brand sponsorships."
+      "answer": "Food-art content can support ads or culinary partnerships, but 'brand-safe' and RPM are not guaranteed. Keep the presentation original, avoid unsafe technique claims, and let actual audience data guide monetization decisions."
     },
     {
       "question": "What tools do I need for carving ASMR videos?",
@@ -1010,7 +996,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI Car Wash & Restoration",
     niche: "AI Car Wash & Restoration",
     seoTitle: "AI Car Wash & Restoration Prompts — Free Generator",
-    metaDescription: "Create hyper-satisfying AI car washing and vehicle restoration videos with our free AI prompt generator. Get Midjourney prompts and scripts.",
+    metaDescription: "Explore AI Car Wash & Restoration with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI Car Wash & Restoration Prompt Generator",
     primaryKeyword: "ai car wash video generator",
     secondaryKeywords: [
@@ -1021,8 +1007,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless vehicle detailing ai"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$4.00–$7.00",
-    intro: "The transformation from thick layers of mud, grime, and rust to mirror-finish chrome and pristine paint is one of the most satisfying visual arcs on the internet. AI car washing and deep vehicle restoration videos pull massive view counts because they trigger instant gratification. Whether it's a high-pressure foam wash blasting away decades of dirt or a classic truck getting a showroom polish, this niche thrives on tactile realism and rich reflections. Our free generator provides the exact syntax needed to render stunning automotive finishes. Use the blueprints below to launch your viral detailing channel.",
+    intro: "This format may suit vehicle-detailing enthusiasts. Start with a specific idea, such as a dusty model car cleaned in four stages. Keep the vehicle geometry and before-and-after framing consistent. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Muddy Off-Road Foam Blast",
@@ -1058,7 +1043,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the car wash and restoration niche monetizable?",
-      "answer": "Yes, exceptionally well. Automotive content attracts high-paying advertisers (tools, detailing brands, insurance), leading to above-average AdSense RPMs."
+      "answer": "Automotive audiences may attract relevant advertisers and affiliate opportunities, but RPM varies widely. Original transformations, accurate product claims, and clear differentiation from reused detailing footage matter more than assuming a premium ad rate."
     },
     {
       "question": "What tools do I need for car detailing AI videos?",
@@ -1070,7 +1055,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "Why do transformation videos perform so well?",
-      "answer": "The contrast between extreme decay (mud/rust) and extreme perfection (mirror polish) triggers a strong psychological reward loop in viewers, maximizing watch time."
+      "answer": "A clear before-and-after contrast makes the transformation easy to understand. Match the opening and final camera angle so viewers can judge the change directly rather than relying on exaggerated claims."
     }
   ],
     relatedSlugs: [
@@ -1084,7 +1069,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Miniature ASMR Cooking",
     niche: "Miniature ASMR Cooking",
     seoTitle: "Miniature ASMR Cooking Prompts — Free Generator",
-    metaDescription: "Create viral miniature cooking ASMR videos with our free AI prompt generator. Get macro Midjourney prompts and satisfying recipe scripts.",
+    metaDescription: "Explore Miniature ASMR Cooking with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Miniature ASMR Cooking Prompt Generator",
     primaryKeyword: "ai miniature cooking video generator",
     secondaryKeywords: [
@@ -1095,8 +1080,7 @@ export const NICHE_PAGES: NichePage[] = [
     "satisfying tiny food AI"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$3.50–$6.00",
-    intro: "Tiny kitchens, miniature working stoves, and tiny ingredients cooked into real, edible meals have captivated hundreds of millions of viewers worldwide. Miniature ASMR cooking combines the obsessive precision of scale models with the universal comfort of food preparation. Because everything is built on a micro scale, your AI prompts must emphasize shallow depth of field, tiny utensils, and macro food textures. Our free generator provides the exact syntax needed to render flawless miniature culinary scenes. Use the blueprints below to launch your viral tiny kitchen channel.",
+    intro: "This format may suit miniature and food-video viewers. Start with a specific idea, such as a tiny kitchen preparing a bowl of noodles. Maintain scale across ingredients, props, and utensils. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Tiny Cast-Iron Pancake",
@@ -1132,7 +1116,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the miniature cooking niche monetizable?",
-      "answer": "Yes, exceptionally well. It transcends language barriers, appeals to all age groups, and commands high completion rates due to the hypnotic visual payoff."
+      "answer": "Miniature cooking can work across languages and may suit ads, sponsors, or craft/food affiliates, but completion and revenue depend on execution. Original sets, coherent scale, and satisfying process are more useful goals than assumed performance."
     },
     {
       "question": "What tools do I need for miniature cooking AI videos?",
@@ -1158,7 +1142,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Nostalgia Toy Unboxing",
     niche: "Nostalgia Toy Unboxing",
     seoTitle: "Nostalgia Toy Unboxing Prompts — Free Generator",
-    metaDescription: "Create retro 90s and 2000s nostalgia toy unboxing videos with our free AI prompt generator. Get Midjourney vintage toy prompts and scripts.",
+    metaDescription: "Explore Nostalgia Toy Unboxing with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Nostalgia Toy Unboxing Prompt Generator",
     primaryKeyword: "ai toy unboxing video generator",
     secondaryKeywords: [
@@ -1169,8 +1153,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless toy collecting AI"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$3.00–$5.50",
-    intro: "Nostalgia is one of the most powerful emotional drivers on social media. Videos unboxing pristine 90s and 2000s toys—vintage action figures, translucent electronics, Tamagotchis, and classic trading card packs—trigger an immediate wave of dopamine for millennial and Gen-Z viewers. Because AI can generate rare, mint-condition retro packaging that no longer exists in reality, creators can build massive collector communities from scratch. Our free generator provides the exact syntax needed to render hyper-detailed vintage toy packaging. Use the blueprints below to launch your retro unboxing channel.",
+    intro: "This format may suit toy collectors and nostalgic viewers. Start with a specific idea, such as an original retro-style toy revealed from its box. Use accurate product details and distinguish imagined toys from real releases. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Translucent 90s Handheld",
@@ -1206,7 +1189,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the nostalgia toy niche monetizable?",
-      "answer": "Yes. Nostalgia-driven content boasts high audience engagement, excellent watch retention from older demographics, and strong merchandising or affiliate revenue potential."
+      "answer": "Nostalgia content can support ads, affiliates, or collector partnerships, but results depend on the audience and the rights around the products and media shown. Avoid unsupported value claims and keep AI recreations distinct from authentic collectibles."
     },
     {
       "question": "What tools do I need for nostalgia toy videos?",
@@ -1232,7 +1215,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Ranking & Top 5 Countdowns",
     niche: "Ranking & Top 5 Countdowns",
     seoTitle: "Ranking & Top 5 Countdown Prompts — Free Generator",
-    metaDescription: "Create viral top 5 ranking and countdown shorts with our free AI prompt generator. Get Midjourney comparison visuals and engaging script hooks.",
+    metaDescription: "Explore Ranking & Top 5 Countdowns with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Ranking & Top 5 Countdown Prompt Generator",
     primaryKeyword: "ai countdown video generator",
     secondaryKeywords: [
@@ -1243,8 +1226,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless listicle channel AI"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "Listicles and Top 5 countdowns form the structural backbone of viral social media video content. Whether ranking the most powerful historical empires, deepest ocean creatures, or futuristic tech concepts, countdowns harness an innate psychological curiosity that forces viewers to stay until #1. Because these videos require striking visual contrasts between each ranked item, your prompts must maintain thematic consistency while escalating in scale. Our free generator provides the exact syntax needed to build high-retention listicle content. Use the blueprints below to launch your ranking channel.",
+    intro: "This format may suit viewers comparing a clearly defined topic. Start with a specific idea, such as five unusual fictional vehicles. State your ranking criteria and verify factual entries before publishing. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Deep Sea Depth Scale (#1)",
@@ -1280,7 +1262,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the ranking countdown niche monetizable?",
-      "answer": "Yes. Listicles and countdowns enjoy some of the highest audience retention rates on social media because viewers want to see what claims the #1 spot, driving strong AdSense revenue."
+      "answer": "Countdowns can create a clear reason to keep watching, but retention and ad revenue are not automatically high. Strong sourcing, a defensible ranking rule, and concise explanations matter more than withholding number one for its own sake."
     },
     {
       "question": "What tools do I need for countdown videos?",
@@ -1306,7 +1288,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Vox-Style Paper-Cut Commentary",
     niche: "Vox-Style Paper-Cut Commentary",
     seoTitle: "Vox-Style Paper-Cut Commentary Prompts — Free Generator",
-    metaDescription: "Create Vox-style paper-cut vector animation commentary videos with our free AI prompt generator. Get Midjourney vector prompts and essay scripts.",
+    metaDescription: "Explore Vox-Style Paper-Cut Commentary with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Vox-Style Paper-Cut Commentary Prompt Generator",
     primaryKeyword: "ai vox style video generator",
     secondaryKeywords: [
@@ -1317,8 +1299,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless commentary video AI"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$5.00–$9.00",
-    intro: "Vox-style explanatory journalism—characterized by clean paper-cut vector graphics, bold typography callouts, isometric maps, and smooth animated layers—has set the gold standard for high-intellect video essays. This aesthetic breaks down complex economic, historical, and geopolitical topics into digestible, visually striking components. Because generating precise infographic art requires strict vector rules, your prompts must emphasize clean lines and layered paper textures. Our free generator provides the exact syntax needed to produce professional explanatory assets. Use the blueprints below to launch your intellectual commentary channel.",
+    intro: "This format may suit viewers who enjoy visual explainers. Start with a specific idea, such as a paper-cut explanation of a daily habit. Use original graphics and cite evidence for factual claims. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Global Shipping Bottleneck",
@@ -1354,7 +1335,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the Vox-style commentary niche monetizable?",
-      "answer": "Yes, exceptionally well. Explanatory journalism attracts highly educated audiences, commanding top-tier AdSense RPMs and lucrative sponsorship opportunities from tech and finance brands."
+      "answer": "Well-researched explainers can support ads and sponsorships, but advertiser demand and RPM vary by topic and audience. For commentary, sourcing, originality, and a clear distinction between reporting and opinion are essential."
     },
     {
       "question": "What tools do I need for Vox-style videos?",
@@ -1380,7 +1361,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Elderly Wisdom & Stoic Long-Form",
     niche: "Elderly Wisdom & Stoic Long-Form",
     seoTitle: "Elderly Wisdom & Stoic Long-Form Prompts — Free",
-    metaDescription: "Create profound stoic philosophy and elderly wisdom long-form video essays with our free AI prompt generator. Get atmospheric prompts and scripts.",
+    metaDescription: "Explore Elderly Wisdom & Stoic Long-Form with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Elderly Wisdom & Stoic Long-Form Prompt Generator",
     primaryKeyword: "ai stoic philosophy video generator",
     secondaryKeywords: [
@@ -1391,8 +1372,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless philosophy video AI"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$6.00–$12.00",
-    intro: "Stoicism, contemplative philosophy, and deep life advice delivered by timeless cinematic mentors have captured billions of views across YouTube long-form content. Viewers turn to these channels for grounding, emotional resilience, and quiet reflection amidst a chaotic modern world. Because success hinges on profound atmosphere, weathered realism, and cinematic gravitas, your AI prompts must capture soulful textures and dramatic lighting. Our free generator provides the exact syntax needed to render unforgettable philosophical content. Use the blueprints below to build your wisdom channel.",
+    intro: "This format may suit viewers interested in reflective storytelling. Start with a specific idea, such as a fictional elder discussing a small daily habit. Do not attribute invented quotations to real people or present fiction as lived testimony. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Weight of Silence",
@@ -1428,7 +1408,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the stoic philosophy niche monetizable?",
-      "answer": "Yes, exceptionally well. Philosophical and long-form advisory content attracts mature, engaged audiences, resulting in some of the highest AdSense RPMs on YouTube."
+      "answer": "Long-form philosophy can support ads, memberships, books, or relevant sponsors if viewers find the material useful. Avoid assuming a premium RPM, and prioritize sourced quotations, original commentary, and appropriate disclaimers for sensitive advice."
     },
     {
       "question": "What tools do I need for stoic wisdom videos?",
@@ -1436,7 +1416,7 @@ export const NICHE_PAGES: NichePage[] = [
     },
     {
       "question": "Should wisdom videos be Shorts or Long-form?",
-      "answer": "While shorts help build rapid initial subscriber counts, 10-to-20 minute long-form video essays are where this niche thrives, generating massive watch time and peak RPMs."
+      "answer": "Shorts can introduce a single idea quickly, while 10-to-20 minute essays give you room for context and practical examples. Compare retention, returning viewers, and production effort on your own channel instead of assuming one length will produce a higher RPM."
     },
     {
       "question": "How do I make the AI characters look genuinely wise?",
@@ -1454,7 +1434,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "AI Music Videos",
     niche: "AI Music Videos",
     seoTitle: "AI Music Video Prompts — Free Generator",
-    metaDescription: "Create stunning cinematic AI music videos with our free prompt generator. Get Midjourney visual style prompts and dynamic Runway/Kling motion settings.",
+    metaDescription: "Explore AI Music Videos with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "AI Music Video Prompt Generator",
     primaryKeyword: "ai music video generator",
     secondaryKeywords: [
@@ -1465,8 +1445,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless visualizer ai"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "Music videos have entered a radical new era where surrealism, hyper-detailed dreamscapes, and rapid cinematic editing can be generated entirely with AI. Whether producing Lofi hip-hop loops, electronic dance tracks, or atmospheric dark ambient scores, creators use synchronized visualizers to hook viewers instantly. Because music videos require a cohesive artistic world, your prompts must maintain unified lighting and thematic color grades across every sequence. Our free generator provides the exact syntax needed to produce professional musical art. Use the blueprints below to launch your AI music channel.",
+    intro: "This format may suit music and visual-art audiences. Start with a specific idea, such as a color-themed sequence set to licensed music. Time the cuts to the track and confirm rights to music and likenesses. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Neon Cyberpunk Synthwave Ride",
@@ -1502,7 +1481,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the AI music video niche monetizable?",
-      "answer": "Yes. Music channels command dedicated listener bases and high repeat-viewing rates, making them exceptionally strong for long-term AdSense growth and streaming distribution partnerships."
+      "answer": "Music videos can support ads, distribution, or artist promotion when the audio and visuals are properly licensed. Rights management is the main constraint; repeated listening does not override copyright or monetization requirements."
     },
     {
       "question": "What tools do I need for AI music videos?",
@@ -1528,7 +1507,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Cartoon Horror Illustration",
     niche: "Cartoon Horror Illustration",
     seoTitle: "Cartoon Horror Illustration Prompts — Free Generator",
-    metaDescription: "Create chilling vintage 1930s rubber-hose cartoon horror illustrations with our free AI generator. Get eerie Midjourney prompts and spooky scripts.",
+    metaDescription: "Explore Cartoon Horror Illustration with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Cartoon Horror Illustration Prompt Generator",
     primaryKeyword: "ai cartoon horror generator",
     secondaryKeywords: [
@@ -1539,8 +1518,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless horror animation AI"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "The juxtaposition of cheerful, classic 1930s rubber-hose cartoon aesthetics with deeply unsettling, psychological horror elements has become a massive viral phenomenon. Inspired by retro animation styles and indie horror gaming tropes, this niche draws viewers in with nostalgic character designs before pulling the rug out with twisted, eerie transformations. Because the visual style requires precise retro ink-and-paint framing, your prompts must specify black-and-white grain or faded sepia tones. Our free generator provides the exact syntax needed to produce haunting animated art. Use the blueprints below to launch your creepy cartoon channel.",
+    intro: "This format may suit fans of stylized spooky fiction. Start with a specific idea, such as a cheerful cartoon hallway that slowly changes. Use original characters and match the intensity to your intended audience. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Smiling Feline's Secret",
@@ -1576,7 +1554,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the cartoon horror niche monetizable?",
-      "answer": "Yes. Creepy animation and analog horror subgenres command high viewer engagement and loyal subscriber communities, keeping AdSense performance strong."
+      "answer": "Illustrated horror can support monetization when it is original and suitable for advertisers, but engagement and ad performance vary. Keep graphic content controlled and review the current platform rules for horror and violence."
     },
     {
       "question": "What tools do I need for creepy cartoon videos?",
@@ -1602,7 +1580,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Pixel Game POV",
     niche: "Pixel Game POV",
     seoTitle: "Pixel Game POV Prompts — Free Generator",
-    metaDescription: "Create immersive retro pixel art RPG and survival game POV videos with our free AI prompt generator. Get Midjourney pixel prompts and adventure scripts.",
+    metaDescription: "Explore Pixel Game POV with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Pixel Game POV Prompt Generator",
     primaryKeyword: "ai pixel art video generator",
     secondaryKeywords: [
@@ -1613,8 +1591,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless gaming content AI"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.00–$4.00",
-    intro: "Retro 16-bit and 32-bit pixel art evokes an intense wave of gaming nostalgia while offering a clean, hypnotic aesthetic for modern social media feeds. Pixel Game POV videos place the viewer directly inside legendary fantasy RPGs, cozy farming sims, or cyberpunk dungeon crawlers through a first-person perspective. Because pixel art requires rigorous grid alignment and color palette restraint, your prompts must specify precise retro resolutions. Our free generator provides the exact syntax needed to render stunning pixel landscapes. Use the blueprints below to launch your retro gaming channel.",
+    intro: "This format may suit pixel-art and game-inspired story viewers. Start with a specific idea, such as a first-person walk through an original pixel village. Keep the palette and sprite scale coherent between frames. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Cozy RPG Tavern Fireplace",
@@ -1650,7 +1627,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the pixel game POV niche monetizable?",
-      "answer": "Yes. Gaming and retro nostalgia communities are exceptionally active, driving strong subscriber growth, high share rates, and solid AdSense revenue."
+      "answer": "Original gaming-style content can support ads, sponsorships, or game-related affiliates, but growth and revenue vary. Avoid copying a real game's protected assets or UI too closely and focus on a distinctive playable-looking concept."
     },
     {
       "question": "What tools do I need for pixel art videos?",
@@ -1676,7 +1653,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Celebrity Evolution & Glow-Up",
     niche: "Celebrity Evolution & Glow-Up",
     seoTitle: "Celebrity Evolution & Glow-Up Prompts — Free Generator",
-    metaDescription: "Create viral celebrity evolution and fictional character glow-up transition videos with our free AI prompt generator. Get Midjourney prompts and scripts.",
+    metaDescription: "Explore Celebrity Evolution & Glow-Up with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Celebrity Evolution & Glow-Up Prompt Generator",
     primaryKeyword: "ai celebrity evolution video generator",
     secondaryKeywords: [
@@ -1687,8 +1664,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless pop culture content AI"
   ],
     difficulty: "Medium",
-    estimatedRpm: "$3.00–$5.50",
-    intro: "Before they were icons, how did legendary figures, historical legends, or fictional characters evolve? Celebrity evolution and glow-up comparison videos capture massive social media traffic by showcasing dramatic visual transformations across time, status, or style eras. Because AI can seamlessly generate age progression and alternative styling for iconic archetypes, creators can build addictive chronological journey shorts. Our free generator provides the exact syntax needed to render consistent character evolution across decades. Use the blueprints below to launch your pop-culture channel.",
+    intro: "This format may suit viewers interested in visual timelines. Start with a specific idea, such as the changing wardrobe of an original fictional character. Use documented facts for real people and clearly label synthetic or speculative imagery. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Streetwear Icon Evolution",
@@ -1724,7 +1700,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the celebrity evolution niche monetizable?",
-      "answer": "Yes. Pop culture, fashion, and character transformation content enjoy massive algorithmic reach and strong viewer retention, leading to solid AdSense earnings."
+      "answer": "Public-figure timelines can attract entertainment audiences, but monetization depends on originality, rights, and treatment. Avoid deceptive synthetic likenesses, private speculation, and unlicensed media; focus on sourced public milestones."
     },
     {
       "question": "What tools do I need for evolution videos?",
@@ -1750,7 +1726,7 @@ export const NICHE_PAGES: NichePage[] = [
     name: "Poor vs. Rich Animals",
     niche: "Poor vs. Rich Animals (AI Skits)",
     seoTitle: "Poor vs. Rich Animals AI Skits Prompts — Free Generator",
-    metaDescription: "Create viral poor vs rich animal comparison skit videos with our free AI prompt generator. Get Midjourney funny animal prompts and comedy scripts.",
+    metaDescription: "Explore Poor vs. Rich Animals with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
     h1: "Poor vs. Rich Animals AI Skits Prompt Generator",
     primaryKeyword: "ai animal skits video generator",
     secondaryKeywords: [
@@ -1761,8 +1737,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless animal comedy AI"
   ],
     difficulty: "Easy",
-    estimatedRpm: "$2.50–$4.50",
-    intro: "Comparative skits—specifically contrasting the absurdly pampered lifestyles of wealthy pets with the scrappy antics of street animals—form one of the funniest and most viral content formats in the animal niche. These videos lean heavily into humorous anthropomorphism, putting golden retrievers in silk bathrobes or tuxedo cats in miniature mansions. Because success relies on clean comedic contrast and expressive animal reactions, your prompts must highlight clothing and setting details. Our free generator provides the exact syntax needed to produce hilarious animal comedy. Use the blueprints below to launch your viral animal skit channel.",
+    intro: "This format may suit viewers who enjoy light animal comedy. Start with a specific idea, such as two fictional pets finding different uses for the same box. Make the contrast clear through props and action without relying on stereotypes. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
     prompts: [
     {
       "title": "The Diamond Collar Breakfast",
@@ -1798,7 +1773,7 @@ export const NICHE_PAGES: NichePage[] = [
     faqs: [
     {
       "question": "Is the poor vs. rich animal skit niche monetizable?",
-      "answer": "Yes, exceptionally well. Animal comedy attracts massive family-friendly audiences across global markets, driving high view counts and robust AdSense performance."
+      "answer": "Fictional animal comedy can support ads or sponsorships when it is original and suitable for the intended audience, but high views and revenue are never guaranteed. Build repeatable characters and test which story setups viewers actually finish and share."
     },
     {
       "question": "What tools do I need for animal skit videos?",
@@ -1809,8 +1784,8 @@ export const NICHE_PAGES: NichePage[] = [
       "answer": "Pair absurd human luxury items (tiny sunglasses, gold bowls, silk bathrobes) with deadpan, serious voiceover delivery to maximize comedic contrast."
     },
     {
-      "question": "Why do animal comparison videos go viral?",
-      "answer": "They combine cute pet imagery with relatable social satire, prompting viewers to tag friends and share the content widely across social platforms."
+      "question": "How should I evaluate this format?",
+      "answer": "Test a specific idea with your intended audience, review your own results, and improve one choice at a time. This format does not guarantee views or earnings."
     }
   ],
     relatedSlugs: [
