@@ -31,6 +31,13 @@ globalThis.fetch=async()=>reply(silent);
 res=await request({niche:'AI Car Wash & Restoration',topic:'Wash a red pickup truck. No voiceover, only water and brush sounds.',pacing:'slow'});
 assert.equal(res.status,200);p=(await res.json()).package;assert.equal(p.narrationMode,'ambient');assert.deepEqual(p.character.cueSheet,[]);assert.equal(p.character.voiceSpec['Pace (WPM)'],'Not applicable');
 calls=0;globalThis.fetch=async()=>{calls++;return new Response('',{status:401})};res=await request();assert.equal(res.status,503);assert.equal(calls,1);assert.match((await res.json()).error,/credentials/);
+// Keep a valid hook when an optional alternative exceeds the limit; do not truncate.
+const longHook = {label:'Alternative',text:'Our brave orange kitten with his bright yellow scarf is on a mission.'};
+calls=0;globalThis.fetch=async()=>{calls++;return reply({...draft,character:{...draft.character,hooks:[...draft.character.hooks,longHook]}})};
+res=await request();assert.equal(res.status,200);assert.equal(calls,1);p=(await res.json()).package;
+assert.equal(p.character.hooks.length,1);assert.equal(p.character.hooks[0].text,'A broken birdhouse needed a very small builder');
+calls=0;globalThis.fetch=async()=>{calls++;return reply({...draft,character:{...draft.character,hooks:[longHook]}})};
+res=await request();assert.equal(res.status,502);assert.equal(calls,2);
 // A full provider timeout must not trigger a second 85-second request.
 const originalSetTimeout = globalThis.setTimeout;
 globalThis.setTimeout = (callback, delay, ...args) => originalSetTimeout(callback, delay === 85000 ? 5 : delay, ...args);

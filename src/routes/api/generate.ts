@@ -108,6 +108,9 @@ function normalizePackage(raw: unknown, niche: string, topic: string, st: Resolv
     return null;
   }
   const p = parsed.data;
+  // Optional alternatives must not invalidate a usable opening. Never truncate AI text.
+  const shortHooks = p.character.hooks.filter(h => wordCount(clean(h.text)) <= 12);
+  const selectedHooks = shortHooks.length ? shortHooks : p.character.hooks;
   const silent = ambientOnly(niche, topic);
   const cueSheet = p.character.cueSheet.map((row, i) => ({ ...row, timestamp: `0:${String(i * 6).padStart(2, "0")}`, line: clean(row.line), cue: toElevenLabsCue(row.cue) }));
   const times = ["0:00–0:07", "0:07–0:15", "0:15–0:22", "0:22–0:30"];
@@ -121,7 +124,7 @@ function normalizePackage(raw: unknown, niche: string, topic: string, st: Resolv
   if (!isHumanSubject(niche)) negative = negative.split(",").filter(s => !/faceless|anonymous silhouette|head cropped|hidden face|visible face/i.test(s)).join(",").trim();
   const result: ProductionPackage = {
     ...p, niche, topic, seed, generatedAt: new Date().toISOString(), narrationMode: silent ? "ambient" : "voiceover",
-    character: { ...p.character, cueSheet, voiceSpec: { ...p.character.voiceSpec, "Voice Type": silent ? "None — ambient sound only" : p.character.voiceSpec["Voice Type"] || "Narrator", "Pace (WPM)": silent ? "Not applicable" : st.pacing.wpm }, hooks: p.character.hooks.map(h => ({ label: clean(h.label), text: clean(h.text) })) },
+    character: { ...p.character, cueSheet, voiceSpec: { ...p.character.voiceSpec, "Voice Type": silent ? "None — ambient sound only" : p.character.voiceSpec["Voice Type"] || "Narrator", "Pace (WPM)": silent ? "Not applicable" : st.pacing.wpm }, hooks: selectedHooks.map(h => ({ label: clean(h.label), text: clean(h.text) })) },
     visual: { ...p.visual, aspectRatio: st.format.aspectRatio, resolution: st.format.resolution, seedValue: seed, masterPrompt: image(p.visual.masterPrompt), negativePrompt: negative, leonardoPrompt: image(p.visual.leonardoPrompt), midjourneyPrompt: sanitizeMidjourneyPrompt(image(p.visual.midjourneyPrompt), seed, st.format.aspectRatio, midjourneyNegativeFor(niche)), googleFlowPrompt: image(p.visual.googleFlowPrompt) },
     camera: { ...p.camera, shots, overview: { ...p.camera.overview, "Shot Count": "4", "Avg Shot Length": "7.5s", "Pacing Arc": st.pacing.label }, soundDesign: p.camera.soundDesign.map(clean) },
     variation: { ...p.variation, copyPastePrompt: clean(p.variation.copyPastePrompt) },
