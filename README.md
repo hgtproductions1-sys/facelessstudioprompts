@@ -51,10 +51,10 @@ Navigation and detail pages no longer depend on hidden tabs or modals. The visit
 
 All 14 editorial WebP images have 480px and 800px variants in addition to their 1280px sources. Cards and content covers use responsive source sets; the homepage hero is prioritized. The Studio receives a compact niche selector from its server page and loads template-production data only when a template is requested. Video indexes use click-to-load players. The mobile menu supports Escape and outside-click dismissal, and Studio tabs support arrow/Home/End navigation. No field performance scores are claimed.
 
-## Vercel release configuration — 2026-10-08
+## Vercel configuration for this release
 
-This repository contains the Antigravity return version. Vercel uses the existing Next.js App Router source through `vercel.json` and builds with `pnpm exec next build`; Sites/Vinext source and scripts remain available. Keep pnpm 11.25.0 and the supplied lockfile. Configure server-only GLM_API_KEY, AI_MODEL=auto, and optionally GLM_API_URL (the default is https://api.hcnsec.cn/v1/chat/completions). No real key is committed.
+Vercel builds the existing Next.js App Router source using vercel.json and pnpm exec next build. Keep pnpm 11.25.0 and pnpm-lock.yaml. Set server-only GLM_API_KEY and AI_MODEL=auto; GLM_API_URL defaults to https://api.hcnsec.cn/v1/chat/completions. No real key is committed. Studio defaults to AI, while template planning remains an explicit optional selection. Failures preserve the input and never substitute templates.
 
-Studio defaults to AI. Template planning remains an explicit optional selection; AI failures never fall back silently. Provider requests have a 90-second first-attempt deadline, one bounded format correction if required, a 120-second total deadline, and a 130-second client deadline. The Vercel API function declares maxDuration=180.
+The first provider attempt has a 90-second timeout, with at most one format correction inside a 120-second total deadline. Client timeout is 130 seconds and Vercel maxDuration is 180 seconds.
 
-Before promoting a deployment, verify the build and real generation in that deployment. Older transfer instructions in CHATGPT-IMPORT.md and TRANSFER.md describe Sites hosting; Vercel is the selected host for this release. Do not change DNS or connect the domain to another provider.
+Sites/Vinext scripts are retained for portability, but Vercel is the chosen host for this release. Earlier transfer documents describe Sites hosting; do not change DNS or move the domain.
