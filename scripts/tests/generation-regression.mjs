@@ -31,5 +31,20 @@ globalThis.fetch=async()=>reply(silent);
 res=await request({niche:'AI Car Wash & Restoration',topic:'Wash a red pickup truck. No voiceover, only water and brush sounds.',pacing:'slow'});
 assert.equal(res.status,200);p=(await res.json()).package;assert.equal(p.narrationMode,'ambient');assert.deepEqual(p.character.cueSheet,[]);assert.equal(p.character.voiceSpec['Pace (WPM)'],'Not applicable');
 calls=0;globalThis.fetch=async()=>{calls++;return new Response('',{status:401})};res=await request();assert.equal(res.status,503);assert.equal(calls,1);assert.match((await res.json()).error,/credentials/);
+// A full provider timeout must not trigger a second 85-second request.
+const originalSetTimeout = globalThis.setTimeout;
+globalThis.setTimeout = (callback, delay, ...args) => originalSetTimeout(callback, delay === 85000 ? 5 : delay, ...args);
+calls = 0;
+globalThis.fetch = async (_url, options) => {
+ calls++;
+ assert.equal(JSON.parse(options.body).reasoning_effort, 'low');
+ return new Promise((_resolve, reject) => options.signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true }));
+};
+try {
+ res = await request();
+ assert.equal(res.status, 504);
+ assert.equal(calls, 1);
+ assert.match((await res.json()).error, /took too long/);
+} finally { globalThis.setTimeout = originalSetTimeout; }
 console.log('PASS: retry, quality rejection, full subject preservation, consistent movement, neutral image prompts, silent mode and auth errors.');
 process.exit(0);

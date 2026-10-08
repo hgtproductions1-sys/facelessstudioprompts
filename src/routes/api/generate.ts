@@ -248,6 +248,7 @@ class GenerationError extends Error {
   constructor(message: string, public status = 502, public retryable = true) { super(message); }
 }
 async function generateWithGlm(niche: string, topic: string, st: ResolvedStyle, seed: number, apiKey: string, extraRules: string[] = [], compatibility = false): Promise<ProductionPackage | null> {
+  const startedAt = Date.now();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -255,7 +256,8 @@ async function generateWithGlm(niche: string, topic: string, st: ResolvedStyle, 
       method: "POST", signal: controller.signal,
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: process.env["AI_MODEL"] || "auto", max_tokens: 10000, temperature: 0.4,
-        ...(!compatibility ? { reasoning_effort: "low", response_format: { type: "json_object" } } : {}),
+        reasoning_effort: "low",
+        ...(!compatibility ? { response_format: { type: "json_object" } } : {}),
         messages: [{ role: "system", content: [...PRODUCTION_RULES, ...styleRules(st, niche), ...extraRules].join("\n") }, { role: "user", content: userInstruction(niche, topic, st, seed) }],
       }),
     });
@@ -274,7 +276,10 @@ async function generateWithGlm(niche: string, topic: string, st: ResolvedStyle, 
     return normalizePackage(parseJsonLoose(text), niche, topic, st, seed);
   } catch (error) {
     if (error instanceof GenerationError) throw error;
-    if (controller.signal.aborted) throw new GenerationError("The AI provider took too long. Your topic is still here; please try again.", 504);
+    if (controller.signal.aborted) {
+      console.warn(`[generate] Provider timeout: model=${process.env["AI_MODEL"] || "auto"}, elapsedMs=${Date.now() - startedAt}`);
+      throw new GenerationError("The AI provider took too long. Your topic is still here; please try again shortly.", 504, false);
+    }
     throw new GenerationError("The AI connection was interrupted. Please try again.", 502);
   } finally { clearTimeout(timer); }
 }
@@ -295,7 +300,7 @@ export const Route = createFileRoute("/api/generate")({
       const key = process.env["GLM_API_KEY"], gatewayKey = process.env["LOVABLE_API_KEY"];
       if (!key && !gatewayKey) return Response.json({ error: "AI generation is not configured. Please contact the site owner." }, { status: 503 });
       let feedback: string[] = [], lastError = new GenerationError("The AI returned an incomplete draft twice. Please try again.");
-      // Exactly one bounded retry for empty, incomplete, invalid or transient responses.
+      // Retry incomplete drafts or transient errors once, but never repeat a full timeout.
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
           const extra = feedback.length ? ["Correct these issues before returning the complete JSON: " + feedback.join(" ")] : [];
