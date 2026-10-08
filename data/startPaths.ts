@@ -1,0 +1,9 @@
+export type StartPath={id:string;name:string;description:string;topic:string;niche:string;style:string;guide:string;video:string;prompt:string;image:string;imageAlt:string};
+export const START_PATHS:StartPath[]=[
+ {id:'story',name:'Tell a small character story',description:'One character, one setting, and a simple beginning, change, and payoff.',topic:'A tiny cat finds shelter in a midnight bakery',niche:'ai-cat-and-pet-stories',style:'Cozy storybook',guide:'consistent-ai-characters',video:'creating-in-google-flow',prompt:'char-identity-lock',image:'/story-cat.webp',imageAlt:'Kitten looking into a warm bakery on a rainy evening'},
+ {id:'explainer',name:'Explain one useful idea',description:'Use a simple stick figure and clear visual steps to explain a daily habit.',topic:'A stick figure learns to organize a busy day in three simple steps',niche:'stickman-explainer-and-skits',style:'Clean illustration',guide:'write-ai-video-prompts',video:'google-flow-beginner-workflow',prompt:'vid-stickman-explainer',image:'/niche-stickman-skits.webp',imageAlt:'Stick figures working together to hold up a lightbulb'},
+ {id:'pov',name:'Build an immersive POV scene',description:'Start with a readable point of view, one action, and matching ambient sound.',topic:'A first-person walk through a lantern-lit market after the rain',niche:'pov-immersive-vlogs',style:'Cinematic natural light',guide:'write-ai-image-prompts',video:'adobe-image-prompt-structure',prompt:'vid-pov-night-forest',image:'/niche-pov-vlog.webp',imageAlt:'First-person view of a map in a lantern-lit street after rain'},
+];
+export function studioUrl(path:StartPath,topic=path.topic,format='short',engine='Google Flow / Veo'){
+ return '/studio?'+new URLSearchParams({topic,niche:path.niche,style:path.style,format,engine,journey:path.id}).toString();
+}

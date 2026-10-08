@@ -1,0 +1,9 @@
+import {ArrowUpRight,ChevronRight} from 'lucide-react';
+import {breadcrumbSchema,schema} from '@/lib/site';
+export function JsonLd({data}:{data:Record<string,unknown>}){return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:schema(data)}}/>;}
+export function Breadcrumbs({items}:{items:{label:string;href:string}[]}){const all=[{label:'Home',href:'/'},...items];return <><nav className="breadcrumbs" aria-label="Breadcrumb">{all.map((x,i)=><span key={x.href}>{i>0&&<ChevronRight size={12}/>} {i===all.length-1?<span aria-current="page">{x.label}</span>:<a href={x.href}>{x.label}</a>}</span>)}</nav><JsonLd data={breadcrumbSchema(all)}/></>;}
+export function PageIntro({eyebrow,title,description,children}:{eyebrow:string;title:string;description:string;children?:React.ReactNode}){return <div className="page-intro"><div className="eyebrow"><span className="status-dot"/>{eyebrow}</div><h1>{title}</h1><p>{description}</p>{children}</div>;}
+export function SectionHeading({eyebrow,title,description,href,link}:{eyebrow:string;title:string;description?:string;href?:string;link?:string}){return <div className="section-heading"><div><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{description&&<p className="muted">{description}</p>}</div>{href&&<a className="text-link" href={href}>{link||'Explore all'} <ArrowUpRight size={17}/></a>}</div>;}
+export function Faq({items}:{items:{question:string;answer:string}[]}){return <div className="faq-list">{items.map(x=><details key={x.question}><summary>{x.question}<span aria-hidden="true">+</span></summary><p>{x.answer}</p></details>)}</div>;}
+export function Cta(){return <section className="cta-band"><div><p className="eyebrow">Your next video starts here</p><h2>Give that idea a first draft.</h2><p>Pick a niche. Plan the shots. Make it yours.</p></div><a className="button" href="/studio">Start creating <ArrowUpRight size={19}/></a></section>;}
+
