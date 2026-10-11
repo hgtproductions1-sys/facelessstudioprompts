@@ -10,7 +10,9 @@ export function resolveSiteUrl(value:string){
 export const SITE_URL = resolveSiteUrl(process.env.SITE_URL || config.canonicalUrl);
 export const INDEXABLE = config.indexable;
 export const SEARCH_CONSOLE_VERIFICATION = config.searchConsoleVerification;
-export const CONTACT_EMAIL = 'hgtproductions1@gmail.com';
+export const CONTACT_EMAIL = 'founder@thefacelessprompts.com';
+export const FOUNDER_NAME = 'Vince Elijah Alvarez';
+export const FOUNDING_YEAR = 2023;
 export const UPDATED = '2026-10-08';
 export function metadataFor(path: string, title: string, description: string, type: 'website' | 'article' = 'website', image?: {src:string;alt:string;width?:number;height?:number}): Metadata {
  const url = SITE_URL + path;
