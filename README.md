@@ -1,6 +1,6 @@
 # The Faceless Prompts
 
-A rebuilt creator studio that combines the updated interface direction with dedicated, server-rendered content pages. It is deployed with Sites using the supplied Vinext starter.
+An existing creator-tools project with a video-planning Studio and dedicated, server-rendered content pages. The public website is hosted on Vercel; retained Sites/Vinext tooling supports portability.
 
 ## Contents
 
@@ -11,17 +11,17 @@ A rebuilt creator studio that combines the updated interface direction with dedi
 - A beginner Start Here journey with three paths and a downloadable project checklist.
 - A video planning studio with template mode, optional server-side AI drafting, and creative-brief export/import.
 - Hook, narration-time, and single-shot prompt helper tools.
-- About, Contact, Editorial Policy, Privacy, Terms, and Disclosure pages.
+- About, Contact, Editorial Policy, Privacy, Terms, Disclosure, and Product Updates pages.
 
 ## Run and validate
 
-Use the Sites dependency helper if dependencies are missing. The project uses its retained package manager.
+Keep the existing pnpm 11.25.0 package manager and lockfile. For the chosen Vercel host:
 
 ```sh
-node /root/.codex/plugins/cache/openai-curated-remote/sites/1.0.0-c/scripts/install-dependencies.mjs
+npx --yes pnpm@11.25.0 install --frozen-lockfile
 node node_modules/typescript/bin/tsc --noEmit
 node scripts/verify-site.mjs
-node /root/.codex/plugins/cache/openai-curated-remote/sites/1.0.0-c/scripts/build-site.mjs
+node node_modules/next/dist/bin/next build
 ```
 
 The verification script renders every content page, checks internal links and fragments, tests all 96 niche/duration combinations, validates metadata and sitemaps, and exercises API input errors and mocked provider success and failure. It makes no live AI calls.
@@ -30,17 +30,17 @@ Browser visual QA was unavailable in the authoring environment. Compile, source-
 
 ## Live AI configuration
 
-Template mode is fully usable without credentials. To enable live AI drafting, configure the production runtime secret GLM_API_KEY through Sites. Optional server-side values are GLM_API_URL and AI_MODEL; their defaults retain the provider endpoint from the supplied Google AI Studio export. Never put a real key in source, a client bundle, or the hosting manifest. Deploy after changing runtime environment values.
+Template mode is fully usable without credentials. The existing Vercel production deployment has server-side AI configuration. Its key is supplied as the server-only Vercel Secret GLM_API_KEY. Optional server-side values are GLM_API_URL and AI_MODEL; their defaults retain the routing-service endpoint from the supplied export. Never put a real key in source, a client bundle, or the hosting manifest. Runtime changes require a new deployment.
 
 Live-provider behavior cannot be verified without a configured working credential. The endpoint validates inputs and structured output, limits request size, enforces a provider timeout, returns useful errors, and applies a bounded per-instance rate limit. For a high-traffic public deployment, add a durable global usage budget or a hosting-level rate limit before enabling unlimited anonymous AI access.
 
 ## SEO and public launch
 
-The configured production canonical origin is https://thefacelessprompts.com. Update config/site.json for another origin, or use a validated SITE_URL environment override. Search Console HTML verification can be added with searchConsoleVerification in the same config. The site includes server-rendered content, unique page metadata, matching structured data, breadcrumbs, an XML sitemap, a video sitemap, robots.txt, and real 404 paths.
+The configured production canonical origin is https://www.thefacelessprompts.com, matching the existing redirect from the apex domain. Update config/site.json for another origin, or use a validated SITE_URL environment override. An existing override takes precedence, so confirm it agrees with the intended canonical before deployment. Search Console HTML verification can be added with searchConsoleVerification in the same config. The site includes server-rendered content, unique page metadata, matching structured data, breadcrumbs, an XML sitemap, a video sitemap, robots.txt, and real 404 paths.
 
-Sites creates this deployment privately by default. Private pages cannot be indexed by Google. For the destination account launch, create a new Site from the sanitized export, attach the domain using the returned DNS validation records, make that destination Site public, rebuild with the canonical configuration, and submit sitemap.xml and video-sitemap.xml in the owner's Search Console property. See TRANSFER.md for the full handoff. Search Console access and domain ownership verification were not supplied for this build. Technical SEO improves discoverability; it does not guarantee rankings.
+The existing public Vercel site remains the destination. The domain property has already been verified in Search Console, and both sitemap URLs have been submitted. The earlier video-sitemap report showed a fetch issue even though Google's live URL test succeeded; that report needs a fresh owner check after processing. A sitemap submission or live fetch does not guarantee indexing. Historical transfer documents describe a separate Sites workflow and should not be used to move the current domain.
 
-No advertising or application analytics scripts are loaded. The contact email is retained from the supplied project. Review the factual privacy text against any future tracking, advertising, or provider changes.
+The existing AdSense verification metadata and ads.txt are preserved. No advertising or application analytics scripts are loaded. The public contact is founder@thefacelessprompts.com. Review the factual privacy text against future tracking, advertising, or provider changes.
 
 ## Source changes from the supplied exports
 
@@ -53,8 +53,18 @@ All 14 editorial WebP images have 480px and 800px variants in addition to their 
 
 ## Vercel configuration for this release
 
-Vercel builds the existing Next.js App Router source using vercel.json and pnpm exec next build. Keep pnpm 11.25.0 and pnpm-lock.yaml. Set server-only GLM_API_KEY and AI_MODEL=auto; GLM_API_URL defaults to https://api.hcnsec.cn/v1/chat/completions. No real key is committed. Studio defaults to AI, while template planning remains an explicit optional selection. Failures preserve the input and never substitute templates.
+Vercel builds the existing Next.js App Router source using vercel.json and pnpm exec next build. Keep pnpm 11.25.0 and pnpm-lock.yaml. Set server-only GLM_API_KEY and AI_MODEL=auto; GLM_API_URL defaults to https://api.hcnsec.cn/v1/chat/completions. No real key is committed. Studio starts with AI when available and offers an explicit template option. If its availability check fails, it makes template planning usable; a generation error preserves the input without silently substituting a template result.
 
 The first provider attempt has a 90-second timeout, with at most one format correction inside a 120-second total deadline. Client timeout is 130 seconds and Vercel maxDuration is 180 seconds.
 
 Sites/Vinext scripts are retained for portability, but Vercel is the chosen host for this release. Earlier transfer documents describe Sites hosting; do not change DNS or move the domain.
+
+## Startup credibility review
+
+Vince Elijah Alvarez supplied the founding year 2023 and contact address founder@thefacelessprompts.com. No founding month or operating country has been supplied for publication. The project is described as bootstrapped, self-funded, unregistered, and unincorporated. Do not invent missing details or an external funding round.
+
+- [Startup verification and application drafts](STARTUP_VERIFICATION.md)
+- [Proposed Claude integration](CLAUDE_INTEGRATION_PLAN.md)
+- [Implementation review and deployment checklist](STARTUP_REVIEW.md)
+
+These Markdown files stay in the private repository and are not website routes or public downloads. Claude remains a proposal. The credibility review requires founder approval before merging to the production branch; no application submission is part of the deployment.

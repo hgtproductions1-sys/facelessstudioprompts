@@ -20,6 +20,7 @@ import {GET as sitemap,allPaths,modifiedFor} from '../app/sitemap.xml/route';
 import {GET as videoSitemap} from '../app/video-sitemap.xml/route';
 import {GET as robots} from '../app/robots.txt/route';
 import Home from '../app/page';
+import Updates from '../app/updates/page';
 import Prompts from '../app/prompts/page';
 import PromptPage,{generateMetadata as promptMetadata} from '../app/prompts/[slug]/page';
 import Niches from '../app/niches/page';
@@ -90,7 +91,7 @@ assert((await (await videoSitemap()).text()).includes('<video:player_loc>'));ass
 const videoXml=await (await videoSitemap()).text();assert.equal((videoXml.match(/<video:video>/g)||[]).length,VIDEOS.length);assert(!videoXml.includes('>null<'));assert.equal((videoXml.match(/<video:publication_date>/g)||[]).length,VIDEOS.filter(v=>v.uploaded).length);
 const rendered=new Map<string,string>();
 async function page(path:string,el:React.ReactNode){const html=renderToStaticMarkup(<>{el}</>);assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1,path+' must have one h1');assert(!html.includes('Starter Project'));for(const match of html.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)){JSON.parse(match[1]);}rendered.set(path,html);}
-await page('/',<Home/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',<Guides/>);await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
+await page('/',<Home/>);await page('/updates',<Updates/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',<Guides/>);await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
 assert(!rendered.get('/videos')!.includes('<iframe'));assert.equal((rendered.get('/videos')!.match(/class="video-poster"/g)||[]).length,VIDEOS.length);
 for(const n of NICHE_PAGES){await page('/niches/'+n.slug,await NichePage({params:Promise.resolve({slug:n.slug})}));const m=await nicheMetadata({params:Promise.resolve({slug:n.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/niches/'+n.slug);}
 const promptDescriptions:string[]=[];
@@ -100,6 +101,15 @@ for(const g of ARTICLE_GUIDES){await page('/guides/'+g.slug,await GuidePage({par
 for(const v of VIDEOS){await page('/videos/'+v.slug,await VideoPage({params:Promise.resolve({slug:v.slug})}));const m=await videoMetadata({params:Promise.resolve({slug:v.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/videos/'+v.slug);}
 for(const p of Object.keys(INFO_PAGES)){await page('/'+p,await InfoPage({params:Promise.resolve({page:p})}));const m=await infoMetadata({params:Promise.resolve({page:p})});assert.equal(m.alternates?.canonical,SITE_URL+'/'+p);}
 assert.equal(rendered.size,paths.length);
+assert(rendered.get('/contact')!.includes('mailto:founder@thefacelessprompts.com'));
+assert(rendered.get('/about')!.includes('founded in 2023 by Vince Elijah Alvarez'));
+assert(rendered.get('/privacy')!.includes('api.hcnsec.cn'));
+assert(!rendered.get('/privacy')!.includes('private Sites deployment'));
+assert(!rendered.get('/studio')!.includes('Unconfigured'));
+assert(!paths.includes('/STARTUP_VERIFICATION.md'));
+assert(!paths.includes('/CLAUDE_INTEGRATION_PLAN.md'));
+assert(!paths.includes('/STARTUP_REVIEW.md'));
+for(const html of rendered.values())assert(!html.includes('hgtproductions1@gmail.com'));
 for(const v of VIDEOS){const html=rendered.get('/videos/'+v.slug)!;assert.equal((html.match(/<iframe/g)||[]).length,1);assert(html.includes('src="https://www.youtube-nocookie.com/embed/'+v.id+'"'));assert(!html.includes('autoplay=1'));}
 const extra=renderToStaticMarkup(<><SiteHeader/><SiteFooter/></>);
 for(const [path,html] of [...rendered,['chrome',extra] as const]){
