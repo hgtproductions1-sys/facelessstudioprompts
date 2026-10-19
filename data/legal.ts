@@ -85,7 +85,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     title: 'Privacy, explained plainly.',
     eyebrow: 'Privacy policy',
     description: 'What The Faceless Prompts stores in your browser and which services process information when you use the site.',
-    updated: '2026-10-11',
+    updated: '2026-10-19',
     sections: [
       {title: 'Who operates the site', body: [
         `The Faceless Prompts is an independent, unincorporated project operated by ${FOUNDER_NAME}. Contact ${CONTACT_EMAIL} with privacy questions.`
@@ -109,7 +109,12 @@ export const INFO_PAGES: Record<string, InfoPage> = {
         'Embedded videos use YouTube’s privacy-enhanced player. Loading a player can still connect your browser to Google or YouTube, and interacting with it is subject to their privacy practices. Following an external tool link takes you to a service with its own policies.'
       ]},
       {title: 'Advertising and analytics', body: [
-        'This version includes AdSense site-verification information and an ads.txt file for advertising review. It does not load application-level advertising or analytics scripts. If advertising or tracking is enabled, this policy and any necessary consent controls must reflect the services actually used.'
+        'The site loads Google AdSense’s advertising script and publishes site-verification information and an ads.txt file. Loading Google services can share the page address and your IP address with Google. Google and other advertising vendors may use cookies or similar technologies to serve and measure ads based on visits to this and other websites, depending on your settings and the advertising features in use.',
+        'You can manage or opt out of personalized Google advertising through Google’s Ad Settings and manage cookies in your browser. Installing the AdSense code does not establish that Google has approved the site. The application does not load a separate analytics service.'
+      ], links: [
+        {label: 'How Google uses information from partner sites', href: 'https://policies.google.com/technologies/partner-sites'},
+        {label: 'Manage Google ad personalization', href: 'https://adssettings.google.com/'},
+        {label: 'Other advertising-vendor choices', href: 'https://optout.aboutads.info/'}
       ]},
       {title: 'Email inquiries', body: [
         `If you email ${CONTACT_EMAIL}, the contents of your message and your email address are processed by the email service used for that address. Send only the information needed to explain your inquiry.`
