@@ -1,24 +1,11 @@
 'use client';
-import {useEffect,useLayoutEffect,useRef,useState,type CSSProperties,type ReactNode} from 'react';
+import {useEffect,useRef,type ReactNode} from 'react';
 
 const finePointer=()=>window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const motionAllowed=()=>!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function Reveal({children,delay=0,className=''}:{children:ReactNode;delay?:number;className?:string}){
-  const ref=useRef<HTMLDivElement>(null);
-  const [pre,setPre]=useState(false);
-  useLayoutEffect(()=>{
-    const el=ref.current;if(!el)return;
-    if(!motionAllowed()||el.getBoundingClientRect().top<window.innerHeight)return;
-    setPre(true);
-    const io=new IntersectionObserver(es=>{
-      if(es.some(x=>x.isIntersecting)){io.disconnect();setPre(false);}
-    },{threshold:.12,rootMargin:'0px 0px -36px 0px'});
-    io.observe(el);
-    return()=>io.disconnect();
-  },[]);
-  const style=(delay?{'--d':delay+'ms'}:undefined) as CSSProperties|undefined;
-  return <div ref={ref} style={style} className={'fx-reveal'+(pre?' fx-pre':'')+(className?' '+className:'')}>{children}</div>;
+export function Reveal({children,className=''}:{children:ReactNode;delay?:number;className?:string}){
+  return <div className={'content-reveal'+(className?' '+className:'')}>{children}</div>;
 }
 
 export function Tilt({children,max=7,className=''}:{children:ReactNode;max?:number;className?:string}){

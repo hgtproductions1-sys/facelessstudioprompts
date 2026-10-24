@@ -16,7 +16,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     updated: '2026-10-11',
     sections: [
       {title: 'The story behind The Faceless Prompts', body: [
-        `The Faceless Prompts was founded in ${FOUNDING_YEAR} by ${FOUNDER_NAME}. It is an independently developed, founder-operated project, bootstrapped and self-funded.`,
+        `The Faceless Prompts was founded in ${FOUNDING_YEAR} by ${FOUNDER_NAME}. It is an independently developed, founder-operated project.`,
         'The goal is practical: give independent creators more structure between a first idea and a finished video. A useful plan makes it easier to decide what to show, what to say, and how each scene fits the story.'
       ]},
       {title: 'What you can do today', body: [
