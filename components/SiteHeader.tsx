@@ -2,7 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {usePathname} from 'next/navigation';
 import {ArrowUpRight,Clapperboard,Menu,X} from 'lucide-react';
-const links=[{href:'/start-here',label:'Start here'},{href:'/prompts',label:'Prompts'},{href:'/niches',label:'Niches'},{href:'/guides',label:'Learn'},{href:'/videos',label:'Watch'},{href:'/free-tools',label:'Free tools'}];
+const links=[{href:'/start-here',label:'Start here'},{href:'/prompts',label:'Prompts'},{href:'/niches',label:'Niches'},{href:'/guides',label:'Learn'},{href:'/articles',label:'Articles'},{href:'/videos',label:'Watch'},{href:'/free-tools',label:'Free tools'}];
 export default function SiteHeader(){
  const [open,setOpen]=useState(false);const path=usePathname();const toggleRef=useRef<HTMLButtonElement>(null);const headerRef=useRef<HTMLElement>(null);
  useEffect(()=>{setOpen(false);},[path]);

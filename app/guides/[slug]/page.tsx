@@ -9,14 +9,19 @@ import {getPromptBySlug,getPromptCollection} from '@/data/promptPages';
 import {getNichePage} from '@/data/niches';
 import {metadataFor,SITE_URL} from '@/lib/site';
 import {responsiveImage} from '@/lib/images';
+import EditorialPost,{editorialMetadata} from '@/components/EditorialPost';
+import {getEditorialPost} from '@/lib/editorial';
+import editorialConfig from '@/config/editorial.json';
 
 export function generateStaticParams(){return ARTICLE_GUIDES.map(g=>({slug:g.slug}));}
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}) {
-  const {slug}=await params; const g=getArticleGuide(slug);
-  return g?metadataFor('/guides/'+slug,g.seoTitle,g.description,'article',GUIDE_IMAGES[slug]):{};
+  const {slug}=await params; const g=(editorialConfig.migratedGuideSlugs as string[]).includes(slug)?undefined:getArticleGuide(slug);
+  if(g)return metadataFor('/guides/'+slug,g.seoTitle,g.description,'article',GUIDE_IMAGES[slug]);
+  const cms=await getEditorialPost('guides',slug);return cms?editorialMetadata(cms):{robots:{index:false,follow:false}};
 }
 export default async function Page({params}:{params:Promise<{slug:string}>}) {
-  const {slug}=await params; const g=getArticleGuide(slug); if(!g)notFound();
+  const {slug}=await params; const g=(editorialConfig.migratedGuideSlugs as string[]).includes(slug)?undefined:getArticleGuide(slug);
+  if(!g){const cms=await getEditorialPost('guides',slug);if(cms)return <EditorialPost post={cms}/>;notFound();}
   const image=GUIDE_IMAGES[slug];
   const lesson=getPrimaryVideoForGuide(slug);
   return <div className="container page-content">

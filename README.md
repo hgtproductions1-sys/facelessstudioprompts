@@ -40,7 +40,11 @@ The configured production canonical origin is https://www.thefacelessprompts.com
 
 The existing public Vercel site remains the destination. The domain property has already been verified in Search Console, and both sitemap URLs have been submitted. The earlier video-sitemap report showed a fetch issue even though Google's live URL test succeeded; that report needs a fresh owner check after processing. A sitemap submission or live fetch does not guarantee indexing. Historical transfer documents describe a separate Sites workflow and should not be used to move the current domain.
 
-The existing AdSense verification metadata and ads.txt are preserved. No advertising or application analytics scripts are loaded. The public contact is founder@thefacelessprompts.com. Review the factual privacy text against future tracking, advertising, or provider changes.
+The existing AdSense verification metadata, ads.txt and root-layout advertising script are preserved. The public contact is founder@thefacelessprompts.com. Review the factual privacy text against future tracking, advertising, or provider changes.
+
+## Editorial CMS
+
+Sanity manages new articles and guides through a standalone Studio beside this app. Existing guides retain their current source and URLs. See [Editorial CMS operations](docs/EDITORIAL_CMS.md) for the editor URL, publishing, preview, configuration and verification.
 
 ## Source changes from the supplied exports
 
