@@ -8,6 +8,7 @@
 - Public articles: https://www.thefacelessprompts.com/articles
 - Frontend source: `facelessstudioprompts` on GitHub, deployed to the existing Vercel project.
 - Studio source: `../studio-thefacelessprompts`, a separate application beside this app. Do not move it into this app or replace the `/studio` video-planning tool.
+- Studio private repository: https://github.com/hgtproductions1-sys/studio-thefacelessprompts. Clone both repositories into the same parent folder for TypeGen.
 
 The Studio schema files are authoritative. Sanity stores editorial content independently of Git and Vercel deployments. Frontend deployments do not seed, reset, or overwrite documents.
 
@@ -52,3 +53,5 @@ No paid plan upgrade was performed. Review current Sanity and Vercel usage/reten
 The existing source regression suite checks 131 rendered pages, 67 prompts, 24 niches, 8 guides, 10 videos and 96 blueprint combinations. Editorial tests cover safe links/images, invalid dates, empty/noindex behavior, missing articles, reserved-guide collisions, sitemap preservation and CMS outages.
 
 Real Sanity API checks exercise image upload, draft save/reload, anonymous access rejection, signed preview, publish, separate draft edits, stale-revision rejection, update and unpublish. Browser checks cover article link navigation and direct reload. These checks do not establish Google indexing or rankings, or every Studio accessibility/session-expiry behavior.
+
+Production release `f045404` was verified on 3 November 2026: all 131 pre-release sitemap URLs remained; existing guide canonicals and video lessons, homepage AdSense, domain redirect, article empty/noindex state, editor redirect, missing/unpublished 404s and invalid-preview 401 passed. A real signed private preview returned 200 with noindex, private/no-store and preview CSP headers; its draft remained absent from public articles and the sitemap. Temporary test documents were removed. No error/fatal runtime logs matched the production deployment during the release check. Search Console processing remains an owner-side measurement step.
