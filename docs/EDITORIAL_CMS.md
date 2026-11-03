@@ -16,7 +16,7 @@ The Studio schema files are authoritative. Sanity stores editorial content indep
 
 1. Open the editor and sign in with the GitHub identity that owns the project.
 2. Open **Articles and new guides**, create a document, and choose Article.
-3. Add the title, URL slug, excerpt and body. Set the author type/name and publication date. Add a cover with alternative text, relevant sources, takeaways and related guides where useful.
+3. Add the title, URL slug, excerpt and body. Set the author type/name and publication date. Add a cover with alternative text, relevant sources, takeaways and related guides where useful. Optional **YouTube lesson** fields store the 11-character video ID, title, original creator and context. The website validates the ID and loads the YouTube player after a visitor clicks Play.
 4. Sanity saves drafts automatically. Wait for the saved indicator before closing. Use Presentation and the **Private saved-draft preview** location. Use **Refresh saved draft** in the preview after saving edits.
 5. Check the page, links, images, factual claims and sources, then Publish. Publication and unpublication are read on the next server request. A tab already open may need a refresh.
 6. Editing a published article creates a draft; visitors continue to see its published version until you publish the update. Use Unpublish to remove it from the public page, listing and sitemap while retaining its draft.

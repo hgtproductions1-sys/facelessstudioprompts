@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {getEditorialPosts, safeContentUrl, cmsImageUrl, cmsBodyImage} from '../lib/editorial';
+import {getEditorialPosts, safeContentUrl, cmsImageUrl, cmsBodyImage, cmsYoutubeId} from '../lib/editorial';
 import Articles, {generateMetadata as indexMetadata} from '../app/articles/page';
 import Article from '../app/articles/[slug]/page';
 import {GET as sitemap, allPaths} from '../app/sitemap.xml/route';
@@ -21,7 +21,7 @@ const post: Post = {
   slug: 'practical-workflow', section: 'articles', excerpt: 'Plan, create, and review a useful video.',
   publishedAt: '2026-11-01T00:00:00Z', authorName: 'Test editor', authorType: 'Person', authorBio: null,
   category: 'Creator workflow', takeaways: null, sources: null, relatedGuideSlugs: null,
-  seoTitle: null, seoDescription: null, cover: null,
+  seoTitle: null, seoDescription: null, cover: null, youtubeVideo: null,
   body: [{_type: 'block', _key: 'paragraph', style: 'normal', markDefs: [], children: [{_type: 'span', _key: 'text', text: 'A useful introduction.', marks: []}]}],
 };
 for (const url of ['javascript:alert(1)', 'data:text/html,x', '//evil.test', '/\\evil.test', 'https://user:password@evil.test', '\nhttps://evil.test']) assert.equal(safeContentUrl(url), undefined);
@@ -31,6 +31,16 @@ assert.equal(cmsImageUrl('https://evil.test/a.jpg'), undefined);
 assert.equal(cmsImageUrl('https://cdn.sanity.io/images/other/production/a.jpg'), undefined);
 assert.equal(cmsBodyImage('invalid-ref'), undefined);
 assert(cmsBodyImage('image-abc123-640x480-png')?.url.includes(`/images/${config.projectId}/${config.dataset}/`));
+for (const id of ['../bad', '9nVEfjmDlVk?autoplay=1', '', null]) assert.equal(cmsYoutubeId(id), undefined);
+assert.equal(cmsYoutubeId('9nVEfjmDlVk'), '9nVEfjmDlVk');
+const lesson = {videoId: '9nVEfjmDlVk', title: 'Creating in Flow', creator: 'Google', description: 'A supporting tutorial.'};
+const videoHtml = renderToStaticMarkup(<EditorialPost post={{...post, youtubeVideo: lesson}}/>);
+assert(videoHtml.includes('Play Creating in Flow'));
+assert(videoHtml.includes('https://www.youtube.com/watch?v=9nVEfjmDlVk'));
+assert(videoHtml.includes('By Google'));
+assert(!videoHtml.includes('<iframe'), 'YouTube loads only after a visitor clicks play');
+const invalidVideoHtml = renderToStaticMarkup(<EditorialPost post={{...post, youtubeVideo: {...lesson, videoId: '../bad'}}}/>);
+assert(!invalidVideoHtml.includes('Supporting YouTube lesson'));
 
 const empty = await indexMetadata();
 assert.equal((empty.robots as {index: boolean}).index, false);

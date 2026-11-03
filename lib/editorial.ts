@@ -16,7 +16,7 @@ export const editorialClient = createClient({
 export const EDITORIAL_QUERY = defineQuery(`*[_type == "editorialPost" && defined(slug.current)] | order(publishedAt desc) {
   _id, _updatedAt, title, "slug": slug.current, section, excerpt, publishedAt,
   authorName, authorType, authorBio, category, takeaways, body, sources, relatedGuideSlugs,
-  seoTitle, seoDescription, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}
+  seoTitle, seoDescription, youtubeVideo, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}
 }`);
 export type EditorialPost = NonNullable<EDITORIAL_QUERY_RESULT>[number];
 const sourceGuideSlugs = new Set(ARTICLE_GUIDES.filter(g => !(config.migratedGuideSlugs as string[]).includes(g.slug)).map(g => g.slug));
@@ -41,6 +41,9 @@ export function safeContentUrl(value: unknown) {
   if (/^\/(?!\/)/.test(value)) return value;
   try { const u = new URL(value); return !u.username&&!u.password&&['https:', 'http:', 'mailto:'].includes(u.protocol) ? value : undefined; }
   catch { return undefined; }
+}
+export function cmsYoutubeId(value: unknown) {
+  return typeof value === 'string' && /^[A-Za-z0-9_-]{11}$/.test(value) ? value : undefined;
 }
 export function cmsImageUrl(url: string|undefined|null, width=1280) {
   if (!url) return undefined;

@@ -41,6 +41,12 @@ export type EditorialPost = {
     caption?: string;
     _type: "image";
   };
+  youtubeVideo?: {
+    videoId?: string;
+    title?: string;
+    creator?: string;
+    description?: string;
+  };
   takeaways?: Array<string>;
   body?: Array<
     | {
@@ -238,7 +244,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../facelessstudioprompts/app/preview/[section]/[slug]/page.tsx
 // Variable: PREVIEW_QUERY
-// Query: *[_type == "editorialPost" && section == $section && slug.current == $slug][0] { _id, _updatedAt, title, "slug": slug.current, section, excerpt, publishedAt, authorName, authorType, authorBio, category, takeaways, body, sources, relatedGuideSlugs, seoTitle, seoDescription, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}}
+// Query: *[_type == "editorialPost" && section == $section && slug.current == $slug][0] { _id, _updatedAt, title, "slug": slug.current, section, excerpt, publishedAt, authorName, authorType, authorBio, category, takeaways, body, sources, relatedGuideSlugs, seoTitle, seoDescription, youtubeVideo, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}}
 export type PREVIEW_QUERY_RESULT = {
   _id: string;
   _updatedAt: string;
@@ -306,6 +312,12 @@ export type PREVIEW_QUERY_RESULT = {
   > | null;
   seoTitle: string | null;
   seoDescription: string | null;
+  youtubeVideo: {
+    videoId?: string;
+    title?: string;
+    creator?: string;
+    description?: string;
+  } | null;
   cover: {
     alt: string | null;
     url: string | null;
@@ -315,7 +327,7 @@ export type PREVIEW_QUERY_RESULT = {
 
 // Source: ../facelessstudioprompts/lib/editorial.ts
 // Variable: EDITORIAL_QUERY
-// Query: *[_type == "editorialPost" && defined(slug.current)] | order(publishedAt desc) {  _id, _updatedAt, title, "slug": slug.current, section, excerpt, publishedAt,  authorName, authorType, authorBio, category, takeaways, body, sources, relatedGuideSlugs,  seoTitle, seoDescription, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}}
+// Query: *[_type == "editorialPost" && defined(slug.current)] | order(publishedAt desc) {  _id, _updatedAt, title, "slug": slug.current, section, excerpt, publishedAt,  authorName, authorType, authorBio, category, takeaways, body, sources, relatedGuideSlugs,  seoTitle, seoDescription, youtubeVideo, "cover": cover{alt, "url": asset->url, "dimensions": asset->metadata.dimensions}}
 export type EDITORIAL_QUERY_RESULT = Array<{
   _id: string;
   _updatedAt: string;
@@ -383,6 +395,12 @@ export type EDITORIAL_QUERY_RESULT = Array<{
   > | null;
   seoTitle: string | null;
   seoDescription: string | null;
+  youtubeVideo: {
+    videoId?: string;
+    title?: string;
+    creator?: string;
+    description?: string;
+  } | null;
   cover: {
     alt: string | null;
     url: string | null;
