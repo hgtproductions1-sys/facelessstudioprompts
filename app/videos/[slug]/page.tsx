@@ -22,9 +22,9 @@ export default async function Page({params}:{params:Promise<{slug:string}>}) {
     <VideoPlayer id={v.id} title={v.originalTitle} priority embedInitially/>
     <p className="muted small">Video by <a className="inline-link" href={v.creatorUrl} target="_blank" rel="noopener noreferrer">{v.creator}</a>{v.uploaded?' · Published '+formatVideoDate(v.uploaded):''} · <a className="inline-link" href={'https://www.youtube.com/watch?v='+v.id} target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></p>
     {v.note&&<p className="notice">{v.note}</p>}
-    <div className="footer-spacer"/>
+    <p className="article-meta">Practice notes by <a className="inline-link" href="/about">The Faceless Prompts</a> · The video belongs to its credited creator.</p><div className="footer-spacer"/>
     <article className="prose legal-prose">
-      <section><h2>Watch for this</h2><p>{v.takeaway}</p><p><a href={v.resourceUrl} target="_blank" rel="noopener noreferrer">{v.resourceLabel} ↗</a></p></section>
+      <section><h2>What to learn from this lesson</h2><p>{v.takeaway}</p><p><a href={v.resourceUrl} target="_blank" rel="noopener noreferrer">{v.resourceLabel} ↗</a></p></section>
       <section>
         <h2>Your practice exercise</h2><p>{v.exercise}</p>
         <ul>{v.practiceTips.map(t=><li key={t}>{t}</li>)}</ul>

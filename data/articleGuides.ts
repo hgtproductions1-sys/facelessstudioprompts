@@ -211,7 +211,7 @@ export const ARTICLE_GUIDES: ArticleGuide[] = [
     title: "How to Write AI Image Prompts for Faceless Content",
     seoTitle: "How to Write AI Image Prompts for Faceless Content",
     description:
-      "Write clearer AI image prompts for thumbnails, story frames, characters, products, and faceless videos using subject, action, scene, camera, light, and constraints.",
+      "Write clear AI image prompts for thumbnails, story frames, and faceless videos using subject, action, camera, light, and visual constraints.",
     eyebrow: "Image prompting",
     category: "Prompting",
     readMinutes: 8,
@@ -451,7 +451,7 @@ export const ARTICLE_GUIDES: ArticleGuide[] = [
     title: "How to Avoid Generic, Mass-Produced AI Videos",
     seoTitle: "How to Avoid Generic, Mass-Produced AI Videos",
     description:
-      "Make AI-assisted faceless videos more original by adding real research, editorial decisions, custom visual direction, meaningful variation, and a channel-specific point of view.",
+      "Make AI-assisted faceless videos more original with research, clear editorial decisions, custom visuals, and a distinct channel point of view.",
     eyebrow: "Originality",
     category: "Strategy",
     readMinutes: 8,
@@ -524,7 +524,7 @@ export const ARTICLE_GUIDES: ArticleGuide[] = [
     title: "YouTube AI Content: Disclosure, Reused Content, and Monetization",
     seoTitle: "YouTube AI Content: Disclosure, Reused Content & Monetization",
     description:
-      "Understand YouTube's current approach to AI disclosure, inauthentic or mass-produced content, reused content, and monetization for AI-assisted faceless channels.",
+      "Understand YouTube AI disclosure, reused and mass-produced content, and monetization considerations for AI-assisted faceless channels.",
     eyebrow: "YouTube policy",
     category: "Policy",
     readMinutes: 10,

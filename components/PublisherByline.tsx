@@ -1,0 +1,1 @@
+export default function PublisherByline(){return <p className="article-meta"><span>By <a className="inline-link" href="/about">The Faceless Prompts</a></span><a className="inline-link" href="/editorial-policy">How we prepare these resources</a></p>;}

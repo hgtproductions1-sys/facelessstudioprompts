@@ -25,7 +25,7 @@ export default function EditorialPost({post,preview=false}:{post:Post;preview?:b
   <Breadcrumbs items={[{label:section,href:post.section==='guides'?'/guides':'/articles'},{label:post.title!,href:path}]}/>
   <PageIntro eyebrow={post.category||section} title={post.title!} description={post.excerpt!}><div className="article-meta"><span>By {post.authorName}</span>{post.publishedAt&&<time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>}<Link href="/editorial-policy">Editorial approach</Link></div></PageIntro>
   <article className="prose editorial-body">
-   {src&&<figure className="guide-cover"><img src={src} srcSet={`${cmsImageUrl(post.cover?.url,480)} 480w, ${cmsImageUrl(post.cover?.url,800)} 800w, ${src} 1280w`} sizes="(max-width:900px) 100vw, 800px" alt={post.cover?.alt||''} width={post.cover?.dimensions?.width||1280} height={post.cover?.dimensions?.height||720}/></figure>}
+   {src&&<figure className="guide-cover"><img src={src} srcSet={`${cmsImageUrl(post.cover?.url,480)} 480w, ${cmsImageUrl(post.cover?.url,800)} 800w, ${src} 1280w`} sizes="(max-width:900px) 100vw, 800px" decoding="async" fetchPriority="high" alt={post.cover?.alt||''} width={post.cover?.dimensions?.width||1280} height={post.cover?.dimensions?.height||720}/></figure>}
    {!!post.takeaways?.length&&<section className="callout"><h2>What you’ll take away</h2><ul>{post.takeaways.map((s,i)=><li key={i}>{s}</li>)}</ul></section>}
    <PortableText value={post.body||[]} components={{
     marks:{link:({value,children})=>{const href=safeContentUrl(value?.href);return href?<a href={href} rel={href.startsWith('http')?'noopener noreferrer':undefined}>{children}</a>:<>{children}</>;}},

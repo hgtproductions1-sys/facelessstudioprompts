@@ -48,7 +48,7 @@ export const PROMPT_COLLECTIONS: PromptCollection[] = [
     eyebrow: "Frames, thumbnails, and references",
     title: "AI Image Generation Prompts for Faceless Content",
     description:
-      "Browse free AI image prompts for faceless content, thumbnails, character references, scene frames, storyboards, b-roll sets, transformations, and visual concepts.",
+      "Browse free AI image prompts for faceless videos, thumbnails, character references, storyboards, b-roll frames, and visual transformations.",
     intro:
       "A useful image prompt makes the composition easier to control. These templates focus on subject, framing, lighting, lens choices, continuity, and negative constraints so you can generate cleaner starting frames instead of piling unrelated style words into one request.",
     categories: ["Image Gen"],
@@ -126,7 +126,7 @@ export const PROMPT_COLLECTIONS: PromptCollection[] = [
     eyebrow: "Build repeatable visual identity",
     title: "AI Character Consistency Prompts & Reference Templates",
     description:
-      "Use free AI character consistency prompts for character sheets, identity locks, turnaround views, recurring casts, voice profiles, wardrobe continuity, and reference images.",
+      "Use free AI character consistency prompts for identity sheets, turnaround views, recurring casts, voice profiles, and wardrobe continuity.",
     intro:
       "Character consistency is a system, not a magic phrase. These prompts help you define stable identity details—face, hair, wardrobe, proportions, voice, props, and references—then reuse those details across scenes while reviewing each output against the source material.",
     categories: ["Character"],

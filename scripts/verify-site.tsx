@@ -36,8 +36,25 @@ import Workflow from '../app/faceless-youtube-automation/page';
 import InfoPage,{generateMetadata as infoMetadata} from '../app/[page]/page';
 import SiteHeader from '../components/SiteHeader';
 import SiteFooter from '../components/SiteFooter';
+import {publicPages,pageMarkdown,markdownHeaders,llmsIndex} from '../lib/publicContent';
+import {GET as markdownPage} from '../app/markdown/[[...path]]/route';
+import {metadataFor} from '../lib/site';
 
 const paths=allPaths();assert.equal(new Set(paths).size,paths.length);
+// Discovery must preserve every existing public URL and never surface private endpoints.
+assert.deepEqual(new Set(publicPages([]).map(p=>p.path)),new Set(paths));
+for(const path of paths)assert(pageMarkdown(path,[])?.includes('Canonical URL: '+SITE_URL+path),path+' missing Markdown content');
+for(const p of PROMPTS)assert(pageMarkdown('/prompts/'+p.id,[])?.includes(p.prompt));
+assert.equal(pageMarkdown('/not-a-public-page',[]),null);
+assert.equal(pageMarkdown('/preview/articles/draft',[]),null);
+assert(!llmsIndex(publicPages([])).includes('/admin/'));
+assert.equal(markdownHeaders('/prompts').Link,`<${SITE_URL}/prompts>; rel="canonical"`);
+for(const path of [['admin','articles'],['api','generate'],['preview','articles','draft']])assert.equal((await markdownPage(new Request(SITE_URL+'/markdown/'+path.join('/')),{params:Promise.resolve({path})})).status,404);
+const readable404=await markdownPage(new Request(SITE_URL+'/markdown/not-a-public-page'),{params:Promise.resolve({path:['not-a-public-page']})});
+assert.equal(readable404.status,404);assert(readable404.headers.get('content-type')?.startsWith('text/markdown'));assert((await readable404.text()).includes('/sitemap.xml'));
+const longTitle='How to Plan a Faceless Video With a Consistent Character';
+assert.deepEqual(metadataFor('/example',longTitle,'Example description').title,{absolute:longTitle});
+assert.equal(metadataFor('/example',longTitle,'Example description').alternates?.types?.['text/markdown'],SITE_URL+'/markdown/example');
 assert.equal(NICHE_PAGES.length,24);assert.equal(NICHES_DATA.length,24);
 assert.equal(new Set(PROMPTS.map(p=>p.id)).size,PROMPTS.length);
 assert.equal(new Set(VIDEOS.map(v=>v.id)).size,VIDEOS.length);
@@ -113,7 +130,7 @@ for(const html of rendered.values())assert(!html.includes('hgtproductions1@gmail
 for(const v of VIDEOS){const html=rendered.get('/videos/'+v.slug)!;assert.equal((html.match(/<iframe/g)||[]).length,1);assert(html.includes('src="https://www.youtube-nocookie.com/embed/'+v.id+'"'));assert(!html.includes('autoplay=1'));}
 const extra=renderToStaticMarkup(<><SiteHeader/><SiteFooter/></>);
 for(const [path,html] of [...rendered,['chrome',extra] as const]){
- for(const [,href] of html.matchAll(/href="([^"]+)"/g)){if(href.startsWith('/')){const u=new URL(href.replace(/&#x([0-9a-f]+);/gi,(_,h)=>String.fromCodePoint(parseInt(h,16))).replace(/&#([0-9]+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&amp;/g,'&').replace(/&quot;/g,'\"'),SITE_URL);assert(existsSync('public'+u.pathname)||paths.includes(u.pathname)||['/articles','/library','/sitemap.xml','/robots.txt','/video-sitemap.xml'].includes(u.pathname),path+' broken local link '+u.pathname);if(u.hash){const target=rendered.get(u.pathname)||html;assert(target.includes('id="'+decodeURIComponent(u.hash.slice(1))+'"'),path+' broken section '+href);}}}
+ for(const [,href] of html.matchAll(/href="([^"]+)"/g)){if(href.startsWith('/')){const u=new URL(href.replace(/&#x([0-9a-f]+);/gi,(_,h)=>String.fromCodePoint(parseInt(h,16))).replace(/&#([0-9]+);/g,(_,n)=>String.fromCodePoint(Number(n))).replace(/&amp;/g,'&').replace(/&quot;/g,'\"'),SITE_URL);assert(existsSync('public'+u.pathname)||paths.includes(u.pathname)||/^\/articles\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(u.pathname)||['/articles','/library','/sitemap.xml','/robots.txt','/video-sitemap.xml'].includes(u.pathname),path+' broken local link '+u.pathname);if(u.hash){const target=rendered.get(u.pathname)||html;assert(target.includes('id="'+decodeURIComponent(u.hash.slice(1))+'"'),path+' broken section '+href);}}}
  for(const [,src] of html.matchAll(/src="(\/[^"]+)"/g)){assert(existsSync('public'+src),path+' missing asset '+src);}for(const [,set] of html.matchAll(/srcSet="([^"]+)"/g))for(const entry of set.split(',')){const src=entry.trim().split(/\s+/)[0];if(src.startsWith('/'))assert(existsSync('public'+src),path+' missing responsive asset '+src);}
 }
 await assert.rejects(()=>NichePage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>PromptPage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>GuidePage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>InfoPage({params:Promise.resolve({page:'missing'})}));

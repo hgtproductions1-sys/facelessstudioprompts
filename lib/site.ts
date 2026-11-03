@@ -17,7 +17,9 @@ export const UPDATED = '2026-10-08';
 export function metadataFor(path: string, title: string, description: string, type: 'website' | 'article' = 'website', image?: {src:string;alt:string;width?:number;height?:number}): Metadata {
  const url = SITE_URL + path;
  const preview=image?{url:image.src.startsWith('https://')?image.src:SITE_URL+image.src,width:image.width||1280,height:image.height||720,alt:image.alt}:{url:SITE_URL+'/social-cover.jpg',width:1200,height:675,alt:'A cinematic cat story from The Faceless Prompts'};
- return {title, description, alternates:{canonical:url}, robots:{index:INDEXABLE,follow:true,'max-image-preview':'large','max-snippet':-1,'max-video-preview':-1},
+ // Preserve the complete topic. Add the publisher only when it fits comfortably.
+ const searchTitle=title.length+SITE_NAME.length+3<=65?`${title} | ${SITE_NAME}`:title;
+ return {title:{absolute:searchTitle}, description, alternates:{canonical:url,types:{'text/markdown':SITE_URL+'/markdown'+(path==='/'?'':path)}}, robots:{index:INDEXABLE,follow:true,'max-image-preview':'large','max-snippet':-1,'max-video-preview':-1},
  openGraph:{title,description,url,type,siteName:SITE_NAME,locale:'en_US',images:[preview]},
  twitter:{card:'summary_large_image',title,description,images:[preview.url]}};
 }

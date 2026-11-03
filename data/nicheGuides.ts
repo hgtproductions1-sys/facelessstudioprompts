@@ -429,7 +429,7 @@ export const NICHE_GUIDES: Record<string, NicheGuide> = {
     qualityChecks: ["Pixel scale and palette remain consistent", "UI is readable but does not copy a real game's interface", "Rules are understandable without long text", "Camera motion matches the chosen game perspective"],
   },
   "celebrity-evolution-and-glow-up": {
-    searchSummary: "Create responsible public-figure timeline videos using licensed or permissible visuals, sourced milestones, neutral narration, and non-deceptive transformations.",
+    searchSummary: "Plan public-figure timeline videos with licensed visuals, sourced milestones, neutral narration, and clearly presented transformations.",
     audience: "Entertainment and pop-culture viewers interested in career timelines, style eras, public milestones, and archival comparisons.",
     promise: "Tell a sourced public career or style timeline without fabricating private details, cosmetic claims, or misleading AI transformations.",
     bestFormats: ["Career timeline shorts", "Style-era comparisons", "Then-and-now explainers"],

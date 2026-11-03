@@ -85,7 +85,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     title: 'Privacy, explained plainly.',
     eyebrow: 'Privacy policy',
     description: 'What The Faceless Prompts stores in your browser and which services process information when you use the site.',
-    updated: '2026-10-19',
+    updated: '2026-11-03',
     sections: [
       {title: 'Who operates the site', body: [
         `The Faceless Prompts is an independent, unincorporated project operated by ${FOUNDER_NAME}. Contact ${CONTACT_EMAIL} with privacy questions.`
@@ -118,7 +118,42 @@ export const INFO_PAGES: Record<string, InfoPage> = {
       ]},
       {title: 'Email inquiries', body: [
         `If you email ${CONTACT_EMAIL}, the contents of your message and your email address are processed by the email service used for that address. Send only the information needed to explain your inquiry.`
-      ], links: [{label: 'Contact the project', href: '/contact'}]}
+      ], links: [{label: 'Contact the project', href: '/contact'}]},
+      {title: 'How long information remains', body: [
+        'Local drafts, saved prompts, and checklist progress remain in this browser until you remove them or clear site data. Downloaded exports remain wherever you saved the files. You can remove the site’s saved browser data with the control on this page.',
+        'Hosting, email, and AI providers control retention of their operational records under their own policies. This project has not verified a fixed retention period for every provider. Contact the operator about information in an email inquiry or about a specific request; do not include a copy of sensitive material simply to identify it.'
+      ]},
+      {title: 'Your privacy choices and requests', body: [
+        `You can ask ${CONTACT_EMAIL} what personal information the project holds about you and request correction or deletion. Depending on your location, you may also have rights to access, restrict or object to processing, or complain to your local data-protection authority. Include enough context to identify the request without sending passwords or identification documents in your initial message.`,
+        'The operator can address information within the project’s control. For a request relating to an external provider’s independent records, that provider may need to handle it directly. Browser privacy settings and Google’s advertising settings give you additional controls over cookies and advertising.'
+      ], links: [{label: 'Cookies and browser storage', href: '/cookies'}]},
+      {title: 'Providers and international processing', body: [
+        'Hosting, AI routing, embedded media, advertising, and email services may process information on systems outside your country. The location and handling of a request depend on the service involved. Review the provider’s current privacy terms before sending material through it; this page does not claim a particular transfer safeguard or storage location that the project has not verified.',
+        'Published articles and their images are delivered through Sanity. Reading a public image can send normal connection information, such as your IP address and browser details, to its content delivery service. Public article content is separate from private editorial drafts.'
+      ], links: [{label: 'Vercel privacy policy', href: 'https://vercel.com/legal/privacy-policy'},{label: 'Sanity privacy policy', href: 'https://www.sanity.io/legal/privacy'}]},
+      {title: 'Children and sensitive information', body: [
+        'The tools are intended for creators planning their own work and are not designed to collect personal information from children. Do not put a child’s personal details, confidential records, or other sensitive information into an AI brief. If you believe a child has sent personal information to the project, contact the operator so the situation can be reviewed.'
+      ]}
+    ]
+  },
+  cookies: {
+    title: 'Cookies and browser storage.',
+    eyebrow: 'Cookie policy',
+    description: 'How local drafts, prompt bookmarks, YouTube media, and Google advertising use browser storage and external connections.',
+    updated: '2026-11-03',
+    sections: [
+      {title: 'Storage used by the planning tools',body:[
+        'The prompt library uses fp-saved-prompts for bookmarks. The Studio uses fp-studio-draft for your input draft. The beginner checklist uses fp-start-progress. These values use local storage, remain in this browser until removed, and are not a server account or a cross-device profile.',
+        'The free helper tools keep their current inputs in the page. The public site does not load a separate analytics service. Private editorial preview sessions use a separate session cookie to keep unpublished material private; public readers do not need that cookie.'
+      ],links:[{label:'Clear saved browser data',href:'/privacy#browser-data'}]},
+      {title:'Google advertising and YouTube',body:[
+        'Google advertising and YouTube players can connect to external services and use cookies or similar technologies under their own policies. A privacy-enhanced YouTube embed is not a promise that interacting with a video sends no information to Google.',
+        'Where Google presents an advertising consent message, use its choices to manage the purposes and vendors shown. Google’s advertising settings and your browser’s cookie controls provide additional choices. Cookie restrictions can affect the behavior of embedded media and other external services.'
+      ],links:[{label:'How Google uses information from partner sites',href:'https://policies.google.com/technologies/partner-sites'},{label:'Google advertising settings',href:'https://adssettings.google.com/'}]},
+      {title:'Changing your choices',body:[
+        'Use your browser’s site-data settings to inspect or remove stored data and control third-party cookies. Clearing local storage removes saved project inputs, so export anything you want to keep first. Removing this site’s data does not remove files already downloaded or information independently stored by another provider.',
+        `Contact ${CONTACT_EMAIL} if a privacy control does not work as described, and include the page and browser involved.`
+      ],links:[{label:'Read the full privacy policy',href:'/privacy'}]}
     ]
   },
   terms: {
