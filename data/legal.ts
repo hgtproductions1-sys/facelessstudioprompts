@@ -1,4 +1,5 @@
 import {CONTACT_EMAIL, FOUNDER_NAME, FOUNDING_YEAR} from '@/lib/site';
+import {affiliateDisclosureStatus} from '@/lib/affiliates';
 import {FOUNDER_PROFILE} from '@/lib/authors';
 
 export type InfoPage = {
@@ -186,11 +187,13 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     title: 'How external links work here.',
     eyebrow: 'Disclosure',
     description: 'A clear explanation of the relationship between this project and the external resources it links to.',
-    sections: [
-      {title: 'Direct provider links', body: ['This version uses direct provider links in the tools directory and does not add affiliate tracking to those links. Mentioning a tool or embedding a video does not imply that its creator sponsors, endorses, or operates this project.']},
-      {title: 'External videos', body: ['The YouTube videos are owned by their original creators. They are attributed and embedded for educational context. Our practice exercises and prompts are written for this site.']},
-      {title: 'Future commercial relationships', body: ['If sponsored or affiliate links are added, they should be labeled where visitors encounter them and this page should be updated to describe the actual arrangement.']}
-    ]
+    get sections() {
+      return [
+        {title: 'Provider links and commissions', body: [affiliateDisclosureStatus(), 'A disclosure appears near the links on pages where we may earn a commission. Providers set their own pricing, features, and licensing terms.']},
+        {title: 'External videos', body: ['The YouTube videos are owned by their original creators. They are attributed and embedded for educational context. Our practice exercises and prompts are written for this site.']},
+        {title: 'Paid starter kits', body: ['A published starter kit is an optional paid download. Its listing identifies what is included and links to the checkout provider, where you can review pricing and terms. The prompt library, niche playbooks, and Studio’s Instant Blueprint tools are free to use.']},
+      ];
+    },
   }
 };
 

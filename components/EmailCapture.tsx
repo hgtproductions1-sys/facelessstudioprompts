@@ -8,6 +8,7 @@ type Reply = {ok?:boolean; error?:string; confirmation?:boolean; tracker?:string
 
 function EmailForm({ blueprint, offerNewsletter = false }: {blueprint?:Blueprint;offerNewsletter?:boolean}) {
   const id = useId();
+  const endpoint=blueprint?'/api/studio-email':'/api/subscribe';
   const [pending,setPending] = useState(false);
   const [reply,setReply] = useState<Reply>({});
   async function submit(event:FormEvent<HTMLFormElement>) {
@@ -22,7 +23,7 @@ function EmailForm({ blueprint, offerNewsletter = false }: {blueprint?:Blueprint
         shots:blueprint.shots.map(shot=>({title:shot.title.slice(0,120),time:shot.time.slice(0,35),action:shot.action.slice(0,260)})),
       }}:{})};
     try {
-      const response = await fetch(blueprint?'/api/studio-email':'/api/subscribe',{
+      const response = await fetch(endpoint,{
         method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),
       });
       setReply(await response.json() as Reply);
@@ -30,7 +31,7 @@ function EmailForm({ blueprint, offerNewsletter = false }: {blueprint?:Blueprint
     finally { setPending(false); }
   }
 
-  return <form className={styles.form} onSubmit={submit}>
+  return <form className={styles.form} method="post" action={endpoint} onSubmit={submit}>
     <div className={styles.fields}>
       <label htmlFor={id}>Email address
         <input id={id} name="email" type="email" autoComplete="email" maxLength={254} required/>

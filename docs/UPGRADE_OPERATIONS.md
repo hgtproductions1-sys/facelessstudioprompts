@@ -17,10 +17,18 @@ Email starts off. Before enabling EMAIL_CAPTURE_ENABLED, set up the weekly workf
 | EMAIL_PROVIDER | EMAIL_LIST_ID | Confirmation |
 | --- | --- | --- |
 | resend | Resend segment ID | Signup goes straight to the segment |
-| kit | Kit form ID | Enable the form’s incentive email and confirmation in Kit |
+| kit | Kit form ID | Enable the form’s incentive email and confirmation in Kit. Use the legacy v3 API key for the form subscription endpoint. |
 | beehiiv | Beehiiv publication ID | The API explicitly enables double opt-in |
 | buttondown | Optional Buttondown tag | Buttondown sends its default confirmation |
 
 Set EMAIL_API_KEY for the selected provider. To email Studio summaries and tracker links, configure EMAIL_FROM as a verified Resend sending identity. For a newsletter provider other than Resend, also set STUDIO_EMAIL_RESEND_API_KEY. The Studio's newsletter checkbox is optional. Use Upstash for shared throttling across production instances.
 
 Test signup, delivery, consent, and unsubscribe using your own inbox after setup. The local automated suite uses mocked provider responses.
+
+Create a new deployment after changing environment flags so that statically rendered pages reflect the current configuration.
+
+## Optional commercial links
+
+Set NEXT_PUBLIC_AFFILIATES_ENABLED=true and configure the affiliate URLs for participating vendors in [.env.example](../.env.example). Open the tools directory, a matching niche, and the disclosure page after building with those settings. Confirm each affiliate link carries the sponsored attribute and each page with an active affiliate link shows a nearby disclosure.
+
+To surface an existing kit, set NEXT_PUBLIC_STARTER_KITS_ENABLED=true and provide STARTER_KITS_JSON. Each entry takes nicheSlug, title, description, includes as an array of strings, and productUrl as a verified HTTPS checkout URL from Lemon Squeezy, Gumroad, or Stripe Payment Links. Build with the intended configuration and open a test product URL before release. Studio's local production tools and exports remain freely accessible.

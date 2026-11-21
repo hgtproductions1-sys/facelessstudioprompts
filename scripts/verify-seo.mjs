@@ -95,6 +95,7 @@ async function inspect(path, expectedCanonical=canonicalPath(path), { indexable=
   check(normalized(canonical[0])===expectedCanonical,path+' canonical is '+String(canonical[0]));
   const rob=tags(html,'meta').filter(meta=>['robots','googlebot'].includes(meta.name?.toLowerCase())).map(meta=>meta.content).join(',')+','+(headers.get('x-robots-tag')||'');
   check(indexable ? !/\b(?:noindex|none)\b/i.test(rob) : /\bnoindex\b/i.test(rob),path+' robots directives are '+rob);
+  if (indexable) check(/(?:^|[,;\s])index(?:$|[,;\s])/i.test(rob) && /(?:^|[,;\s])follow(?:$|[,;\s])/i.test(rob) && !/\bnofollow\b/i.test(rob),path+' lacks index, follow');
   const h1=[...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)].map(match=>text(match[1]));
   check(h1.length===1,path+' must render one H1');
   const titles=[...head.matchAll(/<title\b[^>]*>([\s\S]*?)<\/title>/gi)].map(match=>text(match[1]));
@@ -103,6 +104,8 @@ async function inspect(path, expectedCanonical=canonicalPath(path), { indexable=
   const pathname=new URL(path,origin).pathname;
   const expectedMarkdown=origin+'/markdown'+(pathname==='/'?'':pathname);
   check(markdown.length===1 && markdown[0]===expectedMarkdown,path+' Markdown alternate is '+markdown.join(','));
+  const social=tags(head,'meta').filter(meta=>meta.property==='og:url').map(meta=>normalized(meta.content));
+  check(social.length===1 && social[0]===expectedCanonical,path+' Open Graph URL does not match its canonical');
   auditSchema(body,path);
   return {path,body:html,links:tags(html,'a'),markdown,title:titles[0],h1:h1[0],description:tags(head,'meta').find(meta=>meta.name==='description')?.content};
 }
@@ -175,13 +178,39 @@ await inspect('/prompts?q=stickman',canonicalPath('/prompts'),{indexable:false})
 for (const variant of ['1','0','abc','999']) {
   const result=await fetchPage('/prompts?page='+variant);
   if (variant==='999') check(result.status===404,'Out-of-range prompt page returned '+result.status);
-  else check(result.status===301 && new URL(result.headers.get('location')||'/',base).pathname==='/prompts','Invalid placeholder page "'+variant+'" did not redirect to /prompts with 301');
+  else {
+    const target=new URL(result.headers.get('location')||'/',base);
+    check(result.status===301 && target.pathname==='/prompts' && !target.search,'Invalid placeholder page "'+variant+'" did not redirect to /prompts with 301');
+  }
 }
 const markdownPaths=['/markdown','/markdown/prompts','/markdown/studio','/markdown/niches/ai-music-videos',
   '/markdown/articles/faceless-video-operator-prompt',...(baselineOnly?[]:newPages.map(path=>'/markdown'+path))];
 await mapLimit(markdownPaths,async path=>{
   const result=await fetchPage(path);
   check(result.status===200 && result.headers.get('content-type')?.startsWith('text/markdown'),path+' did not return readable Markdown');
+});
+const knownNonpages=new Set(['/sitemap.xml','/video-sitemap.xml','/robots.txt','/llms.txt','/llms-full.txt']);
+const extraLinks=new Set();
+const idsByPage=new Map(rows.map(row=>[row.path,new Set([...row.body.matchAll(/\bid=(?:"([^"]+)"|'([^']+)')/g)].map(match=>decode(match[1]??match[2])))]));
+const missingFragments=new Set();
+for(const row of rows){
+ for(const link of row.links){
+  if(!link.href)continue;
+  const path=sameOriginPath(link.href,row.path);
+  if(path && !sitemapPaths.has(path) && !knownNonpages.has(path))extraLinks.add(path);
+  if(path && link.href.includes('#') && idsByPage.has(path)){
+   const fragment=new URL(link.href,new URL(row.path,origin)).hash.slice(1);
+   if(fragment && !idsByPage.get(path).has(decodeURIComponent(fragment)))missingFragments.add(row.path+' → '+link.href);
+  }
+ }
+}
+for(const link of missingFragments)check(false,'Missing internal fragment '+link);
+await mapLimit([...extraLinks],async path=>{
+ const result=await fetchPage(path);
+ const location=result.headers.get('location');
+ const redirectPath=location?new URL(location,base).pathname:null;
+ const legacy=path==='/library'&&[301,308].includes(result.status)&&redirectPath==='/prompts';
+ check(result.status===200 || legacy,path+' is an internal link returning '+result.status);
 });
 if (process.env.NEXT_PUBLIC_AFFILIATES_ENABLED==='true') {
   const configured=new Set(Object.entries(process.env).filter(([key,value])=>key.startsWith('NEXT_PUBLIC_AFFILIATE_') && value).map(([,value])=>normalized(value)));
@@ -197,5 +226,5 @@ if (findings.length) {
 } else {
   console.log(JSON.stringify({httpPages:rows.length,baselinePages:baselinePaths.length,sitemap:urls.length,
     discoverablePrompts:discoveredPrompts.size,categoryPrompts:sectionIds.size,relatedNichePages:24,
-    markdownSamples:markdownPaths.length,violations:0},null,2));
+    markdownSamples:markdownPaths.length,otherInternalTargets:extraLinks.size,violations:0},null,2));
 }

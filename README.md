@@ -36,7 +36,7 @@ Live-provider behavior cannot be verified without a configured working credentia
 
 ## SEO and public launch
 
-The configured production canonical origin is https://www.thefacelessprompts.com, matching the existing redirect from the apex domain. Update config/site.json for another origin, or use a validated SITE_URL environment override. An existing override takes precedence, so confirm it agrees with the intended canonical before deployment. Search Console HTML verification can be added with searchConsoleVerification in the same config. The site includes server-rendered content, unique page metadata, matching structured data, breadcrumbs, an XML sitemap, a video sitemap, robots.txt, and real 404 paths.
+The canonical origin is https://www.thefacelessprompts.com. The apex redirects there, and all builds read the same canonical from config/site.json. Search Console HTML verification uses searchConsoleVerification in the same config. See [the Search Console rollout](docs/GSC_ROLLOUT_RUNBOOK.md) for the production verification steps.
 
 The existing public Vercel site remains the destination. The domain property has already been verified in Search Console, and both sitemap URLs have been submitted. The earlier video-sitemap report showed a fetch issue even though Google's live URL test succeeded; that report needs a fresh owner check after processing. A sitemap submission or live fetch does not guarantee indexing. Historical transfer documents describe a separate Sites workflow and should not be used to move the current domain.
 
