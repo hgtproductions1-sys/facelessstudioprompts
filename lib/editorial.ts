@@ -20,6 +20,14 @@ export const EDITORIAL_QUERY = defineQuery(`*[_type == "editorialPost" && define
 }`);
 export type EditorialPost = NonNullable<EDITORIAL_QUERY_RESULT>[number];
 const sourceGuideSlugs = new Set(ARTICLE_GUIDES.filter(g => !(config.migratedGuideSlugs as string[]).includes(g.slug)).map(g => g.slug));
+const EDITORIAL_BY_SLUG = EDITORIAL_QUERY.replace('defined(slug.current)', 'section == $section && slug.current == $slug');
+const validSlug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+function eligiblePost(post: EditorialPost) {
+  return post.slug && validSlug.test(post.slug) && ['articles','guides'].includes(post.section || '') &&
+    !(post.section === 'guides' && sourceGuideSlugs.has(post.slug)) && post.title && post.excerpt &&
+    post.authorName && post.publishedAt && Date.parse(post.publishedAt) <= Date.now() && post.body?.length;
+}
 
 export const getEditorialPosts = cache(async (): Promise<EditorialPost[]> => {
   if (!editorialEnabled) return [];
@@ -28,11 +36,17 @@ export const getEditorialPosts = cache(async (): Promise<EditorialPost[]> => {
   const posts = await editorialClient.fetch<EDITORIAL_QUERY_RESULT>(EDITORIAL_QUERY, {}, {
     cache: 'no-store', perspective: 'published', token: process.env.SANITY_API_READ_TOKEN,
   });
-  return posts.filter(p => p.slug && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.slug) && ['articles','guides'].includes(p.section||'') && !(p.section === 'guides' && sourceGuideSlugs.has(p.slug)) && p.title && p.excerpt && p.authorName && p.publishedAt && Number.isFinite(Date.parse(p.publishedAt)) && Date.parse(p.publishedAt) <= Date.now() && p.body?.length);
+  return posts.filter(eligiblePost);
 });
-export async function getEditorialPost(section: 'articles'|'guides', slug: string) {
-  return (await getEditorialPosts()).find(p => p.section === section && p.slug === slug) || null;
-}
+
+// Detail requests only fetch the requested article. Metadata and the page share this result.
+export const getEditorialPost = cache(async (section: 'articles'|'guides', slug: string): Promise<EditorialPost | null> => {
+  if (!editorialEnabled || !validSlug.test(slug) || (section === 'guides' && sourceGuideSlugs.has(slug))) return null;
+  const posts = await editorialClient.fetch<EDITORIAL_QUERY_RESULT>(EDITORIAL_BY_SLUG, {section, slug}, {
+    cache: 'no-store', perspective: 'published', token: process.env.SANITY_API_READ_TOKEN,
+  });
+  return posts.find(post => post.section === section && post.slug === slug && eligiblePost(post)) ?? null;
+});
 export function editorialPath(post: Pick<EditorialPost,'section'|'slug'>) {
   return `/${post.section === 'guides' ? 'guides' : 'articles'}/${post.slug}`;
 }

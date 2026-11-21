@@ -1,5 +1,6 @@
 import {notFound} from 'next/navigation';
 import {Breadcrumbs,PageIntro,JsonLd} from '@/components/Shared';
+import AuthorByline from '@/components/AuthorByline';
 import CopyButton from '@/components/CopyButton';
 import VideoPlayer from '@/components/VideoPlayer';
 import {ARTICLE_GUIDES,getArticleGuide} from '@/data/articleGuides';
@@ -7,7 +8,8 @@ import {GUIDE_IMAGES} from '@/data/guideImages';
 import {getPrimaryVideoForGuide,formatVideoDate} from '@/data/videos';
 import {getPromptBySlug,getPromptCollection} from '@/data/promptPages';
 import {getNichePage} from '@/data/niches';
-import {metadataFor,SITE_URL} from '@/lib/site';
+import {articleAuthor, editorialDate, founderPerson} from '@/lib/authors';
+import {metadataFor,SITE_NAME,SITE_URL} from '@/lib/site';
 import {responsiveImage} from '@/lib/images';
 import EditorialPost,{editorialMetadata} from '@/components/EditorialPost';
 import {getEditorialPost} from '@/lib/editorial';
@@ -24,10 +26,12 @@ export default async function Page({params}:{params:Promise<{slug:string}>}) {
   if(!g){const cms=await getEditorialPost('guides',slug);if(cms)return <EditorialPost post={cms}/>;notFound();}
   const image=GUIDE_IMAGES[slug];
   const lesson=getPrimaryVideoForGuide(slug);
+  const url=SITE_URL+'/guides/'+slug;
+  const modified=editorialDate(g.updated);
   return <div className="container page-content">
     <Breadcrumbs items={[{label:'Creator guides',href:'/guides'},{label:g.eyebrow,href:'/guides/'+slug}]}/>
     <PageIntro eyebrow={g.category+' / Creator guide'} title={g.title} description={g.summary}>
-      <div className="article-meta"><span>By <a className="inline-link" href="/about">The Faceless Prompts</a></span><a className="inline-link" href="/editorial-policy">Editorial approach</a><span>{g.readMinutes} min read</span><span>Updated {g.updated}</span></div>
+      <AuthorByline updated={g.updated}><span>{g.readMinutes} min read</span></AuthorByline>
     </PageIntro>
     <div className="article-layout">
       <article className="prose">
@@ -57,7 +61,15 @@ export default async function Page({params}:{params:Promise<{slug:string}>}) {
       </article>
       <aside className="toc"><h2>In this guide</h2>{g.sections.map(s=><a href={'#'+s.id} key={s.id}>{s.title}</a>)}{lesson&&<a href="#watch-related">Watch a related lesson</a>}{!!g.sources?.length&&<a href="#sources">Sources & further reading</a>}<a href="#next">Put it into practice</a></aside>
     </div>
-    <JsonLd data={{'@type':'Article',headline:g.title,description:g.description,url:SITE_URL+'/guides/'+slug,dateModified:new Date(g.updated).toISOString().slice(0,10),author:{'@type':'Organization',name:'The Faceless Prompts',url:SITE_URL+'/about'},publisher:{'@type':'Organization',name:'The Faceless Prompts',logo:{'@type':'ImageObject',url:SITE_URL+'/logo-mark.png'}},image:SITE_URL+(image?.src||'/social-cover.jpg')}}/>
+    <JsonLd data={{
+      '@type':'Article', headline:g.title, description:g.description, url,
+      mainEntityOfPage:{'@type':'WebPage','@id':url},
+      dateModified:modified?.dateTime,
+      author:articleAuthor(),
+      editor:founderPerson(),
+      publisher:{'@type':'Organization','@id':SITE_URL+'/#organization',name:SITE_NAME,logo:{'@type':'ImageObject',url:SITE_URL+'/logo-mark.png'}},
+      image:SITE_URL+(image?.src||'/social-cover.jpg'),
+    }}/>
   </div>;
 }
 

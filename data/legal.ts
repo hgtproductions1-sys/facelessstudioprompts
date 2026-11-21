@@ -1,11 +1,12 @@
 import {CONTACT_EMAIL, FOUNDER_NAME, FOUNDING_YEAR} from '@/lib/site';
+import {FOUNDER_PROFILE} from '@/lib/authors';
 
 export type InfoPage = {
   title: string;
   eyebrow: string;
   description: string;
   updated?: string;
-  sections: {title: string; body: string[]; links?: {label: string; href: string}[]}[];
+  sections: {id?: string; title: string; body: string[]; links?: {label: string; href: string}[]}[];
 };
 
 export const INFO_PAGES: Record<string, InfoPage> = {
@@ -17,12 +18,20 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     sections: [
       {title: 'The story behind The Faceless Prompts', body: [
         `The Faceless Prompts was founded in ${FOUNDING_YEAR} by ${FOUNDER_NAME}. It is an independently developed, founder-operated project, bootstrapped and self-funded.`,
-        'The goal is practical: give independent creators more structure between a first idea and a finished video. A useful plan makes it easier to decide what to show, what to say, and how each scene fits the story.'
+        'The project helps independent creators turn story ideas into video plans with structured prompts and repeatable production checklists. Decide what the viewer should see and hear, then plan how each shot supports the story.'
+      ]},
+      {id: 'editorial-team', title: 'Editorial team', body: [
+        FOUNDER_PROFILE.shortBio,
+        'Our guides cite original sources where platform rules or tool features affect a creative decision. A field note documents the model or version, settings, and result of a specific test.',
+        'We revise guidance when a confirmed correction or a provider change affects the steps. Product changes are recorded on the updates page.'
+      ], links: [
+        {label: 'Read the editorial policy', href: '/editorial-policy'},
+        {label: 'Read product updates', href: '/updates'}
       ]},
       {title: 'What you can do today', body: [
         'Browse and customize 67 prompt templates, explore 24 niche playbooks, and learn from 8 creator guides and credited video tutorials.',
         'In the Video Planning Studio, enter a topic, choose a niche and format, and create a blueprint with an opening hook, scene prompts, narration direction, continuity notes, and an editing checklist. Review the draft, switch the prompt destination, then copy or download the plan for your production tools.',
-        'AI drafting uses the connected AI service to write scene details. The optional template planner builds editable directions in your browser without an AI request. You can also save prompts locally and import or export your creative brief.'
+        'Instant Blueprint builds a first plan in your browser. Master AI Brief prepares a prompt you can take to a writing assistant. The Studio can export narration, visual prompts, a shot list, and a restorable project backup.'
       ], links: [
         {label: 'Open the Video Planning Studio', href: '/studio'},
         {label: 'Explore the Prompt Library', href: '/prompts'},
@@ -31,15 +40,12 @@ export const INFO_PAGES: Record<string, InfoPage> = {
       ]},
       {title: 'Made for the creative process', body: [
         'Bring your own references, point of view, and editorial decisions. The Studio produces a planning draft; you use your chosen image, video, voice, and editing tools to make the final media.',
-        'Review every draft for accuracy, originality, rights, and continuity. A prompt or production plan cannot guarantee views, audience growth, platform approval, or revenue.'
+        'Test one representative shot, inspect it alongside the narration, and check continuity before producing the full sequence.'
       ]},
-      {title: 'Where the project is going', body: [
-        'The focus remains clearer scene planning, more useful creator resources, and better control over the drafting workflow. Additional AI-provider choices, including a possible Claude integration, are future proposals rather than current features. No release dates are promised.'
-      ], links: [{label: 'Read product updates', href: '/updates'}]},
       {title: 'Independent operation and attribution', body: [
-        'The Faceless Prompts is an independent, unincorporated project. It is not presented as a registered company or as an official partner of the AI tools it discusses.',
-        'Planning templates and guide text are published under The Faceless Prompts name. Linked YouTube tutorials belong to their credited creators. Illustrations are AI-generated editorial artwork. Fictional premises and templates are planning aids, not claims of first-hand production results.'
-      ], links: [{label: 'Read the editorial policy', href: '/editorial-policy'}]},
+        'The Faceless Prompts is an independent, unincorporated project.',
+        'Planning templates and guides are published under The Faceless Prompts name. Linked YouTube lessons retain their creator credits.'
+      ]},
       {title: 'Talk to the founder', body: [
         `For questions, support, corrections, or collaboration ideas, contact ${CONTACT_EMAIL}. Practical feedback helps identify what needs a closer look.`
       ], links: [{label: 'Contact the project', href: '/contact'}]}
@@ -75,9 +81,9 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     sections: [
       {title: 'Prompts are working drafts', body: ['Prompt templates are starting points. They may need adaptation to the selected tool, source material, and production format. Instructions inside a prompt are creative directions, not evidence that an outcome will happen.']},
       {title: 'Examples and generated material', body: ['Fictional story premises, scene examples, and AI illustrations are presented as examples. AI drafts require review for accuracy, originality, continuity, and suitability before publication. The homepage cat image is an illustrative AI-created story frame.']},
-      {title: 'How guidance is prepared', body: ['Guides organize practical production decisions and link primary provider or platform documentation where relevant. AI-assisted drafts and illustrations require editorial review. Provider features and policies should be checked at their original source when they affect your project. The project does not claim that every prompt has been tested with every listed tool.']},
+      {title: 'How guidance is prepared', body: ['Guides organize production decisions and link primary provider or platform documentation where relevant. AI-assisted drafts and illustrations require editorial review. Field notes document individual tests with the model or version, relevant settings, and observed results.']},
       {title: 'Sources and external videos', body: ['Creator guides link to relevant sources where provided. Videos are attributed to their original creators and embedded from YouTube. Our exercises and prompt examples are separate from the original videos.']},
-      {title: 'Tool information', body: ['Provider features, pricing, and policies can change. The tools directory uses direct official links and avoids promising specific prices or performance. Check current primary documentation when a feature matters to your project.']},
+      {title: 'Tool information', body: ['The tools directory links to independent providers. Provider features, pricing, and policies can change. Check current primary documentation when a feature matters to your project.'],links:[{label:'Read the affiliate disclosure',href:'/affiliate-disclosure'}]},
       {title: 'Corrections', body: ['Report a factual error or broken example through the Contact page with the page address and the issue. Meaningful content changes should carry an updated date.']}
     ]
   },

@@ -8,12 +8,17 @@ import {GET as preview} from '../app/api/editorial/enable-preview/route';
 import EditorialPost from '../components/EditorialPost';
 import config from '../config/editorial.json';
 import type {EditorialPost as Post} from '../lib/editorial';
+import {SITE_URL} from '../lib/site';
 
 const state: {posts: Post[]; fail: boolean} = {posts: [], fail: false};
-(globalThis as unknown as {__cmsFetch: (query: string, params: unknown, options: {perspective: string; cache: string}) => Promise<Post[]>}).__cmsFetch = async (_query, _params, options) => {
+(globalThis as unknown as {__cmsFetch: (query: string, params: {section?:string;slug?:string}, options: {perspective: string; cache: string}) => Promise<Post[]>}).__cmsFetch = async (query, params, options) => {
   assert.equal(options.perspective, 'published');
   assert.equal(options.cache, 'no-store');
   if (state.fail) throw new Error('CMS unavailable');
+  if (params.slug) {
+    assert(query.includes('section == $section && slug.current == $slug'));
+    return state.posts.filter(post=>post.section===params.section && post.slug===params.slug);
+  }
   return state.posts;
 };
 const post: Post = {
@@ -35,6 +40,22 @@ for (const id of ['../bad', '9nVEfjmDlVk?autoplay=1', '', null]) assert.equal(cm
 assert.equal(cmsYoutubeId('9nVEfjmDlVk'), '9nVEfjmDlVk');
 const lesson = {videoId: '9nVEfjmDlVk', title: 'Creating in Flow', creator: 'Google', description: 'A supporting tutorial.'};
 const videoHtml = renderToStaticMarkup(<EditorialPost post={{...post, youtubeVideo: lesson}}/>);
+const articleSchema = (html: string) => [...html.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)]
+  .map(match => JSON.parse(match[1])).find(data => data['@type'] === 'Article');
+const schema = articleSchema(videoHtml);
+assert.equal(schema.author['@type'], 'Person');
+assert.equal(schema.author.name, 'Test editor');
+assert.equal(schema.editor.name, 'Vince Elijah Alvarez');
+assert.equal(schema.editor.url, SITE_URL + '/about#editorial-team');
+assert.equal(schema.publisher['@id'], SITE_URL + '/#organization');
+assert.equal(schema.mainEntityOfPage['@id'], SITE_URL + '/articles/practical-workflow');
+assert.equal(schema.datePublished, post.publishedAt);
+assert.equal(schema.dateModified, post._updatedAt);
+assert(videoHtml.includes('href="/about#editorial-team"'));
+assert(videoHtml.includes('November 2, 2026'));
+const organization = renderToStaticMarkup(<EditorialPost post={{...post, authorName: 'Guest Editorial Team', authorType: 'Organization'}}/>);
+assert.deepEqual(articleSchema(organization).author, {'@type': 'Organization', name: 'Guest Editorial Team'});
+assert(organization.includes('By Guest Editorial Team'));
 assert(videoHtml.includes('Play Creating in Flow'));
 assert(videoHtml.includes('https://www.youtube.com/watch?v=9nVEfjmDlVk'));
 assert(videoHtml.includes('By Google'));

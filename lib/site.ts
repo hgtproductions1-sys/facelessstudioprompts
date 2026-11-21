@@ -27,3 +27,15 @@ export function metadataFor(path: string, title: string, description: string, ty
 export function schema(data:Record<string,unknown>){return JSON.stringify({'@context':'https://schema.org',...data}).replace(/</g,'\\u003c');}
 export function breadcrumbSchema(items:{label:string;href:string}[]){return {'@type':'BreadcrumbList',itemListElement:items.map((item,i)=>({'@type':'ListItem',position:i+1,name:item.label,item:SITE_URL+item.href}))};}
 
+export function faqJsonLd(items: readonly {question:string;answer:string}[]) {
+ return {'@type':'FAQPage',mainEntity:items.map(({question,answer})=>({
+  '@type':'Question',name:question,acceptedAnswer:{'@type':'Answer',text:answer},
+ }))};
+}
+
+export function webApplicationJsonLd(path: string, name: string, description: string) {
+ return {'@type':'WebApplication','@id':SITE_URL+path+'#application',url:SITE_URL+path,name,description,
+  applicationCategory:'MultimediaApplication',operatingSystem:'Any',
+  offers:{'@type':'Offer',price:'0',priceCurrency:'USD'}};
+}
+

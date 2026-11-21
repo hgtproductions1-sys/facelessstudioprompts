@@ -10,6 +10,7 @@
 
 import type { NicheData } from '../types';
 import type {SampleOutputMedia} from '../lib/sampleOutput';
+import type {FieldTestNote} from '../lib/fieldTest';
 
 /**
  * Programmatic SEO data for /niches/$slug landing pages.
@@ -41,6 +42,7 @@ export interface NichePage {
   /** One complete sentence for directory and featured cards. */
   shortSummary: string;
   sampleOutputs?: SampleOutputMedia[];
+  fieldTest?: FieldTestNote;
   /** Matching generator niche label, used to prefill the generator. */
   niche: string;
   seoTitle: string;
@@ -74,7 +76,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai animal story generator"
   ],
     difficulty: "Medium",
-    intro: "This format may suit animal-story viewers. Start with a specific idea, such as a stray cat finding shelter. Keep fur markings and proportions consistent, and label fictional scenes clearly. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit animal-story viewers. Start with a specific idea, such as a stray cat finding shelter. Keep fur markings and proportions consistent, and label fictional scenes clearly.",
     prompts: [
     {
       "title": "The Stray's First Winter",
@@ -148,7 +150,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai food video generator"
   ],
     difficulty: "Hard",
-    intro: "This format may suit viewers who enjoy playful food stories. Start with a specific idea, such as a bear preparing campfire ramen. Keep utensils, ingredient scale, and the cooking sequence readable. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who enjoy playful food stories. Start with a specific idea, such as a bear preparing campfire ramen. Keep utensils, ingredient scale, and the cooking sequence readable.",
     prompts: [
     {
       "title": "The Bear Baker",
@@ -223,7 +225,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless travel vlog ai"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers who enjoy immersive scenes. Start with a specific idea, such as a quiet walk through a miniature night market. Keep viewpoint and spatial direction consistent between shots. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who enjoy immersive scenes. Start with a specific idea, such as a quiet walk through a miniature night market. Keep viewpoint and spatial direction consistent between shots.",
     prompts: [
     {
       "title": "The Rainy Cyberpunk Walk",
@@ -297,7 +299,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai combat video generator"
   ],
     difficulty: "Easy",
-    intro: "This format may suit animation and action fans. Start with a specific idea, such as a friendly contest between two original characters. Choreograph one readable action at a time and use characters you have rights to depict. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit animation and action fans. Start with a specific idea, such as a friendly contest between two original characters. Choreograph one readable action at a time and use characters you have rights to depict.",
     prompts: [
     {
       "title": "The Fire Mage vs. The Ice Swordsman",
@@ -371,7 +373,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless sketch comedy ai"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers who like concise visual explanations. Start with a specific idea, such as a stick figure learning to organize a busy day. Give each scene one point and check that the visuals explain it. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who like concise visual explanations. Start with a specific idea, such as a stick figure learning to organize a busy day. Give each scene one point and check that the visuals explain it.",
     prompts: [
     {
       "title": "The 3-Second Rule of Focus",
@@ -445,7 +447,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless satisfying shorts ai"
   ],
     difficulty: "Medium",
-    intro: "This format may suit viewers who enjoy texture and quiet motion. Start with a specific idea, such as rain falling on a tiny greenhouse. Plan the sound separately and keep motion simple. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who enjoy texture and quiet motion. Start with a specific idea, such as rain falling on a tiny greenhouse. Plan the sound separately and keep motion simple.",
     prompts: [
     {
       "title": "The Rusty Pocket Watch Restoration",
@@ -519,7 +521,7 @@ export const NICHE_PAGES: NichePage[] = [
     "how to make survival horror shorts"
   ],
     difficulty: "Medium",
-    intro: "This format may suit fiction and suspense viewers. Start with a specific idea, such as a survivor finding a working radio. Maintain the setting and keep fictional events separate from real reporting. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit fiction and suspense viewers. Start with a specific idea, such as a survivor finding a working radio. Maintain the setting and keep fictional events separate from real reporting.",
     prompts: [
     {
       "title": "The Last Radio Broadcast",
@@ -593,7 +595,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless anime storytelling ai"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers interested in religious stories or mythology. Start with a specific idea, such as a scene adapted from a chosen source passage. Name the source and distinguish quotations from creative interpretation. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers interested in religious stories or mythology. Start with a specific idea, such as a scene adapted from a chosen source passage. Name the source and distinguish quotations from creative interpretation.",
     prompts: [
     {
       "title": "The Wrath of Poseidon",
@@ -667,7 +669,7 @@ export const NICHE_PAGES: NichePage[] = [
     "ai affiliate marketing shorts generator"
   ],
     difficulty: "Hard",
-    intro: "This format may suit people comparing products. Start with a specific idea, such as a clearly labeled demonstration of a desk accessory. Do not invent first-hand testing, testimonials, or product capabilities. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit people comparing products. Start with a specific idea, such as a clearly labeled demonstration of a desk accessory. Base feature claims on product documentation or a documented test.",
     prompts: [
     {
       "title": "The Minimalist Skincare Unboxing",
@@ -741,7 +743,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless ambient video ai"
   ],
     difficulty: "Easy",
-    intro: "This format may suit listeners seeking a quiet background soundtrack. Start with a specific idea, such as a gentle instrumental bedtime scene. Use licensed audio and avoid promises about sleep or health outcomes. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit listeners seeking a quiet background soundtrack. Start with a specific idea, such as a gentle instrumental bedtime scene. Use licensed audio and avoid promises about sleep or health outcomes.",
     prompts: [
     {
       "title": "The Floating Cloud Kingdom",
@@ -815,7 +817,7 @@ export const NICHE_PAGES: NichePage[] = [
     "how to make analog horror"
   ],
     difficulty: "Medium",
-    intro: "This format may suit fictional mystery and atmospheric horror viewers. Start with a specific idea, such as an invented broadcast from an abandoned station. Label fiction and avoid presenting invented events as real evidence. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit fictional mystery and atmospheric horror viewers. Start with a specific idea, such as an invented broadcast from an abandoned station. Label fiction and avoid presenting invented events as real evidence.",
     prompts: [
     {
       "title": "The Emergency Broadcast Override",
@@ -889,7 +891,7 @@ export const NICHE_PAGES: NichePage[] = [
     "satisfying craft shorts ai"
   ],
     difficulty: "Medium",
-    intro: "This format may suit craft and miniature enthusiasts. Start with a specific idea, such as a cardboard room with a working-looking lamp. Distinguish generated concept imagery from a build you actually completed. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit craft and miniature enthusiasts. Start with a specific idea, such as a cardboard room with a working-looking lamp. Distinguish generated concept imagery from a build you actually completed.",
     prompts: [
     {
       "title": "The Cardboard Cyberpunk Arcade",
@@ -963,7 +965,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless food craft ai"
   ],
     difficulty: "Medium",
-    intro: "This format may suit viewers interested in decorative food presentation. Start with a specific idea, such as a carved apple flower concept. Show clear stages and avoid presenting generated imagery as a tested tutorial. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers interested in decorative food presentation. Start with a specific idea, such as a carved apple flower concept. Show clear stages and avoid presenting generated imagery as a tested tutorial.",
     prompts: [
     {
       "title": "The Watermelon Dragon Lotus",
@@ -1037,7 +1039,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless vehicle detailing ai"
   ],
     difficulty: "Medium",
-    intro: "This format may suit vehicle-detailing enthusiasts. Start with a specific idea, such as a dusty model car cleaned in four stages. Keep the vehicle geometry and before-and-after framing consistent. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit vehicle-detailing enthusiasts. Start with a specific idea, such as a dusty model car cleaned in four stages. Keep the vehicle geometry and before-and-after framing consistent.",
     prompts: [
     {
       "title": "The Muddy Off-Road Foam Blast",
@@ -1111,7 +1113,7 @@ export const NICHE_PAGES: NichePage[] = [
     "satisfying tiny food AI"
   ],
     difficulty: "Medium",
-    intro: "This format may suit miniature and food-video viewers. Start with a specific idea, such as a tiny kitchen preparing a bowl of noodles. Maintain scale across ingredients, props, and utensils. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit miniature and food-video viewers. Start with a specific idea, such as a tiny kitchen preparing a bowl of noodles. Maintain scale across ingredients, props, and utensils.",
     prompts: [
     {
       "title": "The Tiny Cast-Iron Pancake",
@@ -1185,7 +1187,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless toy collecting AI"
   ],
     difficulty: "Easy",
-    intro: "This format may suit toy collectors and nostalgic viewers. Start with a specific idea, such as an original retro-style toy revealed from its box. Use accurate product details and distinguish imagined toys from real releases. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit toy collectors and nostalgic viewers. Start with a specific idea, such as an original retro-style toy revealed from its box. Use accurate product details and distinguish imagined toys from real releases.",
     prompts: [
     {
       "title": "The Translucent 90s Handheld",
@@ -1259,7 +1261,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless listicle channel AI"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers comparing a clearly defined topic. Start with a specific idea, such as five unusual fictional vehicles. State your ranking criteria and verify factual entries before publishing. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers comparing a clearly defined topic. Start with a specific idea, such as five unusual fictional vehicles. State your ranking criteria and verify factual entries before publishing.",
     prompts: [
     {
       "title": "The Deep Sea Depth Scale (#1)",
@@ -1333,7 +1335,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless commentary video AI"
   ],
     difficulty: "Medium",
-    intro: "This format may suit viewers who enjoy visual explainers. Start with a specific idea, such as a paper-cut explanation of a daily habit. Use original graphics and cite evidence for factual claims. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who enjoy visual explainers. Start with a specific idea, such as a paper-cut explanation of a daily habit. Use original graphics and cite evidence for factual claims.",
     prompts: [
     {
       "title": "The Global Shipping Bottleneck",
@@ -1407,7 +1409,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless philosophy video AI"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers interested in reflective storytelling. Start with a specific idea, such as a fictional elder discussing a small daily habit. Do not attribute invented quotations to real people or present fiction as lived testimony. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers interested in reflective storytelling. Start with a specific idea, such as a fictional elder discussing a small daily habit. Attribute quotations to their sources and identify fictional reflections on screen.",
     prompts: [
     {
       "title": "The Weight of Silence",
@@ -1481,7 +1483,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless visualizer ai"
   ],
     difficulty: "Medium",
-    intro: "This format may suit music and visual-art audiences. Start with a specific idea, such as a color-themed sequence set to licensed music. Time the cuts to the track and confirm rights to music and likenesses. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit music and visual-art audiences. Start with a specific idea, such as a color-themed sequence set to licensed music. Time the cuts to the track and confirm rights to music and likenesses.",
     prompts: [
     {
       "title": "The Neon Cyberpunk Synthwave Ride",
@@ -1555,7 +1557,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless horror animation AI"
   ],
     difficulty: "Medium",
-    intro: "This format may suit fans of stylized spooky fiction. Start with a specific idea, such as a cheerful cartoon hallway that slowly changes. Use original characters and match the intensity to your intended audience. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit fans of stylized spooky fiction. Start with a specific idea, such as a cheerful cartoon hallway that slowly changes. Use original characters and match the intensity to your intended audience.",
     prompts: [
     {
       "title": "The Smiling Feline's Secret",
@@ -1629,7 +1631,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless gaming content AI"
   ],
     difficulty: "Easy",
-    intro: "This format may suit pixel-art and game-inspired story viewers. Start with a specific idea, such as a first-person walk through an original pixel village. Keep the palette and sprite scale coherent between frames. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit pixel-art and game-inspired story viewers. Start with a specific idea, such as a first-person walk through an original pixel village. Keep the palette and sprite scale coherent between frames.",
     prompts: [
     {
       "title": "The Cozy RPG Tavern Fireplace",
@@ -1703,7 +1705,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless pop culture content AI"
   ],
     difficulty: "Medium",
-    intro: "This format may suit viewers interested in visual timelines. Start with a specific idea, such as the changing wardrobe of an original fictional character. Use documented facts for real people and clearly label synthetic or speculative imagery. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers interested in visual timelines. Start with a specific idea, such as the changing wardrobe of an original fictional character. Use documented facts for real people and clearly label synthetic or speculative imagery.",
     prompts: [
     {
       "title": "The Streetwear Icon Evolution",
@@ -1777,7 +1779,7 @@ export const NICHE_PAGES: NichePage[] = [
     "faceless animal comedy AI"
   ],
     difficulty: "Easy",
-    intro: "This format may suit viewers who enjoy light animal comedy. Start with a specific idea, such as two fictional pets finding different uses for the same box. Make the contrast clear through props and action without relying on stereotypes. The examples below are editable production drafts; review the script, create the media in your chosen tools, and check the final result before publishing.",
+    intro: "This format may suit viewers who enjoy light animal comedy. Start with a specific idea, such as two fictional pets finding different uses for the same box. Make the contrast clear through props and action without relying on stereotypes.",
     prompts: [
     {
       "title": "The Diamond Collar Breakfast",

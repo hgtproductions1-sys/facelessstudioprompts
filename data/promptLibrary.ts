@@ -1,4 +1,5 @@
 import type {SampleOutputMedia} from '../lib/sampleOutput';
+import type {FieldTestNote} from '../lib/fieldTest';
 
 export type PromptCategory = "Image Gen" | "Video Gen" | "SEO" | "Character" | "Niche";
 
@@ -11,6 +12,7 @@ export type Prompt = {
   tips?: string;
   reactions?: number;
   sampleOutputs?: SampleOutputMedia[];
+  fieldTest?: FieldTestNote;
 };
 
 export const PROMPT_CATEGORIES: PromptCategory[] = [

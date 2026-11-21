@@ -1,0 +1,46 @@
+.note {
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 3vw, 24px);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.note :is(h2, p, dl, figure) {
+  margin: 0;
+}
+
+.results {
+  display: grid;
+  gap: 10px;
+}
+
+.results dt {
+  font-weight: 650;
+}
+
+.results dd {
+  margin: 4px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.frames {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 10px;
+}
+
+.frames img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.frames figcaption {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: .85rem;
+}

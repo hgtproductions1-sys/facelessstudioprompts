@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import CopyButton, { DownloadButton } from '@/components/CopyButton';
 import { usePromptVariables } from '@/components/PromptVariablesProvider';
 import { fillPrompt, parsePromptVariables, studioPromptHref } from '@/lib/prompt-variables';
@@ -64,7 +64,12 @@ export default function PromptCustomizer({ prompt, promptId, compact = false, ni
 
 export function PromptVariableDrawer({ prompt, promptId }: Pick<Props, 'prompt' | 'promptId'>) {
   const [open, setOpen] = useState(false);
-  return <details className="prompt-quick-preview" onToggle={event => setOpen(event.currentTarget.open)}>
+  const details = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    // The native disclosure can open before React attaches its event handler.
+    if (details.current?.open) setOpen(true);
+  }, []);
+  return <details ref={details} className="prompt-quick-preview" onToggle={event => setOpen(event.currentTarget.open)}>
     <summary>Preview and fill template</summary>
     {open ? <PromptCustomizer prompt={prompt} promptId={promptId} compact/> : <pre>{prompt}</pre>}
   </details>;

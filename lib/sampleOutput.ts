@@ -22,7 +22,7 @@ export type SampleOutputMedia = SampleDetails & (
 type CdnSource = {projectId: string; dataset: string};
 const localSamplePath = /^\/samples\/(?:[a-z0-9][a-z0-9_-]*\/)*[a-z0-9][a-z0-9_-]*\.[a-z0-9]+$/i;
 
-function mediaUrl(value: unknown, kind: 'image' | 'mp4' | 'webm', cdn: CdnSource) {
+export function sampleAssetUrl(value: unknown, kind: 'image' | 'mp4' | 'webm', cdn: CdnSource) {
   if (typeof value !== 'string') return undefined;
   const extensions = {image: /\.(avif|webp)$/i, mp4: /\.mp4$/i, webm: /\.webm$/i};
   if (localSamplePath.test(value) && extensions[kind].test(value)) return value;
@@ -62,14 +62,14 @@ export function normalizeSampleOutput(value: unknown, cdn: CdnSource): SampleOut
   if (Math.abs(width / height / SAMPLE_ASPECT_RATIOS[ratio] - 1) > 0.015) return undefined;
   const details = {id, alt, modelUsed, promptExcerpt, settingsNote, capturedAt, width, height, aspectRatio: ratio};
   if (mediaType === 'image') {
-    const src = mediaUrl(sample.src, 'image', cdn);
+    const src = sampleAssetUrl(sample.src, 'image', cdn);
     if (!src || width > 1200) return undefined;
     return {...details, src, mediaType};
   }
   if (mediaType !== 'video-loop' || Math.min(width, height) > 720 || Math.max(width, height) > 1280) return undefined;
-  const src = mediaUrl(sample.src, 'mp4', cdn);
-  const webmSrc = mediaUrl(sample.webmSrc, 'webm', cdn);
-  const posterSrc = mediaUrl(sample.posterSrc, 'image', cdn);
+  const src = sampleAssetUrl(sample.src, 'mp4', cdn);
+  const webmSrc = sampleAssetUrl(sample.webmSrc, 'webm', cdn);
+  const posterSrc = sampleAssetUrl(sample.posterSrc, 'image', cdn);
   const durationSeconds = sample.durationSeconds;
   if (!src || !webmSrc || !posterSrc || !/\.webp$/i.test(posterSrc)
     || typeof durationSeconds !== 'number' || !Number.isFinite(durationSeconds)
