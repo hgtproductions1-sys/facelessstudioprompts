@@ -1,5 +1,8 @@
 import type {SampleOutputMedia} from '../lib/sampleOutput';
 import type {FieldTestNote} from '../lib/fieldTest';
+import {IMPORTED_CREATOR_PROMPTS} from './importedCreatorPrompts.ts';
+import {IMPORTED_FORMAT_PROMPTS} from './importedFormatPrompts.ts';
+import {IMPORTED_STORY_PROMPTS} from './importedStoryPrompts.ts';
 
 export type PromptCategory = "Image Gen" | "Video Gen" | "SEO" | "Character" | "Niche";
 
@@ -1318,6 +1321,9 @@ Deliver:
 
 Be concrete about numbers and honest about ranges. No hype.`,
   },
+  ...IMPORTED_CREATOR_PROMPTS,
+  ...IMPORTED_FORMAT_PROMPTS,
+  ...IMPORTED_STORY_PROMPTS,
 ];
 
 export const PROMPT_COUNT = PROMPTS.length;

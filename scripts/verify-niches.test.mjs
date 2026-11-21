@@ -3,8 +3,8 @@ import test from 'node:test';
 import {NICHE_LINKS, NICHE_PAGES} from '../data/niches.ts';
 import {getRelatedNiches} from '../lib/relatedNiches.ts';
 
-test('all 24 playbooks recommend three distinct, deterministic alternatives', () => {
-  assert.equal(NICHE_LINKS.length, 24);
+test('all playbooks recommend three distinct, deterministic alternatives', () => {
+  assert.deepEqual(NICHE_LINKS.map(niche => niche.slug), NICHE_PAGES.map(niche => niche.slug));
   for (const {slug, category} of NICHE_LINKS) {
     assert.ok(category, slug + ' must resolve to a directory category');
     const result = getRelatedNiches(NICHE_LINKS, slug);
@@ -28,7 +28,7 @@ test('related playbooks handle a limited candidate pool and duplicate slugs', ()
 
 test('all niche card summaries are distinct and complete', () => {
   const summaries = NICHE_PAGES.map(niche => niche.shortSummary);
-  assert.equal(new Set(summaries).size, 24);
+  assert.equal(new Set(summaries).size, NICHE_PAGES.length);
   for (const {slug, shortSummary} of NICHE_PAGES) {
     assert.ok(shortSummary.length >= 110 && shortSummary.length <= 145, slug);
     assert.match(shortSummary, /^[A-Z].+\.$/, slug);

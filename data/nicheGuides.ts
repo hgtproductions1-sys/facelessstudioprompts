@@ -1,3 +1,5 @@
+import {IMPORTED_NICHE_GUIDES} from './importedNiches.ts';
+
 export type NicheGuide = {
   searchSummary: string;
   audience: string;
@@ -10,6 +12,7 @@ export type NicheGuide = {
 };
 
 export const NICHE_GUIDES: Record<string, NicheGuide> = {
+  ...IMPORTED_NICHE_GUIDES,
   "ai-cat-and-pet-stories": {
     searchSummary: "Plan an AI cat or pet story channel with repeatable characters, emotional short-form ideas, scene prompts, and a practical production workflow.",
     audience: "Viewers who like short emotional, funny, or comforting animal stories with recurring characters.",

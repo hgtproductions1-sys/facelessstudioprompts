@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import baseline from '../seo-baseline.json' with {type: 'json'};
 import {affiliateDisclosureStatus, affiliateTools, hasActiveAffiliateLinks, resolveAffiliate, resolveNicheProductionStack} from '../lib/affiliates.ts';
 import {NICHE_SLUGS} from '../data/niches.ts';
 
@@ -32,9 +33,15 @@ test('only an enabled and configured safe link is sponsored', () => {
   ]) assert.equal(resolveAffiliate('runway', {...on, NEXT_PUBLIC_AFFILIATE_RUNWAY: url}).isAffiliateActive, false);
 });
 
-test('the 24 niche stacks use relevant distinct links and disclose only configured tools', () => {
+test('existing niche stacks are preserved and configured stacks use distinct, disclosed links', () => {
+  const existingSlugs = baseline.routes.filter(({path}) => path.startsWith('/niches/')).map(({path}) => path.slice('/niches/'.length));
+  for (const slug of existingSlugs) {
+    assert(NICHE_SLUGS.includes(slug), slug);
+    assert(resolveNicheProductionStack(slug, off).length >= 2, slug);
+  }
   for (const slug of NICHE_SLUGS) {
     const stack = resolveNicheProductionStack(slug, off);
+    if (!stack.length) continue;
     assert(stack.length >= 2 && stack.length <= 4, slug);
     assert.equal(new Set(stack.map(entry => entry.tool)).size, stack.length, slug);
     assert(stack.every(entry => !entry.link.isAffiliateActive), slug);

@@ -9,6 +9,7 @@ import {getArticleGuide} from '@/data/articleGuides';
 import {getNicheGuide} from '@/data/nicheGuides';
 import {NICHE_IMAGES} from '@/data/nicheImages';
 import {getNichePage, NICHE_LINKS, NICHE_PAGES} from '@/data/niches';
+import {getNichePrompts} from '@/data/nichePromptLinks';
 import {START_PATHS} from '@/data/startPaths';
 import {getPrimaryVideoForGuide} from '@/data/videos';
 import {articleAuthor, founderPerson} from '@/lib/authors';
@@ -41,6 +42,7 @@ export default async function Page({params}: Props) {
   const sampleOutputs = await getSampleOutputs(path, niche.sampleOutputs);
   const content = getNicheGuide(slug);
   const related = getRelatedNiches(NICHE_LINKS, slug);
+  const templates = getNichePrompts(slug);
   const guideSlug = START_PATHS.find(item => item.niche === slug)?.guide || (
     /asmr|ambient|music/.test(slug) ? 'faceless-content-workflow'
       : /horror|mystery|crime|wisdom|bible/.test(slug) ? 'avoid-generic-ai-videos' : 'write-ai-video-prompts'
@@ -65,7 +67,7 @@ export default async function Page({params}: Props) {
         <article className="prose">
           <section id="overview">
             <h2>Start with the viewer promise.</h2>
-            <p>{niche.intro}</p>
+            {niche.intro !== content?.promise && <p>{niche.intro}</p>}
             {content && <div className="callout">
               <h3>{content.promise}</h3>
               <p><strong>Who it may suit</strong> {content.audience}</p>
@@ -113,6 +115,12 @@ export default async function Page({params}: Props) {
               </div>
             ))}
           </section>
+          {templates.length > 0 && <section id="templates">
+            <h2>Prompt library templates</h2>
+            <div className="related-grid">{templates.map(prompt => (
+              <a className="related-card" key={prompt.id} href={'/prompts/' + prompt.id}>{prompt.title} ↗</a>
+            ))}</div>
+          </section>}
           <FieldTestNote note={niche.fieldTest}/>
           {content && <section id="quality">
             <h2>Before you publish</h2>
@@ -148,6 +156,7 @@ export default async function Page({params}: Props) {
           <a href="#overview">Audience & promise</a>
           {content && <><a href="#angles">Channel angles</a><a href="#ideas">Episode ideas</a><a href="#structure">Episode structure</a></>}
           <a href="#prompts">Prompt examples</a>
+          {templates.length > 0 && <a href="#templates">Prompt library templates</a>}
           {content && <a href="#quality">Quality checks</a>}
           <a href="#questions">Common questions</a>
           <a href="#next-steps">Guides, prompts & lessons</a>

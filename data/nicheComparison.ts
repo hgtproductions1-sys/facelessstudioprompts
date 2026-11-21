@@ -1,3 +1,5 @@
+import {IMPORTED_NICHE_COMPARISON} from './importedNiches.ts';
+
 export type NicheComparisonMeta = {
   primaryFormat: 'Shorts (9:16)' | 'Long-Form (16:9)' | 'Both';
   typicalVideoLength: string;
@@ -18,6 +20,7 @@ const narration = 'Required (AI or Human)';
 const elevated = 'Elevated (Synthetic / Sensitive)';
 
 export const NICHE_COMPARISON: Record<string, NicheComparisonMeta> = {
+  ...IMPORTED_NICHE_COMPARISON,
   'ai-cat-and-pet-stories': {primaryFormat: shorts, typicalVideoLength: '30–60s', estimatedEffort: medium,
     voiceoverType: 'Optional', characterConsistencyNeed: 'High', policyDisclosureSensitivity: 'Standard', beginnerFriendlyScore: 2},
   'ai-animal-cooking': {primaryFormat: shorts, typicalVideoLength: '8–20s', estimatedEffort: high,

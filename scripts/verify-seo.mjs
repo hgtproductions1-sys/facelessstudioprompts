@@ -1,17 +1,23 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { getPromptNiche } from '../data/nichePromptLinks.ts';
+import { PROMPTS_PER_PAGE, promptPageHref } from '../lib/prompt-pagination.ts';
 
 const baseline = JSON.parse(await readFile(new URL('../seo-baseline.json', import.meta.url), 'utf8'));
 const origin = 'https://www.thefacelessprompts.com';
 const base = new URL(process.env.SITE_BASE_URL || 'http://127.0.0.1:3090');
 const baselineOnly = process.argv.includes('--baseline-only');
-const newPages = [
+const previousReleasePages = [
   '/free-tools/faceless-video-script-generator',
   '/free-tools/youtube-shorts-hook-generator',
   '/free-tools/voiceover-length-calculator',
   '/prompts/veo-3', '/prompts/kling', '/prompts/midjourney',
 ];
 const collections = ['youtube', 'image-generation', 'video-generation', 'seo', 'character-consistency'];
+const promptIndexes = new Set([
+  ...collections.map(slug=>'/prompts/'+slug),
+  ...previousReleasePages.filter(path=>path.startsWith('/prompts/')),
+]);
 const findings = [];
 const check = (condition, message) => { if (!condition) findings.push(message); };
 const htmlEntities = {'amp':'&','quot':'"','apos':"'",'lt':'<','gt':'>','nbsp':' '};
@@ -122,48 +128,77 @@ check(new Set(urls).size===urls.length,'Duplicate sitemap URL');
 for (const url of urls) check(url.startsWith(origin+'/') && !/[?#]/.test(url),'Invalid sitemap URL '+url);
 const sitemapPaths=new Set(urls.map(url=>new URL(url).pathname));
 const baselinePaths=baseline.routes.map(route=>route.path);
-for (const path of [...baselinePaths,...(baselineOnly?[]:newPages)]) check(sitemapPaths.has(path),'Missing sitemap route '+path);
+const baselineSet=new Set(baselinePaths);
+for (const path of [...baselinePaths,...(baselineOnly?[]:previousReleasePages)]) check(sitemapPaths.has(path),'Missing sitemap route '+path);
+const nichePaths=[...sitemapPaths].filter(path=>path.startsWith('/niches/'));
+const promptPaths=new Set([...sitemapPaths].filter(path=>path.startsWith('/prompts/')&&!promptIndexes.has(path)));
+const newPromptPaths=[...promptPaths].filter(path=>!baselineSet.has(path));
 const paths=[...new Set([...baselinePaths,...sitemapPaths])];
 const rows=await mapLimit(paths,path=>inspect(path));
 const pages=new Map(rows.map(row=>[row.path,row]));
 for (const old of baseline.routes) {
   const row=pages.get(old.path);
-  check(row?.title===old.title?.[0],old.path+' existing search title changed');
+  const previousTitle=old.title?.[0];
+  const expectedTitle=old.path==='/niches' ? previousTitle?.replace(/^\d+/,String(nichePaths.length)) : previousTitle;
+  check(row?.title===expectedTitle,old.path+' search title should be '+expectedTitle);
   check(row?.h1===old.h1?.[0],old.path+' existing H1 changed');
 }
 
-const pagination=[pages.get('/prompts'),...await mapLimit([2,3,4],page=>inspect('/prompts?page='+page))];
-const promptIds=new Set(baselinePaths.filter(path=>path.startsWith('/prompts/')&&!collections.includes(path.split('/').at(-1))));
+const totalPromptPages=Math.ceil(promptPaths.size/PROMPTS_PER_PAGE);
+const pagination=[pages.get('/prompts'),...await mapLimit(
+  Array.from({length:Math.max(0,totalPromptPages-1)},(_,index)=>index+2),
+  page=>inspect(promptPageHref(page)),
+)];
 const discoveredPrompts=new Set();
 for (const [index,page] of pagination.entries()) {
   if (!page) { check(false,'Missing prompt library'); continue; }
-  check(page.body.includes('aria-label="Prompt library pagination"'),page.path+' lacks crawlable pagination');
-  check((page.body.match(/class="prompt-card"/g)||[]).length===(index===3?13:18),page.path+' renders an unexpected number of cards');
+  const nav=page.body.match(/<nav\b[^>]*aria-label="Prompt library pagination"[^>]*>[\s\S]*?<\/nav>/i)?.[0] ?? '';
+  check(nav,page.path+' lacks crawlable pagination');
+  const pageLinks=tags(nav,'a');
+  for(let number=1;number<=totalPromptPages;number++){
+    check(pageLinks.some(link=>link.href===promptPageHref(number) && link['aria-label']==='Page '+number),
+      page.path+' pagination is missing page '+number);
+  }
+  const cards=[...page.body.matchAll(/<article class="prompt-card">[\s\S]*?<\/article>/g)];
+  check(cards.length===Math.min(PROMPTS_PER_PAGE,promptPaths.size-index*PROMPTS_PER_PAGE),page.path+' renders an unexpected number of cards');
+  for(const [card] of cards){
+    const path=tags(card,'a').map(link=>sameOriginPath(link.href,page.path)).find(path=>promptPaths.has(path));
+    check(path,page.path+' has a card without a canonical prompt link');
+    if(!path)continue;
+    check(!discoveredPrompts.has(path),path+' appears more than once across prompt archive cards');
+    discoveredPrompts.add(path);
+  }
   if (index) {
     check(page.title?.includes('Page '+(index+1)),page.path+' title lacks page number');
-    check(page.description?.includes('page '+(index+1)+' of 4'),page.path+' description lacks archive context');
-  }
-  for (const link of page.links) {
-    const path=sameOriginPath(link.href,page.path);
-    if (promptIds.has(path)) discoveredPrompts.add(path);
+    check(page.description?.includes('page '+(index+1)+' of '+totalPromptPages),page.path+' description lacks archive context');
   }
 }
-check(promptIds.size===67 && discoveredPrompts.size===67,'Expected 67 crawlable prompt details; found '+discoveredPrompts.size);
+check(discoveredPrompts.size===promptPaths.size,'Expected '+promptPaths.size+' crawlable prompt details; found '+discoveredPrompts.size);
 const sectionIds=new Set();
 for (const collection of collections) {
   const page=pages.get('/prompts/'+collection);
   check(Boolean(page),'/prompts/'+collection+' is missing');
   for (const link of page?.links ?? []) {
     const path=sameOriginPath(link.href,page.path);
-    if(promptIds.has(path)) sectionIds.add(path);
+    if(promptPaths.has(path)) sectionIds.add(path);
   }
 }
-check(sectionIds.size===67,'Prompt categories expose '+sectionIds.size+'/67 details');
+check(sectionIds.size===promptPaths.size,'Prompt categories expose '+sectionIds.size+'/'+promptPaths.size+' details');
 
-for (const row of rows.filter(row=>row.path.startsWith('/niches/'))) {
+const indexedNiches=new Set((pages.get('/niches')?.links ?? []).map(link=>sameOriginPath(link.href,'/niches')));
+for (const path of nichePaths) {
+  check(indexedNiches.has(path),path+' is missing from the niche directory');
+  const row=pages.get(path);
   const related=[...row.body.matchAll(/<section\b[^>]*>[\s\S]*?<\/section>/gi)].find(match=>match[0].includes('Explore another direction'))?.[0] ?? '';
   const targets=tags(related,'a').map(link=>sameOriginPath(link.href,row.path)).filter(path=>path?.startsWith('/niches/'));
   check(targets.length===3 && new Set(targets).size===3 && !targets.includes(row.path),row.path+' has invalid related niches');
+}
+const linksTo=(from,to)=>(pages.get(from)?.links ?? []).some(link=>sameOriginPath(link.href,from)===to);
+for(const path of newPromptPaths){
+  const niche=getPromptNiche(path.slice('/prompts/'.length));
+  if(!niche)continue;
+  const playbook='/niches/'+niche.slug;
+  check(linksTo(path,playbook) && linksTo(playbook,path),path+' and '+playbook+' must link to each other');
 }
 const home=pages.get('/')?.body ?? '';
 check(!/your next (?:vi|vid|n|fo|for)(?=\s*<)/i.test(home),'Homepage has visibly truncated boilerplate');
@@ -175,16 +210,18 @@ for (const path of ['/prompts','/studio']) {
 
 await inspect('/studio?niche=ai-music-videos&topic=test',canonicalPath('/studio'));
 await inspect('/prompts?q=stickman',canonicalPath('/prompts'),{indexable:false});
-for (const variant of ['1','0','abc','999']) {
+const outOfRangePromptPage=String(totalPromptPages+1);
+for (const variant of ['1','0','abc',outOfRangePromptPage]) {
   const result=await fetchPage('/prompts?page='+variant);
-  if (variant==='999') check(result.status===404,'Out-of-range prompt page returned '+result.status);
+  if (variant===outOfRangePromptPage) check(result.status===404,'Out-of-range prompt page returned '+result.status);
   else {
     const target=new URL(result.headers.get('location')||'/',base);
     check(result.status===301 && target.pathname==='/prompts' && !target.search,'Invalid placeholder page "'+variant+'" did not redirect to /prompts with 301');
   }
 }
+const newContentPaths=[...nichePaths.filter(path=>!baselineSet.has(path)),...newPromptPaths];
 const markdownPaths=['/markdown','/markdown/prompts','/markdown/studio','/markdown/niches/ai-music-videos',
-  '/markdown/articles/faceless-video-operator-prompt',...(baselineOnly?[]:newPages.map(path=>'/markdown'+path))];
+  '/markdown/articles/faceless-video-operator-prompt',...(baselineOnly?[]:[...previousReleasePages,...newContentPaths].map(path=>'/markdown'+path))];
 await mapLimit(markdownPaths,async path=>{
   const result=await fetchPage(path);
   check(result.status===200 && result.headers.get('content-type')?.startsWith('text/markdown'),path+' did not return readable Markdown');
@@ -225,6 +262,6 @@ if (findings.length) {
   process.exitCode=1;
 } else {
   console.log(JSON.stringify({httpPages:rows.length,baselinePages:baselinePaths.length,sitemap:urls.length,
-    discoverablePrompts:discoveredPrompts.size,categoryPrompts:sectionIds.size,relatedNichePages:24,
+    discoverablePrompts:discoveredPrompts.size,categoryPrompts:sectionIds.size,promptArchivePages:totalPromptPages,relatedNichePages:nichePaths.length,
     markdownSamples:markdownPaths.length,otherInternalTargets:extraLinks.size,violations:0},null,2));
 }

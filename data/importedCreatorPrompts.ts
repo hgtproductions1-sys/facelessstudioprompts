@@ -1,0 +1,142 @@
+import type {Prompt} from './promptLibrary';
+
+export const IMPORTED_CREATOR_PROMPTS: Prompt[] = [
+  {
+    id: 'rust-restoration-close-up', title: 'Rust Restoration Close-Up', category: 'Video Gen',
+    niche: 'AI ASMR', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Use my reference image of [OBJECT] as frame one. Make an eight-second close-up from one locked tripod position. The left edge starts with [SURFACE DAMAGE]. A gloved hand wipes one narrow strip with [TOOL]. Show where the residue goes as the cloth moves across the surface. Let the restored metal catch a single moving reflection. Hold the final frame for two seconds beside a small untouched patch. Keep the same dents, screws, and shape. Record cloth drag, a light metal tap, and room tone. Leave room for an editor-added label.`,
+    tips: 'Use an old metal latch as a first test. Label a generated restoration as a simulation and keep the rough and finished frames registered.',
+  },
+  {
+    id: 'rolling-object-staircase-asmr', title: 'Rolling Object Staircase ASMR', category: 'Video Gen',
+    niche: 'AI ASMR', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Create a vertical eight-second simulated ASMR clip. From a fixed first-person view at the top of [STAIRCASE], release one [ROLLING OBJECT] down six steps. Keep the object visible and use consistent scale, gravity, shadows, and direction. Let the spacing of the impacts change as it gains speed. Show the object settling on [LANDING SURFACE] and let the last impact decay. Audio is a close, dry recording of impacts and room tone. Keep the stairs empty of people and use an unbreakable object.`,
+    tips: 'Try a wooden spool on foam test stairs. The object should never jump between steps or change material mid-shot.',
+  },
+  {
+    id: 'slow-carwash-mud-reveal', title: 'Car Wash Mud Reveal', category: 'Video Gen',
+    niche: 'AI Car Wash & Restoration', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Build a vertical four-shot before-and-after of [VEHICLE] in the same wash bay. Begin on a mud-covered wheel arch at bumper height. Cut close to foam pooling along the seam, then show a rinse path revealing [PAINT COLOR] from top to bottom. End on the starting frame with the clean wheel and the same rim, panel lines, rail, and overhead lights. Give the water a visible route to the floor and match the starting and ending exposure. Layer foam hiss, water, and the detail cloth separately.`,
+    tips: 'Give the model both endpoint frames if it supports them. Compare rim spokes and door seams before you cut the reveal.',
+  },
+  {
+    id: 'miniature-recipe-macro-asmr', title: 'Miniature Recipe Macro ASMR', category: 'Video Gen',
+    niche: 'Miniature ASMR Cooking', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Stage [DISH] in [MINI KITCHEN]. Make four macro clips of one continuous preparation: measure one ingredient with a tiny spoon, tip it into a small pan, show its texture changing, and plate one portion beside the same spoon. Repeat the counter grain, pan handle color, hand scale, and light direction in every prompt. Keep the camera low enough to catch the steam without obscuring the pan. Match the sound to each contact: ceramic tap, sizzle, slide, plate.`,
+    tips: 'Mix sound after the cut so each utensil hits on screen. Keep one familiar object in frame as a scale reference.',
+  },
+  {
+    id: 'wood-carving-locked-camera-timelapse', title: 'Wood Sculpture Timelapse', category: 'Video Gen',
+    niche: 'DIY Cardboard & Miniature Builds', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Use the provided first frame of a fallen wood blank in [WORK AREA]. In a locked wide shot, compress the making of [SCULPTURE] into four visible stages: pencil outline, rough silhouette, stepped facets, and finished surface. Keep the sculpture inside the starting wood volume and pile shavings on the same side as the carving. Use discrete time-lapse cuts between stages. End with the maker stepping back so the whole object is visible. Use soft daylight and a short sound cue for each cut.`,
+    tips: 'Plan four reference frames before animating. Match the wood grain and workbench marks across them.',
+  },
+  {
+    id: 'watermelon-rind-relief-macro', title: 'Watermelon Rind Relief in Macro', category: 'Video Gen',
+    niche: 'Vegetable & Fruit Carving', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Make a macro tabletop sequence showing a watermelon relief of [DESIGN]. Keep the stem scar at the top of frame and the fruit braced on the same board. Open on a marked outline. Show three successive textures in the same area: green rind, pale pith, then a small red accent from the flesh. Capture moisture and a few displaced rind curls. Hold on the finished relief in the original lighting so viewers can compare the change. Use a close crop on the fruit for tool shots.`,
+    tips: 'A simple moon or fish silhouette keeps the depth changes easy to judge. Design the final relief before generating the in-between shots.',
+  },
+  {
+    id: 'retro-toy-unboxing-immersive-pov', title: 'Retro Toy Unboxing in Immersive POV', category: 'Video Gen',
+    niche: 'Nostalgia Toy Unboxing', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Film a 20-second overhead unboxing of an original retro toy called [TOY NAME]. Keep the box printed with my own [BOX ART DESCRIPTION]. Show two hands opening the tab, sliding out the tray, lifting the toy, and setting it on a display shelf beside its packaging. Hold the same product colors and parts through each handling step. Use a restrained camcorder white balance, soft desk lamp, and real paper rustle. Reserve the final two seconds for a close look at [DISTINCTIVE DETAIL].`,
+    tips: 'Use your own package art and create an insert frame for the box tab. The tray should stay inside the box until you pull it out.',
+  },
+  {
+    id: 'stickman-reference-conversion', title: 'Convert an Original Character into a Stick Figure', category: 'Character',
+    niche: 'Stickman Explainer & Skits', compatibleModels: ['midjourney', 'leonardo'],
+    prompt: `Redraw my original reference character as an explaining stickman for [LESSON]. Keep [RECOGNIZABLE TRAIT], the original gesture, and the expression. Simplify to a round head, dot eyes, two expressive eyebrow marks, and single-line limbs of even weight. Return one 16:9 reference sheet with neutral, pointing, and puzzled poses at the same scale. Use a warm off-white background, plain accents, and enough empty space to add captions later.`,
+    tips: 'Keep one silhouette clue and one prop. Check that the pointing and puzzled poses read clearly at thumbnail size.',
+  },
+  {
+    id: 'miniature-rescue-fiction-asmr', title: 'Miniature Rescue ASMR Story', category: 'Video Gen',
+    niche: 'DIY Cardboard & Miniature Builds', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Story-board a fictional tabletop rescue in a hand-built [MINIATURE SET]. A toy [CHARACTER] has slipped behind [OBSTACLE]. Show the colorful miniature team spot it, place a small bridge, and guide the toy across. Make each action a separate locked macro shot. Use the same bridge color, figures, and markings on the set. Create a quiet sound arc with a tiny wheel rattle, one tool click, and the bridge settling onto wood. Place a clear miniature-fiction label in the edit.`,
+    tips: 'Leave scale cues in frame so the audience can see they are watching a model set. Use a low-stakes obstacle with three clear positions.',
+  },
+  {
+    id: 'underwater-wildlife-simulation', title: 'Underwater Wildlife Reconstruction', category: 'Video Gen',
+    niche: 'Underwater Wildlife Explainers', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Plan a vertical wildlife reconstruction of [SPECIES] in [VERIFIED HABITAT]. Use my [REFERENCE NOTES] to specify body shape, fin count, locomotion, and light at the correct depth. Open on one identifying feature, track beside the animal for a single slow body-length of movement, then widen to reveal the substrate and nearby habitat. Keep the same individual and realistic water visibility through all three shots. Leave a corner clear for an editor-added AI reconstruction label.`,
+    tips: 'Use a species reference and check the anatomy at full size. Keep the habitat and behavior notes with the edit.',
+  },
+  {
+    id: 'fictional-pet-grooming-before-after', title: 'Fictional Pet Grooming Before and After', category: 'Video Gen',
+    niche: 'AI Cat & Pet Stories', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Create a short animated grooming story with [PET CHARACTER] in [GROOMING ROOM]. Establish two identifying coat markings in the first shot. Show a still moment, a soft brush passing over one patch of fur, then the character settling beside the same brush with a neater coat. Keep the coat pattern, proportions, and eye color identical. Choose a comfortable pose, simple background, and gentle brush sounds. Use a matched medium shot for the before and after.`,
+    tips: 'Stage this as an animated character moment. The same coat markings should be visible in the first and last frames.',
+  },
+  {
+    id: 'paper-collage-source-led-commentary', title: 'Paper Collage for Source-Led Commentary', category: 'Video Gen',
+    niche: 'Vox-Style Paper-Cut Commentary', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Build a four-beat overhead editorial collage about [TOPIC] from [SOURCE NOTES]. Start with a torn-paper question card, reveal one licensed document or hand-drawn map, slide in a chart built from the notes, and move two paper panels apart to show the conclusion. Use matte cream stock, navy ink, and one rust-red accent. Let paper edges cast shallow shadows. Leave all labels blank so the editor can typeset them. Match one visual change to each sentence of the narration.`,
+    tips: 'Put the source beside each factual claim in your edit notes. Add the map labels and captions yourself for legibility.',
+  },
+  {
+    id: 'ink-sketch-commentary-scenes', title: 'Hand-Drawn Sketch Commentary Scenes', category: 'Video Gen',
+    niche: 'Vox-Style Paper-Cut Commentary', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Turn [NARRATION BEATS] about [TOPIC] into five vertical ink-sketch frames. Assign one new idea to each composition. Use olive, umber, and warm gray wash over fine ink strokes. Repeat [CHARACTER ANCHOR] where the subject returns. Animate a blink, a page turn, or a small hand gesture per shot. Assign each frame either a still view or a slow pan and leave room for editorial captions. Return a table with narration, source note, frame, and motion cue.`,
+    tips: 'Try a wide establishing frame followed by a single detail. Let the narration carry dates and names while the illustration handles location or movement.',
+  },
+  {
+    id: 'licensed-clips-ranking-script', title: 'Faceless Ranking Script with Original Commentary', category: 'SEO',
+    niche: 'Ranking & Top 5 Countdowns', compatibleModels: [],
+    prompt: `Write a 60-second ranking short about [TOPIC] using only [OWNED OR LICENSED CLIPS]. Name the ranking criterion in the hook. For each of five picks, give a timestamp, one observable detail, and my own reason for its position. Add an original insert such as a filmed hand demonstration or a small comparison graphic wherever it clarifies the point. End by explaining the trade-off behind the top pick. Include a separate credit list and flag every clip with unclear reuse rights.`,
+    tips: 'Meaningful commentary comes from the ranking criterion and evidence. Keep existing credits and confirm each license before editing.',
+  },
+  {
+    id: 'licensed-clipping-edit-plan', title: 'Clipping Plan for Owned or Licensed Footage', category: 'Niche',
+    niche: 'Original Clipping & Dubbing', compatibleModels: [],
+    prompt: `Use [TIMESTAMPED TRANSCRIPT] from [OWNED OR LICENSED SOURCE] to plan three short clips. Select excerpts that include the setup and the payoff in context. List start, end, key quote, supporting evidence, and a headline that describes the moment accurately. Add one useful original element per clip, such as a labeled replay, a comparison, or a brief explanation. Mark any music, guest contribution, or gameplay that needs a separate rights check.`,
+    tips: 'A workable clip should make sense without the title. Keep the source timestamp and license information with the edit.',
+  },
+  {
+    id: 'tagalog-dubbing-licensed-microdrama', title: 'Tagalog Dub for an Original Microdrama', category: 'Niche',
+    niche: 'Original Clipping & Dubbing', compatibleModels: ['elevenlabs'],
+    prompt: `Localize [AUTHORIZED SCRIPT] into natural spoken Tagalog. Keep the relationships and stakes intact. Create a cue sheet with time in, time out, character, translated line, and delivery. Use everyday dialogue like “Sandali. Bakit nandito pa ’yung susi?” when it fits the character. Give each beat room for the actor's reaction. Preserve the original scene credits and flag jokes or idioms that need a second interpretation. Use a voice actor or a voice cleared for this production.`,
+    tips: 'Record a scratch read with the scene open. Adjust the lines that run into reactions or important sound effects.',
+  },
+  {
+    id: 'original-ai-music-video-beat-sheet', title: 'Original AI Music Video Beat Sheet', category: 'Niche',
+    niche: 'AI Music Videos', compatibleModels: [],
+    prompt: `Plan a 30-second faceless music video for my original or licensed [TRACK]. Use [TIMED BEAT MARKERS] to build a sequence around [VISUAL MOTIF]. Make four frames with distinct silhouettes, then assign one simple movement to each. Return a timed cut list with one color palette and a final frame that can lead back to the opening. Give one option where the cut lands on a beat and one where a held image carries through the beat.`,
+    tips: 'Mark the strongest phrase change before generating clips. Test it against two timings in the edit.',
+  },
+  {
+    id: 'animated-dance-counts-and-poses', title: 'Original Dance Loop with Counted Poses', category: 'Video Gen',
+    niche: 'AI Music Videos', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Turn my original [CHOREOGRAPHY NOTES] into an eight-count loop for [FICTIONAL DANCER]. Use a full-body shot with both feet visible. Specify the weight-bearing foot and facing direction on counts one, three, five, and seven. Start and end on the same neutral balance and keep the dancer's shoes and outfit consistent. Cut to [CLEARED TRACK] in the editor. Keep the floor level and use a plain backdrop with a single key light.`,
+    tips: 'Create the four anchor poses first. Review foot contact and check that the final pose rolls cleanly into the first.',
+  },
+  {
+    id: 'lofi-watercolor-street-loop', title: 'Lo-Fi Watercolor Ambience Loop', category: 'Video Gen',
+    niche: 'Lullaby & Sleep Music', compatibleModels: ['veo-3', 'kling', 'runway'],
+    prompt: `Storyboard an eight-second locked watercolor loop of [PLACE] at [TIME OF DAY]. Put two movements in frame: one curtain billowing softly and a small window reflection slowly shifting. Match their opening and closing positions. Use pencil contours and warm paper grain. Pair it in the edit with an original instrumental built from mellow electric piano, brushed drums, and warm bass at [TEMPO]. Listen for a repeating click or volume jump at the join.`,
+    tips: 'Run the export through three consecutive repeats and listen with headphones before extending the runtime.',
+  },
+  {
+    id: 'daily-prayer-instrumental-bed', title: 'Spoken Daily Prayer with a Gentle Jazz Bed', category: 'Niche',
+    niche: 'Daily Prayer Shorts', compatibleModels: ['elevenlabs'],
+    prompt: `Write an original 35-second spoken prayer for [OCCASION] in [LANGUAGE]. Start with one concrete moment from the day, offer a short reflection, and close with one line of gratitude. Mark two pauses for a soft reading. In a separate music brief, request a gentle instrumental bed with brushed drums, felt piano, and space under the midrange of the voice. If I supply [CLEARED VERSE], credit the translation and keep the quotation exact.`,
+    tips: 'Check the speech over the music on a phone speaker. Keep the prayer audible through every phrase.',
+  },
+  {
+    id: 'anime-trivia-source-check-script', title: 'Anime Trivia Commentary with Source Notes', category: 'SEO',
+    niche: 'Ranking & Top 5 Countdowns', compatibleModels: [],
+    prompt: `Write natural 140-word commentary about [ANIME TITLE] using only [VERIFIED NOTES]. Open on one specific question, give up to three facts with brief context, and finish with a question that invites a relevant reply. Mark fan theories as theories and omit unsourced trivia. Return the narration and a separate fact checklist. Suggest original graphics or approved images for the visuals.`,
+    tips: 'Provide an interview, official episode reference, or published credits for each claim. Try a single well-sourced detail if other facts lack support.',
+  },
+  {
+    id: 'sports-diagram-explainer', title: 'Sports Play Explainer with Animated Diagrams', category: 'Niche',
+    niche: '3D Educational Explainers', compatibleModels: [],
+    prompt: `Explain one [SPORT] play for [AUDIENCE] in 35 seconds using [RULE SOURCE]. Draw a clean overhead diagram of the starting positions. Animate the ball and up to three players in sequence. Freeze at the important decision and point to one cue the viewer can watch for. Use fictional teams and distinguish the illustrated example from the official rule you cite. Return spoken lines, diagram positions, and timing for each of the three scenes.`,
+    tips: 'A short baseball double-play diagram works well. Use contrasting jersey shapes as well as colors to distinguish the teams.',
+  },
+  {
+    id: 'animated-career-workday-explainer', title: 'Animated Career Explainer for One Workday', category: 'Niche',
+    niche: '3D Educational Explainers', compatibleModels: [],
+    prompt: `Outline a 45-second animated explainer about [JOB ROLE] using [CAREER SOURCES]. Give a simple 3D character a single plausible work task. Show the input, two choices, and a visible result. Include one example of a skill used and one way the work varies across workplaces. Ask the model to flag any unsupported pay or qualification details for review. Return a short narration, three visual beats, and a sources checklist.`,
+    tips: 'A fictional character can carry a concrete example. Check what responsibilities vary by country before discussing qualifications.',
+  },
+];

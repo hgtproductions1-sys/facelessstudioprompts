@@ -1,16 +1,11 @@
 /**
- * The Faceless Prompts: 24 Authentic Niches Reference & Dataset
- * Restored from repository commit 271d346371f0528234145ff51ff46d5888d0c248
- * 
- * Contains:
- * - 24 Authentic Programmatic SEO Niche Pages (NICHE_PAGES)
- * - 24 Unified Niche Studio Data definitions (NICHES_DATA)
- * - Types and lookup helpers
+ * Niche playbook and Studio data, types, and lookup helpers.
  */
 
 import type { NicheData } from '../types';
 import type {SampleOutputMedia} from '../lib/sampleOutput';
 import type {FieldTestNote} from '../lib/fieldTest';
+import {IMPORTED_NICHE_PAGES, IMPORTED_NICHE_STUDIO} from './importedNiches.ts';
 
 /**
  * Programmatic SEO data for /niches/$slug landing pages.
@@ -1835,9 +1830,9 @@ export const NICHE_PAGES: NichePage[] = [
     "ai-animal-cooking",
     "nostalgia-toy-unboxing"
   ],
-  }
+  },
+  ...IMPORTED_NICHE_PAGES,
 ];
-
 
 export const NICHE_SLUGS = NICHE_PAGES.map((n) => n.slug);
 
@@ -2806,7 +2801,8 @@ export const NICHES_DATA: NicheData[] = [
       "edit": "CapCut / Adobe Premiere Pro"
     },
     "bestFormat": "20–60 sec skits"
-  }
+  },
+  ...IMPORTED_NICHE_STUDIO,
 ];
 
 export const NICHE_LINKS = NICHE_PAGES.map(({slug, name}) => ({

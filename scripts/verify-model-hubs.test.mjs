@@ -3,8 +3,7 @@ import test from 'node:test';
 import {getModelHub, getModelHubPrompts, modelHubs} from '../data/modelPromptHubs.ts';
 import {PROMPTS} from '../data/promptLibrary.ts';
 
-test('67 canonical prompts declare reviewed, unique model tags', () => {
-  assert.equal(PROMPTS.length, 67);
+test('canonical prompts declare reviewed, unique model tags', () => {
   const models = new Set(['veo-3', 'kling', 'midjourney', 'runway', 'leonardo', 'elevenlabs']);
   for (const prompt of PROMPTS) {
     assert(Array.isArray(prompt.compatibleModels), prompt.id);

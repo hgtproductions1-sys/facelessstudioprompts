@@ -4,7 +4,11 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {buildTemplate,compileMasterBrief,DEFAULT_OPTIONS,FORMATS,timeline,formatShot,exportBlueprint} from '../lib/blueprint';
 import {NICHE_PAGES,NICHES_DATA} from '../data/niches';
 import {getNicheGuide} from '../data/nicheGuides';
+import {getNichePrompts,getPromptNiche} from '../data/nichePromptLinks';
 import {PROMPTS} from '../data/promptLibrary';
+import {IMPORTED_CREATOR_PROMPTS} from '../data/importedCreatorPrompts';
+import {IMPORTED_FORMAT_PROMPTS} from '../data/importedFormatPrompts';
+import {IMPORTED_STORY_PROMPTS} from '../data/importedStoryPrompts';
 import {PROMPT_COLLECTIONS} from '../data/promptPages';
 import {ARTICLE_GUIDES} from '../data/articleGuides';
 import {VIDEOS,GUIDE_LESSONS,getPrimaryVideoForGuide,filterVideos} from '../data/videos';
@@ -23,7 +27,7 @@ import Home from '../app/page';
 import Updates from '../app/updates/page';
 import Prompts,{generateMetadata as libraryMetadata} from '../app/prompts/page';
 import PromptPage,{generateMetadata as promptMetadata} from '../app/prompts/[slug]/page';
-import Niches from '../app/niches/page';
+import Niches,{metadata as nichesMetadata} from '../app/niches/page';
 import NichePage,{generateMetadata as nicheMetadata} from '../app/niches/[slug]/page';
 import Guides from '../app/guides/page';
 import GuidePage,{generateMetadata as guideMetadata} from '../app/guides/[slug]/page';
@@ -44,7 +48,7 @@ import SiteFooter from '../components/SiteFooter';
 import {publicPages,pageMarkdown,markdownHeaders,llmsIndex} from '../lib/publicContent';
 import {GET as markdownPage} from '../app/markdown/[[...path]]/route';
 import {metadataFor} from '../lib/site';
-import {promptPageHref,promptPageNumber} from '../lib/prompt-pagination';
+import {PROMPTS_PER_PAGE,promptPageHref,promptPageNumber} from '../lib/prompt-pagination';
 
 const paths=allPaths();assert.equal(new Set(paths).size,paths.length);
 // Discovery must preserve every existing public URL and never surface private endpoints.
@@ -66,7 +70,9 @@ assert.equal(promptPageNumber(undefined),1);
 for(const invalid of ['1','0','abc','02','-2','2e1',['2','3']])assert.equal(promptPageNumber(invalid),null);
 assert.equal(promptPageNumber('2'),2);
 assert.equal(promptPageHref(1),'/prompts');
-assert.equal(NICHE_PAGES.length,24);assert.equal(NICHES_DATA.length,24);
+assert.equal(PROMPTS_PER_PAGE,18);
+assert.deepEqual(NICHE_PAGES.map(niche=>niche.slug).sort(),NICHES_DATA.map(niche=>niche.id).sort());
+assert.deepEqual(nichesMetadata.title,{absolute:NICHE_PAGES.length+' Faceless YouTube Niches & Video Prompt Playbooks'});
 assert.equal(new Set(PROMPTS.map(p=>p.id)).size,PROMPTS.length);
 assert.equal(new Set(VIDEOS.map(v=>v.id)).size,VIDEOS.length);
 assert.equal(new Set(VIDEOS.map(v=>v.slug)).size,VIDEOS.length);
@@ -83,7 +89,7 @@ assert.equal(resolveSiteUrl('https://thefacelessprompts.com/'),'https://thefacel
 for(const origin of ['http://example.com','https://example.com/path','https://user:pass@example.com','https://example.com?q=x','https://example.com/#x'])assert.throws(()=>resolveSiteUrl(origin));
 assert.equal(modifiedFor('/prompts/char-identity-lock'),undefined);
 assert.equal(modifiedFor('/start-here'),'2026-10-08');
-assert.deepEqual(filterPrompts(PROMPTS,{query:'  STICKMAN   animation  '}).map(p=>p.id),['vid-stickman-explainer']);
+assert(filterPrompts(PROMPTS,{query:'  STICKMAN   animation  '}).some(p=>p.id==='vid-stickman-explainer'));
 assert(filterPrompts(PROMPTS,{category:'Video Gen',tool:'Runway',level:'Beginner',format:'Shorts'}).length>0);
 assert.equal(filterPrompts(PROMPTS,{category:'SEO',tool:'Runway'}).length,0);
 assert.deepEqual(filterPrompts(PROMPTS,{onlySaved:true,saved:['char-identity-lock']}).map(p=>p.id),['char-identity-lock']);
@@ -187,20 +193,29 @@ async function page(path:string,el:React.ReactNode){const html=renderToStaticMar
 await page('/',<Home/>);await page('/updates',<Updates/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',await Guides());await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
 assert(!rendered.get('/videos')!.includes('<iframe'));assert.equal((rendered.get('/videos')!.match(/class="video-poster"/g)||[]).length,VIDEOS.length);
 for(const p of PROMPTS)assert(rendered.get('/prompts')!.includes('href="/prompts/'+p.id+'"'),p.id+' must be discoverable before Show more or client filtering');
-for(const number of [1,2,3,4]){
+const totalPromptPages=Math.ceil(PROMPTS.length/PROMPTS_PER_PAGE);
+const paginatedPromptIds:string[]=[];
+for(let number=1;number<=totalPromptPages;number++){
  const searchParams=Promise.resolve(number===1?{}:{page:String(number)});
  const markup=renderToStaticMarkup(await Prompts({searchParams}));
- assert.equal((markup.match(/class="prompt-card"/g)||[]).length,number===4?13:18);
+ const cards=[...markup.matchAll(/<article class="prompt-card">[\s\S]*?<a href="\/prompts\/([^"/]+)"[\s\S]*?<\/article>/g)];
+ assert.equal(cards.length,Math.min(PROMPTS_PER_PAGE,PROMPTS.length-(number-1)*PROMPTS_PER_PAGE));
+ paginatedPromptIds.push(...cards.map(([,id])=>id));
  assert(markup.includes('aria-label="Prompt library pagination"'));
  const meta=await libraryMetadata({searchParams});
  assert.equal(meta.alternates?.canonical,SITE_URL+promptPageHref(number));
  assert.equal(meta.alternates?.types?.['text/markdown'],SITE_URL+'/markdown/prompts');
- if(number>1)assert(JSON.stringify(meta.title).includes('Page '+number));
+ if(number>1){
+  assert(JSON.stringify(meta.title).includes('Page '+number));
+  assert(meta.description?.includes('page '+number+' of '+totalPromptPages));
+ }
 }
+assert.equal(paginatedPromptIds.length,PROMPTS.length);
+assert.deepEqual(new Set(paginatedPromptIds),new Set(PROMPTS.map(prompt=>prompt.id)));
 const filteredLibrary=await libraryMetadata({searchParams:Promise.resolve({q:'test'})});
 assert.equal(filteredLibrary.alternates?.canonical,SITE_URL+'/prompts');
 assert.deepEqual(filteredLibrary.robots,{index:false,follow:true});
-await assert.rejects(()=>Prompts({searchParams:Promise.resolve({page:'999'})}));
+await assert.rejects(()=>Prompts({searchParams:Promise.resolve({page:String(totalPromptPages+1)})}));
 for(const n of NICHE_PAGES){await page('/niches/'+n.slug,await NichePage({params:Promise.resolve({slug:n.slug})}));const m=await nicheMetadata({params:Promise.resolve({slug:n.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/niches/'+n.slug);}
 for(const tool of FREE_TOOL_PAGES){
  const params=Promise.resolve({slug:tool.slug});
@@ -215,6 +230,17 @@ for(const hub of modelHubs){
 const promptDescriptions:string[]=[];
 for(const p of [...PROMPTS.map(x=>x.id),...PROMPT_COLLECTIONS.map(x=>x.slug)]){await page('/prompts/'+p,await PromptPage({params:Promise.resolve({slug:p})}));const m=await promptMetadata({params:Promise.resolve({slug:p})});assert.equal(m.alternates?.canonical,SITE_URL+'/prompts/'+p);assert(m.description);promptDescriptions.push(m.description!);}
 assert.equal(new Set(promptDescriptions).size,promptDescriptions.length);
+for(const prompt of [...IMPORTED_CREATOR_PROMPTS,...IMPORTED_FORMAT_PROMPTS,...IMPORTED_STORY_PROMPTS]){
+ const niche=getPromptNiche(prompt.id);
+ assert(niche,prompt.id+' must link to a niche playbook');
+ assert(getNichePrompts(niche.slug).some(entry=>entry.id===prompt.id));
+ const promptPath='/prompts/'+prompt.id,nichePath='/niches/'+niche.slug;
+ assert(rendered.get('/niches')?.includes('href="'+nichePath+'"'),nichePath+' missing from niche directory');
+ assert(rendered.get(nichePath)?.includes('href="'+promptPath+'"'),nichePath+' missing '+promptPath);
+ assert(rendered.get(promptPath)?.includes('href="'+nichePath+'"'),promptPath+' missing '+nichePath);
+ assert(pageMarkdown(nichePath,[])?.includes(']('+SITE_URL+promptPath+')'),nichePath+' Markdown missing '+promptPath);
+ assert(pageMarkdown(promptPath,[])?.includes(']('+SITE_URL+nichePath+')'),promptPath+' Markdown missing '+nichePath);
+}
 for(const g of ARTICLE_GUIDES){await page('/guides/'+g.slug,await GuidePage({params:Promise.resolve({slug:g.slug})}));const m=await guideMetadata({params:Promise.resolve({slug:g.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/guides/'+g.slug);}
 for(const v of VIDEOS){await page('/videos/'+v.slug,await VideoPage({params:Promise.resolve({slug:v.slug})}));const m=await videoMetadata({params:Promise.resolve({slug:v.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/videos/'+v.slug);}
 for(const p of Object.keys(INFO_PAGES)){await page('/'+p,await InfoPage({params:Promise.resolve({page:p})}));const m=await infoMetadata({params:Promise.resolve({page:p})});assert.equal(m.alternates?.canonical,SITE_URL+'/'+p);}
@@ -236,5 +262,5 @@ for(const [path,html] of [...rendered,['chrome',extra] as const]){
 }
 await assert.rejects(()=>NichePage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>PromptPage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>GuidePage({params:Promise.resolve({slug:'missing'})}));await assert.rejects(()=>InfoPage({params:Promise.resolve({page:'missing'})}));
 const css=readFileSync('app/globals.css','utf8');assert(css.includes('prefers-reduced-motion'));assert(css.includes(':focus-visible'));assert(css.includes('@media(max-width:520px)'));
-console.log(JSON.stringify({status:'passed',renderedPages:rendered.size,prompts:PROMPTS.length,niches:NICHE_PAGES.length,guides:ARTICLE_GUIDES.length,videos:VIDEOS.length,blueprintCombinations:blueprintChecks,checks:['server rendering','internal links and fragments','local assets','unique canonical URLs','structured-data JSON','domain portability','prompt filters and bookmark imports','beginner journey links','draft import validation','responsive image sources','unique prompt descriptions','accurate sitemap dates','sitemaps','all niche and duration templates','API input validation','missing AI configuration','mocked AI success and failure','rate limiting','unknown content slugs','mobile CSS rules and reduced motion']},null,2));
+console.log(JSON.stringify({status:'passed',renderedPages:rendered.size,prompts:PROMPTS.length,niches:NICHE_PAGES.length,guides:ARTICLE_GUIDES.length,videos:VIDEOS.length,blueprintCombinations:blueprintChecks,checks:['server rendering','internal links and fragments','reciprocal links between imported prompts and playbooks in HTML and Markdown','local assets','unique canonical URLs','structured-data JSON','domain portability','prompt filters and bookmark imports','beginner journey links','draft import validation','responsive image sources','unique prompt descriptions','accurate sitemap dates','sitemaps','all niche and duration templates','API input validation','missing AI configuration','mocked AI success and failure','rate limiting','unknown content slugs','mobile CSS rules and reduced motion']},null,2));
 

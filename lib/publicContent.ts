@@ -5,6 +5,7 @@ import {PROMPT_COLLECTIONS,getPromptsForCollection} from '@/data/promptPages';
 import {ARTICLE_GUIDES} from '@/data/articleGuides';
 import {NICHE_PAGES} from '@/data/niches';
 import {getNicheGuide} from '@/data/nicheGuides';
+import {getNichePrompts, getPromptNiche} from '@/data/nichePromptLinks';
 import {VIDEOS} from '@/data/videos';
 import {INFO_PAGES} from '@/data/legal';
 import {PRODUCT_UPDATES} from '@/data/productUpdates';
@@ -21,7 +22,7 @@ const mainPages:PublicPage[]=[
  {path:'/start-here',title:'Make your first faceless video',description:'Choose a beginner path, a lesson, and an editable production checklist.'},
  {path:'/studio',title:'Free AI video prompt and storyboard Studio',description:'Create an editable hook, shot list, scene prompts, narration direction, and editing checklist.'},
  {path:'/prompts',title:'Free AI prompt library',description:'Editable image, video, character, niche, and YouTube prompt templates.'},
- {path:'/niches',title:'24 faceless YouTube niche playbooks',description:'Audience ideas, episode structures, scene prompts, and production checks.'},
+ {path:'/niches',title:`${NICHE_PAGES.length} faceless YouTube niche playbooks`,description:'Audience ideas, episode structures, scene prompts, and production checks.'},
  {path:'/guides',title:'Faceless creator guides',description:'Guidance on planning, AI prompting, continuity, and responsible publishing.'},
  {path:'/videos',title:'AI video tutorials',description:'Credited external lessons with original practice exercises.'},
  {path:'/free-tools',title:'Free hook, narration time, and shot prompt tools',description:'Browser tools for openings, speaking-time estimates, and single-shot prompts.'},
@@ -112,6 +113,8 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
  }else if(path.startsWith('/prompts/')){
   const slug=path.split('/')[2],p=PROMPTS.find(p=>p.id===slug),c=PROMPT_COLLECTIONS.find(c=>c.slug===slug);
   if(p)content.push(`By ${SITE_NAME}`,p.tips||'', '## Editable prompt\n\n'+code(p.prompt),'## How to use it\n\nReplace placeholders with your own topic, audience, and source material. Paste the prompt into your chosen tool, check its supported controls, and review the result for accuracy, rights, and fit with the finished video.');
+  const playbook=getPromptNiche(slug);
+  if(playbook)content.push('## Niche playbook\n\n'+link(playbook.name,'/niches/'+playbook.slug));
   if(c)content.push(c.intro,'## Use this collection for\n\n'+list(c.bestFor),...c.workflow.map(s=>'## '+s.title+'\n\n'+s.body),'## Prompts in this collection\n\n'+list(getPromptsForCollection(c).map(p=>link(p.title,'/prompts/'+p.id))),...c.faq.map(f=>'## '+f.question+'\n\n'+f.answer));
  }else if(path.startsWith('/guides/')){
   const g=ARTICLE_GUIDES.find(g=>path==='/guides/'+g.slug)!;
@@ -120,9 +123,11 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   if(g.sources)content.push('## Sources\n\n'+list(g.sources.map(s=>link(s.label,s.url)+(s.note?' — '+s.note:''))));
  }else if(path.startsWith('/niches/')){
   const n=NICHE_PAGES.find(n=>path==='/niches/'+n.slug)!,g=getNicheGuide(n.slug);
-  content.push(`By ${SITE_NAME}`,n.intro);
+  content.push(`By ${SITE_NAME}`,n.intro===g?.promise?'':n.intro);
   if(g)content.push(g.promise,'## Audience\n\n'+g.audience,'## Formats\n\n'+list(g.bestFormats),...g.channelAngles.map(a=>'## '+a.title+'\n\n'+a.description),'## Episode ideas\n\n'+list(g.videoIdeas),...g.episodeStructure.map(s=>'## '+s.title+'\n\n'+s.description),'## Quality checks\n\n'+list(g.qualityChecks));
   for(const p of n.prompts)content.push('## '+p.title,'Narration / character direction: '+p.character,'### Image prompt\n\n'+code(p.visual),'### Motion prompt\n\n'+code(p.camera));
+  const templates=getNichePrompts(n.slug);
+  if(templates.length)content.push('## Prompt library templates\n\n'+list(templates.map(p=>link(p.title,'/prompts/'+p.id))));
   content.push(...n.faqs.map(f=>'## '+f.question+'\n\n'+f.answer));
  }else if(path.startsWith('/videos/')){
   const v=VIDEOS.find(v=>path==='/videos/'+v.slug)!;
@@ -135,7 +140,7 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
  }else if(path==='/start-here'){
   content.push('Choose a beginner path, watch the matching lesson, customize a prompt, build a plan, and review your first video. Checklist progress is saved in this browser.',...START_PATHS.map(p=>`## ${p.name}\n\n${p.description}\n\n${link('Plan this video','/studio?niche='+p.niche)}\n\n${link('Practice prompt','/prompts/'+p.prompt)}\n\n${link('Watch lesson','/videos/'+p.video)}\n\n${link('Creator guide','/guides/'+p.guide)}`));
  }else if(path==='/'){
-  content.push('The Faceless Prompts helps creators plan videos without an on-camera presenter. Browse free prompt templates, 24 niche playbooks, creator guides, credited YouTube lessons, and original articles. The Studio creates editable production plans; it does not render or upload videos.','## When to use this site\n\nUse these resources to choose a faceless channel format, write a visual prompt, keep AI characters consistent, plan a shot list, or improve narration and editing. Prompts are starting points that need your own creative direction and review.','## Start creating\n\n'+list(mainPages.filter(p=>p.path!=='/').map(p=>link(p.title,p.path))),link('Read the creator articles','/articles'));
+  content.push('The Faceless Prompts helps creators plan videos without an on-camera presenter. Browse free prompt templates, '+NICHE_PAGES.length+' niche playbooks, creator guides, credited YouTube lessons, and original articles. The Studio creates editable production plans; it does not render or upload videos.','## When to use this site\n\nUse these resources to choose a faceless channel format, write a visual prompt, keep AI characters consistent, plan a shot list, or improve narration and editing. Prompts are starting points that need your own creative direction and review.','## Start creating\n\n'+list(mainPages.filter(p=>p.path!=='/').map(p=>link(p.title,p.path))),link('Read the creator articles','/articles'));
  }else if(path==='/faceless-youtube-automation'){
   content.push(...workflow.map(([title,body],i)=>`## ${i+1}. ${title}\n\n${body}`));
  }else if(path==='/free-tools'){
