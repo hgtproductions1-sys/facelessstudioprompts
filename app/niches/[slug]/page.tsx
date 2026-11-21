@@ -1,6 +1,7 @@
 import AuthorByline from '@/components/AuthorByline';
 import CopyButton from '@/components/CopyButton';
 import FieldTestNote from '@/components/FieldTestNote';
+import MotionPreview from '@/components/MotionPreview';
 import NicheProductionStack from '@/components/NicheProductionStack';
 import SampleOutputs from '@/components/SampleOutputs';
 import StarterKitCard from '@/components/StarterKitCard';
@@ -8,6 +9,7 @@ import {Breadcrumbs, Faq, JsonLd, PageIntro} from '@/components/Shared';
 import {getArticleGuide} from '@/data/articleGuides';
 import {getNicheGuide} from '@/data/nicheGuides';
 import {NICHE_IMAGES} from '@/data/nicheImages';
+import {NICHE_PREVIEWS} from '@/data/nichePreviewMedia';
 import {getNichePage, NICHE_LINKS, NICHE_PAGES} from '@/data/niches';
 import {getNichePrompts} from '@/data/nichePromptLinks';
 import {START_PATHS} from '@/data/startPaths';
@@ -41,6 +43,7 @@ export default async function Page({params}: Props) {
   const path = '/niches/' + slug;
   const url = SITE_URL + path;
   const image = NICHE_IMAGES[slug];
+  const clip = NICHE_PREVIEWS[slug];
   const sampleOutputs = await getSampleOutputs(path, niche.sampleOutputs);
   const content = getNicheGuide(slug);
   const related = getRelatedNiches(NICHE_LINKS, slug);
@@ -69,16 +72,12 @@ export default async function Page({params}: Props) {
         <article className="prose">
           {image && (
             <figure className="guide-cover">
-              {/* eslint-disable-next-line @next/next/no-img-element -- Covers use pre-generated responsive WebP files. */}
-              <img
-                src={image.src}
-                {...responsiveImage(image.src, '(max-width: 900px) 100vw, 800px')}
-                alt={image.alt}
-                width={1280}
-                height={720}
-                decoding="async"
-                fetchPriority="high"
-              />
+              {clip ? <MotionPreview clip={clip} poster={image.src} alt={image.alt}
+                label={niche.name} className="niche-art niche-playbook-preview"/> : <>
+                {/* eslint-disable-next-line @next/next/no-img-element -- The responsive WebP sizes are pre-generated. */}
+                <img src={image.src} {...responsiveImage(image.src, '(max-width: 900px) 100vw, 800px')}
+                  alt={image.alt} width={1280} height={720} decoding="async" fetchPriority="high"/>
+              </>}
             </figure>
           )}
           <section id="overview">

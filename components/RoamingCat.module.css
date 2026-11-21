@@ -1,0 +1,75 @@
+.cat {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+@media (any-hover: hover) and (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .cat[data-visible='true'] {
+    display: block;
+  }
+}
+
+.figure,
+.mascot {
+  display: block;
+}
+
+.cat[data-facing='left'] .mascot {
+  transform: scaleX(-1);
+}
+
+.tail {
+  transform-origin: 36px 52px;
+  animation: tail-sway 2.4s ease-in-out infinite;
+}
+
+.eyes {
+  transform-origin: 0 35px;
+  animation: blink 4.8s ease-in-out infinite;
+}
+
+.farHind { transform-origin: 41px 49px; }
+.nearHind { transform-origin: 43px 49px; }
+.farFront { transform-origin: 78px 48px; }
+.nearFront { transform-origin: 77px 48px; }
+
+.cat[data-gait='trot'] .farHind,
+.cat[data-gait='trot'] .nearFront {
+  animation: stride 0.38s ease-in-out infinite;
+}
+
+.cat[data-gait='trot'] .farFront,
+.cat[data-gait='trot'] .nearHind {
+  animation: stride 0.38s -0.19s ease-in-out infinite;
+}
+
+.cat[data-gait='trot'] .body,
+.cat[data-gait='trot'] .head {
+  animation: bounce 0.19s ease-in-out infinite;
+}
+
+@keyframes tail-sway {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(8deg); }
+}
+
+@keyframes blink {
+  0%, 46%, 51%, 100% { transform: scaleY(1); }
+  48%, 49% { transform: scaleY(0.12); }
+}
+
+@keyframes stride {
+  0%, 100% { transform: rotate(-21deg) translateY(-0.5px); }
+  34% { transform: rotate(15deg) translateY(0); }
+  58% { transform: rotate(23deg) translateY(-4px); }
+  81% { transform: rotate(-3deg) translateY(-4px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.35px); }
+}
