@@ -8,6 +8,19 @@ const esbuildDir=readdirSync('node_modules/.pnpm').filter(n=>/^esbuild@/.test(n)
 const esbuild=require('../node_modules/.pnpm/'+esbuildDir+'/node_modules/esbuild');
 const dir='.sites-runtime/verification';mkdirSync(dir,{recursive:true});
 const out=dir+'/verify-site.mjs';
-await esbuild.build({entryPoints:['scripts/verify-site.tsx'],outfile:out,bundle:true,platform:'node',format:'esm',packages:'external',plugins:[{name:'next-node-import',setup(b){b.onResolve({filter:/^next\/(navigation|link)$/},args=>({path:args.path+'.js',external:true}));b.onResolve({filter:/^server-only$/},()=>({path:'server-only',namespace:'server-verification'}));b.onLoad({filter:/.*/,namespace:'server-verification'},()=>({contents:'export {};',loader:'js'}));}}],loader:{'.css':'empty'},jsx:'automatic',tsconfig:'tsconfig.json',logLevel:'error'});
+await esbuild.build({
+  entryPoints:['scripts/verify-site.tsx'], outfile:out, bundle:true,
+  platform:'node', format:'esm', packages:'external', loader:{'.css':'empty'},
+  jsx:'automatic', tsconfig:'tsconfig.json', logLevel:'error',
+  plugins:[{name:'next-node-import',setup(build){
+    build.onResolve({filter:/^next\/(navigation|link|image|server)$/},args=>({path:args.path+'.js',external:true}));
+    build.onResolve({filter:/^server-only$/},()=>({path:'server-only',namespace:'server-verification'}));
+    build.onLoad({filter:/.*/,namespace:'server-verification'},()=>({contents:'export {};',loader:'js'}));
+    build.onResolve({filter:/\.module\.css$/},args=>({path:args.path,namespace:'css-module-verification'}));
+    build.onLoad({filter:/.*/,namespace:'css-module-verification'},()=>({
+      contents:'export default new Proxy({}, {get:(_target,key)=>String(key)});',loader:'js',
+    }));
+  }}],
+});
 try{await import(pathToFileURL(process.cwd()+'/'+out).href);}finally{rmSync(out,{force:true});}
 

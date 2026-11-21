@@ -1,0 +1,89 @@
+.section {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 32px;
+}
+
+.scrollHint {
+  display: none;
+  color: var(--muted);
+  font-size: .85rem;
+}
+
+.scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .85rem;
+  text-align: left;
+}
+
+.table :is(th, td) {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.table thead th {
+  color: var(--ink);
+  background: var(--surface2);
+}
+
+.table tbody th {
+  min-width: 136px;
+  max-width: 178px;
+  background: var(--surface);
+}
+
+.table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.table a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
+
+.table th button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.scroll:focus-visible,
+.table :is(a, button):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+@media (max-width: 1024px) {
+  .scrollHint {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .sticky {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    box-shadow: 1px 0 0 var(--line);
+  }
+}

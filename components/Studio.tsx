@@ -4,9 +4,13 @@ import Link from 'next/link';
 import {useEffect, useRef, useState, type ChangeEvent, type FormEvent, type KeyboardEvent} from 'react';
 import {ArrowUpRight, Check, Clapperboard, Film, LoaderCircle, RefreshCw, Sparkles} from 'lucide-react';
 import CopyButton, {DownloadButton} from '@/components/CopyButton';
+import StudioProductionKit from '@/components/StudioProductionKit';
 import {responsiveImage} from '@/lib/images';
 import {DEFAULT_OPTIONS, ENGINES, STYLES, FORMATS, parseStudioDraft, type Options, type Blueprint} from '@/lib/studioOptions';
 import {formatShot, exportBlueprint} from '@/lib/blueprintFormat';
+import {
+  STUDIO_BACKUP_LIMIT, blueprintVoiceover, defaultVisualExportModel, parseStudioProject, type VisualExportModel,
+} from '@/lib/studio-exports';
 
 const tabs = [
   {id: 'shots', label: 'Shot list'},
@@ -16,7 +20,7 @@ const tabs = [
 ] as const;
 
 type DraftMode = 'template' | 'brief' | 'ai';
-type Output = {kind: 'brief'; text: string} | {kind: 'blueprint'; blueprint: Blueprint};
+type Output = {kind: 'brief'; text: string} | {kind: 'blueprint'; blueprint: Blueprint; options: Options};
 type Props = {
   nicheOptions: {id: string; title: string}[];
   aiAvailable: boolean;
@@ -51,6 +55,8 @@ export default function Studio({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [output, setOutput] = useState<Output | null>(null);
+  const [narration, setNarration] = useState('');
+  const [visualModel, setVisualModel] = useState<VisualExportModel>('Veo 3');
   const [tab, setTab] = useState<typeof tabs[number]['id']>('shots');
   const [ready, setReady] = useState(false);
   const [storageNotice, setStorageNotice] = useState('');
@@ -98,26 +104,38 @@ export default function Studio({
     setError('');
   }
 
+  function showBlueprint(blueprint: Blueprint, sourceOptions: Options) {
+    setOutput({kind: 'blueprint', blueprint, options: sourceOptions});
+    setNarration(blueprintVoiceover(blueprint));
+    setVisualModel(defaultVisualExportModel(sourceOptions.engine));
+  }
+
   async function importDraft(event: ChangeEvent<HTMLInputElement>) {
     const input = event.target;
     const file = input.files?.[0];
     input.value = '';
-    if (!file) return;
+    if (!file || busy) return;
 
+    setBusy(true);
     try {
-      if (file.size > 20000) throw new Error('Choose a Studio draft smaller than 20 KB.');
-      const payload = JSON.parse(await file.text());
-      const draft = parseStudioDraft(
-        payload && typeof payload === 'object' && 'options' in payload ? payload.options : payload,
-        nicheOptions.map(niche => niche.id),
-      );
-      if (!draft) throw new Error('This draft has an invalid topic, niche, format, or tool.');
-      setOptions(draft);
-      setOutput(null);
+      if (file.size > STUDIO_BACKUP_LIMIT) throw new Error('Choose a Studio backup no larger than 2 MB.');
+      const project = parseStudioProject(JSON.parse(await file.text()), nicheOptions.map(niche => niche.id));
+      if (!project) throw new Error('This Studio backup has invalid project data or settings.');
+      setOptions(project.options);
+      if (project.blueprint) {
+        showBlueprint(project.blueprint, project.options);
+        setNarration(project.narration ?? blueprintVoiceover(project.blueprint));
+        setVisualModel(project.visualModel ?? defaultVisualExportModel(project.options.engine));
+      } else {
+        setOutput(null);
+      }
       selectMode('template');
-      setStorageNotice('Imported your creative brief. Create a blueprint when you are ready.');
+      setTab('shots');
+      setStorageNotice(project.blueprint ? 'Restored your blueprint and export settings.' : 'Imported your creative brief. Create a blueprint when you are ready.');
     } catch (cause) {
       setStorageNotice(cause instanceof Error ? cause.message : 'The draft could not be imported.');
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -145,12 +163,11 @@ export default function Studio({
         if (!Array.isArray(data.shots) || !Array.isArray(data.editing) || !data.topic || !data.character) {
           throw new Error('The live AI draft was incomplete.');
         }
-        setOutput({kind: 'blueprint', blueprint: data});
+        showBlueprint(data, briefOptions);
       } else {
         const {buildTemplate, compileMasterBrief} = await import('@/lib/blueprint');
-        setOutput(next === 'brief'
-          ? {kind: 'brief', text: compileMasterBrief(briefOptions)}
-          : {kind: 'blueprint', blueprint: buildTemplate(briefOptions)});
+        if (next === 'brief') setOutput({kind: 'brief', text: compileMasterBrief(briefOptions)});
+        else showBlueprint(buildTemplate(briefOptions), briefOptions);
       }
       setTab('shots');
     } catch (cause) {
@@ -180,7 +197,8 @@ export default function Studio({
     document.getElementById('tab-' + tabs[next].id)?.focus();
   }
 
-  const result = output?.kind === 'blueprint' ? output.blueprint : null;
+  const activeBlueprint = output?.kind === 'blueprint' ? output : null;
+  const result = activeBlueprint?.blueprint;
   const plan = result ? exportBlueprint(result, options.engine) : '';
   const backup = JSON.stringify({type: 'faceless-studio-draft', version: 1, options}, null, 2);
 
@@ -257,7 +275,7 @@ export default function Studio({
           <p className="muted small">Download your project file to pick up later or continue on another device.</p>
           <div className="button-row">
             <DownloadButton text={backup} filename="faceless-studio-draft.json" label="Export draft" mime="application/json"/>
-            <button type="button" className="copy-button" onClick={() => importRef.current?.click()}>Import draft</button>
+            <button type="button" className="copy-button" disabled={busy} onClick={() => importRef.current?.click()}>Import draft</button>
           </div>
           <input type="file" className="sr-only" tabIndex={-1} accept="application/json,.json" ref={importRef}
             onChange={importDraft} aria-label="Import Studio creative brief"/>
@@ -278,7 +296,7 @@ export default function Studio({
             <li>Paste it into ChatGPT, Claude, or Gemini.</li>
             <li>Return to Studio or the <Link className="inline-link" href="/prompts">Prompt Library</Link> to refine individual shots.</li>
           </ol>
-        </div> : result ? <>
+        </div> : activeBlueprint && result ? <>
           <div className="output-head">
             <p className="eyebrow"><Check size={12}/>Your starting point is ready</p>
             <h2>{result.topic}</h2>
@@ -287,6 +305,8 @@ export default function Studio({
               <CopyButton text={plan} label="Copy plan"/>
               <DownloadButton text={plan}/>
             </div>
+            <StudioProductionKit blueprint={result} options={activeBlueprint.options}
+              narration={narration} onNarrationChange={setNarration} model={visualModel} onModelChange={setVisualModel}/>
           </div>
           <div className="result-tabs" role="tablist" aria-label="Blueprint sections">
             {tabs.map(item => <button key={item.id} role="tab" aria-selected={tab === item.id}

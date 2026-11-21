@@ -1,3 +1,5 @@
+import type {SampleOutputMedia} from '../lib/sampleOutput';
+
 export type PromptCategory = "Image Gen" | "Video Gen" | "SEO" | "Character" | "Niche";
 
 export type Prompt = {
@@ -8,6 +10,7 @@ export type Prompt = {
   prompt: string;
   tips?: string;
   reactions?: number;
+  sampleOutputs?: SampleOutputMedia[];
 };
 
 export const PROMPT_CATEGORIES: PromptCategory[] = [

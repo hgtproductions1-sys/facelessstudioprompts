@@ -1,0 +1,66 @@
+.samples {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  background: var(--bg);
+}
+
+.frame img,
+.frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.caption {
+  padding: 14px 16px;
+}
+
+.caption p {
+  margin: 0 0 6px;
+}
+
+.caption summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.caption pre {
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.playback {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 7px 10px;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.playback:focus-visible,
+.caption summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

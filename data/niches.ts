@@ -9,6 +9,7 @@
  */
 
 import type { NicheData } from '../types';
+import type {SampleOutputMedia} from '../lib/sampleOutput';
 
 /**
  * Programmatic SEO data for /niches/$slug landing pages.
@@ -39,6 +40,7 @@ export interface NichePage {
   name: string;
   /** One complete sentence for directory and featured cards. */
   shortSummary: string;
+  sampleOutputs?: SampleOutputMedia[];
   /** Matching generator niche label, used to prefill the generator. */
   niche: string;
   seoTitle: string;

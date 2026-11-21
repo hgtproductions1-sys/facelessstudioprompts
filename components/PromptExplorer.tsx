@@ -2,6 +2,7 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {ArrowUpRight,Bookmark,Search,X} from 'lucide-react';
 import CopyButton,{DownloadButton} from '@/components/CopyButton';
+import {PromptVariableDrawer} from '@/components/PromptCustomizer';
 import type {Prompt} from '@/data/promptLibrary';
 import {CATEGORY_LABELS} from '@/lib/categories';
 import {filterPrompts,getPromptInfo,parseSavedPrompts,PROMPT_LEVELS,PROMPT_TOOLS} from '@/lib/promptFilters';
@@ -40,7 +41,7 @@ export default function PromptExplorer({prompts,validIds,initialCategory='',init
    <div className="card-meta"><span className="pill">{CATEGORY_LABELS[p.category]}</span><button type="button" className="plain-icon" aria-label={(saved.includes(p.id)?'Unsave ':'Save ')+p.title} aria-pressed={saved.includes(p.id)} onClick={()=>toggle(p.id)}><Bookmark size={17} fill={saved.includes(p.id)?'currentColor':'none'}/></button></div>
    <a href={'/prompts/'+p.id}><h3>{p.title}</h3></a><div className="prompt-tags"><span>{info.level}</span><span>{info.formats.join(' / ')}</span></div>
    <p className="prompt-excerpt">{p.tips||p.prompt.slice(0,190)+(p.prompt.length>190?'…':'')}</p>
-   <details className="prompt-quick-preview"><summary>Preview template</summary><pre>{p.prompt}</pre></details>
+   <PromptVariableDrawer prompt={p.prompt} promptId={p.id}/>
    <div className="card-actions"><CopyButton text={p.prompt}/><a className="text-link" href={'/prompts/'+p.id}>Customize <ArrowUpRight size={16}/></a></div>
   </article>;})}</div>
   {!filtered.length&&<div className="empty-state"><h2>{onlySaved?'No saved prompts match these filters.':'No prompts found.'}</h2><p>{onlySaved?'Try clearing filters, or bookmark a prompt to keep it in this browser.':'Try a broader search or a different tool and format.'}</p><button className="button button-outline" onClick={reset}>Browse all prompts</button></div>}
