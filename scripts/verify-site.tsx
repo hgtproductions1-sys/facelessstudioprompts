@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {existsSync,readFileSync} from 'node:fs';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {buildTemplate,DEFAULT_OPTIONS,FORMATS,timeline,formatShot,exportBlueprint} from '../lib/blueprint';
+import {buildTemplate,compileMasterBrief,DEFAULT_OPTIONS,FORMATS,timeline,formatShot,exportBlueprint} from '../lib/blueprint';
 import {NICHE_PAGES,NICHES_DATA} from '../data/niches';
 import {getNicheGuide} from '../data/nicheGuides';
 import {PROMPTS} from '../data/promptLibrary';
@@ -21,7 +21,7 @@ import {GET as videoSitemap} from '../app/video-sitemap.xml/route';
 import {GET as robots} from '../app/robots.txt/route';
 import Home from '../app/page';
 import Updates from '../app/updates/page';
-import Prompts from '../app/prompts/page';
+import Prompts,{generateMetadata as libraryMetadata} from '../app/prompts/page';
 import PromptPage,{generateMetadata as promptMetadata} from '../app/prompts/[slug]/page';
 import Niches from '../app/niches/page';
 import NichePage,{generateMetadata as nicheMetadata} from '../app/niches/[slug]/page';
@@ -39,6 +39,7 @@ import SiteFooter from '../components/SiteFooter';
 import {publicPages,pageMarkdown,markdownHeaders,llmsIndex} from '../lib/publicContent';
 import {GET as markdownPage} from '../app/markdown/[[...path]]/route';
 import {metadataFor} from '../lib/site';
+import {promptPageHref,promptPageNumber} from '../lib/prompt-pagination';
 
 const paths=allPaths();assert.equal(new Set(paths).size,paths.length);
 // Discovery must preserve every existing public URL and never surface private endpoints.
@@ -55,6 +56,11 @@ assert.equal(readable404.status,404);assert(readable404.headers.get('content-typ
 const longTitle='How to Plan a Faceless Video With a Consistent Character';
 assert.deepEqual(metadataFor('/example',longTitle,'Example description').title,{absolute:longTitle});
 assert.equal(metadataFor('/example',longTitle,'Example description').alternates?.types?.['text/markdown'],SITE_URL+'/markdown/example');
+assert.equal(SITE_URL,'https://www.thefacelessprompts.com');
+assert.equal(promptPageNumber(undefined),1);
+for(const invalid of ['1','0','abc','02','-2','2e1',['2','3']])assert.equal(promptPageNumber(invalid),null);
+assert.equal(promptPageNumber('2'),2);
+assert.equal(promptPageHref(1),'/prompts');
 assert.equal(NICHE_PAGES.length,24);assert.equal(NICHES_DATA.length,24);
 assert.equal(new Set(PROMPTS.map(p=>p.id)).size,PROMPTS.length);
 assert.equal(new Set(VIDEOS.map(v=>v.id)).size,VIDEOS.length);
@@ -81,11 +87,21 @@ assert.equal(parseStudioDraft({...DEFAULT_OPTIONS,topic:'x'},NICHES_DATA.map(n=>
 assert.equal(parseStudioDraft({...DEFAULT_OPTIONS,engine:'invented'},NICHES_DATA.map(n=>n.id)),null);
 assert.deepEqual(parseStudioDraft(DEFAULT_OPTIONS,NICHES_DATA.map(n=>n.id)),DEFAULT_OPTIONS);
 for(const p of PROMPTS){const info=getPromptInfo(p);assert(ARTICLE_GUIDES.some(g=>g.slug===info.guide));assert(info.tools.length);assert(info.formats.length);}
-for(const p of START_PATHS){assert(NICHES_DATA.some(n=>n.id===p.niche));assert(PROMPTS.some(x=>x.id===p.prompt));assert(ARTICLE_GUIDES.some(g=>g.slug===p.guide));assert(VIDEOS.some(v=>v.slug===p.video));const u=new URL(studioUrl(p,'An idea & another idea','story','Runway'),SITE_URL);assert.equal(u.searchParams.get('topic'),'An idea & another idea');assert.equal(u.searchParams.get('niche'),p.niche);assert.equal(u.searchParams.get('format'),'story');}
+for(const p of START_PATHS){assert(NICHES_DATA.some(n=>n.id===p.niche));assert(PROMPTS.some(x=>x.id===p.prompt));assert(ARTICLE_GUIDES.some(g=>g.slug===p.guide));assert(VIDEOS.some(v=>v.slug===p.video));const u:URL=new URL(studioUrl(p,'An idea & another idea','story','Runway'),SITE_URL);assert.equal(u.searchParams.get('topic'),'An idea & another idea');assert.equal(u.searchParams.get('niche'),p.niche);assert.equal(u.searchParams.get('format'),'story');}
+assert(compileMasterBrief(DEFAULT_OPTIONS).includes(DEFAULT_OPTIONS.topic));
 let blueprintChecks=0;
 for(const n of NICHES_DATA){assert(NICHE_PAGES.some(p=>p.slug===n.id));assert(getNicheGuide(n.slug));for(const f of FORMATS){const o={...DEFAULT_OPTIONS,niche:n.id,format:f.id,topic:'An original production brief for '+n.title};const b=buildTemplate(o);assert.equal(b.source,'template');assert.equal(b.shots.length,f.shots);assert(b.topic===o.topic);assert(b.niche===n.title);assert.equal(b.shots[0].time.split(' – ')[0],'0:00');assert.equal(b.shots.at(-1)!.time.split(' – ')[1],Math.floor(f.seconds/60)+':00');assert.deepEqual(b.shots.map(s=>s.time),timeline(f.shots,f.id));assert(exportBlueprint(b,'Universal').includes(o.topic));assert(formatShot(b.shots[0],b,'Midjourney').startsWith('Create a single reference frame.'));assert(!formatShot(b.shots[0],b,'Runway').includes('--motion'));blueprintChecks++;}}
-const originalKey=process.env.GLM_API_KEY;const originalFetch=globalThis.fetch;delete process.env.GLM_API_KEY;
-const req=(body:unknown,ip='test')=>new Request(SITE_URL+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json','cf-connecting-ip':ip},body:JSON.stringify(body)});
+const aiEnv = ['GLM_API_KEY','NEXT_PUBLIC_STUDIO_AI_ENABLED','VERCEL','UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN'] as const;
+const originalEnv = Object.fromEntries(aiEnv.map(key=>[key,process.env[key]]));
+const originalFetch=globalThis.fetch;
+for (const key of aiEnv) delete process.env[key];
+process.env.NEXT_PUBLIC_STUDIO_AI_ENABLED='false';
+process.env.VERCEL='1';
+const testAddresses=new Map<string,string>();
+const req=(body:unknown,label='test')=>{
+ if(!testAddresses.has(label)) testAddresses.set(label,'192.0.2.'+(testAddresses.size+10));
+ return new Request(SITE_URL+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-forwarded-for':testAddresses.get(label)!},body:JSON.stringify(body)});
+};
 try{
  assert.equal((await status()).status,200);assert.equal((await (await status()).json() as {aiAvailable:boolean}).aiAvailable,false);
  assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'template'}))).status,200);
@@ -94,14 +110,18 @@ try{
  assert.equal((await POST(new Request(SITE_URL+'/api/generate',{method:'POST',body:'not-json'}))).status,400);
  assert.equal((await POST(new Request(SITE_URL+'/api/generate',{method:'POST',body:' '.repeat(9000)}))).status,413);
  process.env.GLM_API_KEY='test-only-placeholder';
+ assert.equal((await (await status()).json() as {aiAvailable:boolean}).aiAvailable,false);
+ assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'}))).status,503);
+ process.env.NEXT_PUBLIC_STUDIO_AI_ENABLED='true';
+ assert.equal((await (await status()).json() as {aiAvailable:boolean}).aiAvailable,true);
  const sample=buildTemplate(DEFAULT_OPTIONS);globalThis.fetch=(async()=>Response.json({choices:[{message:{content:JSON.stringify(sample)}}]})) as typeof fetch;
  const live=await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'valid-ai'));assert.equal(live.status,200);assert.equal((await live.json() as {source:string}).source,'ai');
  globalThis.fetch=(async()=>Response.json({choices:[{message:{content:'not-json'}}]})) as typeof fetch;assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'invalid-json'))).status,502);
  globalThis.fetch=(async()=>Response.json({choices:[{message:{content:JSON.stringify({...sample,shots:sample.shots.slice(0,2)})}}]})) as typeof fetch;assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'incomplete'))).status,502);
  globalThis.fetch=(async()=>new Response('',{status:429})) as typeof fetch;assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'provider-limit'))).status,429);
  globalThis.fetch=(async()=>{throw new DOMException('Timed out','AbortError');}) as typeof fetch;assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'timeout'))).status,504);
- for(let i=0;i<4;i++)assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,504);assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,429);
-}finally{globalThis.fetch=originalFetch;if(originalKey===undefined)delete process.env.GLM_API_KEY;else process.env.GLM_API_KEY=originalKey;}
+ for(let i=0;i<2;i++)assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,504);assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,429);
+}finally{globalThis.fetch=originalFetch;for(const key of aiEnv){const value=originalEnv[key];if(value===undefined)delete process.env[key];else process.env[key]=value;}}
 assert(!schema({name:'</script><script>bad</script>'}).includes('</script>'));
 const xml=await (await sitemap()).text();assert.equal((xml.match(/<loc>/g)||[]).length,paths.length);assert(paths.every(p=>xml.includes('<loc>'+SITE_URL+p+'</loc>')));
 assert((await (await videoSitemap()).text()).includes('<video:player_loc>'));assert((await (await robots()).text()).includes('Disallow: /api/'));
@@ -111,6 +131,20 @@ async function page(path:string,el:React.ReactNode){const html=renderToStaticMar
 await page('/',<Home/>);await page('/updates',<Updates/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',await Guides());await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
 assert(!rendered.get('/videos')!.includes('<iframe'));assert.equal((rendered.get('/videos')!.match(/class="video-poster"/g)||[]).length,VIDEOS.length);
 for(const p of PROMPTS)assert(rendered.get('/prompts')!.includes('href="/prompts/'+p.id+'"'),p.id+' must be discoverable before Show more or client filtering');
+for(const number of [1,2,3,4]){
+ const searchParams=Promise.resolve(number===1?{}:{page:String(number)});
+ const markup=renderToStaticMarkup(await Prompts({searchParams}));
+ assert.equal((markup.match(/class="prompt-card"/g)||[]).length,number===4?13:18);
+ assert(markup.includes('aria-label="Prompt library pagination"'));
+ const meta=await libraryMetadata({searchParams});
+ assert.equal(meta.alternates?.canonical,SITE_URL+promptPageHref(number));
+ assert.equal(meta.alternates?.types?.['text/markdown'],SITE_URL+'/markdown/prompts');
+ if(number>1)assert(JSON.stringify(meta.title).includes('Page '+number));
+}
+const filteredLibrary=await libraryMetadata({searchParams:Promise.resolve({q:'test'})});
+assert.equal(filteredLibrary.alternates?.canonical,SITE_URL+'/prompts');
+assert.deepEqual(filteredLibrary.robots,{index:false,follow:true});
+await assert.rejects(()=>Prompts({searchParams:Promise.resolve({page:'999'})}));
 for(const n of NICHE_PAGES){await page('/niches/'+n.slug,await NichePage({params:Promise.resolve({slug:n.slug})}));const m=await nicheMetadata({params:Promise.resolve({slug:n.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/niches/'+n.slug);}
 const promptDescriptions:string[]=[];
 for(const p of [...PROMPTS.map(x=>x.id),...PROMPT_COLLECTIONS.map(x=>x.slug)]){await page('/prompts/'+p,await PromptPage({params:Promise.resolve({slug:p})}));const m=await promptMetadata({params:Promise.resolve({slug:p})});assert.equal(m.alternates?.canonical,SITE_URL+'/prompts/'+p);assert(m.description);promptDescriptions.push(m.description!);}

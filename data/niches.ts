@@ -37,6 +37,8 @@ export interface NichePage {
   slug: string;
   /** Display name used in cards and headings. */
   name: string;
+  /** One complete sentence for directory and featured cards. */
+  shortSummary: string;
   /** Matching generator niche label, used to prefill the generator. */
   niche: string;
   seoTitle: string;
@@ -55,6 +57,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-cat-and-pet-stories",
     name: "AI Cat & Pet Stories",
+    shortSummary: "Plan an AI cat or pet story channel with repeatable characters, emotional short-form beats, and consistent scene prompts.",
     niche: "AI Cat & Pet Stories",
     seoTitle: "AI Cat & Pet Stories Prompts — Free Generator",
     metaDescription: "Explore AI Cat & Pet Stories with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -129,6 +132,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-animal-cooking",
     name: "AI Animal Cooking",
+    shortSummary: "Build an animated animal cooking episode around one recipe, visible ingredient changes, and a consistent kitchen and cast.",
     niche: "AI Animal Cooking",
     seoTitle: "AI Animal Cooking Prompts — Free Generator",
     metaDescription: "Explore AI Animal Cooking with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -202,6 +206,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "pov-immersive-vlogs",
     name: "POV Immersive Vlogs",
+    shortSummary: "Create first-person faceless POV videos with immersive environments, clear viewer goals, and loop-friendly camera continuity.",
     niche: "POV Immersive Vlogs",
     seoTitle: "POV Immersive Vlog Prompts — Free Generator",
     metaDescription: "Explore POV Immersive Vlogs with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -276,6 +281,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "anime-fight-versus",
     name: "Anime Fight Versus",
+    shortSummary: "Storyboard an original animated rivalry with distinct opponents, readable silhouettes, and clear cause and effect in each scene.",
     niche: "Anime Fight Versus",
     seoTitle: "Anime Fight Versus Prompts — Free Generator",
     metaDescription: "Explore Anime Fight Versus with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -349,6 +355,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "stickman-explainer-and-skits",
     name: "Stickman Explainer & Skits",
+    shortSummary: "Build stickman explainers and comedy skits with readable visual metaphors, recurring characters, and punchy narration pacing.",
     niche: "Stickman Explainer & Skits",
     seoTitle: "Stickman Explainer & Skits Prompts — Free Generator",
     metaDescription: "Explore Stickman Explainer & Skits with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -422,6 +429,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-asmr-cooking-cleaning-restoration",
     name: "AI ASMR",
+    shortSummary: "Design tactile AI ASMR cooking, cleaning, and restoration loops built around macro textures, believable transformations, and audio cues.",
     niche: "AI ASMR (Cooking, Cleaning, Restoration)",
     seoTitle: "AI ASMR Prompts (Cooking, Cleaning, Restoration) — Free",
     metaDescription: "Explore AI ASMR with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -495,6 +503,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "zombie-apocalypse-drama",
     name: "Zombie Apocalypse Drama",
+    shortSummary: "Develop a fictional survival drama with a small cast, recognizable locations, and episode choices that carry consequences forward.",
     niche: "Zombie Apocalypse Drama",
     seoTitle: "Zombie Apocalypse Drama Prompts — Free Generator",
     metaDescription: "Explore Zombie Apocalypse Drama with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -568,6 +577,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "bible-and-mythology-anime",
     name: "Bible & Mythology Anime",
+    shortSummary: "Adapt a biblical or mythological narrative with checked source material, recognizable characters, and thoughtful animated staging.",
     niche: "Bible & Mythology Anime",
     seoTitle: "Bible & Mythology Anime Prompts — Free Generator",
     metaDescription: "Explore Bible & Mythology Anime with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -641,6 +651,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-influencer-product-reviews",
     name: "AI Influencer Product Reviews",
+    shortSummary: "Use a clearly identified virtual presenter to explain product features, show supporting evidence, and disclose relevant relationships.",
     niche: "AI Influencer Product Reviews",
     seoTitle: "AI Influencer Product Review Prompts — Free Generator",
     metaDescription: "Explore AI Influencer Product Reviews with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -714,6 +725,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "lullaby-and-sleep-music",
     name: "Lullaby & Sleep Music",
+    shortSummary: "Pair original or properly licensed lullaby tracks with quiet visual loops, steady levels, and gentle transitions between tracks.",
     niche: "Lullaby & Sleep Music",
     seoTitle: "Lullaby & Sleep Music Prompts — Free Generator",
     metaDescription: "Explore Lullaby & Sleep Music with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -787,6 +799,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "analog-horror-and-unsolved-mysteries",
     name: "Analog Horror & Unsolved Mysteries",
+    shortSummary: "Craft restrained found-footage horror and mystery episodes with clear fictional framing, evidence boards, and suspenseful pacing.",
     niche: "Analog Horror & Unsolved Mysteries",
     seoTitle: "Analog Horror Series Prompts — Free Generator",
     metaDescription: "Explore Analog Horror & Unsolved Mysteries with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -860,6 +873,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "diy-cardboard-and-miniature-builds",
     name: "DIY Cardboard & Miniature Builds",
+    shortSummary: "Plan an overhead craft tutorial with visible materials, consistent scale, and close shots that make each miniature assembly step clear.",
     niche: "DIY Cardboard & Miniature Builds",
     seoTitle: "DIY Cardboard & Miniature Build Prompts — Free Generator",
     metaDescription: "Explore DIY Cardboard & Miniature Builds with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -933,6 +947,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "vegetable-and-fruit-carving",
     name: "Vegetable & Fruit Carving",
+    shortSummary: "Capture edible carving from setup to finished design with clear hand placement, stable framing, and a focus on changing textures.",
     niche: "Vegetable & Fruit Carving",
     seoTitle: "Vegetable & Fruit Carving Prompts — Free Generator",
     metaDescription: "Explore Vegetable & Fruit Carving with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1006,6 +1021,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-car-wash-and-restoration",
     name: "AI Car Wash & Restoration",
+    shortSummary: "Show a fictional vehicle restoration in distinct stages, matching the model, viewpoint, and surfaces across before-and-after frames.",
     niche: "AI Car Wash & Restoration",
     seoTitle: "AI Car Wash & Restoration Prompts — Free Generator",
     metaDescription: "Explore AI Car Wash & Restoration with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1079,6 +1095,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "miniature-asmr-cooking",
     name: "Miniature ASMR Cooking",
+    shortSummary: "Plan a miniature cooking sequence with recognizable scale cues, visible recipe steps, and a sound bed built from tactile details.",
     niche: "Miniature ASMR Cooking",
     seoTitle: "Miniature ASMR Cooking Prompts — Free Generator",
     metaDescription: "Explore Miniature ASMR Cooking with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1152,6 +1169,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "nostalgia-toy-unboxing",
     name: "Nostalgia Toy Unboxing",
+    shortSummary: "Structure a nostalgic unboxing around packaging details, a short reveal, and a close look at the features that viewers remember.",
     niche: "Nostalgia Toy Unboxing",
     seoTitle: "Nostalgia Toy Unboxing Prompts — Free Generator",
     metaDescription: "Explore Nostalgia Toy Unboxing with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1225,6 +1243,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ranking-and-top-5-countdowns",
     name: "Ranking & Top 5 Countdowns",
+    shortSummary: "Plan a countdown with a clear ranking method, checked examples, and visual comparisons that help viewers follow each entry.",
     niche: "Ranking & Top 5 Countdowns",
     seoTitle: "Ranking & Top 5 Countdown Prompts — Free Generator",
     metaDescription: "Explore Ranking & Top 5 Countdowns with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1298,6 +1317,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "vox-style-paper-cut-commentary",
     name: "Vox-Style Paper-Cut Commentary",
+    shortSummary: "Turn a researched argument into paper-cut commentary with editorial diagrams, clear transitions, and carefully sourced narration.",
     niche: "Vox-Style Paper-Cut Commentary",
     seoTitle: "Vox-Style Paper-Cut Commentary Prompts — Free Generator",
     metaDescription: "Explore Vox-Style Paper-Cut Commentary with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1371,6 +1391,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "elderly-wisdom-and-stoic-long-form",
     name: "Elderly Wisdom & Stoic Long-Form",
+    shortSummary: "Produce calm long-form philosophy and reflection videos with sourced ideas, measured narration, and cohesive visual motifs.",
     niche: "Elderly Wisdom & Stoic Long-Form",
     seoTitle: "Elderly Wisdom & Stoic Long-Form Prompts — Free",
     metaDescription: "Explore Elderly Wisdom & Stoic Long-Form with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1444,6 +1465,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "ai-music-videos",
     name: "AI Music Videos",
+    shortSummary: "Storyboard a visual concept for an original or licensed track, matching composition changes and recurring motifs to its sections.",
     niche: "AI Music Videos",
     seoTitle: "AI Music Video Prompts — Free Generator",
     metaDescription: "Explore AI Music Videos with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1517,6 +1539,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "cartoon-horror-illustration",
     name: "Cartoon Horror Illustration",
+    shortSummary: "Build a clearly fictional illustrated horror short around a recognizable visual motif, an unsettling change, and a measured reveal.",
     niche: "Cartoon Horror Illustration",
     seoTitle: "Cartoon Horror Illustration Prompts — Free Generator",
     metaDescription: "Explore Cartoon Horror Illustration with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1590,6 +1613,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "pixel-game-pov",
     name: "Pixel Game POV",
+    shortSummary: "Stage an original pixel-art scene with a readable first-person goal, a coherent fictional interface, and consistent screen direction.",
     niche: "Pixel Game POV",
     seoTitle: "Pixel Game POV Prompts — Free Generator",
     metaDescription: "Explore Pixel Game POV with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1663,6 +1687,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "celebrity-evolution-and-glow-up",
     name: "Celebrity Evolution & Glow-Up",
+    shortSummary: "Plan a sourced public-figure timeline using cleared images, verified dates and milestones, and clear labeling for any recreated scenes.",
     niche: "Celebrity Evolution & Glow-Up",
     seoTitle: "Celebrity Evolution & Glow-Up Prompts — Free Generator",
     metaDescription: "Explore Celebrity Evolution & Glow-Up with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -1736,6 +1761,7 @@ export const NICHE_PAGES: NichePage[] = [
   {
     slug: "poor-vs-rich-animals-ai-skits",
     name: "Poor vs. Rich Animals",
+    shortSummary: "Pair two fictional animal characters with contrasting resources and routines, then frame each skit around a shared problem and payoff.",
     niche: "Poor vs. Rich Animals (AI Skits)",
     seoTitle: "Poor vs. Rich Animals AI Skits Prompts — Free Generator",
     metaDescription: "Explore Poor vs. Rich Animals with editable script, image, and camera prompts, practical planning notes, and examples for your next video.",
@@ -2778,6 +2804,12 @@ export const NICHES_DATA: NicheData[] = [
     "bestFormat": "20–60 sec skits"
   }
 ];
+
+export const NICHE_LINKS = NICHE_PAGES.map(({slug, name}) => ({
+  slug,
+  name,
+  category: NICHES_DATA.find(niche => niche.slug === slug || niche.id === slug)?.category,
+}));
 
 /**
  * Universal lookup helper supporting slugs, legacy IDs, and niche names.

@@ -6,8 +6,8 @@ import type {Prompt} from '@/data/promptLibrary';
 import {CATEGORY_LABELS} from '@/lib/categories';
 import {filterPrompts,getPromptInfo,parseSavedPrompts,PROMPT_LEVELS,PROMPT_TOOLS} from '@/lib/promptFilters';
 
-type Props={prompts:Prompt[];validIds:string[];initialCategory?:string;initialQuery?:string;initialLevel?:string;initialTool?:string;initialFormat?:string};
-export default function PromptExplorer({prompts,validIds,initialCategory='',initialQuery='',initialLevel='',initialTool='',initialFormat=''}:Props){
+type Props={prompts:Prompt[];validIds:string[];initialCategory?:string;initialQuery?:string;initialLevel?:string;initialTool?:string;initialFormat?:string;browseWindow?:{offset:number;size:number};pagination?:React.ReactNode};
+export default function PromptExplorer({prompts,validIds,initialCategory='',initialQuery='',initialLevel='',initialTool='',initialFormat='',browseWindow,pagination}:Props){
  const [query,setQuery]=useState(initialQuery);const [category,setCategory]=useState(initialCategory);
  const [level,setLevel]=useState(initialLevel);const [tool,setTool]=useState(initialTool);const [format,setFormat]=useState(initialFormat);
  const [saved,setSaved]=useState<string[]>([]);const [onlySaved,setOnlySaved]=useState(false);const [limit,setLimit]=useState(12);const [notice,setNotice]=useState('');const importRef=useRef<HTMLInputElement>(null);
@@ -18,6 +18,8 @@ export default function PromptExplorer({prompts,validIds,initialCategory='',init
  function reset(){setQuery('');setCategory('');setLevel('');setTool('');setFormat('');setOnlySaved(false);setLimit(12);}
  async function importSaved(e:React.ChangeEvent<HTMLInputElement>){const file=e.target.files?.[0];e.target.value='';if(!file)return;try{if(file.size>200000)throw new Error('Choose a saved-prompts file smaller than 200 KB.');const ids=parseSavedPrompts(JSON.parse(await file.text()),validIds);if(!ids.length)throw new Error('No matching prompt bookmarks were found in this file.');save([...new Set([...saved,...ids])]);setNotice('Imported '+ids.length+' bookmarks. Existing bookmarks were kept.');}catch(error){setNotice(error instanceof Error?error.message:'That bookmark file could not be read.');}}
  const filtersActive=Boolean(query||category||level||tool||format||onlySaved);
+ const isBrowsing=Boolean(browseWindow&&!filtersActive);
+ const visible=isBrowsing&&browseWindow?filtered.slice(browseWindow.offset,browseWindow.offset+browseWindow.size):filtered.slice(0,limit);
  const savedExport=JSON.stringify({version:1,type:'faceless-saved-prompts',promptIds:saved},null,2);
  const savedText='# Saved prompts\n\n'+prompts.filter(p=>saved.includes(p.id)).map(p=>'## '+p.title+'\n\n'+p.prompt+'\n').join('\n');
  return <>
@@ -32,9 +34,9 @@ export default function PromptExplorer({prompts,validIds,initialCategory='',init
    </div>
    <p className="muted small">Levels describe setup complexity. Destinations are suggestions for adapting the wording; use your tool’s supported controls.</p>
   </div>
-  <div className="library-result-bar"><p className="result-count" role="status" aria-live="polite">{filtered.length} {filtered.length===1?'prompt':'prompts'}{query?' matching “'+query+'”':''}</p><details className="saved-transfer"><summary>Move your saved prompts</summary><p>Bookmarks stay in this browser. Export a backup and import it on your new domain or another device.</p><div className="button-row">{!!saved.length&&<><DownloadButton text={savedExport} filename="faceless-saved-prompts.json" label="Export bookmarks" mime="application/json"/><DownloadButton text={savedText} filename="saved-prompts.md" label="Download prompt text"/></>}<button className="copy-button" onClick={()=>importRef.current?.click()}>Import bookmarks</button></div><input className="sr-only" type="file" accept="application/json,.json" tabIndex={-1} ref={importRef} onChange={importSaved} aria-label="Import saved prompt bookmarks"/></details></div>
+  <div className="library-result-bar"><p className="result-count" role="status" aria-live="polite">{isBrowsing&&browseWindow?('Showing '+(browseWindow.offset+1)+'–'+(browseWindow.offset+visible.length)+' of '+filtered.length+' prompts'):(filtered.length+' '+(filtered.length===1?'prompt':'prompts')+(query?' matching “'+query+'”':''))}</p><details className="saved-transfer"><summary>Move your saved prompts</summary><p>Bookmarks stay in this browser. Export a backup anytime to transfer them to another browser or device.</p><div className="button-row">{!!saved.length&&<><DownloadButton text={savedExport} filename="faceless-saved-prompts.json" label="Export bookmarks" mime="application/json"/><DownloadButton text={savedText} filename="saved-prompts.md" label="Download prompt text"/></>}<button className="copy-button" onClick={()=>importRef.current?.click()}>Import bookmarks</button></div><input className="sr-only" type="file" accept="application/json,.json" tabIndex={-1} ref={importRef} onChange={importSaved} aria-label="Import saved prompt bookmarks"/></details></div>
   {notice&&<p className="notice" role="status">{notice}</p>}
-  <div className="prompt-grid">{filtered.slice(0,limit).map(p=>{const info=getPromptInfo(p);return <article className="prompt-card" key={p.id}>
+  <div className="prompt-grid">{visible.map(p=>{const info=getPromptInfo(p);return <article className="prompt-card" key={p.id}>
    <div className="card-meta"><span className="pill">{CATEGORY_LABELS[p.category]}</span><button type="button" className="plain-icon" aria-label={(saved.includes(p.id)?'Unsave ':'Save ')+p.title} aria-pressed={saved.includes(p.id)} onClick={()=>toggle(p.id)}><Bookmark size={17} fill={saved.includes(p.id)?'currentColor':'none'}/></button></div>
    <a href={'/prompts/'+p.id}><h3>{p.title}</h3></a><div className="prompt-tags"><span>{info.level}</span><span>{info.formats.join(' / ')}</span></div>
    <p className="prompt-excerpt">{p.tips||p.prompt.slice(0,190)+(p.prompt.length>190?'…':'')}</p>
@@ -42,7 +44,7 @@ export default function PromptExplorer({prompts,validIds,initialCategory='',init
    <div className="card-actions"><CopyButton text={p.prompt}/><a className="text-link" href={'/prompts/'+p.id}>Customize <ArrowUpRight size={16}/></a></div>
   </article>;})}</div>
   {!filtered.length&&<div className="empty-state"><h2>{onlySaved?'No saved prompts match these filters.':'No prompts found.'}</h2><p>{onlySaved?'Try clearing filters, or bookmark a prompt to keep it in this browser.':'Try a broader search or a different tool and format.'}</p><button className="button button-outline" onClick={reset}>Browse all prompts</button></div>}
-  {limit<filtered.length&&<div className="load-more"><button className="button button-outline" onClick={()=>setLimit(limit+12)}>Show more prompts ({filtered.length-limit} remaining)</button></div>}
+  {isBrowsing?pagination:limit<filtered.length&&<div className="load-more"><button className="button button-outline" onClick={()=>setLimit(limit+12)}>Show more prompts ({filtered.length-limit} remaining)</button></div>}
  </>;
 }
 

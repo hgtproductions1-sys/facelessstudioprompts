@@ -1,6 +1,8 @@
 import {z} from 'zod';
 import {ENGINES,STYLES,FORMATS,timeline,buildTemplate,type Blueprint} from '@/lib/blueprint';
 import {NICHES_DATA} from '@/data/niches';
+import {studioAiKey} from '@/lib/studioAi';
+import {reserveStudioDraft} from '@/lib/studioRateLimit';
 
 export const dynamic='force-dynamic';
 export const runtime='nodejs';
@@ -8,22 +10,54 @@ export const maxDuration=180;
 const options=z.object({topic:z.string().trim().min(3).max(300),niche:z.string().refine(s=>NICHES_DATA.some(n=>n.id===s)),engine:z.enum(ENGINES),style:z.enum(STYLES),format:z.enum(['short','story','long','documentary']),mode:z.enum(['ai','template']).default('ai')});
 const text=z.string().trim().min(1).max(5000);
 const draftSchema=z.object({hook:text,character:text,shots:z.array(z.object({title:text,action:text,narration:text,camera:text,sound:text})).min(6).max(8),thumbnail:text,editing:z.array(text).min(2).max(8)});
-const limits=new Map<string,{count:number;reset:number}>();
-function limited(ip:string){const now=Date.now();if(limits.size>2048){for(const [k,v] of limits)if(v.reset<now)limits.delete(k);if(limits.size>2048)return true;}let l=limits.get(ip);if(!l||l.reset<now){l={count:0,reset:now+60000};limits.set(ip,l);}l.count++;return l.count>4;}
-function json(data:unknown,status=200){return Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});}
-export async function GET(){return json({aiAvailable:Boolean(process.env.GLM_API_KEY?.trim()),templateAvailable:true});}
+const MAX_BYTES = 8192;
+
+class OversizeBodyError extends Error {}
+
+async function readDraftRequest(req: Request): Promise<unknown> {
+  if (Number(req.headers.get('content-length')) > MAX_BYTES) throw new OversizeBodyError();
+  if (!req.body) throw new SyntaxError('Missing JSON');
+
+  const reader = req.body.getReader();
+  const decoder = new TextDecoder('utf-8', {fatal: true});
+  let length = 0;
+  let body = '';
+  try {
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      length += value.byteLength;
+      if (length > MAX_BYTES) {
+        await reader.cancel();
+        throw new OversizeBodyError();
+      }
+      body += decoder.decode(value, {stream: true});
+    }
+    return JSON.parse(body + decoder.decode());
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+function json(data: unknown, status = 200, retryAfter?: number) {
+  const headers = new Headers({'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+  if (retryAfter) headers.set('Retry-After', String(retryAfter));
+  return Response.json(data, {status, headers});
+}
+export async function GET(){return json({aiAvailable:Boolean(studioAiKey()),templateAvailable:true});}
 
 export async function POST(req:Request){
  let raw:unknown;
- try{const body=await req.text();if(body.length>8192)return json({error:'The request is too large.'},413);raw=JSON.parse(body);}catch{return json({error:'Send a valid JSON request.'},400);}
+ try{raw=await readDraftRequest(req);}catch(error){return error instanceof OversizeBodyError?json({error:'The request is too large.'},413):json({error:'Send a valid JSON request.'},400);}
  const parsed=options.safeParse(raw);
  if(!parsed.success)return json({error:'Choose a valid niche, format, style, and tool, and enter a topic between 3 and 300 characters.'},400);
  const o=parsed.data;
  if(o.mode==='template')return json(buildTemplate(o));
- const key=process.env.GLM_API_KEY?.trim();
- if(!key)return json({error:'AI drafting is temporarily unavailable. Your topic is saved; please try again later.'},503);
- const ip=process.env.VERCEL?req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()||'shared':req.headers.get('cf-connecting-ip')||req.headers.get('oai-authenticated-user-id')||'shared';
- if(limited(ip))return json({error:'Please wait a minute before requesting another AI draft.'},429);
+ const key=studioAiKey();
+ if(!key)return json({error:'Live AI drafting is offline. You can continue with an Instant Blueprint or Master AI Brief.'},503);
+ let retryAfter: number;
+ try{retryAfter=await reserveStudioDraft(req);}catch{return json({error:'The live AI request limit could not be checked. Use an Instant Blueprint or Master AI Brief to keep planning.'},503);}
+ if(retryAfter)return json({error:'You can request two live AI drafts in 24 hours. Use an Instant Blueprint or Master AI Brief to keep planning.'},429,retryAfter);
  const niche=NICHES_DATA.find(n=>n.id===o.niche)!;
  const format=FORMATS.find(f=>f.id===o.format)!;
  const model=process.env.AI_MODEL?.trim()||'auto';
@@ -39,7 +73,7 @@ export async function POST(req:Request){
   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),Math.min(attempt===0?90000:25000,remaining));
   try{
    const response=await fetch(process.env.GLM_API_URL||'https://api.hcnsec.cn/v1/chat/completions',{method:'POST',signal:controller.signal,headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model,temperature:.5,max_tokens:7500,reasoning_effort:'low',...(attempt===0?{response_format:{type:'json_object'}}:{}),messages})});
-   if(!response.ok){console.warn('[generate] Provider request failed',{status:response.status,model,elapsedMs:Date.now()-started});return json({error:response.status===429?'The AI provider is busy. Please wait before trying again.':response.status===401||response.status===403?'AI drafting is temporarily unavailable. Your topic is saved; please try again later.':'The AI provider is temporarily unavailable. Your topic is saved; please try again.'},response.status===429?429:response.status===401||response.status===403?503:502);}
+   if(!response.ok){console.warn('[generate] Provider request failed',{status:response.status,model,elapsedMs:Date.now()-started});return json({error:response.status===429?'The AI provider is busy.':response.status===401||response.status===403?'The AI provider could not authorize this draft.':'The AI provider could not complete the draft.'},response.status===429?429:response.status===401||response.status===403?503:502);}
    const payload=await response.json() as {model?:string;choices?:{finish_reason?:string;message?:{content?:string}}[]};
    const choice=payload.choices?.[0];
    const content=(choice?.message?.content||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');
