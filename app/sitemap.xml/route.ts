@@ -3,11 +3,13 @@ import {NICHE_PAGES} from '@/data/niches';
 import {PROMPT_COLLECTION_SLUGS,PROMPT_PAGE_SLUGS} from '@/data/promptPages';
 import {ARTICLE_GUIDES} from '@/data/articleGuides';
 import {VIDEOS} from '@/data/videos';
+import {FREE_TOOL_PAGES} from '@/data/freeToolPages';
+import {modelHubs} from '@/data/modelPromptHubs';
 import {INFO_PAGES} from '@/data/legal';
 import {getEditorialPosts,editorialPath} from '@/lib/editorial';
 import editorialConfig from '@/config/editorial.json';
 export const dynamic='force-dynamic';
-export function allPaths(){return [...new Set(['/', '/start-here','/studio','/prompts','/niches','/guides','/videos','/free-tools','/ai-tools-hub','/faceless-youtube-automation','/updates',...Object.keys(INFO_PAGES).map(s=>'/'+s),...NICHE_PAGES.map(n=>'/niches/'+n.slug),...[...PROMPT_COLLECTION_SLUGS,...PROMPT_PAGE_SLUGS].map(s=>'/prompts/'+s),...ARTICLE_GUIDES.map(g=>'/guides/'+g.slug),...VIDEOS.map(v=>'/videos/'+v.slug)])];}
+export function allPaths(){return [...new Set(['/', '/start-here','/studio','/prompts','/niches','/guides','/videos','/free-tools','/ai-tools-hub','/faceless-youtube-automation','/updates',...Object.keys(INFO_PAGES).map(s=>'/'+s),...FREE_TOOL_PAGES.map(p=>'/free-tools/'+p.slug),...modelHubs.map(hub=>'/prompts/'+hub.slug),...NICHE_PAGES.map(n=>'/niches/'+n.slug),...[...PROMPT_COLLECTION_SLUGS,...PROMPT_PAGE_SLUGS].map(s=>'/prompts/'+s),...ARTICLE_GUIDES.map(g=>'/guides/'+g.slug),...VIDEOS.map(v=>'/videos/'+v.slug)])];}
 const PAGE_MODIFIED:Record<string,string>={'/':'2026-11-03','/free-tools':'2026-11-03','/ai-tools-hub':'2026-11-03','/faceless-youtube-automation':'2026-11-03','/cookies':'2026-11-03','/start-here':'2026-10-08','/studio':'2026-11-03','/prompts':'2026-10-08','/niches':'2026-10-08','/guides':'2026-10-08','/videos':'2026-10-08','/about':'2026-10-11','/contact':'2026-10-11','/terms':'2026-10-11','/updates':'2026-11-03','/editorial-policy':'2026-10-08','/privacy':'2026-11-03'};
 export function modifiedFor(path:string){const guide=ARTICLE_GUIDES.find(g=>path==='/guides/'+g.slug);return guide?new Date(guide.updated).toISOString().slice(0,10):PAGE_MODIFIED[path];}
 function escape(s:string){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

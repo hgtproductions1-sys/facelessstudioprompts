@@ -31,6 +31,11 @@ import Videos from '../app/videos/page';
 import VideoPage,{generateMetadata as videoMetadata} from '../app/videos/[slug]/page';
 import StudioPage from '../app/studio/page';
 import FreeTools from '../app/free-tools/page';
+import DedicatedTool,{generateMetadata as toolMetadata} from '../app/free-tools/[slug]/page';
+import {FREE_TOOL_PAGES} from '../data/freeToolPages';
+import {modelHubs} from '../data/modelPromptHubs';
+import {POST as subscribe} from '../app/api/subscribe/route';
+import {POST as studioEmail} from '../app/api/studio-email/route';
 import Tools from '../app/ai-tools-hub/page';
 import Workflow from '../app/faceless-youtube-automation/page';
 import InfoPage,{generateMetadata as infoMetadata} from '../app/[page]/page';
@@ -73,6 +78,7 @@ assert.deepEqual(filterVideos(VIDEOS,'  RUNWAY  ','').map(v=>v.slug),['runway-ch
 assert.deepEqual(filterVideos(VIDEOS,'','Publishing').map(v=>v.slug),['youtube-ai-content-disclosure']);
 assert.equal(filterVideos(VIDEOS,'no-such-video-lesson','').length,0);
 assert.equal(new Set([...PROMPTS.map(p=>p.id),...PROMPT_COLLECTIONS.map(p=>p.slug)]).size,PROMPTS.length+PROMPT_COLLECTIONS.length);
+assert(modelHubs.every(hub=>!PROMPTS.some(prompt=>prompt.id===hub.slug)&&!PROMPT_COLLECTIONS.some(collection=>collection.slug===hub.slug)));
 assert.equal(resolveSiteUrl('https://thefacelessprompts.com/'),'https://thefacelessprompts.com');
 for(const origin of ['http://example.com','https://example.com/path','https://user:pass@example.com','https://example.com?q=x','https://example.com/#x'])assert.throws(()=>resolveSiteUrl(origin));
 assert.equal(modifiedFor('/prompts/char-identity-lock'),undefined);
@@ -90,7 +96,7 @@ for(const p of PROMPTS){const info=getPromptInfo(p);assert(ARTICLE_GUIDES.some(g
 for(const p of START_PATHS){assert(NICHES_DATA.some(n=>n.id===p.niche));assert(PROMPTS.some(x=>x.id===p.prompt));assert(ARTICLE_GUIDES.some(g=>g.slug===p.guide));assert(VIDEOS.some(v=>v.slug===p.video));const u:URL=new URL(studioUrl(p,'An idea & another idea','story','Runway'),SITE_URL);assert.equal(u.searchParams.get('topic'),'An idea & another idea');assert.equal(u.searchParams.get('niche'),p.niche);assert.equal(u.searchParams.get('format'),'story');}
 assert(compileMasterBrief(DEFAULT_OPTIONS).includes(DEFAULT_OPTIONS.topic));
 let blueprintChecks=0;
-for(const n of NICHES_DATA){assert(NICHE_PAGES.some(p=>p.slug===n.id));assert(getNicheGuide(n.slug));for(const f of FORMATS){const o={...DEFAULT_OPTIONS,niche:n.id,format:f.id,topic:'An original production brief for '+n.title};const b=buildTemplate(o);assert.equal(b.source,'template');assert.equal(b.shots.length,f.shots);assert(b.topic===o.topic);assert(b.niche===n.title);assert.equal(b.shots[0].time.split(' – ')[0],'0:00');assert.equal(b.shots.at(-1)!.time.split(' – ')[1],Math.floor(f.seconds/60)+':00');assert.deepEqual(b.shots.map(s=>s.time),timeline(f.shots,f.id));assert(exportBlueprint(b,'Universal').includes(o.topic));assert(formatShot(b.shots[0],b,'Midjourney').startsWith('Create a single reference frame.'));assert(!formatShot(b.shots[0],b,'Runway').includes('--motion'));blueprintChecks++;}}
+for(const n of NICHES_DATA){assert(NICHE_PAGES.some(p=>p.slug===n.id));assert(getNicheGuide(n.slug));for(const f of FORMATS){const o={...DEFAULT_OPTIONS,niche:n.id,format:f.id,topic:'An original production brief for '+n.title};const b=buildTemplate(o);assert.equal(b.source,'template');assert.equal(b.shots.length,f.shots);assert(b.topic===o.topic);assert(b.niche===n.title);assert.equal(b.shots[0].time.split(' – ')[0],'0:00');assert.equal(b.shots.at(-1)!.time.split(' – ')[1],Math.floor(f.seconds/60)+':'+String(f.seconds%60).padStart(2,'0'));assert.deepEqual(b.shots.map(s=>s.time),timeline(f.shots,f.id));assert(exportBlueprint(b,'Universal').includes(o.topic));assert(formatShot(b.shots[0],b,'Midjourney').startsWith('Create a single reference frame.'));assert(!formatShot(b.shots[0],b,'Runway').includes('--motion'));blueprintChecks++;}}
 const aiEnv = ['GLM_API_KEY','NEXT_PUBLIC_STUDIO_AI_ENABLED','VERCEL','UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN'] as const;
 const originalEnv = Object.fromEntries(aiEnv.map(key=>[key,process.env[key]]));
 const originalFetch=globalThis.fetch;
@@ -122,6 +128,56 @@ try{
  globalThis.fetch=(async()=>{throw new DOMException('Timed out','AbortError');}) as typeof fetch;assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'timeout'))).status,504);
  for(let i=0;i<2;i++)assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,504);assert.equal((await POST(req({...DEFAULT_OPTIONS,mode:'ai'},'rate-test'))).status,429);
 }finally{globalThis.fetch=originalFetch;for(const key of aiEnv){const value=originalEnv[key];if(value===undefined)delete process.env[key];else process.env[key]=value;}}
+const emailEnv=['EMAIL_CAPTURE_ENABLED','EMAIL_PROVIDER','EMAIL_API_KEY','EMAIL_LIST_ID','EMAIL_FROM','STUDIO_EMAIL_RESEND_API_KEY','UPSTASH_REDIS_REST_URL','UPSTASH_REDIS_REST_TOKEN','VERCEL'] as const;
+const emailEnvBefore=Object.fromEntries(emailEnv.map(key=>[key,process.env[key]]));
+for(const key of emailEnv)delete process.env[key];
+let emailRequestNumber=40;
+const emailRequest=(path:string,body:Record<string,unknown>,origin=SITE_URL)=>new Request(SITE_URL+path,{
+ method:'POST',headers:{Origin:origin,'Content-Type':'application/json','x-vercel-forwarded-for':'198.51.100.'+emailRequestNumber++},body:JSON.stringify(body),
+});
+try{
+ const payload={email:'tester@example.com'};
+ assert.equal((await subscribe(emailRequest('/api/subscribe',payload))).status,503);
+ assert.equal((await studioEmail(emailRequest('/api/studio-email',payload))).status,503);
+ process.env.EMAIL_CAPTURE_ENABLED='true';
+ process.env.EMAIL_API_KEY='test-only';
+ process.env.VERCEL='1';
+ const recorded:{url:string;body:Record<string,unknown>}[]=[];
+ globalThis.fetch=(async(input,options)=>{
+  recorded.push({url:String(input),body:JSON.parse(String(options?.body))});
+  return Response.json({id:'test-only'});
+ }) as typeof fetch;
+ const trials=[
+  ['resend','seg_test','https://api.resend.com/contacts',false],
+  ['kit','1234','https://api.convertkit.com/v3/forms/1234/subscribe',true],
+  ['beehiiv','pub_test','https://api.beehiiv.com/v2/publications/pub_test/subscriptions',true],
+  ['buttondown','workflow','https://api.buttondown.com/v1/subscribers',true],
+ ] as const;
+ for(const [provider,listId,endpoint,confirmation] of trials){
+  process.env.EMAIL_PROVIDER=provider;
+  process.env.EMAIL_LIST_ID=listId;
+  const result=await subscribe(emailRequest('/api/subscribe',{email:provider+'@example.com'}));
+  assert.equal(result.status,200);
+  assert.equal((await result.json() as {confirmation:boolean}).confirmation,confirmation);
+  assert.equal(recorded.at(-1)?.url,endpoint);
+ }
+ assert.equal((await subscribe(emailRequest('/api/subscribe',payload,'https://unrelated.example.com'))).status,403);
+ assert.equal((await subscribe(emailRequest('/api/subscribe',{email:'bad'}))).status,400);
+ const calls=recorded.length;
+ assert.equal((await subscribe(emailRequest('/api/subscribe',{...payload,website:'filled'}))).status,200);
+ assert.equal(recorded.length,calls);
+ process.env.EMAIL_FROM='The Faceless Prompts <delivery@example.com>';
+ process.env.STUDIO_EMAIL_RESEND_API_KEY='test-only';
+ const summary={topic:'Paper lamps',niche:'DIY',hook:'A clear opening',shots:[{title:'Reveal',time:'0:01',action:'Show the page'}]};
+ const delivery=await studioEmail(emailRequest('/api/studio-email',{...payload,summary}));
+ assert.equal(delivery.status,200);
+ assert.equal(recorded.length,calls+1);
+ assert.equal(recorded.at(-1)?.url,'https://api.resend.com/emails');
+ assert.deepEqual(recorded.at(-1)?.body.to,[payload.email]);
+}finally{
+ globalThis.fetch=originalFetch;
+ for(const key of emailEnv){const value=emailEnvBefore[key];if(value===undefined)delete process.env[key];else process.env[key]=value;}
+}
 assert(!schema({name:'</script><script>bad</script>'}).includes('</script>'));
 const xml=await (await sitemap()).text();assert.equal((xml.match(/<loc>/g)||[]).length,paths.length);assert(paths.every(p=>xml.includes('<loc>'+SITE_URL+p+'</loc>')));
 assert((await (await videoSitemap()).text()).includes('<video:player_loc>'));assert((await (await robots()).text()).includes('Disallow: /api/'));
@@ -146,6 +202,16 @@ assert.equal(filteredLibrary.alternates?.canonical,SITE_URL+'/prompts');
 assert.deepEqual(filteredLibrary.robots,{index:false,follow:true});
 await assert.rejects(()=>Prompts({searchParams:Promise.resolve({page:'999'})}));
 for(const n of NICHE_PAGES){await page('/niches/'+n.slug,await NichePage({params:Promise.resolve({slug:n.slug})}));const m=await nicheMetadata({params:Promise.resolve({slug:n.slug})});assert.equal(m.alternates?.canonical,SITE_URL+'/niches/'+n.slug);}
+for(const tool of FREE_TOOL_PAGES){
+ const params=Promise.resolve({slug:tool.slug});
+ await page('/free-tools/'+tool.slug,await DedicatedTool({params}));
+ assert.equal((await toolMetadata({params})).alternates?.canonical,SITE_URL+'/free-tools/'+tool.slug);
+}
+for(const hub of modelHubs){
+ const params=Promise.resolve({slug:hub.slug});
+ await page('/prompts/'+hub.slug,await PromptPage({params}));
+ assert.equal((await promptMetadata({params})).alternates?.canonical,SITE_URL+'/prompts/'+hub.slug);
+}
 const promptDescriptions:string[]=[];
 for(const p of [...PROMPTS.map(x=>x.id),...PROMPT_COLLECTIONS.map(x=>x.slug)]){await page('/prompts/'+p,await PromptPage({params:Promise.resolve({slug:p})}));const m=await promptMetadata({params:Promise.resolve({slug:p})});assert.equal(m.alternates?.canonical,SITE_URL+'/prompts/'+p);assert(m.description);promptDescriptions.push(m.description!);}
 assert.equal(new Set(promptDescriptions).size,promptDescriptions.length);

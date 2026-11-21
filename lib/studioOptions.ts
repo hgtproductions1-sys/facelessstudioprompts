@@ -1,6 +1,13 @@
 export const ENGINES=['Google Flow / Veo','Runway','Kling','Sora','Luma','Pika','Hailuo','Leonardo','Midjourney','Flux','Universal'] as const;
 export const STYLES=['Cinematic natural light','Cozy storybook','Documentary realism','Clean illustration','Moody noir','Dreamlike fantasy'] as const;
-export const FORMATS=[{id:'short',label:'60-second Short / Reel',seconds:60,ratio:'9:16',shots:6},{id:'story',label:'3-minute story',seconds:180,ratio:'16:9',shots:8},{id:'long',label:'10-minute video',seconds:600,ratio:'16:9',shots:8},{id:'documentary',label:'15-minute documentary',seconds:900,ratio:'16:9',shots:8}] as const;
+export const FORMATS=[
+ {id:'short',label:'60-second Short / Reel',seconds:60,ratio:'9:16',shots:6},
+ {id:'short-45',label:'45-second Short / Reel',seconds:45,ratio:'9:16',shots:6},
+ {id:'story',label:'3-minute story',seconds:180,ratio:'16:9',shots:8},
+ {id:'long-8',label:'8-minute video',seconds:480,ratio:'16:9',shots:8},
+ {id:'long',label:'10-minute video',seconds:600,ratio:'16:9',shots:8},
+ {id:'documentary',label:'15-minute documentary',seconds:900,ratio:'16:9',shots:8},
+] as const;
 export type Options={topic:string;niche:string;engine:string;style:string;format:string};
 export type Shot={title:string;action:string;narration:string;camera:string;sound:string;time:string};
 export type Blueprint={topic:string;niche:string;format:string;style:string;hook:string;character:string;shots:Shot[];thumbnail:string;editing:string[];source:'template'|'ai'};

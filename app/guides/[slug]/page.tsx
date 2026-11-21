@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {Breadcrumbs,PageIntro,JsonLd} from '@/components/Shared';
 import AuthorByline from '@/components/AuthorByline';
@@ -13,6 +14,7 @@ import {metadataFor,SITE_NAME,SITE_URL} from '@/lib/site';
 import {responsiveImage} from '@/lib/images';
 import EditorialPost,{editorialMetadata} from '@/components/EditorialPost';
 import {getEditorialPost} from '@/lib/editorial';
+import {FREE_TOOL_PAGES} from '@/data/freeToolPages';
 import editorialConfig from '@/config/editorial.json';
 
 export function generateStaticParams(){return ARTICLE_GUIDES.map(g=>({slug:g.slug}));}
@@ -26,6 +28,8 @@ export default async function Page({params}:{params:Promise<{slug:string}>}) {
   if(!g){const cms=await getEditorialPost('guides',slug);if(cms)return <EditorialPost post={cms}/>;notFound();}
   const image=GUIDE_IMAGES[slug];
   const lesson=getPrimaryVideoForGuide(slug);
+  const tools=slug==='faceless-content-workflow'?FREE_TOOL_PAGES:
+    slug==='write-ai-video-prompts'?FREE_TOOL_PAGES.filter(tool=>tool.slug==='faceless-video-script-generator'):[];
   const url=SITE_URL+'/guides/'+slug;
   const modified=editorialDate(g.updated);
   return <div className="container page-content">
@@ -55,8 +59,9 @@ export default async function Page({params}:{params:Promise<{slug:string}>}) {
         {!!g.sources?.length&&<section id="sources"><h2>Sources & further reading</h2><ul>{g.sources.map(s=><li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label} ↗</a>{s.note&&<p>{s.note}</p>}</li>)}</ul><p>Provider features and platform policies can change. Use the linked primary sources to check requirements for your project.</p></section>}
         <section id="next">
           <h2>Put it into practice.</h2>
+          {!!tools.length&&<ul>{tools.map(tool=><li key={tool.slug}><a href={'/free-tools/'+tool.slug}>{tool.title}</a></li>)}</ul>}
           <div className="related-grid">{[...new Set(g.relatedPromptSlugs)].map(s=>{const p=getPromptBySlug(s);const c=getPromptCollection(s);return p||c?<a className="related-card" href={'/prompts/'+s} key={s}>{p?.title||c?.label} ↗</a>:null;})}{g.relatedNicheSlugs.map(s=>{const n=getNichePage(s);return n?<a className="related-card" href={'/niches/'+s} key={s}>{n.name} playbook ↗</a>:null;})}</div>
-          <a className="button" href="/studio">Create a video plan ↗</a>
+          <Link className="button" href="/studio">Create a video plan ↗</Link>
         </section>
       </article>
       <aside className="toc"><h2>In this guide</h2>{g.sections.map(s=><a href={'#'+s.id} key={s.id}>{s.title}</a>)}{lesson&&<a href="#watch-related">Watch a related lesson</a>}{!!g.sources?.length&&<a href="#sources">Sources & further reading</a>}<a href="#next">Put it into practice</a></aside>

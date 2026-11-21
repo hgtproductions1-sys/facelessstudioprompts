@@ -98,7 +98,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
       ]},
       {title: 'Browser storage and exports', body: [
         'Saved prompts, the Studio input draft, and beginner-checklist progress are stored in your browser’s local storage. They are specific to that browser and are not synchronized to an account. Clear site data in your browser to remove them. Moving to a different domain does not automatically move this data.',
-        'Bookmark and creative-brief exports are files you choose to download. Importing one updates the local browser data. Generated production plans can also be copied or downloaded. Editable prompt fields are held in the current page and reset when it is reloaded.'
+        'Bookmark and production-kit exports are files you choose to download. Importing one updates local browser data. Filled prompt placeholders are saved in the browser tab’s session storage. Use Clear saved inputs in the prompt library to remove them.'
       ]},
       {title: 'Template tools', body: [
         'The free helper tools and template planner build output in your browser. The Studio checks AI availability through the site’s server, but using template mode does not send your topic to an AI provider.'
@@ -129,6 +129,10 @@ export const INFO_PAGES: Record<string, InfoPage> = {
         'Local drafts, saved prompts, and checklist progress remain in this browser until you remove them or clear site data. Downloaded exports remain wherever you saved the files. You can remove the site’s saved browser data with the control on this page.',
         'Hosting, email, and AI providers control retention of their operational records under their own policies. This project has not verified a fixed retention period for every provider. Contact the operator about information in an email inquiry or about a specific request; do not include a copy of sensitive material simply to identify it.'
       ]},
+      {title: 'Optional email delivery and newsletter', body: [
+        'If the email features are available and you request a Studio blueprint by email, the site sends your address and the blueprint summary to the delivery provider. A blueprint request subscribes you to the newsletter only if you select the newsletter checkbox.',
+        'If you sign up for the newsletter, the configured email provider stores your address to deliver the newsletter. Your provider may ask you to confirm the signup. Use the unsubscribe link in any newsletter to stop receiving it.'
+      ]},
       {title: 'Your privacy choices and requests', body: [
         `You can ask ${CONTACT_EMAIL} what personal information the project holds about you and request correction or deletion. Depending on your location, you may also have rights to access, restrict or object to processing, or complain to your local data-protection authority. Include enough context to identify the request without sending passwords or identification documents in your initial message.`,
         'The operator can address information within the project’s control. For a request relating to an external provider’s independent records, that provider may need to handle it directly. Browser privacy settings and Google’s advertising settings give you additional controls over cookies and advertising.'
@@ -150,7 +154,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     sections: [
       {title: 'Storage used by the planning tools',body:[
         'The prompt library uses fp-saved-prompts for bookmarks. The Studio uses fp-studio-draft for your input draft. The beginner checklist uses fp-start-progress. These values use local storage, remain in this browser until removed, and are not a server account or a cross-device profile.',
-        'The free helper tools keep their current inputs in the page. The public site does not load a separate analytics service. Private editorial preview sessions use a separate session cookie to keep unpublished material private; public readers do not need that cookie.'
+        'Prompt placeholder values use the tab’s session storage under tfp_prompt_vars_v1. You can clear them in the prompt library or through your browser. The free helper tools keep their current inputs in the page. The public site does not load a separate analytics service. Private editorial previews use a session cookie.'
       ],links:[{label:'Clear saved browser data',href:'/privacy#browser-data'}]},
       {title:'Google advertising and YouTube',body:[
         'Google advertising and YouTube players can connect to external services and use cookies or similar technologies under their own policies. A privacy-enhanced YouTube embed is not a promise that interacting with a video sends no information to Google.',

@@ -7,7 +7,7 @@ import {reserveStudioDraft} from '@/lib/studioRateLimit';
 export const dynamic='force-dynamic';
 export const runtime='nodejs';
 export const maxDuration=180;
-const options=z.object({topic:z.string().trim().min(3).max(300),niche:z.string().refine(s=>NICHES_DATA.some(n=>n.id===s)),engine:z.enum(ENGINES),style:z.enum(STYLES),format:z.enum(['short','story','long','documentary']),mode:z.enum(['ai','template']).default('ai')});
+const options=z.object({topic:z.string().trim().min(3).max(300),niche:z.string().refine(s=>NICHES_DATA.some(n=>n.id===s)),engine:z.enum(ENGINES),style:z.enum(STYLES),format:z.string().refine(id=>FORMATS.some(format=>format.id===id)),mode:z.enum(['ai','template']).default('ai')});
 const text=z.string().trim().min(1).max(5000);
 const draftSchema=z.object({hook:text,character:text,shots:z.array(z.object({title:text,action:text,narration:text,camera:text,sound:text})).min(6).max(8),thumbnail:text,editing:z.array(text).min(2).max(8)});
 const MAX_BYTES = 8192;

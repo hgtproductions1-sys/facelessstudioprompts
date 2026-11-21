@@ -1,0 +1,83 @@
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+}
+
+.results {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.results h2 {
+  font-size: 25px;
+}
+
+.card {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  min-width: 0;
+}
+
+.card label,
+.card strong {
+  font-size: 13px;
+}
+
+.card.card textarea {
+  display: block;
+  margin-block: 6px 0;
+}
+
+.card button {
+  justify-self: start;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.mode.mode input[type="radio"] {
+  width: auto;
+  margin: 0 6px 0 0;
+  accent-color: var(--accent);
+}
+
+.resultNote {
+  margin-block: 12px 0 !important;
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 360px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.table thead {
+  background: var(--surface2);
+}
+
+@media (max-width: 520px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+}

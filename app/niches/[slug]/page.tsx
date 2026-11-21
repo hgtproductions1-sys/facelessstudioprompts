@@ -126,6 +126,7 @@ export default async function Page({params}: Props) {
               {guide && <a className="related-card" href={'/guides/' + guide.slug}>{guide.title} ↗</a>}
               {lesson && <a className="related-card" href={'/videos/' + lesson.slug}>Watch: {lesson.title} ↗</a>}
               <a className="related-card" href="/prompts/video-generation">Browse video prompt templates ↗</a>
+            <a className="related-card" href="/free-tools/faceless-video-script-generator">Draft a faceless video script ↗</a>
               <a className="related-card" href="/start-here">Follow the beginner checklist ↗</a>
             </div>
           </section>

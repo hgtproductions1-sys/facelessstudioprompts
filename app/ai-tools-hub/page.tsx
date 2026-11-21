@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import ResourceNotes from '@/components/ResourceNotes';
 import AuthorByline from '@/components/AuthorByline';
 import {ArrowUpRight} from 'lucide-react';
@@ -27,7 +28,7 @@ export default function Page() {
       </article>)}
     </div>
     <ResourceNotes path="/ai-tools-hub"/>
-    <a className="text-link" href="/editorial-policy">How we evaluate and update listed tools ↗</a>
+    <Link className="text-link" href="/editorial-policy">How we evaluate and update listed tools ↗</Link>
   </div>;
 }
 

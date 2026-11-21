@@ -10,6 +10,8 @@ import {INFO_PAGES} from '@/data/legal';
 import {PRODUCT_UPDATES} from '@/data/productUpdates';
 import {RESOURCE_NOTES} from '@/data/creatorResources';
 import {START_PATHS} from '@/data/startPaths';
+import {FREE_TOOL_PAGES,getFreeToolPage} from '@/data/freeToolPages';
+import {getModelHub,getModelHubPrompts,modelHubs} from '@/data/modelPromptHubs';
 import {getEditorialPosts,editorialPath,safeContentUrl,cmsImageUrl,cmsBodyImage,cmsYoutubeId,type EditorialPost} from '@/lib/editorial';
 import editorialConfig from '@/config/editorial.json';
 
@@ -45,6 +47,8 @@ export function publicPages(posts:EditorialPost[]):PublicPage[]{
  const migrated=new Set<string>(editorialConfig.migratedGuideSlugs);
  return [...mainPages,...Object.entries(INFO_PAGES).map(([slug,p])=>({path:'/'+slug,title:p.eyebrow,description:p.description})),
   ...PROMPT_COLLECTIONS.map(p=>({path:'/prompts/'+p.slug,title:p.title,description:p.description})),
+  ...modelHubs.map(p=>({path:'/prompts/'+p.slug,title:p.title,description:p.description})),
+  ...FREE_TOOL_PAGES.map(p=>({path:'/free-tools/'+p.slug,title:p.title,description:p.description})),
   ...PROMPTS.map(p=>({path:'/prompts/'+p.id,title:p.title,description:p.tips||'Editable '+p.category+' prompt template.'})),
   ...NICHE_PAGES.map(n=>({path:'/niches/'+n.slug,title:n.name,description:n.metaDescription})),
   ...ARTICLE_GUIDES.filter(g=>!migrated.has(g.slug)).map(g=>({path:'/guides/'+g.slug,title:g.title,description:g.description})),
@@ -79,6 +83,8 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
  const page=publicPages(posts).find(p=>p.path===path);if(!page)return null;
  const content:string[]=[`# ${page.title}`,`Canonical URL: ${SITE_URL+path}`,page.description];
  const post=posts.find(p=>editorialPath(p)===path);
+ const model=path.startsWith('/prompts/')?getModelHub(path.slice('/prompts/'.length)):undefined;
+ const tool=path.startsWith('/free-tools/')?getFreeToolPage(path.slice('/free-tools/'.length)):undefined;
  if(post){
   content.push(`By ${post.authorName}\n\nPublished: ${post.publishedAt}\nUpdated: ${post._updatedAt}`);
   const cover=cmsImageUrl(post.cover?.url);if(cover)content.push(`![${escape(post.cover?.alt||'')}](${cover})`);
@@ -87,6 +93,22 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   const id=cmsYoutubeId(post.youtubeVideo?.videoId);if(id)content.push(`## Supporting YouTube lesson\n\n${link(post.youtubeVideo?.title||'Watch lesson','https://www.youtube.com/watch?v='+id)}\n\nBy ${post.youtubeVideo?.creator||'the credited creator'}. ${post.youtubeVideo?.description||''}`);
   if(post.sources?.length)content.push('## Sources\n\n'+list(post.sources.flatMap(s=>{const url=safeContentUrl(s.url);return url?[link(s.label||url,url)]:[];})));
   if(post.authorBio)content.push('## About the author\n\n'+post.authorBio);
+ }else if(model){
+  content.push(model.intro,...model.sections.map(section=>'## '+section.heading+'\n\n'+section.paragraphs.join('\n\n')),
+   '## '+model.example.label+'\n\n'+code(model.example.text),
+   ...model.failures.map(failure=>'## '+failure.heading+'\n\n'+failure.symptom+'\n\n'+failure.fix),
+   '## Compatible prompt templates\n\n'+list(getModelHubPrompts(model,PROMPTS).map(prompt=>link(prompt.title,'/prompts/'+prompt.id))),
+   '## Sources\n\n'+list(model.sources.map(source=>link(source.label,source.href))),
+   link('Open the AI tools directory','/ai-tools-hub'),link('Plan this in Studio','/studio'));
+ }else if(tool){
+  content.push(tool.intro,...tool.sections.map(section=>'## '+section.heading+'\n\n'+
+   [...(section.paragraphs??[]),section.bullets?list(section.bullets):''].filter(Boolean).join('\n\n')),
+   ...tool.samples.map(sample=>'## '+sample.title+'\n\n'+sample.summary+'\n\n'+list(sample.beats)),
+   ...(tool.pacingTable?['## Narration pacing reference\n\n'+[
+    '| '+tool.pacingTable.headings.join(' | ')+' |', '| '+tool.pacingTable.headings.map(()=>'---').join(' | ')+' |',
+    ...tool.pacingTable.rows.map(row=>'| '+row.join(' | ')+' |'),
+   ].join('\n')]:[]),
+   ...tool.faq.map(faq=>'## '+faq.question+'\n\n'+faq.answer),list(tool.links.map(item=>link(item.label,item.href))));
  }else if(path.startsWith('/prompts/')){
   const slug=path.split('/')[2],p=PROMPTS.find(p=>p.id===slug),c=PROMPT_COLLECTIONS.find(c=>c.slug===slug);
   if(p)content.push(`By ${SITE_NAME}`,p.tips||'', '## Editable prompt\n\n'+code(p.prompt),'## How to use it\n\nReplace placeholders with your own topic, audience, and source material. Paste the prompt into your chosen tool, check its supported controls, and review the result for accuracy, rights, and fit with the finished video.');
@@ -118,6 +140,7 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   content.push(...workflow.map(([title,body],i)=>`## ${i+1}. ${title}\n\n${body}`));
  }else if(path==='/free-tools'){
   content.push('## Browser tools\n\nHook idea builder: enter your topic to generate five reusable opening structures.\n\nNarration time estimator: divide word count by words per minute, then multiply by 60 to estimate seconds.\n\nSingle-shot prompt builder: combine a subject, one action, camera movement, light, and frame ratio. These interactive tools run in your browser.');
+  content.push('## Dedicated tools\n\n'+list(FREE_TOOL_PAGES.map(tool=>link(tool.title,'/free-tools/'+tool.slug))));
  }
  const indexPrefix:Record<string,string>={'/prompts':'/prompts/','/niches':'/niches/','/guides':'/guides/','/videos':'/videos/','/articles':'/articles/'};
  if(indexPrefix[path])content.push('## Browse\n\n'+list(publicPages(posts).filter(p=>p.path.startsWith(indexPrefix[path])).map(p=>link(p.title,p.path)+' — '+p.description)));

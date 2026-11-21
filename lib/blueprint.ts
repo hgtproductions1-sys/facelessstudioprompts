@@ -12,7 +12,7 @@ export function compileMasterBrief(options: Options) {
   const format = FORMATS.find(f => f.id === options.format) ?? FORMATS[0];
   const soundLed = /asmr|ambient|ambience|satisfying|music/i.test(niche.title)
     || /\b(?:no|without) (?:voiceover|narration)\b/i.test(options.topic);
-  const platform = format.id === 'short' ? 'YouTube Shorts, Reels, or TikTok' : 'YouTube long-form';
+  const platform = format.ratio === '9:16' ? 'YouTube Shorts, Reels, or TikTok' : 'YouTube long-form';
   const beats = timeline(format.shots, format.id);
   const beatPlan = beats.map((time, index) => {
     const guidance = guide?.episodeStructure[index];

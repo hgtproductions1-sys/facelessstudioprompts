@@ -2,6 +2,7 @@
 
 import {useId, useMemo} from 'react';
 import CopyButton, {DownloadButton} from '@/components/CopyButton';
+import {BlueprintEmail} from '@/components/EmailCapture';
 import {
   VOICEOVER_PACES, VISUAL_EXPORT_MODELS, VOICEOVER_TEXT_LIMIT,
   cleanVoiceover, countSpokenWords, estimatedSpeakingSeconds, exportShotListCsv,
@@ -17,13 +18,14 @@ type Props = {
   onNarrationChange: (narration: string) => void;
   model: VisualExportModel;
   onModelChange: (model: VisualExportModel) => void;
+  email?: {newsletter:boolean};
 };
 
 function durationLabel(seconds: number) {
   return Math.floor(seconds / 60) + ':' + String(seconds % 60).padStart(2, '0');
 }
 
-export default function StudioProductionKit({blueprint, options, narration, onNarrationChange, model, onModelChange}: Props) {
+export default function StudioProductionKit({blueprint, options, narration, onNarrationChange, model, onModelChange, email}: Props) {
   const id = useId();
   const voiceover = useMemo(() => cleanVoiceover(narration), [narration]);
   const words = countSpokenWords(voiceover);
@@ -80,6 +82,7 @@ export default function StudioProductionKit({blueprint, options, narration, onNa
           <DownloadButton text={projectBackup} filename="faceless-studio-project.json" label="Download backup (.json)" mime="application/json"/>
         </div>
         <p className={styles.hint}>Restore the backup using Import draft in your creative brief.</p>
+        {email && <BlueprintEmail blueprint={blueprint} offerNewsletter={email.newsletter}/>}
       </section>
     </div>
   </details>;

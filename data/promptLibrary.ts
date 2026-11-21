@@ -3,10 +3,14 @@ import type {FieldTestNote} from '../lib/fieldTest';
 
 export type PromptCategory = "Image Gen" | "Video Gen" | "SEO" | "Character" | "Niche";
 
+export type PromptModel = "veo-3" | "kling" | "midjourney" | "runway" | "leonardo" | "elevenlabs";
+
 export type Prompt = {
   id: string;
   title: string;
   category: PromptCategory;
+  /** Models this template is designed to be adapted for. */
+  compatibleModels: PromptModel[];
   niche?: string;
   prompt: string;
   tips?: string;
@@ -27,6 +31,7 @@ export const PROMPTS: Prompt[] = [
   // ---------------------------------------------------------------- SEO
   {
     id: "seo-title-generator",
+    compatibleModels: [],
     title: "YouTube Title Generator (Title Ideas)",
     category: "SEO",
 
@@ -48,6 +53,7 @@ Output as a numbered list. After each title, append a pipe, a clarity and curios
   },
   {
     id: "seo-description-generator",
+    compatibleModels: [],
     title: "Video Description Generator",
     category: "SEO",
 
@@ -70,6 +76,7 @@ Keep total length between 900 and 1400 characters. Plain text only, no markdown.
   },
   {
     id: "seo-tags-generator",
+    compatibleModels: [],
     title: "Tags Generator (30 Tags, 500 Characters)",
     category: "SEO",
 
@@ -90,6 +97,7 @@ Output only the comma-separated tag string on one line, then on a new line repor
   },
   {
     id: "seo-hashtag-generator",
+    compatibleModels: [],
     title: "Shorts Hashtag Generator",
     category: "SEO",
 
@@ -107,6 +115,7 @@ Then output a single ready-to-paste line of the 8 best hashtags with a mix of br
   },
   {
     id: "seo-channel-name",
+    compatibleModels: [],
     title: "Faceless Channel Name Generator",
     category: "SEO",
 
@@ -128,6 +137,7 @@ Finish with your top 3 picks and one sentence each on why.`,
   },
   {
     id: "seo-full-package",
+    compatibleModels: [],
     title: "Complete SEO Package (Title + Description + Tags)",
     category: "SEO",
 
@@ -165,6 +175,7 @@ Plain text output only.`,
   // ---------------------------------------------------------------- Image Gen
   {
     id: "img-character-sheet",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Consistent Character Sheet (Master Reference)",
     category: "Image Gen",
     niche: "AI Influencer",
@@ -184,6 +195,7 @@ Aspect ratio: 3:2.`,
   },
   {
     id: "img-nano-banana-portrait",
+    compatibleModels: [],
     title: "Nano Banana Hyper-Real Portrait",
     category: "Image Gen",
 
@@ -199,6 +211,7 @@ Keep the identity 100% consistent with the reference. Photorealistic, editorial 
   },
   {
     id: "img-anime-to-realistic",
+    compatibleModels: ["runway", "leonardo"],
     title: "Anime Character → Realistic Human",
     category: "Image Gen",
     niche: "Anime",
@@ -216,6 +229,7 @@ Aspect ratio: 2:3.`,
   },
   {
     id: "img-cartoon-horror",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Cartoon Horror Creature",
     category: "Image Gen",
     niche: "Drama",
@@ -233,6 +247,7 @@ Aspect ratio: 16:9.`,
   },
   {
     id: "img-pixel-game-pov",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Pixel Game POV Frame",
     category: "Image Gen",
 
@@ -249,6 +264,7 @@ Aspect ratio: 16:9.`,
   },
   {
     id: "img-ai-influencer",
+    compatibleModels: ["runway", "leonardo"],
     title: "AI Influencer Lifestyle Shot",
     category: "Image Gen",
     niche: "AI Influencer",
@@ -269,6 +285,7 @@ Aspect ratio: 4:5.`,
   },
   {
     id: "img-room-transformation",
+    compatibleModels: ["runway", "leonardo"],
     title: "Room Transformation (Before → After)",
     category: "Image Gen",
 
@@ -285,6 +302,7 @@ Aspect ratio: 3:2.`,
   },
   {
     id: "img-4k-upscale",
+    compatibleModels: [],
     title: "4K Detail Restoration & Upscale",
     category: "Image Gen",
 
@@ -299,6 +317,7 @@ Output a photorealistic, print-ready image that looks like the original was shot
   // ---------------------------------------------------------------- Video Gen
   {
     id: "vid-veo3-selfie-vlog",
+    compatibleModels: ["veo-3"],
     title: "Veo 3 Selfie Vlog (Talking Head)",
     category: "Video Gen",
     niche: "POV Vlog",
@@ -318,6 +337,7 @@ Photorealistic, natural colour, 8 seconds, no subtitles, no text overlays, no cu
   },
   {
     id: "vid-pov-night-forest",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "POV Night Forest Walk",
     category: "Video Gen",
     niche: "POV Vlog",
@@ -334,6 +354,7 @@ Photorealistic, continuous single take, 8 seconds, no text.`,
   },
   {
     id: "vid-asmr",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "ASMR Close-Up Trigger Loop",
     category: "Video Gen",
     niche: "ASMR",
@@ -351,6 +372,7 @@ FINISH: photorealistic, 4K detail, satisfying and tactile.
   },
   {
     id: "vid-ai-cooking-anime",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "AI Cooking Anime Sequence",
     category: "Video Gen",
     niche: "Animal Cooking",
@@ -368,6 +390,7 @@ GRADE: warm ambers and soft golds, glowing highlights.
   },
   {
     id: "vid-cardboard-diy",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Cardboard DIY Build Time-Lapse",
     category: "Video Gen",
 
@@ -384,6 +407,7 @@ FINISH: photorealistic, sharp texture on the corrugated edges, natural colour.
   },
   {
     id: "vid-embroidery",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Embroidery Macro Loop",
     category: "Video Gen",
 
@@ -400,6 +424,7 @@ FINISH: photorealistic, visible individual linen fibres and thread twist, natura
   },
   {
     id: "vid-lullaby",
+    compatibleModels: ["veo-3", "runway"],
     title: "Nursery Lullaby Scene",
     category: "Video Gen",
     niche: "Nursery Rhymes",
@@ -417,6 +442,7 @@ MOOD: calm, safe, drowsy.
   },
   {
     id: "vid-sandwich-making",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Sandwich Build Food Cinematography",
     category: "Video Gen",
 
@@ -433,6 +459,7 @@ FINISH: photorealistic, glistening textures, steam visible, ultra-sharp detail.
   },
   {
     id: "vid-zombie-apocalypse",
+    compatibleModels: ["veo-3", "runway"],
     title: "Zombie Apocalypse Street Shot",
     category: "Video Gen",
 
@@ -449,6 +476,7 @@ GRADE: desaturated teal and ash grey, crushed blacks, heavy grain.
   },
   {
     id: "vid-ai-drama-english",
+    compatibleModels: ["veo-3", "kling"],
     title: "AI Drama Scene (English Dialogue)",
     category: "Video Gen",
     niche: "Drama",
@@ -470,6 +498,7 @@ Delivery: restrained, quiet, both avoiding eye contact until the last word.
   },
   {
     id: "vid-ai-drama-tagalog",
+    compatibleModels: ["veo-3", "runway"],
     title: "AI Drama Scene (Tagalog Dialogue)",
     category: "Video Gen",
     niche: "Drama",
@@ -492,6 +521,7 @@ Delivery: soft, held back, voices tight.
   },
   {
     id: "vid-stickman-explainer",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Stickman Explainer Animation",
     category: "Video Gen",
     niche: "Stickman",
@@ -509,6 +539,7 @@ AUDIO: light pops and whooshes on each beat, upbeat minimal underscore, no voice
   },
   {
     id: "vid-sketch-control",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Sketch-to-Video Control Shot",
     category: "Video Gen",
 
@@ -525,6 +556,7 @@ AUDIO: [describe ambience], no music.
   },
   {
     id: "vid-talking-objects",
+    compatibleModels: ["veo-3", "kling"],
     title: "AI Talking Objects",
     category: "Video Gen",
 
@@ -544,6 +576,7 @@ DIALOGUE: "[one line, under 15 words]"
   // ---------------------------------------------------------------- Character
   {
     id: "char-identity-lock",
+    compatibleModels: [],
     title: "Identity Lock Sheet (Reusable Description)",
     category: "Character",
 
@@ -566,6 +599,7 @@ Then output a 12-word short version for use when the prompt budget is tight.`,
   },
   {
     id: "char-turnaround-sheet",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Character Turnaround Sheet",
     category: "Character",
 
@@ -586,6 +620,7 @@ Aspect ratio: 16:9.`,
   },
   {
     id: "char-consistent-template",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Consistent Character Shot Template",
     category: "Character",
 
@@ -608,6 +643,7 @@ Photorealistic, no text, no watermark, no extra people.`,
   // ---------------------------------------------------------------- Niche
   {
     id: "niche-animal-cooking",
+    compatibleModels: [],
     title: "Animal Cooking Channel Series Plan",
     category: "Niche",
     niche: "Animal Cooking",
@@ -625,6 +661,7 @@ Plain text, no markdown headers beyond the numbers.`,
   },
   {
     id: "niche-anime-fight",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Anime Fight — Versus Format",
     category: "Niche",
     niche: "Anime",
@@ -645,6 +682,7 @@ Include for each beat: camera move, animation style notes (sakuga key frames, sm
   },
   {
     id: "niche-pov-videos",
+    compatibleModels: [],
     title: "POV Video Idea Machine",
     category: "Niche",
     niche: "POV Vlog",
@@ -664,6 +702,7 @@ Rank all 20 by scroll-stopping power and mark the top 5 with an asterisk.`,
   },
   {
     id: "niche-fusion-transformation",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Fusion / Transformation Morph",
     category: "Niche",
 
@@ -682,6 +721,7 @@ Photorealistic, continuous single take, no cuts, no text.`,
   },
   {
     id: "niche-creepy-entities",
+    compatibleModels: ["veo-3", "runway"],
     title: "Creepy Entity Sighting",
     category: "Niche",
     niche: "True Crime",
@@ -699,6 +739,7 @@ AUDIO: electrical hum, wind, one low frequency drop at the movement, no music, n
   },
   {
     id: "niche-top5-ranking",
+    compatibleModels: [],
     title: "Top 5 Ranking Video Ideas",
     category: "Niche",
 
@@ -717,6 +758,7 @@ Then pick the 3 with the best demand-to-competition ratio and explain each in on
   },
   {
     id: "niche-quiz-content",
+    compatibleModels: [],
     title: "Interactive Quiz Short",
     category: "Niche",
 
@@ -736,6 +778,7 @@ Open with a challenge line under 12 words. Close with a line that dares the view
   },
   {
     id: "niche-ai-whale-pov",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "AI Whale POV Deep Dive",
     category: "Niche",
     niche: "POV Vlog",
@@ -753,6 +796,7 @@ GRADE: cyan highlights, deep navy shadows, natural underwater colour absorption.
   },
   {
     id: "niche-3d-cars-challenge",
+    compatibleModels: [],
     title: "3D Cars Obstacle Challenge",
     category: "Niche",
 
@@ -769,6 +813,7 @@ AUDIO: engine whines, impacts, whooshes, a rising chime at the finish. No voice.
   },
   {
     id: "niche-color-mixing",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Color Mixing Satisfying Loop",
     category: "Niche",
 
@@ -786,6 +831,7 @@ FINISH: photorealistic fluid simulation, ultra-saturated pigment against pure wh
   },
   {
     id: "niche-music-for-kids",
+    compatibleModels: ["veo-3", "runway"],
     title: "Kids Music Video Scene",
     category: "Niche",
     niche: "Nursery Rhymes",
@@ -804,6 +850,7 @@ SAFETY: nothing scary, no dark shadows, no flashing lights, no fast strobing.
   },
   {
     id: "niche-daily-prayers",
+    compatibleModels: [],
     title: "Daily Prayer / Devotional Short",
     category: "Niche",
 
@@ -822,6 +869,7 @@ Respectful and non-denominational unless a tradition is specified. No music sugg
   },
   {
     id: "niche-gaming-branding",
+    compatibleModels: [],
     title: "Gaming Channel Branding Kit",
     category: "Niche",
 
@@ -840,6 +888,7 @@ Deliver:
   },
   {
     id: "niche-true-crime-cold-open",
+    compatibleModels: [],
     title: "True Crime Cold Open Script",
     category: "Niche",
     niche: "True Crime",
@@ -860,6 +909,7 @@ Then output: the matching visual beat list, one image prompt per sentence group,
   },
   {
     id: "niche-asmr-series",
+    compatibleModels: [],
     title: "ASMR Series Plan (30 Episodes)",
     category: "Niche",
     niche: "ASMR",
@@ -879,6 +929,7 @@ Finish with the recurring set description that keeps the whole series visually c
   },
   {
     id: "niche-ai-influencer-content-plan",
+    compatibleModels: [],
     title: "AI Influencer 30-Day Content Plan",
     category: "Niche",
     niche: "AI Influencer",
@@ -899,6 +950,7 @@ Rules:
   },
   {
     id: "img-thumbnail-composition",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "High-CTR Thumbnail Composition",
     category: "Image Gen",
 
@@ -916,6 +968,7 @@ Aspect ratio: 16:9.`,
   },
   {
     id: "img-b-roll-set",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Cinematic B-Roll Frame Set",
     category: "Image Gen",
 
@@ -937,6 +990,7 @@ Aspect ratio: 16:9.`,
   },
   {
     id: "img-text-overlay-plate",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Clean Text-Overlay Background Plate",
     category: "Image Gen",
 
@@ -953,6 +1007,7 @@ Aspect ratio: 9:16.`,
   },
   {
     id: "vid-loop-transition",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Seamless Loop Transition Clip",
     category: "Video Gen",
 
@@ -969,6 +1024,7 @@ Photorealistic, no cuts, no text, no fade in or out.`,
   },
   {
     id: "vid-hook-first-second",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "First-Second Hook Shot",
     category: "Video Gen",
 
@@ -987,6 +1043,7 @@ Photorealistic, vertical 9:16, no text, no title card, no fade in.`,
   },
   {
     id: "vid-product-spin",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Product Turntable Spin",
     category: "Video Gen",
 
@@ -1003,6 +1060,7 @@ Photorealistic, accurate material response — the metal reflects, the plastic d
   },
   {
     id: "vid-time-of-day-shift",
+    compatibleModels: ["veo-3", "kling", "runway"],
     title: "Day-to-Night Hyperlapse",
     category: "Video Gen",
 
@@ -1019,6 +1077,7 @@ Photorealistic, cinematic, single continuous take, no cuts, no text.`,
   },
   {
     id: "seo-thumbnail-text",
+    compatibleModels: [],
     title: "Thumbnail Text Generator",
     category: "SEO",
 
@@ -1038,6 +1097,7 @@ For each, add the emotion it triggers in one word. Mark your top 3 and pair each
   },
   {
     id: "seo-shorts-hook-script",
+    compatibleModels: [],
     title: "Shorts Hook Script (First 3 Seconds)",
     category: "SEO",
 
@@ -1058,6 +1118,7 @@ For each hook add the matching visual for that first second, and mark the three 
   },
   {
     id: "char-voice-profile",
+    compatibleModels: ["elevenlabs"],
     title: "Narrator Voice Profile",
     category: "Character",
 
@@ -1075,6 +1136,7 @@ Deliver:
   },
   {
     id: "char-recurring-cast",
+    compatibleModels: [],
     title: "Recurring Cast Bible",
     category: "Character",
 
@@ -1092,6 +1154,7 @@ Then deliver:
   },
   {
     id: "img-storyboard-frames",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Storyboard Frame Generator",
     category: "Image Gen",
 
@@ -1111,6 +1174,7 @@ Aspect ratio: 3:2.`,
   },
   {
     id: "vid-camera-motion-pack",
+    compatibleModels: [],
     title: "Camera Motion Pack (10 Moves)",
     category: "Video Gen",
 
@@ -1126,6 +1190,7 @@ Every description must be self-contained and usable without additional context. 
   },
   {
     id: "niche-faceless-series-bible",
+    compatibleModels: [],
     title: "Faceless Channel Series Bible",
     category: "Niche",
 
@@ -1147,6 +1212,7 @@ Deliver:
   },
   {
     id: "niche-retention-editing",
+    compatibleModels: [],
     title: "Retention Edit Map",
     category: "Niche",
 
@@ -1165,6 +1231,7 @@ Rules:
   },
   {
     id: "niche-repurpose-shorts",
+    compatibleModels: [],
     title: "Long-Form to Shorts Repurposing",
     category: "Niche",
 
@@ -1178,6 +1245,7 @@ Rank all 8 by standalone potential. Mark any clip that needs a new intro line re
   },
   {
     id: "img-comic-panel",
+    compatibleModels: ["midjourney", "leonardo"],
     title: "Comic Panel Sequence",
     category: "Image Gen",
 
@@ -1197,6 +1265,7 @@ Aspect ratio: 2:3.`,
   },
   {
     id: "vid-crowd-reaction",
+    compatibleModels: ["veo-3", "runway"],
     title: "Crowd Reaction Cutaway",
     category: "Video Gen",
 
@@ -1212,6 +1281,7 @@ AUDIO: a rising collective gasp then noise, no music.
   },
   {
     id: "seo-community-post",
+    compatibleModels: [],
     title: "Community Post & Comment Engine",
     category: "SEO",
 
@@ -1230,6 +1300,7 @@ Plain text, no emojis beyond one per post maximum.`,
   },
   {
     id: "niche-monetization-map",
+    compatibleModels: [],
     title: "Faceless Monetization Map",
     category: "Niche",
 

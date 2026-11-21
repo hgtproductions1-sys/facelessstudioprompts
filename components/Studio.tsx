@@ -30,6 +30,7 @@ type Props = {
   initialEngine?: string;
   initialStyle?: string;
   journey?: string;
+  email?: {newsletter:boolean};
 };
 
 const modes = [
@@ -41,7 +42,7 @@ const modes = [
 const buttonLabels = {template: 'Create Instant Blueprint', brief: 'Prepare Master AI Brief', ai: 'Create live AI draft'};
 
 export default function Studio({
-  nicheOptions, aiAvailable, initialTopic, initialNiche, initialFormat, initialEngine, initialStyle, journey,
+  nicheOptions, aiAvailable, initialTopic, initialNiche, initialFormat, initialEngine, initialStyle, journey, email,
 }: Props) {
   const [options, setOptions] = useState<Options>({
     ...DEFAULT_OPTIONS,
@@ -306,7 +307,7 @@ export default function Studio({
               <DownloadButton text={plan}/>
             </div>
             <StudioProductionKit blueprint={result} options={activeBlueprint.options}
-              narration={narration} onNarrationChange={setNarration} model={visualModel} onModelChange={setVisualModel}/>
+              narration={narration} onNarrationChange={setNarration} model={visualModel} onModelChange={setVisualModel} email={email}/>
           </div>
           <div className="result-tabs" role="tablist" aria-label="Blueprint sections">
             {tabs.map(item => <button key={item.id} role="tab" aria-selected={tab === item.id}

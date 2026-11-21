@@ -6,6 +6,9 @@ import { PROMPTS } from '@/data/promptLibrary';
 import { PROMPT_COLLECTIONS } from '@/data/promptPages';
 import { metadataFor, SITE_URL } from '@/lib/site';
 import { PROMPTS_PER_PAGE, promptPageHref, promptPageNumber } from '@/lib/prompt-pagination';
+import { modelHubs } from '@/data/modelPromptHubs';
+import { NewsletterCapture } from '@/components/EmailCapture';
+import { newsletterConfig } from '@/lib/emailConfig';
 
 type Query = Record<string, string | string[] | undefined>;
 type Props = { searchParams: Promise<Query> };
@@ -58,6 +61,7 @@ export default async function Page({ searchParams }: Props) {
       description="From the first hook to the final frame. Search, save, and customize templates for the work you want to make."/>
     <div className="category-links">
       {PROMPT_COLLECTIONS.map(collection => <a href={'/prompts/' + collection.slug} key={collection.slug}>{collection.label} ↗</a>)}
+      {modelHubs.map(hub => <a href={'/prompts/' + hub.slug} key={hub.slug}>{hub.label} ↗</a>)}
     </div>
     <PromptExplorer key={page} prompts={PROMPTS} validIds={PROMPTS.map(prompt => prompt.id)}
       initialCategory={queryValue(query.category)} initialQuery={queryValue(query.q)}
@@ -66,6 +70,7 @@ export default async function Page({ searchParams }: Props) {
       browseWindow={{ offset: (page - 1) * PROMPTS_PER_PAGE, size: PROMPTS_PER_PAGE }}
       pagination={<Pagination page={page}/>}/>
     <PromptDirectory/>
+    {page===1 && newsletterConfig() && <NewsletterCapture/>}
     <div className="footer-spacer"/>
     <Cta/>
     <JsonLd data={{ '@type': 'CollectionPage', name: 'Free AI Prompt Library', url: SITE_URL + canonical,

@@ -27,6 +27,7 @@ export function founderPerson() {
     '@id': url,
     name: profile.name,
     jobTitle: profile.role,
+    description: profile.shortBio,
     url,
     ...(profile.avatarUrl ? {image: new URL(profile.avatarUrl, SITE_URL).href} : {}),
     ...(profile.sameAs.length ? {sameAs: profile.sameAs} : {}),

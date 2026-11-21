@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type {ReactNode} from 'react';
 import {articleAuthor, editorialDate, FOUNDER_PROFILE} from '@/lib/authors';
 import {SITE_NAME} from '@/lib/site';
@@ -20,15 +21,15 @@ export default function AuthorByline({updated, published, authorName, authorType
 
   return <div className="article-meta">
     <span>By {founderIsAuthor
-      ? <a className="inline-link" href={FOUNDER_PROFILE.aboutAnchorUrl}>{author.name}</a>
+      ? <Link className="inline-link" href={FOUNDER_PROFILE.aboutAnchorUrl}>{author.name}</Link>
       : author['@type'] === 'Organization' && author.name === SITE_NAME
-        ? <a className="inline-link" href="/about">{author.name}</a>
+        ? <Link className="inline-link" href="/about">{author.name}</Link>
         : author.name}</span>
     {founderIsAuthor ? <span>{FOUNDER_PROFILE.role}</span> : <span>
-      Editorial lead <a className="inline-link" href={FOUNDER_PROFILE.aboutAnchorUrl}>{FOUNDER_PROFILE.name}</a>
+      Editorial lead <Link className="inline-link" href={FOUNDER_PROFILE.aboutAnchorUrl}>{FOUNDER_PROFILE.name}</Link>
     </span>}
     {date && <span>{showUpdated ? 'Updated' : 'Published'} <time dateTime={date.dateTime}>{date.label}</time></span>}
     {children}
-    <a className="inline-link" href="/editorial-policy">Editorial approach</a>
+    <Link className="inline-link" href="/editorial-policy">Editorial approach</Link>
   </div>;
 }
