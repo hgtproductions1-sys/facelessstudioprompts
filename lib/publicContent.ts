@@ -5,6 +5,7 @@ import {PROMPT_COLLECTIONS,getPromptsForCollection} from '@/data/promptPages';
 import {ARTICLE_GUIDES} from '@/data/articleGuides';
 import {NICHE_PAGES} from '@/data/niches';
 import {getNicheGuide} from '@/data/nicheGuides';
+import {NICHE_IMAGES} from '@/data/nicheImages';
 import {getNichePrompts, getPromptNiche} from '@/data/nichePromptLinks';
 import {VIDEOS} from '@/data/videos';
 import {INFO_PAGES} from '@/data/legal';
@@ -123,7 +124,10 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   if(g.sources)content.push('## Sources\n\n'+list(g.sources.map(s=>link(s.label,s.url)+(s.note?' — '+s.note:''))));
  }else if(path.startsWith('/niches/')){
   const n=NICHE_PAGES.find(n=>path==='/niches/'+n.slug)!,g=getNicheGuide(n.slug);
-  content.push(`By ${SITE_NAME}`,n.intro===g?.promise?'':n.intro);
+  const image=NICHE_IMAGES[n.slug];
+  content.push(`By ${SITE_NAME}`);
+  if(image)content.push(`![${escape(image.alt)}](${absolute(image.src)})`);
+  if(n.intro!==g?.promise)content.push(n.intro);
   if(g)content.push(g.promise,'## Audience\n\n'+g.audience,'## Formats\n\n'+list(g.bestFormats),...g.channelAngles.map(a=>'## '+a.title+'\n\n'+a.description),'## Episode ideas\n\n'+list(g.videoIdeas),...g.episodeStructure.map(s=>'## '+s.title+'\n\n'+s.description),'## Quality checks\n\n'+list(g.qualityChecks));
   for(const p of n.prompts)content.push('## '+p.title,'Narration / character direction: '+p.character,'### Image prompt\n\n'+code(p.visual),'### Motion prompt\n\n'+code(p.camera));
   const templates=getNichePrompts(n.slug);

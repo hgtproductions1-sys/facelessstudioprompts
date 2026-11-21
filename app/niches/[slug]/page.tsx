@@ -13,6 +13,7 @@ import {getNichePrompts} from '@/data/nichePromptLinks';
 import {START_PATHS} from '@/data/startPaths';
 import {getPrimaryVideoForGuide} from '@/data/videos';
 import {articleAuthor, founderPerson} from '@/lib/authors';
+import {responsiveImage} from '@/lib/images';
 import {getRelatedNiches} from '@/lib/relatedNiches';
 import {getSampleOutputs} from '@/lib/sampleOutputs';
 import {faqJsonLd, metadataFor, SITE_NAME, SITE_URL} from '@/lib/site';
@@ -39,6 +40,7 @@ export default async function Page({params}: Props) {
 
   const path = '/niches/' + slug;
   const url = SITE_URL + path;
+  const image = NICHE_IMAGES[slug];
   const sampleOutputs = await getSampleOutputs(path, niche.sampleOutputs);
   const content = getNicheGuide(slug);
   const related = getRelatedNiches(NICHE_LINKS, slug);
@@ -65,6 +67,20 @@ export default async function Page({params}: Props) {
       <AuthorByline authorName={SITE_NAME} authorType="Organization"/>
       <div className="article-layout">
         <article className="prose">
+          {image && (
+            <figure className="guide-cover">
+              {/* eslint-disable-next-line @next/next/no-img-element -- Covers use pre-generated responsive WebP files. */}
+              <img
+                src={image.src}
+                {...responsiveImage(image.src, '(max-width: 900px) 100vw, 800px')}
+                alt={image.alt}
+                width={1280}
+                height={720}
+                decoding="async"
+                fetchPriority="high"
+              />
+            </figure>
+          )}
           <section id="overview">
             <h2>Start with the viewer promise.</h2>
             {niche.intro !== content?.promise && <p>{niche.intro}</p>}
@@ -173,7 +189,7 @@ export default async function Page({params}: Props) {
         author: publisher,
         publisher,
         editor: founderPerson(),
-        image: SITE_URL + (NICHE_IMAGES[slug]?.src || '/social-cover.jpg'),
+        image: SITE_URL + (image?.src || '/social-cover.jpg'),
       }}/>
       {niche.faqs.length > 0 && <JsonLd data={faqJsonLd(niche.faqs)}/>}
     </div>
