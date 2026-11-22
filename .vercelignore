@@ -5,7 +5,8 @@ node_modules/
 .sites-runtime/
 .agents/
 .codex/
-.openai/
+.openai/*
+!.openai/hosting.json
 dist/
 .vinext/
 .wrangler/
