@@ -26,9 +26,10 @@ type Props = {
   className: string;
   children?: ReactNode;
   auto?: boolean;
+  priority?: boolean;
 };
 
-export default function MotionPreview({clip, poster, alt, label, className, children, auto = false}: Props) {
+export default function MotionPreview({clip, poster, alt, label, className, children, auto = false, priority = false}: Props) {
   const frame = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [inView, setInView] = useState(false);
@@ -82,14 +83,13 @@ export default function MotionPreview({clip, poster, alt, label, className, chil
   return (
     <div ref={frame} className={className}>
       {/* eslint-disable-next-line @next/next/no-img-element -- The responsive WebP sizes are pre-generated. */}
-      <img src={poster} {...responsiveImage(poster, auto ? '(max-width: 900px) 100vw, 600px' : undefined)}
-        alt={alt} width="1280" height="720" loading={auto ? 'eager' : 'lazy'}
-        fetchPriority={auto ? 'high' : undefined} decoding="async"/>
+      <img src={poster} {...responsiveImage(poster, priority ? '(max-width: 900px) 100vw, 600px' : undefined)}
+        alt={alt} width="1280" height="720" loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : undefined} decoding="async"/>
       {loadVideo && <video ref={video} className={styles.video} data-started={started} aria-hidden="true"
-        muted loop playsInline preload="none" poster={poster} onPlaying={() => {setPlaying(true); setStarted(true);}}
+        autoPlay={shouldPlay} muted loop playsInline preload="none" poster={poster} onPlaying={() => {setPlaying(true); setStarted(true);}}
         onPause={() => setPlaying(false)} onError={handleError}>
-        <source src={media + '.mp4'} type="video/mp4"/>
-        <source src={media + '.webm'} type="video/webm" onError={handleError}/>
+        <source src={media + '.mp4'} type="video/mp4" onError={handleError}/>
       </video>}
       {children}
       {!failed && <button type="button" className={styles.control} aria-label={`${action} ${label} preview`}

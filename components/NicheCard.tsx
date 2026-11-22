@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {ArrowUpRight, Layers} from 'lucide-react';
-import {NICHE_PREVIEWS} from '@/data/nichePreviewMedia';
+import {NICHE_PREVIEWS, NICHE_PREVIEW_ALTS} from '@/data/nichePreviewMedia';
 import {responsiveImage} from '@/lib/images';
 import MotionPreview from './MotionPreview';
 
@@ -14,11 +14,11 @@ export type NicheCardData = {
   imageAlt?: string;
 };
 
-export default function NicheCard({card, index}: {card: NicheCardData; index: number}) {
+export default function NicheCard({card, index, autoPreview = false}: {card: NicheCardData; index: number; autoPreview?: boolean}) {
   const {slug, name, description, difficulty, category, image, imageAlt} = card;
   const clip = NICHE_PREVIEWS[slug];
   const art = image && clip ? (
-    <MotionPreview clip={clip} poster={image} alt={imageAlt || name} label={name} className="niche-art"/>
+    <MotionPreview clip={clip} poster={'/preview-media/' + clip + '.webp'} alt={NICHE_PREVIEW_ALTS[slug] || imageAlt || name} label={name} className="niche-art" auto={autoPreview}/>
   ) : (
     <div className="niche-art">
       {/* eslint-disable-next-line @next/next/no-img-element -- The responsive WebP sizes are pre-generated. */}
