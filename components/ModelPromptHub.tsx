@@ -4,6 +4,7 @@ import {getModelHubPrompts} from '@/data/modelPromptHubs';
 import {PROMPTS} from '@/data/promptLibrary';
 import {CATEGORY_LABELS} from '@/lib/categories';
 import {SITE_URL} from '@/lib/site';
+import PromptArtwork from '@/components/PromptArtwork';
 
 export default function ModelPromptHub({hub}: {hub: ModelHub}) {
   const path = '/prompts/' + hub.slug;
@@ -55,7 +56,8 @@ export default function ModelPromptHub({hub}: {hub: ModelHub}) {
         <h2 className="section-title">Compatible prompt templates</h2>
         <p className="muted">Choose a starting template and adapt any references, duration, audio, and aspect ratio to the controls in your version.</p>
         <div className="prompt-grid">{prompts.map(prompt => (
-          <article className="prompt-card" key={prompt.id}>
+          <article className="prompt-card prompt-card-illustrated" key={prompt.id}>
+            <PromptArtwork prompt={prompt}/>
             <p className="eyebrow">{CATEGORY_LABELS[prompt.category]}</p>
             <h3><a href={'/prompts/' + prompt.id}>{prompt.title}</a></h3>
             {prompt.tips && <p>{prompt.tips}</p>}

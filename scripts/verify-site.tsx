@@ -198,7 +198,7 @@ const paginatedPromptIds:string[]=[];
 for(let number=1;number<=totalPromptPages;number++){
  const searchParams=Promise.resolve(number===1?{}:{page:String(number)});
  const markup=renderToStaticMarkup(await Prompts({searchParams}));
- const cards=[...markup.matchAll(/<article class="prompt-card">[\s\S]*?<a href="\/prompts\/([^"/]+)"[\s\S]*?<\/article>/g)];
+ const cards=[...markup.matchAll(/<article class="prompt-card(?: [^"]+)?">[\s\S]*?<a[^>]* href="\/prompts\/([^"/]+)"[\s\S]*?<\/article>/g)];
  assert.equal(cards.length,Math.min(PROMPTS_PER_PAGE,PROMPTS.length-(number-1)*PROMPTS_PER_PAGE));
  paginatedPromptIds.push(...cards.map(([,id])=>id));
  assert(markup.includes('aria-label="Prompt library pagination"'));

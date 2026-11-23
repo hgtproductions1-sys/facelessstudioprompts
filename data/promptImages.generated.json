@@ -1,0 +1,680 @@
+{
+  "seo-title-generator": {
+    "src": "/prompt-images/seo-title-generator.webp",
+    "alt": "Paper title ideas arranged around a video storyboard frame on a creative strategist’s desk.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-description-generator": {
+    "src": "/prompt-images/seo-description-generator.webp",
+    "alt": "An open notebook and sequence of chapter cards represent a structured video description.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-tags-generator": {
+    "src": "/prompt-images/seo-tags-generator.webp",
+    "alt": "Blank keyword tags sorted around one primary tag in a brass organizer.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-hashtag-generator": {
+    "src": "/prompt-images/seo-hashtag-generator.webp",
+    "alt": "Hash-symbol tokens grouped by broad, specific and niche relevance beside a short-video card.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-channel-name": {
+    "src": "/prompt-images/seo-channel-name.webp",
+    "alt": "Three shortlisted blank channel-name placards stand among grouped branding ideas.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-full-package": {
+    "src": "/prompt-images/seo-full-package.webp",
+    "alt": "A coordinated video upload kit combines a thumbnail, title strip, description sheet and tags.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-character-sheet": {
+    "src": "/prompt-images/img-character-sheet.webp",
+    "alt": "Six consistent reference views show one fictional woman in a charcoal coat.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-nano-banana-portrait": {
+    "src": "/prompt-images/img-nano-banana-portrait.webp",
+    "alt": "A natural detailed portrait of a fictional man on a neon-lit rainy city street.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-anime-to-realistic": {
+    "src": "/prompt-images/img-anime-to-realistic.webp",
+    "alt": "An original blue-haired anime adventurer is translated into a matching realistic human.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-cartoon-horror": {
+    "src": "/prompt-images/img-cartoon-horror.webp",
+    "alt": "An uncanny porcelain cartoon puppet casts a long shadow in a scratched-film scene.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-pixel-game-pov": {
+    "src": "/prompt-images/img-pixel-game-pov.webp",
+    "alt": "A crisp pixel-art first-person view looks into a flooded torchlit subway tunnel.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-ai-influencer": {
+    "src": "/prompt-images/img-ai-influencer.webp",
+    "alt": "A fictional influencer sits candidly with iced coffee in a sunlit tiled Lisbon café.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-room-transformation": {
+    "src": "/prompt-images/img-room-transformation.webp",
+    "alt": "The same living room is shown before and after a warm Japandi renovation.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-4k-upscale": {
+    "src": "/prompt-images/img-4k-upscale.webp",
+    "alt": "One portrait transitions from compression-softened detail to natural hair, skin and fabric texture.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-veo3-selfie-vlog": {
+    "src": "/prompt-images/vid-veo3-selfie-vlog.webp",
+    "alt": "A fictional vlogger speaks to the camera while walking a windy golden-hour coastal path.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-pov-night-forest": {
+    "src": "/prompt-images/vid-pov-night-forest.webp",
+    "alt": "A first-person flashlight beam illuminates pine trunks and low mist in a dark forest.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-asmr": {
+    "src": "/prompt-images/vid-asmr.webp",
+    "alt": "A chrome blade makes a precise cut through a turquoise kinetic-sand bar.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-ai-cooking-anime": {
+    "src": "/prompt-images/vid-ai-cooking-anime.webp",
+    "alt": "Steam rises from a clay pot of glossy noodles in a hand-drawn anime kitchen.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-cardboard-diy": {
+    "src": "/prompt-images/vid-cardboard-diy.webp",
+    "alt": "Hands assemble a miniature vending machine from corrugated cardboard.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-embroidery": {
+    "src": "/prompt-images/vid-embroidery.webp",
+    "alt": "A needle draws red thread through linen to form a poppy petal in a wooden hoop.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-lullaby": {
+    "src": "/prompt-images/vid-lullaby.webp",
+    "alt": "A sleepy baby elephant rests under a patchwork quilt in a softly lit treehouse.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-sandwich-making": {
+    "src": "/prompt-images/vid-sandwich-making.webp",
+    "alt": "A toasted sourdough sandwich reveals ham, cheese, lettuce and tomato in a dramatic close-up.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-zombie-apocalypse": {
+    "src": "/prompt-images/vid-zombie-apocalypse.webp",
+    "alt": "A gas-masked survivor walks down an ash-filled abandoned city street.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-ai-drama-english": {
+    "src": "/prompt-images/vid-ai-drama-english.webp",
+    "alt": "Two fictional adults face a quiet goodbye in a rain-soaked car park at night.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-ai-drama-tagalog": {
+    "src": "/prompt-images/vid-ai-drama-tagalog.webp",
+    "alt": "A Filipino mother and her adult son hesitate at a doorway before his journey abroad.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-stickman-explainer": {
+    "src": "/prompt-images/vid-stickman-explainer.webp",
+    "alt": "A stick figure pulls a purple coin toward progressively larger stacks to explain compounding.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-sketch-control": {
+    "src": "/prompt-images/vid-sketch-control.webp",
+    "alt": "A coastal explorer composition transitions from a pencil sketch into realistic live action.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-talking-objects": {
+    "src": "/prompt-images/vid-talking-objects.webp",
+    "alt": "A chipped ceramic diner mug has a tired expressive face formed from its own glaze.",
+    "width": 1280,
+    "height": 720
+  },
+  "char-identity-lock": {
+    "src": "/prompt-images/char-identity-lock.webp",
+    "alt": "A fictional explorer’s portrait and detail references document fixed identity and wardrobe.",
+    "width": 1280,
+    "height": 720
+  },
+  "char-turnaround-sheet": {
+    "src": "/prompt-images/char-turnaround-sheet.webp",
+    "alt": "Five aligned full-body views show the same fictional woman in a rust utility jacket.",
+    "width": 1280,
+    "height": 720
+  },
+  "char-consistent-template": {
+    "src": "/prompt-images/char-consistent-template.webp",
+    "alt": "One fictional explorer retains the same identity across three cinematic travel shots.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-animal-cooking": {
+    "src": "/prompt-images/niche-animal-cooking.webp",
+    "alt": "A red panda chef cooks vegetables in a detailed miniature kitchen.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-anime-fight": {
+    "src": "/prompt-images/niche-anime-fight.webp",
+    "alt": "Two original anime fighters clash with amber and cyan energy above a rainy neon city.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-pov-videos": {
+    "src": "/prompt-images/niche-pov-videos.webp",
+    "alt": "A traveler holds a map while a lantern-lit lane leads toward a glowing half-open door.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-fusion-transformation": {
+    "src": "/prompt-images/niche-fusion-transformation.webp",
+    "alt": "A cracked stone gargoyle transforms into a raven through stone fragments and black feathers.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-creepy-entities": {
+    "src": "/prompt-images/niche-creepy-entities.webp",
+    "alt": "A vague tall silhouette stands at the edge of an empty petrol station’s light.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-top5-ranking": {
+    "src": "/prompt-images/niche-top5-ranking.webp",
+    "alt": "Five travel miniatures on varied plinths illustrate a ranked list with a hidden surprise.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-quiz-content": {
+    "src": "/prompt-images/niche-quiz-content.webp",
+    "alt": "A question card, four shape answers and a countdown disc illustrate an interactive quiz.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-ai-whale-pov": {
+    "src": "/prompt-images/niche-ai-whale-pov.webp",
+    "alt": "A whale’s first-person view descends beneath sunbeams as fish part above the deep ocean.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-3d-cars-challenge": {
+    "src": "/prompt-images/niche-3d-cars-challenge.webp",
+    "alt": "A small yellow 3D car passes beneath a crusher on an oversized obstacle course.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-color-mixing": {
+    "src": "/prompt-images/niche-color-mixing.webp",
+    "alt": "Teal, coral and yellow pigments bloom into swirling tendrils in a white ceramic dish.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-music-for-kids": {
+    "src": "/prompt-images/niche-music-for-kids.webp",
+    "alt": "A rounded bear, rabbit and duck bounce together among oversized daisies in a sunny 3D meadow.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-daily-prayers": {
+    "src": "/prompt-images/niche-daily-prayers.webp",
+    "alt": "Morning light falls across an open Bible, a mug and a small green branch beside a window.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-gaming-branding": {
+    "src": "/prompt-images/niche-gaming-branding.webp",
+    "alt": "An original pixel fox crest repeats across a gaming avatar, banner and coordinated color swatches.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-true-crime-cold-open": {
+    "src": "/prompt-images/niche-true-crime-cold-open.webp",
+    "alt": "A rain-beaded house key sits beneath a desk lamp with an empty doorway blurred behind it.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-asmr-series": {
+    "src": "/prompt-images/niche-asmr-series.webp",
+    "alt": "A brush, pale carved soap, glass tapping stones and swirling liquid form a tactile ASMR workbench.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-ai-influencer-content-plan": {
+    "src": "/prompt-images/niche-ai-influencer-content-plan.webp",
+    "alt": "Coordinated lifestyle photos of one fictional creator are arranged as a monthly content plan.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-thumbnail-composition": {
+    "src": "/prompt-images/img-thumbnail-composition.webp",
+    "alt": "An ornate brass key and glowing doorway fill the left side of a frame with clear space for a headline.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-b-roll-set": {
+    "src": "/prompt-images/img-b-roll-set.webp",
+    "alt": "Six coordinated dawn photographs show a coastal coffee shop through wide views, hands and close details.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-text-overlay-plate": {
+    "src": "/prompt-images/img-text-overlay-plate.webp",
+    "alt": "Cool blue light illuminates soft dark fog around a deliberately quiet central area.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-loop-transition": {
+    "src": "/prompt-images/vid-loop-transition.webp",
+    "alt": "A teal and indigo ink ribbon curls into a continuous circle in clear water.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-hook-first-second": {
+    "src": "/prompt-images/vid-hook-first-second.webp",
+    "alt": "A falling glass marble breaks through orange paper, leaving fragments suspended in motion.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-product-spin": {
+    "src": "/prompt-images/vid-product-spin.webp",
+    "alt": "Ivory and brushed-aluminum headphones stand on a softly lit studio turntable.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-time-of-day-shift": {
+    "src": "/prompt-images/vid-time-of-day-shift.webp",
+    "alt": "Light over a fishing harbor progresses from warm golden hour into blue twilight.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-thumbnail-text": {
+    "src": "/prompt-images/seo-thumbnail-text.webp",
+    "alt": "Short blank headline strips and a pencil surround a photograph with clear space for thumbnail copy.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-shorts-hook-script": {
+    "src": "/prompt-images/seo-shorts-hook-script.webp",
+    "alt": "A microphone and short script strips form a focused setup for writing a brief spoken opening.",
+    "width": 1280,
+    "height": 720
+  },
+  "char-voice-profile": {
+    "src": "/prompt-images/char-voice-profile.webp",
+    "alt": "A broadcast microphone, headphones and narration cue cards on a warm recording desk.",
+    "width": 1280,
+    "height": 720
+  },
+  "char-recurring-cast": {
+    "src": "/prompt-images/char-recurring-cast.webp",
+    "alt": "Three distinctive original character references arranged with wardrobe swatches and recurring props.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-storyboard-frames": {
+    "src": "/prompt-images/img-storyboard-frames.webp",
+    "alt": "Six rough grayscale storyboard panels follow the same small traveler discovering a glowing doorway.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-camera-motion-pack": {
+    "src": "/prompt-images/vid-camera-motion-pack.webp",
+    "alt": "A cinema camera on a curved dolly track circles a carefully lit miniature street set.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-faceless-series-bible": {
+    "src": "/prompt-images/niche-faceless-series-bible.webp",
+    "alt": "An open production notebook, three grouped story themes and visual references form a cohesive series plan.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-retention-editing": {
+    "src": "/prompt-images/niche-retention-editing.webp",
+    "alt": "A film editor arranges short visual beats and colored cue markers along a tactile editing plan.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-repurpose-shorts": {
+    "src": "/prompt-images/niche-repurpose-shorts.webp",
+    "alt": "One panoramic film sequence is reframed into a neat row of eight vertical story crops.",
+    "width": 1280,
+    "height": 720
+  },
+  "img-comic-panel": {
+    "src": "/prompt-images/img-comic-panel.webp",
+    "alt": "A lone cloaked adventurer faces a dramatic city rooftop in bold ink and halftone comic art.",
+    "width": 1280,
+    "height": 720
+  },
+  "vid-crowd-reaction": {
+    "src": "/prompt-images/vid-crowd-reaction.webp",
+    "alt": "Two original spectators react in surprise while a softly lit arena crowd blurs behind them.",
+    "width": 1280,
+    "height": 720
+  },
+  "seo-community-post": {
+    "src": "/prompt-images/seo-community-post.webp",
+    "alt": "A creator’s physical conversation board groups question cards, poll choices and thoughtful reply notes.",
+    "width": 1280,
+    "height": 720
+  },
+  "niche-monetization-map": {
+    "src": "/prompt-images/niche-monetization-map.webp",
+    "alt": "A creator maps four practical revenue paths with a product prototype, sponsor parcel, membership cards and publishing notebook.",
+    "width": 1280,
+    "height": 720
+  },
+  "rust-restoration-close-up": {
+    "src": "/prompt-images/rust-restoration-close-up.webp",
+    "alt": "A gloved hand wipes a clean strip through rust on an old metal latch.",
+    "width": 1280,
+    "height": 720
+  },
+  "rolling-object-staircase-asmr": {
+    "src": "/prompt-images/rolling-object-staircase-asmr.webp",
+    "alt": "A polished wooden spool rolls down six miniature foam steps toward a soft landing.",
+    "width": 1280,
+    "height": 720
+  },
+  "slow-carwash-mud-reveal": {
+    "src": "/prompt-images/slow-carwash-mud-reveal.webp",
+    "alt": "A rinse of water reveals deep blue paint along a mud-covered car wheel arch.",
+    "width": 1280,
+    "height": 720
+  },
+  "miniature-recipe-macro-asmr": {
+    "src": "/prompt-images/miniature-recipe-macro-asmr.webp",
+    "alt": "A tiny spoon adds an ingredient to a miniature pan in a detailed dollhouse kitchen.",
+    "width": 1280,
+    "height": 720
+  },
+  "wood-carving-locked-camera-timelapse": {
+    "src": "/prompt-images/wood-carving-locked-camera-timelapse.webp",
+    "alt": "A hand-carved wooden bird emerges from its original block beside curls of shavings.",
+    "width": 1280,
+    "height": 720
+  },
+  "watermelon-rind-relief-macro": {
+    "src": "/prompt-images/watermelon-rind-relief-macro.webp",
+    "alt": "A delicate fish relief cut through green watermelon rind reveals pale pith and a red flesh accent.",
+    "width": 1280,
+    "height": 720
+  },
+  "retro-toy-unboxing-immersive-pov": {
+    "src": "/prompt-images/retro-toy-unboxing-immersive-pov.webp",
+    "alt": "Two hands lift an original retro robot toy from its illustrated cardboard tray.",
+    "width": 1280,
+    "height": 720
+  },
+  "stickman-reference-conversion": {
+    "src": "/prompt-images/stickman-reference-conversion.webp",
+    "alt": "A simple original stick figure with a scarf appears in neutral, pointing and puzzled poses.",
+    "width": 1280,
+    "height": 720
+  },
+  "miniature-rescue-fiction-asmr": {
+    "src": "/prompt-images/miniature-rescue-fiction-asmr.webp",
+    "alt": "A colorful miniature team places a small blue bridge to help a toy traveler cross a tabletop gap.",
+    "width": 1280,
+    "height": 720
+  },
+  "underwater-wildlife-simulation": {
+    "src": "/prompt-images/underwater-wildlife-simulation.webp",
+    "alt": "A green sea turtle swims beside a realistic sunlit seagrass meadow.",
+    "width": 1280,
+    "height": 720
+  },
+  "fictional-pet-grooming-before-after": {
+    "src": "/prompt-images/fictional-pet-grooming-before-after.webp",
+    "alt": "A comfortable animated calico cat settles beside a soft grooming brush with its coat markings intact.",
+    "width": 1280,
+    "height": 720
+  },
+  "paper-collage-source-led-commentary": {
+    "src": "/prompt-images/paper-collage-source-led-commentary.webp",
+    "alt": "Torn cream paper, a hand-drawn map and a restrained chart form an editorial evidence collage.",
+    "width": 1280,
+    "height": 720
+  },
+  "ink-sketch-commentary-scenes": {
+    "src": "/prompt-images/ink-sketch-commentary-scenes.webp",
+    "alt": "Fine ink and muted watercolor depict a traveler turning a notebook page in an old town square.",
+    "width": 1280,
+    "height": 720
+  },
+  "licensed-clips-ranking-script": {
+    "src": "/prompt-images/licensed-clips-ranking-script.webp",
+    "alt": "Five distinct camera lenses are compared on a creator’s desk beside footage cards and a narration microphone.",
+    "width": 1280,
+    "height": 720
+  },
+  "licensed-clipping-edit-plan": {
+    "src": "/prompt-images/licensed-clipping-edit-plan.webp",
+    "alt": "Three coherent clip selections are marked on a physical film transcript beside source photographs.",
+    "width": 1280,
+    "height": 720
+  },
+  "tagalog-dubbing-licensed-microdrama": {
+    "src": "/prompt-images/tagalog-dubbing-licensed-microdrama.webp",
+    "alt": "A voice actor’s dubbing microphone and cue sheet sit before a paused Filipino drama scene.",
+    "width": 1280,
+    "height": 720
+  },
+  "original-ai-music-video-beat-sheet": {
+    "src": "/prompt-images/original-ai-music-video-beat-sheet.webp",
+    "alt": "Four atmospheric story frames and physical beat markers form a music-video plan.",
+    "width": 1280,
+    "height": 720
+  },
+  "animated-dance-counts-and-poses": {
+    "src": "/prompt-images/animated-dance-counts-and-poses.webp",
+    "alt": "An original animated dancer holds a balanced full-body pose on a softly lit studio floor.",
+    "width": 1280,
+    "height": 720
+  },
+  "lofi-watercolor-street-loop": {
+    "src": "/prompt-images/lofi-watercolor-street-loop.webp",
+    "alt": "A warmly lit watercolor street window glows at dusk while a sheer curtain drifts gently.",
+    "width": 1280,
+    "height": 720
+  },
+  "daily-prayer-instrumental-bed": {
+    "src": "/prompt-images/daily-prayer-instrumental-bed.webp",
+    "alt": "A quiet prayer notebook and warm candle sit beside a piano and recording microphone.",
+    "width": 1280,
+    "height": 720
+  },
+  "anime-trivia-source-check-script": {
+    "src": "/prompt-images/anime-trivia-source-check-script.webp",
+    "alt": "An original anime character reference and checked source notes lie beside a commentary microphone.",
+    "width": 1280,
+    "height": 720
+  },
+  "sports-diagram-explainer": {
+    "src": "/prompt-images/sports-diagram-explainer.webp",
+    "alt": "A clear overhead baseball field model shows a simple double-play path with contrasting player markers.",
+    "width": 1280,
+    "height": 720
+  },
+  "animated-career-workday-explainer": {
+    "src": "/prompt-images/animated-career-workday-explainer.webp",
+    "alt": "A friendly 3D product designer compares two chair prototypes at a practical workbench.",
+    "width": 1280,
+    "height": 720
+  },
+  "factory-documentary-shot-list": {
+    "src": "/prompt-images/factory-documentary-shot-list.webp",
+    "alt": "Ceramic mugs move from raw clay to finished pieces along a coherent workshop production line.",
+    "width": 1280,
+    "height": 720
+  },
+  "anatomical-fitness-single-rep": {
+    "src": "/prompt-images/anatomical-fitness-single-rep.webp",
+    "alt": "A matte-white anatomical mannequin performs a controlled dumbbell curl with a restrained amber arm-muscle overlay.",
+    "width": 1280,
+    "height": 720
+  },
+  "horoscope-zodiac-reflection-reel": {
+    "src": "/prompt-images/horoscope-zodiac-reflection-reel.webp",
+    "alt": "A delicate golden ram emblem rests beneath an airy constellation and indigo night sky.",
+    "width": 1280,
+    "height": 720
+  },
+  "guess-the-logo-quiz-reveal": {
+    "src": "/prompt-images/guess-the-logo-quiz-reveal.webp",
+    "alt": "An original geometric symbol is partly hidden behind a clue card on a bright radial quiz backdrop.",
+    "width": 1280,
+    "height": 720
+  },
+  "printed-quiz-sheet-pen-reveal": {
+    "src": "/prompt-images/printed-quiz-sheet-pen-reveal.webp",
+    "alt": "A hand places a single pen tick beside a choice on a neatly arranged physical quiz worksheet.",
+    "width": 1280,
+    "height": 720
+  },
+  "daily-prayer-eight-short-series": {
+    "src": "/prompt-images/daily-prayer-eight-short-series.webp",
+    "alt": "Eight calm visual motifs—from dawn fog to a candlelit table—form a cohesive prayer series.",
+    "width": 1280,
+    "height": 720
+  },
+  "affiliate-product-commercial-b-roll": {
+    "src": "/prompt-images/affiliate-product-commercial-b-roll.webp",
+    "alt": "A brushed-steel milk frother and a cup of milk sit in soft kitchen light, highlighting the product button.",
+    "width": 1280,
+    "height": 720
+  },
+  "affiliate-virtual-presenter-demo": {
+    "src": "/prompt-images/affiliate-virtual-presenter-demo.webp",
+    "alt": "A fictional adult presenter demonstrates the lid of a coral travel mug in a bright kitchen.",
+    "width": 1280,
+    "height": 720
+  },
+  "scripted-ai-podcast-clip": {
+    "src": "/prompt-images/scripted-ai-podcast-clip.webp",
+    "alt": "A fictional adult podcast speaker talks into a boom microphone in a warmly lit recording studio.",
+    "width": 1280,
+    "height": 720
+  },
+  "original-construction-brick-timelapse": {
+    "src": "/prompt-images/original-construction-brick-timelapse.webp",
+    "alt": "Hands add a brick to an original blue-and-ochre miniature lighthouse on a workshop table.",
+    "width": 1280,
+    "height": 720
+  },
+  "3d-educational-explainer-shorts": {
+    "src": "/prompt-images/3d-educational-explainer-shorts.webp",
+    "alt": "A friendly stylized 3D engineer demonstrates a rope pulley lifting a small wooden crate.",
+    "width": 1280,
+    "height": 720
+  },
+  "anime-cooking-montage-ten-seconds": {
+    "src": "/prompt-images/anime-cooking-montage-ten-seconds.webp",
+    "alt": "An original anime cook in an indigo apron tosses fried rice in a steaming wok.",
+    "width": 1280,
+    "height": 720
+  },
+  "block-world-emotional-story-shorts": {
+    "src": "/prompt-images/block-world-emotional-story-shorts.webp",
+    "alt": "Square-styled hands return a repaired red paper boat to an elderly neighbor in a warm doorway.",
+    "width": 1280,
+    "height": 720
+  },
+  "tagalog-folklore-live-action-b-roll": {
+    "src": "/prompt-images/tagalog-folklore-live-action-b-roll.webp",
+    "alt": "Rain falls beside a wooden Filipino-style house as a distant shadow appears among banana leaves.",
+    "width": 1280,
+    "height": 720
+  },
+  "tagalog-teleserye-microdrama-scenes": {
+    "src": "/prompt-images/tagalog-teleserye-microdrama-scenes.webp",
+    "alt": "Two fictional adult Filipino characters pause over an unopened envelope at a family dining table.",
+    "width": 1280,
+    "height": 720
+  },
+  "english-cinematic-microdrama-scenes": {
+    "src": "/prompt-images/english-cinematic-microdrama-scenes.webp",
+    "alt": "Two adults face an unspoken decision beside a quiet evening train platform and a torn ticket.",
+    "width": 1280,
+    "height": 720
+  },
+  "illustrated-fictional-mystery-short": {
+    "src": "/prompt-images/illustrated-fictional-mystery-short.webp",
+    "alt": "A wet umbrella and abruptly ending footprints create a clue outside a closed illustrated train station.",
+    "width": 1280,
+    "height": 720
+  },
+  "serialized-fruit-drama-five-parts": {
+    "src": "/prompt-images/serialized-fruit-drama-five-parts.webp",
+    "alt": "A strawberry in a yellow scarf, a jacketed banana and an apple rival face off in a miniature market kitchen.",
+    "width": 1280,
+    "height": 720
+  },
+  "preschool-gentle-3d-story-prompts": {
+    "src": "/prompt-images/preschool-gentle-3d-story-prompts.webp",
+    "alt": "A child and a little green dinosaur watch a butterfly settle on the dinosaur's nose in a gentle 3D play garden.",
+    "width": 1280,
+    "height": 720
+  },
+  "tagalog-horror-story-idea-generator": {
+    "src": "/prompt-images/tagalog-horror-story-idea-generator.webp",
+    "alt": "An old glowing radio, five blank story cards and a pencil form a Tagalog folklore writer's night-time idea desk.",
+    "width": 1280,
+    "height": 720
+  },
+  "tagalog-horror-comic-b-roll": {
+    "src": "/prompt-images/tagalog-horror-comic-b-roll.webp",
+    "alt": "An ink-drawn shopkeeper watches one shirt lift mysteriously while its blank tag stays still in an empty ukay-ukay stall.",
+    "width": 1280,
+    "height": 720
+  },
+  "mandarin-modern-suspense-microdrama": {
+    "src": "/prompt-images/mandarin-modern-suspense-microdrama.webp",
+    "alt": "A woman holding an envelope hesitates near glass elevator doors as an unexpected silhouette appears in the reflection.",
+    "width": 1280,
+    "height": 720
+  },
+  "mandarin-period-drama-suspense-staging": {
+    "src": "/prompt-images/mandarin-period-drama-suspense-staging.webp",
+    "alt": "Two original robed characters face a quiet rainy-courtyard standoff, with a small jade token partly revealed.",
+    "width": 1280,
+    "height": 720
+  }
+}

@@ -6,6 +6,7 @@ import {PromptVariableDrawer} from '@/components/PromptCustomizer';
 import type {Prompt} from '@/data/promptLibrary';
 import {CATEGORY_LABELS} from '@/lib/categories';
 import {filterPrompts,getPromptInfo,parseSavedPrompts,PROMPT_LEVELS,PROMPT_TOOLS} from '@/lib/promptFilters';
+import PromptArtwork from '@/components/PromptArtwork';
 
 type Props={prompts:Prompt[];validIds:string[];initialCategory?:string;initialQuery?:string;initialLevel?:string;initialTool?:string;initialFormat?:string;browseWindow?:{offset:number;size:number};pagination?:React.ReactNode};
 export default function PromptExplorer({prompts,validIds,initialCategory='',initialQuery='',initialLevel='',initialTool='',initialFormat='',browseWindow,pagination}:Props){
@@ -37,7 +38,8 @@ export default function PromptExplorer({prompts,validIds,initialCategory='',init
   </div>
   <div className="library-result-bar"><p className="result-count" role="status" aria-live="polite">{isBrowsing&&browseWindow?('Showing '+(browseWindow.offset+1)+'–'+(browseWindow.offset+visible.length)+' of '+filtered.length+' prompts'):(filtered.length+' '+(filtered.length===1?'prompt':'prompts')+(query?' matching “'+query+'”':''))}</p><details className="saved-transfer"><summary>Move your saved prompts</summary><p>Bookmarks stay in this browser. Export a backup anytime to transfer them to another browser or device.</p><div className="button-row">{!!saved.length&&<><DownloadButton text={savedExport} filename="faceless-saved-prompts.json" label="Export bookmarks" mime="application/json"/><DownloadButton text={savedText} filename="saved-prompts.md" label="Download prompt text"/></>}<button className="copy-button" onClick={()=>importRef.current?.click()}>Import bookmarks</button></div><input className="sr-only" type="file" accept="application/json,.json" tabIndex={-1} ref={importRef} onChange={importSaved} aria-label="Import saved prompt bookmarks"/></details></div>
   {notice&&<p className="notice" role="status">{notice}</p>}
-  <div className="prompt-grid">{visible.map(p=>{const info=getPromptInfo(p);return <article className="prompt-card" key={p.id}>
+  <div className="prompt-grid">{visible.map(p=>{const info=getPromptInfo(p);return <article className="prompt-card prompt-card-illustrated" key={p.id}>
+   <PromptArtwork prompt={p}/>
    <div className="card-meta"><span className="pill">{CATEGORY_LABELS[p.category]}</span><button type="button" className="plain-icon" aria-label={(saved.includes(p.id)?'Unsave ':'Save ')+p.title} aria-pressed={saved.includes(p.id)} onClick={()=>toggle(p.id)}><Bookmark size={17} fill={saved.includes(p.id)?'currentColor':'none'}/></button></div>
    <a href={'/prompts/'+p.id}><h3>{p.title}</h3></a><div className="prompt-tags"><span>{info.level}</span><span>{info.formats.join(' / ')}</span></div>
    <p className="prompt-excerpt">{p.tips||p.prompt.slice(0,190)+(p.prompt.length>190?'…':'')}</p>

@@ -159,7 +159,7 @@ for (const [index,page] of pagination.entries()) {
     check(pageLinks.some(link=>link.href===promptPageHref(number) && link['aria-label']==='Page '+number),
       page.path+' pagination is missing page '+number);
   }
-  const cards=[...page.body.matchAll(/<article class="prompt-card">[\s\S]*?<\/article>/g)];
+  const cards=[...page.body.matchAll(/<article class="prompt-card(?: [^"]+)?">[\s\S]*?<\/article>/g)];
   check(cards.length===Math.min(PROMPTS_PER_PAGE,promptPaths.size-index*PROMPTS_PER_PAGE),page.path+' renders an unexpected number of cards');
   for(const [card] of cards){
     const path=tags(card,'a').map(link=>sameOriginPath(link.href,page.path)).find(path=>promptPaths.has(path));
