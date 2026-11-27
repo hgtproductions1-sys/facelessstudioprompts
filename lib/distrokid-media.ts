@@ -37,6 +37,15 @@ export interface MediaClip {
   fadeOut?: number;
 }
 
+export interface AudioInterval {
+  start: number;
+  end: number;
+}
+
+export interface AudioSection extends AudioInterval {
+  mode: "cut" | "mute";
+}
+
 export interface AudioOptions {
   format: AudioFormat;
   bitrate?: Bitrate;
@@ -68,7 +77,7 @@ const GAP = 0.5;
 const CROSSFADE = 1;
 const NORMALIZE = "loudnorm=I=-14:TP=-1:LRA=11";
 const probeCache = new WeakMap<Blob, MediaInfo>();
-const generatedAudio = new WeakSet<Blob>();
+const generatedAudio = new WeakMap<Blob, number>();
 let engine: FFmpeg | null = null;
 let activeJob: AbortController | null = null;
 
@@ -161,10 +170,12 @@ function assertFileSize(file: Blob) {
   }
 }
 
-function assertAudio(info: MediaInfo) {
+function sourceDuration(info: MediaInfo, file: Blob) {
   if (!info.hasAudio) throw new Error("This file has no audio track.");
   if (info.duration <= 0) throw new Error("The audio duration could not be read.");
-  if (info.duration > MAX_MEDIA_DURATION) throw new Error("Each audio source can be up to 10 minutes long.");
+  const duration = Math.min(info.duration, generatedAudio.get(file) ?? info.duration);
+  if (duration > MAX_MEDIA_DURATION + 1e-6) throw new Error("Each audio source can be up to 10 minutes long.");
+  return duration;
 }
 
 async function withInputs<T>(
@@ -276,7 +287,7 @@ async function runOutput(
     if (typeof data === "string" || data.byteLength === 0) throw new Error("The audio output was empty.");
     // ffmpeg.wasm transfers the worker-owned ArrayBuffer when reading a file.
     const blob = new Blob([data as Uint8Array<ArrayBuffer>], { type: mime });
-    generatedAudio.add(blob);
+    generatedAudio.set(blob, duration);
     onProgress?.(1);
     return blob;
   } finally {
@@ -289,14 +300,15 @@ export async function convertMedia(file: Blob, options: AudioOptions) {
   const { format, args } = encodingOptions(options);
   return runMediaJob((ffmpeg) => withInputs(ffmpeg, [file], async ([path]) => {
     const info = await readProbe(ffmpeg, file, path);
-    assertAudio(info);
+    const duration = sourceDuration(info, file);
     const filters = options.normalize ? ["-af", NORMALIZE] : [];
+    const trimPadding = duration < info.duration ? ["-t", String(duration)] : [];
     // Keep 44.1 kHz sources at their original rate and cap high-rate inputs at 48 kHz.
     const rate = info.sampleRate <= 44_100 ? 44_100 : 48_000;
     return runOutput(ffmpeg, [
-      "-i", path, "-map", "0:a:0", "-map_metadata", "-1", ...filters,
+      "-i", path, "-map", "0:a:0", "-map_metadata", "-1", ...trimPadding, ...filters,
       "-ac", info.channels === 1 ? "1" : "2", "-ar", String(rate), ...args,
-    ], format.mime, info.duration, options.onProgress);
+    ], format.mime, duration, options.onProgress);
   }), options.signal);
 }
 
@@ -310,9 +322,9 @@ function overlap(previous: number, next: number) {
   return Math.floor(Math.min(CROSSFADE, previous / 2, next / 2) * COMPILE_RATE) / COMPILE_RATE;
 }
 
-export function compileDuration(
+function mixDuration(
   clips: readonly Pick<MediaClip, "start" | "end">[],
-  transition: Transition = "seamless",
+  transition: Transition,
 ): number {
   const durations = clips.map(activeDuration);
   return durations.reduce((total, duration, index) => {
@@ -322,11 +334,69 @@ export function compileDuration(
   }, 0);
 }
 
+function sampleIndex(seconds: number) {
+  return Math.round(seconds * COMPILE_RATE);
+}
+
+export function validAudioInterval({ start, end }: AudioInterval, duration: number) {
+  return Number.isFinite(start) && Number.isFinite(end) && start >= 0 && end <= duration + 1e-6 &&
+    sampleIndex(end) > sampleIndex(start);
+}
+
+function sectionSegments(duration: number, sections: readonly AudioSection[]) {
+  const limit = sampleIndex(duration);
+  const ranges = sections.map(({ start, end, mode }) => ({ start: sampleIndex(start), end: Math.min(sampleIndex(end), limit), mode }));
+  const endpoints = [...new Set([0, limit, ...ranges.flatMap(({ start, end }) => [start, end])])].sort((a, b) => a - b);
+  const segments: { start: number; end: number; mode?: AudioSection["mode"] }[] = [];
+  for (let index = 1; index < endpoints.length; index++) {
+    const start = endpoints[index - 1];
+    const end = endpoints[index];
+    const active = ranges.filter(range => range.start <= start && range.end >= end);
+    const mode = active.some(range => range.mode === "cut") ? "cut" : active[0]?.mode;
+    const previous = segments.at(-1);
+    if (previous && previous.mode === mode) previous.end = end;
+    else segments.push({ start, end, mode });
+  }
+  return segments;
+}
+
+export function compileDuration(
+  clips: readonly Pick<MediaClip, "start" | "end">[],
+  transition: Transition = "seamless",
+  sections: readonly AudioSection[] = [],
+) {
+  const duration = mixDuration(clips, transition);
+  if (!sections.some(section => section.mode === "cut")) return duration;
+  const cutSamples = sectionSegments(duration, sections).reduce((sum, segment) =>
+    sum + (segment.mode === "cut" ? segment.end - segment.start : 0), 0);
+  return (sampleIndex(duration) - cutSamples) / COMPILE_RATE;
+}
+
+/** Translate a selection on the exported master back to the pre-cut mix. */
+export function mapAudioIntervalToMix(selection: AudioInterval, duration: number, sections: readonly AudioSection[]) {
+  const ranges: AudioInterval[] = [];
+  const selectedStart = sampleIndex(selection.start);
+  const selectedEnd = sampleIndex(selection.end);
+  let offset = 0;
+  for (const segment of sectionSegments(duration, sections.filter(section => section.mode === "cut"))) {
+    if (segment.mode === "cut") continue;
+    const nextOffset = offset + segment.end - segment.start;
+    const start = Math.max(offset, selectedStart);
+    const end = Math.min(nextOffset, selectedEnd);
+    if (end > start) ranges.push({
+      start: (segment.start + start - offset) / COMPILE_RATE,
+      end: Math.min(duration, (segment.start + end - offset) / COMPILE_RATE),
+    });
+    offset = nextOffset;
+  }
+  return ranges;
+}
+
 function bounded(value: number | undefined, min: number, max: number) {
   return Math.min(max, Math.max(min, value !== undefined && Number.isFinite(value) ? value : 0));
 }
 
-function compileFilter(clips: readonly MediaClip[], transition: Transition, normalize: boolean) {
+function compileFilter(clips: readonly MediaClip[], transition: Transition, normalize: boolean, sections: readonly AudioSection[]) {
   const durations = clips.map(activeDuration);
   const chain = clips.map((clip, index) => {
     const duration = durations[index];
@@ -362,13 +432,34 @@ function compileFilter(clips: readonly MediaClip[], transition: Transition, norm
   }
 
   const masterFilter = normalize ? `${NORMALIZE},aresample=${COMPILE_RATE}` : "anull";
-  chain.push(`[${mixed}]${masterFilter}[master]`);
+  if (!sections.length) {
+    chain.push(`[${mixed}]${masterFilter}[master]`);
+    return chain.join(";");
+  }
+
+  // Work in samples after transitions and normalization, so a mute is exactly silent in the PCM mix.
+  const segments = sectionSegments(mixDuration(clips, transition), sections).filter(({ mode }) => mode !== "cut");
+  chain.push(`[${mixed}]${masterFilter}[sectionSource]`);
+  if (segments.length > 1) {
+    const inputs = segments.map((_, index) => `[sectionIn${index}]`).join("");
+    chain.push(`[sectionSource]asplit=${segments.length}${inputs}`);
+  }
+  for (const [index, segment] of segments.entries()) {
+    const input = segments.length === 1 ? "sectionSource" : `sectionIn${index}`;
+    const output = segments.length === 1 ? "master" : `sectionOut${index}`;
+    const mute = segment.mode === "mute" ? ",volume=0" : "";
+    chain.push(`[${input}]atrim=start_sample=${segment.start}:end_sample=${segment.end},asetpts=N/SR/TB${mute}[${output}]`);
+  }
+  if (segments.length > 1) {
+    const inputs = segments.map((_, index) => `[sectionOut${index}]`).join("");
+    chain.push(`${inputs}concat=n=${segments.length}:v=0:a=1[master]`);
+  }
   return chain.join(";");
 }
 
 export async function compileAudio(
   clips: readonly MediaClip[],
-  options: AudioOptions & { transition?: Transition },
+  options: AudioOptions & { transition?: Transition; sections?: readonly AudioSection[] },
 ) {
   if (clips.length === 0) throw new Error("Add at least one clip to compile.");
   if (clips.length > MAX_MEDIA_FILES) throw new Error("Compile up to eight clips at once.");
@@ -376,26 +467,37 @@ export async function compileAudio(
     throw new Error("The combined source files can be up to 250 MB.");
   }
   const transition = options.transition ?? "seamless";
-  const duration = compileDuration(clips, transition);
-  if (duration > MAX_MEDIA_DURATION + 1e-6) throw new Error("A compiled master can be up to 10 minutes long.");
+  const sections = options.sections ?? [];
+  const durationFor = (input: readonly MediaClip[]) => {
+    const duration = mixDuration(input, transition);
+    if (sections.some(section => !validAudioInterval(section, duration) || !["cut", "mute"].includes(section.mode))) {
+      throw new Error("Set section times within the master and put each end after its start.");
+    }
+    const editedDuration = compileDuration(input, transition, sections);
+    if (editedDuration > MAX_MEDIA_DURATION + 1e-6) throw new Error("A compiled master can be up to 10 minutes long.");
+    if (sections.length && editedDuration < 0.05) throw new Error("Keep at least 0.05 seconds of audio in the master.");
+    return editedDuration;
+  };
+  durationFor(clips);
   const files = clips.map(({ file }) => file);
   const { format, args } = encodingOptions(options);
   return runMediaJob((ffmpeg) => withInputs(ffmpeg, files, async (paths) => {
     const preparedClips: MediaClip[] = [];
     for (const [index, clip] of clips.entries()) {
       const info = await readProbe(ffmpeg, clip.file, paths[index]);
-      assertAudio(info);
+      sourceDuration(info, clip.file);
       if (!Number.isFinite(clip.start) || !Number.isFinite(clip.end) ||
           clip.start < 0 || clip.end > info.duration + 0.01 || clip.start >= Math.min(clip.end, info.duration)) {
         throw new Error(`Check the trim times for ${clip.file.name}.`);
       }
       preparedClips.push({ ...clip, end: Math.min(clip.end, info.duration) });
     }
+    const duration = durationFor(preparedClips);
     return runOutput(ffmpeg, [
       ...paths.flatMap((path) => ["-i", path]),
-      "-filter_complex", compileFilter(preparedClips, transition, options.normalize ?? false),
+      "-filter_complex", compileFilter(preparedClips, transition, options.normalize ?? false, sections),
       "-map", "[master]", "-map_metadata", "-1", "-ar", String(COMPILE_RATE), "-ac", "2", ...args,
-    ], format.mime, compileDuration(preparedClips, transition), options.onProgress);
+    ], format.mime, duration, options.onProgress);
   }), options.signal);
 }
 
@@ -403,11 +505,24 @@ export function previewAudio(file: Blob, signal?: AbortSignal) {
   return convertMedia(file, { format: "mp3", bitrate: 128, signal });
 }
 
+export async function previewAudioSection(file: Blob, selection: AudioInterval, signal?: AbortSignal) {
+  return runMediaJob((ffmpeg) => withInputs(ffmpeg, [file], async ([path]) => {
+    const fileDuration = sourceDuration(await readProbe(ffmpeg, file, path), file);
+    const start = selection.start;
+    const end = Math.min(selection.end, fileDuration);
+    if (!validAudioInterval({ start, end }, fileDuration)) throw new Error("Choose a section within the audio master.");
+    const { format, args } = encodingOptions({ format: "mp3", bitrate: 128 });
+    return runOutput(ffmpeg, [
+      "-ss", String(start), "-i", path, "-t", String(end - start), "-map", "0:a:0", "-map_metadata", "-1", ...args,
+    ], format.mime, end - start);
+  }), signal);
+}
+
 export async function createRecognitionExcerpts(file: Blob, duration: number, signal?: AbortSignal) {
   return runMediaJob((ffmpeg) => withInputs(ffmpeg, [file], async ([path]) => {
     const info = await readProbe(ffmpeg, file, path);
-    assertAudio(info);
-    const usableDuration = Math.min(numberOrZero(duration) || info.duration, info.duration);
+    const fileDuration = sourceDuration(info, file);
+    const usableDuration = Math.min(numberOrZero(duration) || fileDuration, fileDuration);
     const length = Math.min(12, usableDuration);
     const finalOffset = Math.max(0, usableDuration - length);
     const offsets = finalOffset < 1 ? [0] : finalOffset < 12 ? [0, finalOffset] : [0, finalOffset / 2, finalOffset];

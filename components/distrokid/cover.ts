@@ -173,3 +173,18 @@ export function drawCover(canvas: HTMLCanvasElement, settings: CoverSettings) {
     });
   }
 }
+
+export async function renderCoverJpg(settings: CoverSettings) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 3000;
+  canvas.height = 3000;
+  try {
+    drawCover(canvas, settings);
+    return await new Promise<Blob>((resolve, reject) => canvas.toBlob(
+      blob => blob ? resolve(blob) : reject(new Error('The browser could not export this cover.')), 'image/jpeg', 0.95,
+    ));
+  } finally {
+    canvas.width = 1;
+    canvas.height = 1;
+  }
+}

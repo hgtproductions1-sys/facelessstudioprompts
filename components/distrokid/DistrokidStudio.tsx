@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
-import { ArrowDown, AudioLines, BookOpen, Disc3, ImageIcon, ListMusic, Settings2, ShieldCheck, Square, Type } from 'lucide-react';
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
+import { ArrowDown, AudioLines, BookOpen, Disc3, ImageIcon, ListMusic, Settings2, ShieldCheck, Square, Type, Upload } from 'lucide-react';
 import { cancelMediaJob, probeMedia } from '@/lib/distrokid-media';
 import AudioCompiler, { type StudioClip } from './AudioCompiler';
 import BatchConverter from './BatchConverter';
 import CopyrightCheck from './CopyrightCheck';
 import CoverGenerator from './CoverGenerator';
-import GuidedRelease from './GuidedRelease';
+import GuidedRelease, { type GuidedReleaseHandle } from './GuidedRelease';
 import NameGenerator from './NameGenerator';
 import { errorMessage, maxSeconds, validateFiles, wasCancelled, type RunMedia } from './shared';
 import styles from './studio.module.css';
@@ -22,6 +22,7 @@ const tools = [
 
 type ToolId = typeof tools[number]['id'];
 type Workspace = 'release' | 'tools';
+const queueAnchor = 'release-upload-heading';
 const workspaces = [
   { id: 'release', label: 'Create a release', icon: Disc3, href: '/distrokid-studio#studio-workspace' },
   { id: 'tools', label: 'Studio tools', icon: Settings2, href: '/distrokid-studio?view=tools#studio-workspace' },
@@ -37,15 +38,31 @@ export default function DistrokidStudio({ initialWorkspace, offer }: { initialWo
   const [job, setJob] = useState<string>();
   const jobController = useRef<AbortController | null>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const guided = useRef<GuidedReleaseHandle>(null);
 
   useEffect(() => {
     function restoreWorkspace() {
       const views = new URLSearchParams(window.location.search).getAll('view');
-      setWorkspace(views.length === 1 && views[0] === 'tools' ? 'tools' : 'release');
+      const restored = views.length === 1 && views[0] === 'tools' ? 'tools' : 'release';
+      if (restored === 'release' && window.location.hash === '#' + queueAnchor) guided.current?.focusQueue();
+      setWorkspace(restored);
     }
     window.addEventListener('popstate', restoreWorkspace);
     return () => window.removeEventListener('popstate', restoreWorkspace);
   }, []);
+
+  function navigateWorkspace(event: MouseEvent<HTMLAnchorElement>, target: Workspace, anchor = 'studio-workspace') {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (target === workspace && anchor === 'studio-workspace') return;
+    const url = new URL(window.location.href);
+    if (target === 'tools') url.searchParams.set('view', 'tools');
+    else url.searchParams.delete('view');
+    url.hash = anchor;
+    if (url.href !== window.location.href) window.history.pushState(null, '', url);
+    if (anchor === queueAnchor) guided.current?.focusQueue();
+    setWorkspace(target);
+  }
 
   useEffect(() => () => {
     if (!jobController.current) return;
@@ -125,7 +142,11 @@ export default function DistrokidStudio({ initialWorkspace, offer }: { initialWo
           <span className={styles.heroMark}><Disc3 size={18} aria-hidden="true" /> The Faceless Prompts</span>
           <h1>Distrokid Studio</h1>
           <p>Turn your videos into an audio master, then give your release a name and a cover.</p>
-          <a href="#earning-methods" className={styles.heroLink}><BookOpen size={16} aria-hidden="true" /> Earning methods tutorial <ArrowDown size={14} aria-hidden="true" /></a>
+          <div className={styles.heroActions}>
+            <a href={'/distrokid-studio#' + queueAnchor} className={styles.primary}
+              onClick={event => navigateWorkspace(event, 'release', queueAnchor)}><Upload size={17} aria-hidden="true" /> Add videos</a>
+            <a href="#earning-methods" className={styles.heroLink}><BookOpen size={16} aria-hidden="true" /> Earning methods tutorial <ArrowDown size={14} aria-hidden="true" /></a>
+          </div>
         </div>
         <div className={styles.heroArt} aria-hidden="true"><span /><span /><span /><i /></div>
       </header>
@@ -136,17 +157,7 @@ export default function DistrokidStudio({ initialWorkspace, offer }: { initialWo
           {workspaces.map(({ id, label, icon: Icon, href }) => (
             <a key={id} id={'distrokid-workspace-link-' + id} href={href}
               aria-current={workspace === id ? 'page' : undefined}
-              onClick={event => {
-                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-                event.preventDefault();
-                if (workspace === id) return;
-                const url = new URL(window.location.href);
-                if (id === 'tools') url.searchParams.set('view', 'tools');
-                else url.searchParams.delete('view');
-                url.hash = 'studio-workspace';
-                window.history.pushState(null, '', url);
-                setWorkspace(id);
-              }}>
+              onClick={event => navigateWorkspace(event, id)}>
               <Icon size={19} aria-hidden="true" />{label}
             </a>
           ))}
@@ -158,7 +169,7 @@ export default function DistrokidStudio({ initialWorkspace, offer }: { initialWo
         </div>}
         <section id="distrokid-workspace-panel-release" aria-labelledby="distrokid-workspace-link-release"
           className={styles.tabPanel} hidden={workspace !== 'release'}>
-          <GuidedRelease active={workspace === 'release'} busy={Boolean(job)} run={run} title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} />
+          <GuidedRelease ref={guided} active={workspace === 'release'} busy={Boolean(job)} run={run} title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} />
         </section>
         <section id="distrokid-workspace-panel-tools" aria-labelledby="distrokid-workspace-link-tools" hidden={workspace !== 'tools'}>
           <div className={styles.tabs} role="tablist" aria-label="Studio tools">

@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
-import { AudioLines, ExternalLink, FileSearch, Fingerprint, Search } from 'lucide-react';
+import { useState, type FormEvent } from 'react';
+import { AudioLines, ExternalLink, FileSearch, Search } from 'lucide-react';
 import { createRecognitionExcerpts, probeMedia, type MediaInfo } from '@/lib/distrokid-media';
+import CatalogCheck, { TrackDetails, type Track } from './CatalogCheck';
 import { isAudible, readExcerpt, similarWaveforms } from './reference';
 import { Dropzone, Notice, clock, errorMessage, maxSeconds, validateFiles, wasCancelled, type RunMedia } from './shared';
 import styles from './studio.module.css';
 
-type Track = { title: string; artist: string; album?: string; releaseDate?: string; link?: string; isrc?: string };
-type Sample = { offset: number; duration: number; status: 'match' | 'no_match' | 'unavailable' | 'silent'; track?: Track; message?: string };
 type LoadedFile = { file: File; info: MediaInfo };
 type Mode = 'scan' | 'lookup' | 'compare';
 const api = '/api/distrokid-studio/';
@@ -23,22 +22,10 @@ function validIsrc(value: string) {
   return /^[A-Z]{2}[A-Z0-9]{3}\d{7}$/.test(normalizeIsrc(value));
 }
 
-function TrackDetails({ track }: { track: Track }) {
-  return <div className={styles.trackSummary}>
-    <strong>{track.title}</strong>
-    <p>{[track.artist, track.album, track.isrc].filter(Boolean).join(' · ')}</p>
-    {track.link && /^https:\/\//.test(track.link) && <a className={styles.inlineLink} href={track.link} target="_blank" rel="noreferrer">Open catalog entry <ExternalLink size={14} /></a>}
-  </div>;
-}
-
 export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunMedia }) {
   const [mode, setMode] = useState<Mode>('scan');
-  const [available, setAvailable] = useState<boolean>();
   const [source, setSource] = useState<LoadedFile>();
   const [reference, setReference] = useState<LoadedFile>();
-  const [consent, setConsent] = useState(false);
-  const [samples, setSamples] = useState<Sample[]>([]);
-  const [sampleTotal, setSampleTotal] = useState(0);
   const [comparison, setComparison] = useState<string>();
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
@@ -48,15 +35,6 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
   const [lookupError, setLookupError] = useState('');
   const [tracks, setTracks] = useState<Track[]>();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetch(api + 'recognize', { signal: controller.signal, cache: 'no-store' })
-      .then(async response => await response.json() as { available?: boolean })
-      .then(result => setAvailable(Boolean(result.available)))
-      .catch(problem => { if (!wasCancelled(problem)) setAvailable(false); });
-    return () => controller.abort();
-  }, []);
-
   async function load(file: File | undefined, second = false) {
     if (!file) return;
     const invalid = validateFiles([file]);
@@ -64,12 +42,7 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
     if (invalid) return;
     setComparison(undefined);
     if (second) setReference(undefined);
-    else {
-      setSource(undefined);
-      setSamples([]);
-      setSampleTotal(0);
-      setConsent(false);
-    }
+    else setSource(undefined);
     try {
       await run('Reading file information', async signal => {
         const info = await probeMedia(file, signal);
@@ -78,49 +51,6 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
         if (info.duration > maxSeconds) throw new Error('Choose a file that is 10 minutes or shorter.');
         if (second) setReference({ file, info });
         else setSource({ file, info });
-      });
-    } catch (problem) {
-      if (!wasCancelled(problem)) setError(errorMessage(problem));
-    }
-  }
-
-  async function recognize() {
-    if (!source || !consent || !available) return;
-    setSamples([]);
-    setSampleTotal(0);
-    setError('');
-    try {
-      await run('Checking sampled audio', async signal => {
-        const excerpts = await createRecognitionExcerpts(source.file, source.info.duration, signal);
-        signal.throwIfAborted();
-        setSampleTotal(excerpts.length);
-        for (const excerpt of excerpts) {
-          signal.throwIfAborted();
-          const { duration, samples: pcm } = await readExcerpt(excerpt.blob);
-          const base = { offset: excerpt.offset, duration };
-          if (!isAudible(pcm)) {
-            setSamples(current => [...current, { ...base, status: 'silent' }]);
-            continue;
-          }
-          const body = new FormData();
-          body.append('sample', excerpt.blob, 'sample.wav');
-          try {
-            const response = await fetch(api + 'recognize', { method: 'POST', body, signal });
-            const result = await response.json() as { status: string; track?: Track; message?: string };
-            if (response.ok && result.status === 'match' && result.track) {
-              setSamples(current => [...current, { ...base, status: 'match', track: result.track }]);
-            } else if (response.ok && result.status === 'no_match') {
-              setSamples(current => [...current, { ...base, status: 'no_match' }]);
-            } else {
-              setSamples(current => [...current, { ...base, status: 'unavailable', message: result.message ?? 'The catalog could not check this excerpt.' }]);
-              if (response.status === 429 || result.status === 'unavailable') break;
-            }
-          } catch (problem) {
-            if (signal.aborted) throw problem;
-            setSamples(current => [...current, { ...base, status: 'unavailable', message: 'The recognition service did not respond.' }]);
-            break;
-          }
-        }
       });
     } catch (problem) {
       if (!wasCancelled(problem)) setError(errorMessage(problem));
@@ -172,7 +102,6 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
     }
   }
 
-  const matches = samples.filter(sample => sample.status === 'match' || sample.status === 'no_match');
   const metadata = source && Object.entries(labels).flatMap(([tag, label]) => {
     const value = source.info.tags[tag];
     return value ? [{ tag, label, value }] : [];
@@ -185,8 +114,8 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
         <button aria-pressed={mode === 'lookup'} onClick={() => setMode('lookup')}><Search size={17} /> Registry lookup</button>
         <button aria-pressed={mode === 'compare'} onClick={() => setMode('compare')}><AudioLines size={17} /> Reference compare</button>
       </div>
-      {mode === 'scan' && <div className={styles.panelGrid}>
-        <div className={styles.stack}>
+      <div hidden={mode !== 'scan'}>
+        <CatalogCheck source={source && { blob: source.file, duration: source.info.duration }} busy={busy} run={run}>
           <Dropzone onFiles={files => void load(files[0])} title="Audio or video to check" compact={Boolean(source)}
             hint="Inspect file details and scan for possible recording matches." disabled={busy} />
           {error && <Notice danger>{error}</Notice>}
@@ -196,29 +125,8 @@ export default function CopyrightCheck({ busy, run }: { busy: boolean; run: RunM
               {metadata.map(({ tag, label, value }) => <div key={tag}><dt>{label}</dt><dd>{value}{tag === 'isrc' && (validIsrc(value) ? ' · Valid format' : ' · Unrecognized format')}</dd></div>)}
             </dl> : <p className={styles.muted}>No title, rights, or release tags were found in this file.</p>}
           </div>}
-          {sampleTotal > 0 && <div className={styles.track}>
-            <h3>Catalog results</h3>
-            <p className={styles.muted}>{matches.length} of {sampleTotal} excerpts checked. {samples.some(sample => sample.status === 'match') ? 'Recording match found.' : matches.length ? 'No match in checked excerpts. The result is inconclusive.' : 'The scan has no completed catalog checks.'}</p>
-            {samples.map(sample => <div key={sample.offset} className={styles.sample}>
-              <span className={styles.timestamp}>{clock(sample.offset)}–{clock(sample.offset + sample.duration)}</span>
-              {sample.track ? <TrackDetails track={sample.track} /> : <p>{sample.status === 'silent' ? 'Silent excerpt skipped.' : sample.message ?? 'No catalog match'}</p>}
-            </div>)}
-          </div>}
-        </div>
-        <aside className={styles.settings}>
-          <h3>Live recognition</h3>
-          <p className={styles.muted}>AudD compares short excerpts from your file against its recording catalog.</p>
-          {available === false && <Notice>Live recognition is currently unavailable. File scan and registry lookup are available.</Notice>}
-          {available === true && <>
-            <label className={styles.check}><input type="checkbox" checked={consent} disabled={!source || busy}
-              onChange={event => setConsent(event.target.checked)} /> Send up to three 12-second audio excerpts to AudD.</label>
-            <a className={styles.inlineLink} href="https://audd.io/privacy/index.php" target="_blank" rel="noreferrer">AudD privacy policy <ExternalLink size={14} /></a>
-            <button className={styles.primary} disabled={!source || !consent || busy} onClick={() => void recognize()}><Fingerprint size={17} /> Check catalog</button>
-          </>}
-          {available === undefined && <p className={styles.muted}>Checking service availability…</p>}
-          <p className={styles.muted}>Use the results to investigate recording rights. Clearance requires confirmation from the rights holder.</p>
-        </aside>
-      </div>}
+        </CatalogCheck>
+      </div>
       {mode === 'lookup' && <div className={styles.panelGrid}>
         <div className={styles.stack}>
           <form className={styles.track} onSubmit={event => void lookup(event)}>

@@ -53,12 +53,13 @@
   margin-top: 18px;
 }
 
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 20px; }
+.heroActions .primary { padding-inline: 16px; }
 .heroLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  margin-top: 10px;
   color: #e9fcc7;
   font-size: 13px;
   font-weight: 700;
@@ -218,8 +219,8 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  min-height: 43px;
-  min-width: 43px;
+  min-height: 44px;
+  min-width: 44px;
   padding: 7px 13px;
   border: 1px solid transparent;
   border-radius: 7px;
@@ -234,6 +235,8 @@
 .secondary:hover:not(:disabled), .iconButton:hover:not(:disabled) { background: #324638; border-color: #8aa382; }
 .iconButton { padding: 7px; }
 .studio button:disabled { cursor: default; }
+.studio :is(button, a, input, select, audio):focus-visible { outline: 2px solid var(--ds-control); }
+.studio :is(button, a) { touch-action: manipulation; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
 .settings > label, .fieldRow label, .track form label, .track > label, .clipFields label {
@@ -262,7 +265,7 @@
 .check input { accent-color: var(--ds-control); width: 17px; height: 17px; margin: 2px 0 0; flex: none; }
 .fieldRow { display: flex; flex-wrap: wrap; gap: 10px; }
 .fieldRow > label { flex: 1 1 105px; }
-.clipFields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.clipFields { display: grid; grid-template-columns: repeat(auto-fit, minmax(106px, 1fr)); gap: 8px; }
 .clipFields label { display: block; }
 .clipFields span { color: var(--ds-mute); font-weight: normal; }
 .clipFields input { margin-top: 5px; }
@@ -272,7 +275,7 @@
 .stepHeading { font-size: 21px; scroll-margin-top: 92px; }
 .releaseSteps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   padding: 0;
   margin: 0 0 24px;
@@ -312,8 +315,8 @@
 .queueFile small { color: var(--ds-mute); font-size: 12px; margin-top: 3px; }
 .queueActions { display: flex; gap: 4px; }
 .queueActions .iconButton { min-width: 44px; min-height: 44px; }
-.queueActions button[aria-disabled='true'] { opacity: 0.52; cursor: default; }
-.queueActions button[aria-disabled='true']:hover { border-color: #53665a; background: #22312a; }
+.iconButton[aria-disabled='true'] { opacity: 0.52; cursor: default; }
+.iconButton[aria-disabled='true']:hover { border-color: #53665a; background: #22312a; }
 .releaseQueue .error { margin-top: 8px; }
 
 .formatButtons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -331,12 +334,14 @@
   border-radius: 8px;
   background: #26392a;
 }
-.masterStrip > div { display: flex; gap: 8px; align-items: center; }
-.masterStrip > div > svg { color: var(--ds-control); }
-.masterStrip strong, .masterStrip small { display: block; }
-.masterStrip strong { font-size: 13px; }
-.masterStrip small { color: var(--ds-mute); font-size: 12px; font-variant-numeric: tabular-nums; }
+.masterStrip > div, .reviewMaster > div { display: flex; gap: 8px; align-items: center; }
+.masterStrip > div > svg, .reviewMaster > div > svg { color: var(--ds-control); }
+:is(.masterStrip, .reviewMaster) :is(strong, small) { display: block; }
+:is(.masterStrip, .reviewMaster) strong { font-size: 13px; }
+:is(.masterStrip, .reviewMaster) small { color: var(--ds-mute); font-size: 12px; font-variant-numeric: tabular-nums; }
 .masterStrip .secondary { min-height: 44px; }
+.reviewMaster { display: grid; gap: 10px; min-width: 0; }
+.releaseDownloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; }
 
 .trackList, .suggestions { list-style: none; display: grid; padding: 0; margin: 0; gap: 10px; }
 .track { min-width: 0; padding: 15px; display: grid; gap: 10px; border: 1px solid var(--ds-stroke); border-radius: 9px; background: var(--ds-panel); }
@@ -369,7 +374,7 @@
 .metadata > div { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 10px; }
 .metadata dt { color: var(--ds-mute); }
 .metadata dd { overflow-wrap: anywhere; margin: 0; }
-.sample { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: start; gap: 10px; padding-top: 10px; border-top: 1px solid var(--ds-stroke); font-size: 13px; }
+.sample { display: grid; grid-template-columns: max-content minmax(0, 1fr); align-items: start; gap: 10px; padding-top: 10px; border-top: 1px solid var(--ds-stroke); font-size: 13px; }
 .timestamp { color: var(--ds-control); font-variant-numeric: tabular-nums; }
 .inlineLink { display: inline-flex; align-items: center; gap: 5px; color: var(--ds-control); text-decoration: underline; text-underline-offset: 3px; }
 .suggestions li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 12px; background: var(--ds-panel); border: 1px solid var(--ds-stroke); border-radius: 7px; }
@@ -385,7 +390,7 @@
 
 .job { padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--ds-stroke); background: #233229; }
 .job > span { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.job .secondary { min-height: 34px; }
+.job .secondary { min-height: 44px; }
 .liveStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #93b37b65; border-top-color: var(--ds-control); animation: rotation 1s linear infinite; }
 @keyframes rotation { to { transform: rotate(1turn); } }
@@ -408,14 +413,15 @@
   .panelGrid { grid-template-columns: minmax(0, 1fr); }
   .workspaceTabs a { min-height: 50px; font-size: 13px; }
   .workspaceTabs a svg { width: 16px; height: 16px; }
-  .releaseSteps { gap: 5px; margin-bottom: 18px; }
+  .releaseSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; margin-bottom: 18px; }
   .releaseStep { min-height: 50px; padding: 6px; gap: 5px; font-size: 12px; }
   .releaseStep > span { flex-basis: 18px; }
   .masterStrip { grid-template-columns: minmax(0, 1fr); gap: 9px; }
   .tabPanel, .settings { padding: 15px; }
   .drop { min-height: 215px; }
+  .trackHeading { flex-wrap: wrap; }
   .trackHeading > .actions { gap: 4px; }
-  .iconButton { min-width: 36px; }
+  .sample { grid-template-columns: minmax(0, 1fr); gap: 6px; }
 }
 @media (max-width: 420px) {
   .queueRow { grid-template-columns: 18px minmax(0, 1fr); }

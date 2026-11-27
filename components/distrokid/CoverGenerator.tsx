@@ -1,18 +1,22 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { Download, ImagePlus } from 'lucide-react';
-import { coverStyles, drawCover } from './cover';
-import { Notice, downloadBlob, errorMessage, safeName } from './shared';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { ArrowRight, Download, ImagePlus } from 'lucide-react';
+import type { AudioFormat } from '@/lib/distrokid-media';
+import { coverStyles, drawCover, renderCoverJpg } from './cover';
+import { buildReleaseZip } from './release-package';
+import { Notice, downloadBlob, errorMessage, safeName, wasCancelled, type RunMedia } from './shared';
 import styles from './studio.module.css';
 
-export default function CoverGenerator({ title, onTitle, artist, onArtist, waveform, active }: {
+export default function CoverGenerator({ title, onTitle, artist, onArtist, waveform, active, onReview, review }: {
   title: string;
   onTitle: (title: string) => void;
   artist: string;
   onArtist: (artist: string) => void;
   waveform: number[];
   active: boolean;
+  onReview?: () => void;
+  review?: { audio: Blob; format: AudioFormat; busy: boolean; run: RunMedia; player: ReactNode };
 }) {
   const [style, setStyle] = useState(0);
   const [background, setBackground] = useState<string>(coverStyles[0].background);
@@ -21,7 +25,8 @@ export default function CoverGenerator({ title, onTitle, artist, onArtist, wavef
   const [file, setFile] = useState<File | null>(null);
   const [image, setImage] = useState<{ source: File; image: HTMLImageElement }>();
   const [useWaveform, setUseWaveform] = useState(false);
-  const [exporting, setExporting] = useState(false);
+  const [exporting, setExporting] = useState<'jpg' | 'zip'>();
+  const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const canvas = useRef<HTMLCanvasElement>(null);
   const artwork = image?.source === file ? image?.image : undefined;
@@ -56,26 +61,43 @@ export default function CoverGenerator({ title, onTitle, artist, onArtist, wavef
     return () => cancelAnimationFrame(frame);
   }, [active, style, background, accent, ink, title, artist, artwork, waveform, useWaveform]);
 
-  async function save() {
-    setExporting(true);
+  async function save(kind: 'jpg' | 'zip') {
+    if (kind === 'zip' && !review) return;
+    setExporting(kind);
     setError('');
-    const imageCanvas = document.createElement('canvas');
-    imageCanvas.width = 3000;
-    imageCanvas.height = 3000;
+    setStatus('');
+    const name = safeName(title);
+    const settings = { style, background, accent, ink, title, artist, artwork, waveform: useWaveform ? waveform : [] };
+    const coverName = name + ' - Cover.jpg';
     try {
-      drawCover(imageCanvas, { style, background, accent, ink, title, artist, artwork, waveform: useWaveform ? waveform : [] });
-      const jpg = await new Promise<Blob>((resolve, reject) => imageCanvas.toBlob(
-        blob => blob ? resolve(blob) : reject(new Error('The browser could not export this cover.')), 'image/jpeg', 0.95,
-      ));
-      downloadBlob(jpg, safeName(title || 'Untitled') + ' - Cover.jpg');
+      if (kind === 'zip' && review) {
+        const archive = await review.run('Building release ZIP', async signal => {
+          const cover = await renderCoverJpg(settings);
+          signal.throwIfAborted();
+          return buildReleaseZip([
+            { name: name + '.' + review.format, blob: review.audio },
+            { name: coverName, blob: cover },
+          ], signal);
+        });
+        downloadBlob(archive, name + ' - Release.zip');
+      } else {
+        downloadBlob(await renderCoverJpg(settings), coverName);
+      }
     } catch (problem) {
-      setError(errorMessage(problem));
+      if (wasCancelled(problem)) setStatus('ZIP creation canceled. You can retry or download the files individually.');
+      else setError(errorMessage(problem));
     } finally {
-      imageCanvas.width = 1;
-      imageCanvas.height = 1;
-      setExporting(false);
+      setExporting(undefined);
     }
   }
+
+  const waitingForArt = Boolean(file && !artwork);
+  const titleField = <label>Release title<input name="release-title" autoComplete="off" value={title} maxLength={80} placeholder="Untitled" onChange={event => onTitle(event.target.value)} /></label>;
+  const artistField = <label>Artist<input name="release-artist" autoComplete="off" value={artist} maxLength={70} placeholder="Artist name (optional)" onChange={event => onArtist(event.target.value)} /></label>;
+  const coverDownload = <button type="button" className={review || onReview ? styles.secondary : styles.primary}
+    disabled={Boolean(exporting) || waitingForArt} onClick={() => void save('jpg')}>
+    <Download size={16} aria-hidden="true" /> {exporting === 'jpg' ? 'Exporting…' : 'Download cover JPG'}
+  </button>;
 
   return (
     <div className={styles.panelGrid}>
@@ -83,7 +105,22 @@ export default function CoverGenerator({ title, onTitle, artist, onArtist, wavef
         <canvas className={styles.coverCanvas} ref={canvas} width={740} height={740} aria-label="Generated cover art preview" role="img" />
         <div className={styles.coverCaption}><span>Cover preview</span><span>3000 × 3000 JPG</span></div>
       </div>
-      <aside className={styles.settings}>
+      {review ? <div className={styles.settings}>
+        {review.player}
+        {titleField}
+        {artistField}
+        <button type="button" className={styles.primary} disabled={Boolean(exporting) || waitingForArt || review.busy}
+          onClick={() => void save('zip')}><Download size={16} aria-hidden="true" /> {exporting === 'zip' ? 'Building ZIP…' : 'Download release ZIP'}</button>
+        <div className={styles.releaseDownloads}>
+          <button type="button" className={styles.secondary}
+            onClick={() => downloadBlob(review.audio, safeName(title) + '.' + review.format)}>
+            <Download size={16} aria-hidden="true" /> Download master
+          </button>
+          {coverDownload}
+        </div>
+        {status && <Notice>{status}</Notice>}
+        {error && <Notice danger>{error}</Notice>}
+      </div> : <aside className={styles.settings}>
         <h3>Cover settings</h3>
         <label>Design<select value={style} onChange={event => {
           const id = Number(event.target.value);
@@ -94,8 +131,8 @@ export default function CoverGenerator({ title, onTitle, artist, onArtist, wavef
         }}>
           {coverStyles.map((option, i) => <option key={option.name} value={i}>{option.name}</option>)}
         </select></label>
-        <label>Release title<input value={title} maxLength={80} placeholder="Untitled" onChange={event => onTitle(event.target.value)} /></label>
-        <label>Artist<input value={artist} maxLength={70} placeholder="Artist name" onChange={event => onArtist(event.target.value)} /></label>
+        {titleField}
+        {artistField}
         <div className={styles.colorRow}>
           <label><input type="color" value={background} onChange={event => setBackground(event.target.value)} /> Background</label>
           <label><input type="color" value={accent} onChange={event => setAccent(event.target.value)} /> Accent</label>
@@ -121,8 +158,11 @@ export default function CoverGenerator({ title, onTitle, artist, onArtist, wavef
         </div>
         {!!waveform.length && <label className={styles.check}><input type="checkbox" checked={useWaveform} onChange={event => setUseWaveform(event.target.checked)} /> Add compiled audio waveform</label>}
         {error && <Notice danger>{error}</Notice>}
-        <button className={styles.primary} disabled={exporting || Boolean(file && !artwork)} onClick={() => void save()}><Download size={16} /> {exporting ? 'Exporting…' : 'Download cover JPG'}</button>
-      </aside>
+        {onReview && <button type="button" className={styles.primary} disabled={waitingForArt} onClick={onReview}>
+          Review release <ArrowRight size={16} aria-hidden="true" />
+        </button>}
+        {coverDownload}
+      </aside>}
     </div>
   );
 }
