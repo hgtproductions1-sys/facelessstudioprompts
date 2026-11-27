@@ -9,11 +9,14 @@ const description = 'Compile videos into one audio master, generate a release ti
 
 export const metadata = metadataFor(path, title, description);
 
-export default function Page() {
+export default async function Page({ searchParams }: {
+  searchParams: Promise<{ view?: string | string[] }>;
+}) {
+  const { view } = await searchParams;
   return (
     <div className="container page-content">
       <Breadcrumbs items={[{ label: 'Free tools', href: '/free-tools' }, { label: title, href: path }]} />
-      <DistrokidStudio offer={<StudentOffer />} />
+      <DistrokidStudio initialWorkspace={view === 'tools' ? 'tools' : 'release'} offer={<StudentOffer />} />
       <EarningMethodsTutorial />
       <JsonLd data={webApplicationJsonLd(path, title, description)} />
     </div>

@@ -23,12 +23,12 @@ const tools = [
 type ToolId = typeof tools[number]['id'];
 type Workspace = 'release' | 'tools';
 const workspaces = [
-  { id: 'release', label: 'Create a release', icon: Disc3 },
-  { id: 'tools', label: 'Studio tools', icon: Settings2 },
+  { id: 'release', label: 'Create a release', icon: Disc3, href: '/distrokid-studio#studio-workspace' },
+  { id: 'tools', label: 'Studio tools', icon: Settings2, href: '/distrokid-studio?view=tools#studio-workspace' },
 ] as const;
 
-export default function DistrokidStudio({ offer }: { offer?: ReactNode }) {
-  const [workspace, setWorkspace] = useState<Workspace>('release');
+export default function DistrokidStudio({ initialWorkspace, offer }: { initialWorkspace: Workspace; offer?: ReactNode }) {
+  const [workspace, setWorkspace] = useState<Workspace>(initialWorkspace);
   const [active, setActive] = useState<ToolId>('check');
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
@@ -36,8 +36,16 @@ export default function DistrokidStudio({ offer }: { offer?: ReactNode }) {
   const [clips, setClips] = useState<StudioClip[]>([]);
   const [job, setJob] = useState<string>();
   const jobController = useRef<AbortController | null>(null);
-  const workspaceTabs = useRef<(HTMLButtonElement | null)[]>([]);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    function restoreWorkspace() {
+      const views = new URLSearchParams(window.location.search).getAll('view');
+      setWorkspace(views.length === 1 && views[0] === 'tools' ? 'tools' : 'release');
+    }
+    window.addEventListener('popstate', restoreWorkspace);
+    return () => window.removeEventListener('popstate', restoreWorkspace);
+  }, []);
 
   useEffect(() => () => {
     if (!jobController.current) return;
@@ -97,15 +105,6 @@ export default function DistrokidStudio({ offer }: { offer?: ReactNode }) {
     changeTab(tools[targets[event.key]].id);
   }
 
-  function navigateWorkspace(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const targets: Record<string, number> = { ArrowLeft: 1 - index, ArrowRight: 1 - index, Home: 0, End: 1 };
-    const next = targets[event.key];
-    if (next === undefined) return;
-    event.preventDefault();
-    setWorkspace(workspaces[next].id);
-    workspaceTabs.current[next]?.focus();
-  }
-
   const screens = {
     check: <CopyrightCheck busy={Boolean(job)} run={run} />,
     convert: <BatchConverter busy={Boolean(job)} run={run} addToCompiler={async file => {
@@ -131,27 +130,37 @@ export default function DistrokidStudio({ offer }: { offer?: ReactNode }) {
         <div className={styles.heroArt} aria-hidden="true"><span /><span /><span /><i /></div>
       </header>
       {offer}
-      <div className={styles.workspace}>
+      <div id="studio-workspace" className={styles.workspace}>
         <span className={styles.liveStatus} role="status" aria-atomic="true">{job ? job + '…' : ''}</span>
-        <div className={styles.workspaceTabs} role="tablist" aria-label="Distrokid Studio workspace">
-          {workspaces.map(({ id, label, icon: Icon }, index) => (
-            <button key={id} type="button" ref={element => { workspaceTabs.current[index] = element; }}
-              role="tab" id={'distrokid-workspace-tab-' + id} aria-selected={workspace === id}
-              aria-controls={'distrokid-workspace-panel-' + id} tabIndex={workspace === id ? 0 : -1}
-              onKeyDown={event => navigateWorkspace(event, index)} onClick={() => setWorkspace(id)}>
+        <nav className={styles.workspaceTabs} aria-label="Distrokid Studio workspace">
+          {workspaces.map(({ id, label, icon: Icon, href }) => (
+            <a key={id} id={'distrokid-workspace-link-' + id} href={href}
+              aria-current={workspace === id ? 'page' : undefined}
+              onClick={event => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                if (workspace === id) return;
+                const url = new URL(window.location.href);
+                if (id === 'tools') url.searchParams.set('view', 'tools');
+                else url.searchParams.delete('view');
+                url.hash = 'studio-workspace';
+                window.history.pushState(null, '', url);
+                setWorkspace(id);
+              }}>
               <Icon size={19} aria-hidden="true" />{label}
-            </button>
+            </a>
           ))}
-        </div>
+        </nav>
+        <noscript><p className={styles.scriptNotice}>Enable JavaScript to use the audio tools.</p></noscript>
         {job && <div className={styles.job}>
           <span aria-hidden="true"><i className={styles.spinner} /> {job}…</span>
           <button type="button" className={styles.secondary} onClick={() => { jobController.current?.abort(); cancelMediaJob(); }}><Square size={13} aria-hidden="true" /> Cancel</button>
         </div>}
-        <section role="tabpanel" id="distrokid-workspace-panel-release" aria-labelledby="distrokid-workspace-tab-release"
+        <section id="distrokid-workspace-panel-release" aria-labelledby="distrokid-workspace-link-release"
           className={styles.tabPanel} hidden={workspace !== 'release'}>
           <GuidedRelease active={workspace === 'release'} busy={Boolean(job)} run={run} title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} />
         </section>
-        <section role="tabpanel" id="distrokid-workspace-panel-tools" aria-labelledby="distrokid-workspace-tab-tools" hidden={workspace !== 'tools'}>
+        <section id="distrokid-workspace-panel-tools" aria-labelledby="distrokid-workspace-link-tools" hidden={workspace !== 'tools'}>
           <div className={styles.tabs} role="tablist" aria-label="Studio tools">
             {tools.map((tool, index) => (
               <button key={tool.id} type="button" ref={element => { tabs.current[index] = element; }}
