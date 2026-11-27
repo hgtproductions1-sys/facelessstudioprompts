@@ -53,6 +53,18 @@
   margin-top: 18px;
 }
 
+.heroLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 10px;
+  color: #e9fcc7;
+  font-size: 13px;
+  font-weight: 700;
+}
+.heroLink:hover { text-decoration: underline; text-underline-offset: 4px; }
+
 .heroArt {
   position: absolute;
   z-index: 0;
@@ -94,6 +106,31 @@
   border: 1px solid var(--ds-stroke);
   background: var(--ds-bg);
 }
+
+.workspaceTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid var(--ds-stroke);
+}
+
+.workspaceTabs button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 57px;
+  border: 0;
+  background: #16221b;
+  color: var(--ds-mute);
+  padding: 9px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.workspaceTabs button + button { border-left: 1px solid var(--ds-stroke); }
+.workspaceTabs button:hover { background: #23362b; color: var(--ds-ink); }
+.workspaceTabs button[aria-selected='true'] { background: #314435; color: #effed3; box-shadow: inset 0 -3px var(--ds-control); }
+.workspaceTabs button:focus-visible { outline-offset: -5px; }
 
 .tabs {
   display: grid;
@@ -228,6 +265,77 @@
 .clipFields span { color: var(--ds-mute); font-weight: normal; }
 .clipFields input { margin-top: 5px; }
 
+.guided section[hidden] { display: none; }
+.guided h2, .stepHeading { text-wrap: balance; }
+.stepHeading { font-size: 21px; scroll-margin-top: 92px; }
+.releaseSteps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0;
+  margin: 0 0 24px;
+  list-style: none;
+}
+
+.releaseStep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--ds-stroke);
+  border-radius: 7px;
+  background: #192721;
+  color: var(--ds-mute);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: left;
+}
+.releaseStep > span { display: grid; place-items: center; flex: 0 0 23px; aspect-ratio: 1; border-radius: 50%; background: #314839; color: #e7f1da; font-variant-numeric: tabular-nums; }
+.releaseStep:hover:not(:disabled), .releaseStep[aria-current='step'] { border-color: #819a6b; background: #2b4030; color: #f1ffdc; }
+.releaseStep[aria-current='step'] > span { background: var(--ds-control); color: #1e2819; }
+
+.releaseQueue { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.releaseQueue li { min-width: 0; padding: 8px 12px; border: 1px solid var(--ds-stroke); border-radius: 8px; background: var(--ds-panel); }
+.releaseQueue li[data-drop-target='true'] { border-color: var(--ds-control); }
+.queueRow { display: grid; min-width: 0; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.queueNumber { display: grid; justify-items: center; color: var(--ds-control); font-size: 13px; text-align: center; font-variant-numeric: tabular-nums; }
+.queueNumber[draggable='true'] { cursor: grab; user-select: none; }
+.queueNumber[draggable='true']:active { cursor: grabbing; }
+.queueFile { overflow-wrap: anywhere; }
+.queueFile strong, .queueFile small { display: block; line-height: 1.4; }
+.queueFile strong { font-size: 14px; }
+.queueFile small { color: var(--ds-mute); font-size: 12px; margin-top: 3px; }
+.queueActions { display: flex; gap: 4px; }
+.queueActions .iconButton { min-width: 44px; min-height: 44px; }
+.queueActions button[aria-disabled='true'] { opacity: 0.52; cursor: default; }
+.queueActions button[aria-disabled='true']:hover { border-color: #53665a; background: #22312a; }
+.releaseQueue .error { margin-top: 8px; }
+
+.formatButtons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.formatButtons button { position: relative; min-height: 48px; }
+.formatButtons .primary { flex-direction: column; gap: 0; }
+.formatButtons small { font-size: 10px; }
+
+.masterStrip {
+  display: grid;
+  grid-template-columns: minmax(122px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 14px;
+  border: 1px solid #4f6849;
+  border-radius: 8px;
+  background: #26392a;
+}
+.masterStrip > div { display: flex; gap: 8px; align-items: center; }
+.masterStrip > div > svg { color: var(--ds-control); }
+.masterStrip strong, .masterStrip small { display: block; }
+.masterStrip strong { font-size: 13px; }
+.masterStrip small { color: var(--ds-mute); font-size: 12px; font-variant-numeric: tabular-nums; }
+.masterStrip .secondary { min-height: 44px; }
+
 .trackList, .suggestions { list-style: none; display: grid; padding: 0; margin: 0; gap: 10px; }
 .track { min-width: 0; padding: 15px; display: grid; gap: 10px; border: 1px solid var(--ds-stroke); border-radius: 9px; background: var(--ds-panel); }
 .trackHeading strong, .trackSummary strong { display: block; overflow-wrap: anywhere; line-height: 1.4; }
@@ -276,6 +384,7 @@
 .job { padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--ds-stroke); background: #233229; }
 .job > span { display: flex; align-items: center; gap: 8px; font-size: 13px; }
 .job .secondary { min-height: 34px; }
+.liveStatus { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #93b37b65; border-top-color: var(--ds-control); animation: rotation 1s linear infinite; }
 @keyframes rotation { to { transform: rotate(1turn); } }
 
@@ -295,10 +404,20 @@
   .tabs button:nth-child(3) { border-right: none; }
   .tabs button:last-child { border-right: 1px solid var(--ds-stroke); }
   .panelGrid { grid-template-columns: minmax(0, 1fr); }
+  .workspaceTabs button { min-height: 50px; font-size: 13px; }
+  .workspaceTabs button svg { width: 16px; height: 16px; }
+  .releaseSteps { gap: 5px; margin-bottom: 18px; }
+  .releaseStep { min-height: 50px; padding: 6px; gap: 5px; font-size: 12px; }
+  .releaseStep > span { flex-basis: 18px; }
+  .masterStrip { grid-template-columns: minmax(0, 1fr); gap: 9px; }
   .tabPanel, .settings { padding: 15px; }
   .drop { min-height: 215px; }
   .trackHeading > .actions { gap: 4px; }
   .iconButton { min-width: 36px; }
+}
+@media (max-width: 420px) {
+  .queueRow { grid-template-columns: 18px minmax(0, 1fr); }
+  .queueActions { grid-column: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   .spinner { animation: none; }

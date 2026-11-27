@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { AudioLines, Disc3, ImageIcon, ListMusic, ShieldCheck, Square, Type } from 'lucide-react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { ArrowDown, AudioLines, BookOpen, Disc3, ImageIcon, ListMusic, Settings2, ShieldCheck, Square, Type } from 'lucide-react';
 import { cancelMediaJob, probeMedia } from '@/lib/distrokid-media';
 import AudioCompiler, { type StudioClip } from './AudioCompiler';
 import BatchConverter from './BatchConverter';
 import CopyrightCheck from './CopyrightCheck';
 import CoverGenerator from './CoverGenerator';
+import GuidedRelease from './GuidedRelease';
 import NameGenerator from './NameGenerator';
 import { errorMessage, maxSeconds, validateFiles, wasCancelled, type RunMedia } from './shared';
 import styles from './studio.module.css';
@@ -20,8 +21,14 @@ const tools = [
 ] as const;
 
 type ToolId = typeof tools[number]['id'];
+type Workspace = 'release' | 'tools';
+const workspaces = [
+  { id: 'release', label: 'Create a release', icon: Disc3 },
+  { id: 'tools', label: 'Studio tools', icon: Settings2 },
+] as const;
 
-export default function DistrokidStudio() {
+export default function DistrokidStudio({ offer }: { offer?: ReactNode }) {
+  const [workspace, setWorkspace] = useState<Workspace>('release');
   const [active, setActive] = useState<ToolId>('check');
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
@@ -29,6 +36,7 @@ export default function DistrokidStudio() {
   const [clips, setClips] = useState<StudioClip[]>([]);
   const [job, setJob] = useState<string>();
   const jobController = useRef<AbortController | null>(null);
+  const workspaceTabs = useRef<(HTMLButtonElement | null)[]>([]);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => () => {
@@ -89,6 +97,15 @@ export default function DistrokidStudio() {
     changeTab(tools[targets[event.key]].id);
   }
 
+  function navigateWorkspace(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const targets: Record<string, number> = { ArrowLeft: 1 - index, ArrowRight: 1 - index, Home: 0, End: 1 };
+    const next = targets[event.key];
+    if (next === undefined) return;
+    event.preventDefault();
+    setWorkspace(workspaces[next].id);
+    workspaceTabs.current[next]?.focus();
+  }
+
   const screens = {
     check: <CopyrightCheck busy={Boolean(job)} run={run} />,
     convert: <BatchConverter busy={Boolean(job)} run={run} addToCompiler={async file => {
@@ -99,41 +116,60 @@ export default function DistrokidStudio() {
     compile: <AudioCompiler busy={Boolean(job)} run={run} clips={clips} setClips={setClips} addFiles={addCompilerFiles}
       title={title} setTitle={setTitle} setWaveform={setWaveform} />,
     names: <NameGenerator title={title} onTitle={setTitle} onCover={() => changeTab('cover')} />,
-    cover: <CoverGenerator title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} waveform={waveform} active={active === 'cover'} />,
+    cover: <CoverGenerator title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} waveform={waveform} active={workspace === 'tools' && active === 'cover'} />,
   };
 
   return (
     <section className={styles.studio} aria-label="Distrokid Studio">
       <header className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span className={styles.heroMark}><Disc3 size={18} /> The Faceless Prompts</span>
+          <span className={styles.heroMark}><Disc3 size={18} aria-hidden="true" /> The Faceless Prompts</span>
           <h1>Distrokid Studio</h1>
-          <p>Check a recording, turn video into audio, and prepare your master, title, and cover in one place.</p>
+          <p>Turn your videos into an audio master, then give your release a name and a cover.</p>
+          <a href="#earning-methods" className={styles.heroLink}><BookOpen size={16} aria-hidden="true" /> Earning methods tutorial <ArrowDown size={14} aria-hidden="true" /></a>
         </div>
         <div className={styles.heroArt} aria-hidden="true"><span /><span /><span /><i /></div>
       </header>
+      {offer}
       <div className={styles.workspace}>
-        <div className={styles.tabs} role="tablist" aria-label="Studio tools">
-          {tools.map((tool, index) => (
-            <button key={tool.id} ref={element => { tabs.current[index] = element; }}
-              role="tab" id={'distrokid-tab-' + tool.id} aria-selected={active === tool.id}
-              aria-controls={'distrokid-panel-' + tool.id} tabIndex={active === tool.id ? 0 : -1}
-              onKeyDown={event => navigate(event, index)} onClick={() => changeTab(tool.id)}>
-              <tool.icon size={19} /><span>{tool.label}</span>
+        <span className={styles.liveStatus} role="status" aria-atomic="true">{job ? job + '…' : ''}</span>
+        <div className={styles.workspaceTabs} role="tablist" aria-label="Distrokid Studio workspace">
+          {workspaces.map(({ id, label, icon: Icon }, index) => (
+            <button key={id} type="button" ref={element => { workspaceTabs.current[index] = element; }}
+              role="tab" id={'distrokid-workspace-tab-' + id} aria-selected={workspace === id}
+              aria-controls={'distrokid-workspace-panel-' + id} tabIndex={workspace === id ? 0 : -1}
+              onKeyDown={event => navigateWorkspace(event, index)} onClick={() => setWorkspace(id)}>
+              <Icon size={19} aria-hidden="true" />{label}
             </button>
           ))}
         </div>
-        {job && <div className={styles.job} role="status">
-          <span><i className={styles.spinner} /> {job}…</span>
-          <button className={styles.secondary} onClick={() => { jobController.current?.abort(); cancelMediaJob(); }}><Square size={13} /> Cancel</button>
+        {job && <div className={styles.job}>
+          <span aria-hidden="true"><i className={styles.spinner} /> {job}…</span>
+          <button type="button" className={styles.secondary} onClick={() => { jobController.current?.abort(); cancelMediaJob(); }}><Square size={13} aria-hidden="true" /> Cancel</button>
         </div>}
-        {tools.map(tool => (
-          <section key={tool.id} role="tabpanel" id={'distrokid-panel-' + tool.id}
-            aria-labelledby={'distrokid-tab-' + tool.id} className={styles.tabPanel} hidden={active !== tool.id}>
-            <div className={styles.panelIntro}><h2>{tool.label}</h2><p>{tool.description}</p></div>
-            {screens[tool.id]}
-          </section>
-        ))}
+        <section role="tabpanel" id="distrokid-workspace-panel-release" aria-labelledby="distrokid-workspace-tab-release"
+          className={styles.tabPanel} hidden={workspace !== 'release'}>
+          <GuidedRelease active={workspace === 'release'} busy={Boolean(job)} run={run} title={title} onTitle={setTitle} artist={artist} onArtist={setArtist} />
+        </section>
+        <section role="tabpanel" id="distrokid-workspace-panel-tools" aria-labelledby="distrokid-workspace-tab-tools" hidden={workspace !== 'tools'}>
+          <div className={styles.tabs} role="tablist" aria-label="Studio tools">
+            {tools.map((tool, index) => (
+              <button key={tool.id} type="button" ref={element => { tabs.current[index] = element; }}
+                role="tab" id={'distrokid-tab-' + tool.id} aria-selected={active === tool.id}
+                aria-controls={'distrokid-panel-' + tool.id} tabIndex={active === tool.id ? 0 : -1}
+                onKeyDown={event => navigate(event, index)} onClick={() => changeTab(tool.id)}>
+                <tool.icon size={19} aria-hidden="true" /><span>{tool.label}</span>
+              </button>
+            ))}
+          </div>
+          {tools.map(tool => (
+            <section key={tool.id} role="tabpanel" id={'distrokid-panel-' + tool.id}
+              aria-labelledby={'distrokid-tab-' + tool.id} className={styles.tabPanel} hidden={active !== tool.id}>
+              <div className={styles.panelIntro}><h2>{tool.label}</h2><p>{tool.description}</p></div>
+              {screens[tool.id]}
+            </section>
+          ))}
+        </section>
       </div>
     </section>
   );

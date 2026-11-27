@@ -196,6 +196,14 @@ async function page(path:string,el:React.ReactNode){const html=renderToStaticMar
 await page('/',<Home/>);await page('/updates',<Updates/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',await Guides());await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
 await page('/distrokid-studio',<DistrokidStudioPage/>);
 assert.equal(distroMetadata.alternates?.canonical,SITE_URL+'/distrokid-studio');
+const studioMarkup=rendered.get('/distrokid-studio')!;
+assert(studioMarkup.includes('href="#earning-methods"'));
+assert(studioMarkup.includes('href="https://distrokid.com/student/14261439" rel="sponsored noopener noreferrer"'));
+for(const language of ['english','tagalog']){
+ const file='/downloads/distrokid/earning-methods-'+language+'.pdf';
+ assert(studioMarkup.includes('href="'+file+'" download=""'));
+ assert.equal(readFileSync('public'+file).subarray(0,5).toString(),'%PDF-');
+}
 assert(rendered.get('/free-tools')?.includes('href="/distrokid-studio"'));
 assert(!rendered.get('/videos')!.includes('<iframe'));assert.equal((rendered.get('/videos')!.match(/class="video-poster"/g)||[]).length,VIDEOS.length);
 for(const p of PROMPTS)assert(rendered.get('/prompts')!.includes('href="/prompts/'+p.id+'"'),p.id+' must be discoverable before Show more or client filtering');

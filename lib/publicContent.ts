@@ -15,6 +15,7 @@ import {START_PATHS} from '@/data/startPaths';
 import {FREE_TOOL_PAGES,getFreeToolPage} from '@/data/freeToolPages';
 import {getModelHub,getModelHubPrompts,modelHubs} from '@/data/modelPromptHubs';
 import {getEditorialPosts,editorialPath,safeContentUrl,cmsImageUrl,cmsBodyImage,cmsYoutubeId,type EditorialPost} from '@/lib/editorial';
+import {studentReferral,tutorialEditions} from '@/lib/distrokid-studio/resources';
 import editorialConfig from '@/config/editorial.json';
 
 type PublicPage={path:string;title:string;description:string};
@@ -22,7 +23,7 @@ const mainPages:PublicPage[]=[
  {path:'/',title:SITE_NAME,description:'Free AI prompts and video production plans for faceless content creators.'},
  {path:'/start-here',title:'Make your first faceless video',description:'Choose a beginner path, a lesson, and an editable production checklist.'},
  {path:'/studio',title:'Free AI video prompt and storyboard Studio',description:'Create an editable hook, shot list, scene prompts, narration direction, and editing checklist.'},
- {path:'/distrokid-studio',title:'Distrokid Studio',description:'Check audio for catalog matches, convert videos to audio, compile tracks, and create release names and cover art.'},
+ {path:'/distrokid-studio',title:'Distrokid Studio',description:'Compile videos into one audio master, generate a title and cover, check for catalog matches, and download the English or Tagalog tutorial.'},
  {path:'/prompts',title:'Free AI prompt library',description:'Editable image, video, character, niche, and YouTube prompt templates.'},
  {path:'/niches',title:`${NICHE_PAGES.length} faceless YouTube niche playbooks`,description:'Audience ideas, episode structures, scene prompts, and production checks.'},
  {path:'/guides',title:'Faceless creator guides',description:'Guidance on planning, AI prompting, continuity, and responsible publishing.'},
@@ -153,7 +154,9 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   content.push('## Dedicated tools\n\n'+list([link('Distrokid Studio','/distrokid-studio'),...FREE_TOOL_PAGES.map(tool=>link(tool.title,'/free-tools/'+tool.slug))]));
  }else if(path==='/distrokid-studio'){
   content.push('## Copyright check\n\nAudio recognition looks for recording matches in the AudD catalog. A sample is sent only when you start a check. You can also search the iTunes catalog by title or artist. Confirm usage rights with the rights holder.',
-    '## Prepare your release\n\nConvert multiple videos to audio, put clips in order and export them as one track, generate name ideas, and export square cover artwork. Conversion, compilation, naming, and cover design run in your browser.',
+    '## Create a release\n\nAdd videos, review the order, and choose an audio format to compile one master. Then generate a title and create a 3000 × 3000 JPG cover. Conversion, compilation, naming, and cover design run in your browser.',
+    '## Earning Methods Tutorial\n\n'+list(tutorialEditions.map(edition=>link('Download '+edition.language+' PDF',edition.path))),
+    '## Student offer\n\nEligible students can get 50% off their first year with a valid student email. We may earn a referral fee if you sign up. '+link('Get the student discount',studentReferral),
     link('Audio processing and privacy','/privacy'));
  }
  const indexPrefix:Record<string,string>={'/prompts':'/prompts/','/niches':'/niches/','/guides':'/guides/','/videos':'/videos/','/articles':'/articles/'};

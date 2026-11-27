@@ -21,6 +21,7 @@ export type Transition = "seamless" | "gap" | "crossfade";
 export interface MediaInfo {
   duration: number;
   hasAudio: boolean;
+  hasVideo: boolean;
   codec: string;
   channels: number;
   sampleRate: number;
@@ -46,6 +47,7 @@ export interface AudioOptions {
 
 interface ProbeStream {
   codec_type?: string;
+  disposition?: { attached_pic?: number };
   codec_name?: string;
   duration?: string;
   channels?: number;
@@ -221,6 +223,7 @@ async function readProbe(ffmpeg: FFmpeg, file: Blob, path: string): Promise<Medi
     const info = {
       duration: numberOrZero(audio?.duration) || numberOrZero(report.format?.duration),
       hasAudio: Boolean(audio),
+      hasVideo: report.streams.some(stream => stream.codec_type === "video" && !stream.disposition?.attached_pic),
       codec: audio?.codec_name ?? "",
       channels: numberOrZero(audio?.channels),
       sampleRate: numberOrZero(audio?.sample_rate),

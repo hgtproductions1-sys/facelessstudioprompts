@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { FileAudio, Upload } from 'lucide-react';
+import { FileAudio, FileVideo, Upload } from 'lucide-react';
 import { AUDIO_FORMATS, MAX_BATCH_BYTES, MAX_MEDIA_BYTES, MAX_MEDIA_DURATION, MAX_MEDIA_FILES, type AudioFormat, type Bitrate } from '@/lib/distrokid-media';
 import styles from './studio.module.css';
 
@@ -54,16 +54,19 @@ export function Notice({ children, danger = false }: { children: ReactNode; dang
   return <p className={danger ? styles.error : styles.notice} role={danger ? 'alert' : 'status'}>{children}</p>;
 }
 
-export function Dropzone({ onFiles, title, hint, multiple = false, compact = false, disabled = false }: {
+export function Dropzone({ onFiles, title, hint, multiple = false, compact = false, disabled = false, videos = false }: {
   onFiles: (files: File[]) => void;
   title: string;
   hint: string;
   multiple?: boolean;
   compact?: boolean;
   disabled?: boolean;
+  videos?: boolean;
 }) {
   const inputId = useId();
   const [dragging, setDragging] = useState(false);
+  const Icon = videos ? FileVideo : FileAudio;
+  const label = videos ? 'Choose videos' : multiple ? 'Choose files' : 'Choose file';
   return (
     <div className={styles.drop}
       data-compact={compact}
@@ -77,18 +80,18 @@ export function Dropzone({ onFiles, title, hint, multiple = false, compact = fal
         const files = Array.from(event.dataTransfer.files);
         onFiles(multiple ? files : files.slice(0, 1));
       }}>
-      <div className={styles.dropIcon}><FileAudio size={23} /></div>
+      <div className={styles.dropIcon}><Icon size={23} aria-hidden="true" /></div>
       <strong>{title}</strong>
       <p>{hint}</p>
       <div className={styles.filePicker}>
-        <input id={inputId} type="file" accept={mediaAccept} multiple={multiple} disabled={disabled}
-          aria-label={multiple ? 'Choose media files' : 'Choose ' + title.toLowerCase()}
+        <input id={inputId} type="file" accept={videos ? 'video/*,.mkv,.avi,.m4v,.webm,.mov,.mts,.m2ts,.ts' : mediaAccept} multiple={multiple} disabled={disabled}
+          aria-label={videos ? label : multiple ? 'Choose media files' : 'Choose ' + title.toLowerCase()}
           onChange={event => {
             const files = Array.from(event.currentTarget.files ?? []);
             event.currentTarget.value = '';
             if (files.length) onFiles(files);
           }} />
-        <label className={styles.secondary} htmlFor={inputId}><Upload size={15} /> {multiple ? 'Choose files' : 'Choose file'}</label>
+        <label className={styles.secondary} htmlFor={inputId}><Upload size={15} aria-hidden="true" /> {label}</label>
       </div>
     </div>
   );
@@ -119,7 +122,7 @@ export function FormatFields({ format, bitrate, onFormat, onBitrate, disabled }:
   );
 }
 
-export function AudioPlayer({ blob, label }: { blob: Blob; label: string }) {
+export function AudioPlayer({ blob, label, onError }: { blob: Blob; label: string; onError?: () => void }) {
   const player = useRef<HTMLAudioElement>(null);
   useEffect(() => {
     const audio = player.current;
@@ -132,7 +135,7 @@ export function AudioPlayer({ blob, label }: { blob: Blob; label: string }) {
       URL.revokeObjectURL(url);
     };
   }, [blob]);
-  return <audio ref={player} className={styles.audio} controls preload="none" aria-label={label} />;
+  return <audio ref={player} className={styles.audio} controls preload="none" aria-label={label} onError={onError} />;
 }
 
 export function downloadBlob(blob: Blob, filename: string) {

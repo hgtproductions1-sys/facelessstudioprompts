@@ -1,0 +1,77 @@
+.offer {
+  margin-block: 10px 17px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px clamp(17px, 3vw, 30px);
+  border: 1px solid #9db566;
+  border-radius: 10px;
+  background: linear-gradient(112deg, #d9f29d, #bbdc7c);
+  color: #182619;
+}
+
+.offerIcon, .guideIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #e8f9b9;
+  background: #243a28;
+}
+
+.offerCopy p, .offerAction p { font-size: 13px; line-height: 1.5; }
+.offerCopy .offerLabel { font-size: 12px; font-weight: 700; }
+.offerCopy strong { display: block; font-size: clamp(22px, 2.8vw, 32px); letter-spacing: -.045em; line-height: 1.12; margin-block: 3px 5px; }
+.offerCopy a, .terms a { text-decoration: underline; text-underline-offset: 3px; }
+.offerAction { display: grid; justify-items: start; gap: 6px; }
+
+.offerButton, .edition {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-weight: 700;
+}
+
+.offerButton { background: #1b2e21; color: #f1ffd2; padding: 9px 13px; font-size: 13px; }
+.offerButton:hover { background: #304934; }
+.offer :is(a, button):focus-visible { outline-color: #213024; outline-offset: 3px; }
+
+.tutorial {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(270px, .7fr);
+  gap: clamp(20px, 4vw, 42px);
+  align-items: center;
+  border: 1px solid #526c5b;
+  border-top: 3px solid #78a289;
+  border-radius: 14px;
+  margin-block: -38px 72px;
+  padding: clamp(19px, 4vw, 40px);
+  scroll-margin-top: 18px;
+  background: radial-gradient(ellipse at 0% 0%, #253c30, transparent 70%), #17221e;
+  color: #f4f7eb;
+}
+
+.guideIcon { margin-bottom: 14px; background: #344c3c; color: #d8f3bd; }
+.tutorial h2 { font-size: clamp(25px, 3.4vw, 38px); text-wrap: balance; }
+.tutorialIntro > p { color: #c5d5ca; margin-top: 8px; max-width: 56ch; }
+.tutorialIntro .terms { font-size: 13px; }
+.terms a { color: #d6f58a; }
+.editions { display: grid; gap: 10px; list-style: none; margin: 0; padding: 0; }
+.edition { min-height: 59px; align-items: center; background: #202f27; border-color: #63796b; padding: 9px 14px; line-height: 1.35; }
+.edition:hover { background: #324738; border-color: #9eb789; }
+.edition svg { color: #d6f58a; }
+.edition strong, .edition small { display: block; }
+.edition small { color: #c5d5ca; font-weight: 400; margin-top: 2px; }
+
+@media (max-width: 680px) {
+  .offer { grid-template-columns: auto minmax(0, 1fr); gap: 11px; }
+  .offerAction { grid-column: 2; }
+  .offerIcon { width: 36px; height: 36px; }
+  .offerIcon svg { width: 21px; height: 21px; }
+  .tutorial { grid-template-columns: minmax(0, 1fr); margin-block: -24px 45px; }
+}
