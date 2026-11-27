@@ -2,8 +2,10 @@ import {spawnSync} from 'node:child_process';
 import {rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {prepareDistroKidMedia} from './prepare-distrokid-media.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url));
+await prepareDistroKidMedia();
 
 // Regenerate pages and styles together rather than reusing stale build output.
 rmSync(join(root,'.next'),{recursive:true,force:true});

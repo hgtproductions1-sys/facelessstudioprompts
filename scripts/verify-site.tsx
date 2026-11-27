@@ -34,6 +34,7 @@ import GuidePage,{generateMetadata as guideMetadata} from '../app/guides/[slug]/
 import Videos from '../app/videos/page';
 import VideoPage,{generateMetadata as videoMetadata} from '../app/videos/[slug]/page';
 import StudioPage from '../app/studio/page';
+import DistrokidStudioPage,{metadata as distroMetadata} from '../app/distrokid-studio/page';
 import FreeTools from '../app/free-tools/page';
 import DedicatedTool,{generateMetadata as toolMetadata} from '../app/free-tools/[slug]/page';
 import {FREE_TOOL_PAGES} from '../data/freeToolPages';
@@ -49,6 +50,7 @@ import {publicPages,pageMarkdown,markdownHeaders,llmsIndex} from '../lib/publicC
 import {GET as markdownPage} from '../app/markdown/[[...path]]/route';
 import {metadataFor} from '../lib/site';
 import {PROMPTS_PER_PAGE,promptPageHref,promptPageNumber} from '../lib/prompt-pagination';
+import {verifyDistrokidStudio} from './verify-distrokid-studio';
 
 const paths=allPaths();assert.equal(new Set(paths).size,paths.length);
 // Discovery must preserve every existing public URL and never surface private endpoints.
@@ -185,12 +187,16 @@ try{
  for(const key of emailEnv){const value=emailEnvBefore[key];if(value===undefined)delete process.env[key];else process.env[key]=value;}
 }
 assert(!schema({name:'</script><script>bad</script>'}).includes('</script>'));
+await verifyDistrokidStudio();
 const xml=await (await sitemap()).text();assert.equal((xml.match(/<loc>/g)||[]).length,paths.length);assert(paths.every(p=>xml.includes('<loc>'+SITE_URL+p+'</loc>')));
 assert((await (await videoSitemap()).text()).includes('<video:player_loc>'));assert((await (await robots()).text()).includes('Disallow: /api/'));
 const videoXml=await (await videoSitemap()).text();assert.equal((videoXml.match(/<video:video>/g)||[]).length,VIDEOS.length);assert(!videoXml.includes('>null<'));assert.equal((videoXml.match(/<video:publication_date>/g)||[]).length,VIDEOS.filter(v=>v.uploaded).length);
 const rendered=new Map<string,string>();
 async function page(path:string,el:React.ReactNode){const html=renderToStaticMarkup(<>{el}</>);assert.equal((html.match(/<h1(?:\s|>)/g)||[]).length,1,path+' must have one h1');assert(!html.includes('Starter Project'));for(const match of html.matchAll(/<script type="application\/ld\+json">([^<]*)<\/script>/g)){JSON.parse(match[1]);}rendered.set(path,html);}
 await page('/',<Home/>);await page('/updates',<Updates/>);await page('/start-here',<StartHere/>);await page('/prompts',await Prompts({searchParams:Promise.resolve({})}));await page('/niches',<Niches/>);await page('/guides',await Guides());await page('/videos',<Videos/>);await page('/studio',await StudioPage({searchParams:Promise.resolve({})}));await page('/free-tools',<FreeTools/>);await page('/ai-tools-hub',<Tools/>);await page('/faceless-youtube-automation',<Workflow/>);
+await page('/distrokid-studio',<DistrokidStudioPage/>);
+assert.equal(distroMetadata.alternates?.canonical,SITE_URL+'/distrokid-studio');
+assert(rendered.get('/free-tools')?.includes('href="/distrokid-studio"'));
 assert(!rendered.get('/videos')!.includes('<iframe'));assert.equal((rendered.get('/videos')!.match(/class="video-poster"/g)||[]).length,VIDEOS.length);
 for(const p of PROMPTS)assert(rendered.get('/prompts')!.includes('href="/prompts/'+p.id+'"'),p.id+' must be discoverable before Show more or client filtering');
 const totalPromptPages=Math.ceil(PROMPTS.length/PROMPTS_PER_PAGE);

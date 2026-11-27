@@ -10,6 +10,7 @@ An existing creator-tools project with a video-planning Studio and dedicated, se
 - Ten attributed YouTube lessons with searchable topics, dedicated watch pages, and original practice exercises.
 - A beginner Start Here journey with three paths and a downloadable project checklist.
 - A video planning studio with template mode, optional server-side AI drafting, and creative-brief export/import.
+- Distrokid Studio for recording checks, batch audio conversion, compilation, release titles, and cover art.
 - Hook, narration-time, and single-shot prompt helper tools.
 - About, Contact, Editorial Policy, Privacy, Terms, Disclosure, and Product Updates pages.
 
@@ -21,7 +22,7 @@ Keep the existing pnpm 11.25.0 package manager and lockfile. For the chosen Verc
 npx --yes pnpm@11.25.0 install --frozen-lockfile
 node node_modules/typescript/bin/tsc --noEmit
 node scripts/verify-site.mjs
-node node_modules/next/dist/bin/next build
+node scripts/build-vercel.mjs
 ```
 
 The verification script renders every content page, checks internal links and fragments, tests all 96 niche/duration combinations, validates metadata and sitemaps, and exercises API input errors and mocked provider success and failure. It makes no live AI calls.
@@ -33,6 +34,12 @@ Browser visual QA was unavailable in the authoring environment. Compile, source-
 Template mode is fully usable without credentials. The existing Vercel production deployment has server-side AI configuration. Its key is supplied as the server-only Vercel Secret GLM_API_KEY. Optional server-side values are GLM_API_URL and AI_MODEL; their defaults retain the routing-service endpoint from the supplied export. Never put a real key in source, a client bundle, or the hosting manifest. Runtime changes require a new deployment.
 
 Live-provider behavior cannot be verified without a configured working credential. The endpoint validates inputs and structured output, limits request size, enforces a provider timeout, returns useful errors, and applies a bounded per-instance rate limit. For a high-traffic public deployment, add a durable global usage budget or a hosting-level rate limit before enabling unlimited anonymous AI access.
+
+## Distrokid Studio
+
+The Vercel build prepares the browser FFmpeg assets. For development with `next dev` directly, run `node scripts/prepare-distrokid-media.mjs` first.
+
+To enable live fingerprint recognition, set `AUDD_API_TOKEN`, `AUDD_MONTHLY_MAX_REQUESTS`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` as server-only variables. Set the maximum at or below your AudD request budget. Each submitted excerpt consumes one request. The shared cap uses a rolling 30-day window, and each visitor address can submit nine excerpts in a rolling 24 hours. Other studio tools, including file inspection and reference comparison, work without this configuration.
 
 ## SEO and public launch
 

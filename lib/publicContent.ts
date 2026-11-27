@@ -22,6 +22,7 @@ const mainPages:PublicPage[]=[
  {path:'/',title:SITE_NAME,description:'Free AI prompts and video production plans for faceless content creators.'},
  {path:'/start-here',title:'Make your first faceless video',description:'Choose a beginner path, a lesson, and an editable production checklist.'},
  {path:'/studio',title:'Free AI video prompt and storyboard Studio',description:'Create an editable hook, shot list, scene prompts, narration direction, and editing checklist.'},
+ {path:'/distrokid-studio',title:'Distrokid Studio',description:'Check audio for catalog matches, convert videos to audio, compile tracks, and create release names and cover art.'},
  {path:'/prompts',title:'Free AI prompt library',description:'Editable image, video, character, niche, and YouTube prompt templates.'},
  {path:'/niches',title:`${NICHE_PAGES.length} faceless YouTube niche playbooks`,description:'Audience ideas, episode structures, scene prompts, and production checks.'},
  {path:'/guides',title:'Faceless creator guides',description:'Guidance on planning, AI prompting, continuity, and responsible publishing.'},
@@ -149,7 +150,11 @@ export function pageMarkdown(path:string,posts:EditorialPost[]):string|null{
   content.push(...workflow.map(([title,body],i)=>`## ${i+1}. ${title}\n\n${body}`));
  }else if(path==='/free-tools'){
   content.push('## Browser tools\n\nHook idea builder: enter your topic to generate five reusable opening structures.\n\nNarration time estimator: divide word count by words per minute, then multiply by 60 to estimate seconds.\n\nSingle-shot prompt builder: combine a subject, one action, camera movement, light, and frame ratio. These interactive tools run in your browser.');
-  content.push('## Dedicated tools\n\n'+list(FREE_TOOL_PAGES.map(tool=>link(tool.title,'/free-tools/'+tool.slug))));
+  content.push('## Dedicated tools\n\n'+list([link('Distrokid Studio','/distrokid-studio'),...FREE_TOOL_PAGES.map(tool=>link(tool.title,'/free-tools/'+tool.slug))]));
+ }else if(path==='/distrokid-studio'){
+  content.push('## Copyright check\n\nAudio recognition looks for recording matches in the AudD catalog. A sample is sent only when you start a check. You can also search the iTunes catalog by title or artist. Confirm usage rights with the rights holder.',
+    '## Prepare your release\n\nConvert multiple videos to audio, put clips in order and export them as one track, generate name ideas, and export square cover artwork. Conversion, compilation, naming, and cover design run in your browser.',
+    link('Audio processing and privacy','/privacy'));
  }
  const indexPrefix:Record<string,string>={'/prompts':'/prompts/','/niches':'/niches/','/guides':'/guides/','/videos':'/videos/','/articles':'/articles/'};
  if(indexPrefix[path])content.push('## Browse\n\n'+list(publicPages(posts).filter(p=>p.path.startsWith(indexPrefix[path])).map(p=>link(p.title,p.path)+' — '+p.description)));

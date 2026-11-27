@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { readExecutionProfile } from "./execution-profile.mjs";
+import { prepareDistroKidMedia } from "./prepare-distrokid-media.mjs";
 
 const [command, ...args] = process.argv.slice(2);
 if (!["dev", "build"].includes(command)) throw new Error("Expected dev or build.");
@@ -13,6 +14,8 @@ if (managedLinux && command === "build") {
   if (result.error) throw result.error;
   process.exit(result.status ?? 1);
 }
+
+await prepareDistroKidMedia();
 
 // Import in this process so the preview owner retains its PID and signals.
 const cli = new URL(managedLinux

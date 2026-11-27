@@ -92,7 +92,7 @@ export const INFO_PAGES: Record<string, InfoPage> = {
     title: 'Privacy, explained plainly.',
     eyebrow: 'Privacy policy',
     description: 'What The Faceless Prompts stores in your browser and which services process information when you use the site.',
-    updated: '2026-11-03',
+    updated: '2026-11-27',
     sections: [
       {title: 'Who operates the site', body: [
         `The Faceless Prompts is an independent, unincorporated project operated by ${FOUNDER_NAME}. Contact ${CONTACT_EMAIL} with privacy questions.`
@@ -104,6 +104,11 @@ export const INFO_PAGES: Record<string, InfoPage> = {
       {title: 'Template tools', body: [
         'The free helper tools and template planner build output in your browser. The Studio checks AI availability through the site’s server, but using template mode does not send your topic to an AI provider.'
       ]},
+      {title: 'Audio release tools', body: [
+        'Distrokid Studio converts and combines media and generates names and cover art in your browser.',
+        'If you start an audio recognition check, the site sends up to three audio excerpts of up to 12 seconds each to AudD to look for catalog matches. The site forwards the sound without your original filename or embedded file metadata. It does not keep an audio or match history. AudD handles excerpts and fingerprints under its own privacy policy.',
+        'A title or artist search sends your search terms to Apple’s iTunes catalog. The site uses per-address and shared request counters to keep the services available. These counters do not contain your audio, search terms, or results.'
+      ], links: [{label: 'AudD privacy policy', href: 'https://audd.io/privacy/index.php'}, {label: 'Apple privacy policy', href: 'https://www.apple.com/legal/privacy/'}]},
       {title: 'AI drafting', body: [
         'When you choose AI drafting, your topic, niche, format, visual style, and prompt destination are sent to the site’s server and then to the AI service at api.hcnsec.cn. That service can route the request to different upstream models, so the selected model may change.',
         'Your creative brief is processed by the routing service and the selected model provider under their own data-handling practices. This project has not independently verified their retention periods. Avoid including sensitive personal information, credentials, or private source material in a brief.',

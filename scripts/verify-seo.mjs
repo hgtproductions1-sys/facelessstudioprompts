@@ -8,6 +8,7 @@ const origin = 'https://www.thefacelessprompts.com';
 const base = new URL(process.env.SITE_BASE_URL || 'http://127.0.0.1:3090');
 const baselineOnly = process.argv.includes('--baseline-only');
 const previousReleasePages = [
+  '/distrokid-studio',
   '/free-tools/faceless-video-script-generator',
   '/free-tools/youtube-shorts-hook-generator',
   '/free-tools/voiceover-length-calculator',
@@ -194,6 +195,7 @@ for (const path of nichePaths) {
   check(targets.length===3 && new Set(targets).size===3 && !targets.includes(row.path),row.path+' has invalid related niches');
 }
 const linksTo=(from,to)=>(pages.get(from)?.links ?? []).some(link=>sameOriginPath(link.href,from)===to);
+if (!baselineOnly) check(linksTo('/free-tools','/distrokid-studio'),'Distrokid Studio is missing from Free Tools');
 for(const path of newPromptPaths){
   const niche=getPromptNiche(path.slice('/prompts/'.length));
   if(!niche)continue;

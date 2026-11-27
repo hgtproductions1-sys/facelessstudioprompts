@@ -9,14 +9,14 @@ import {INFO_PAGES} from '@/data/legal';
 import {getEditorialPosts,editorialPath} from '@/lib/editorial';
 import editorialConfig from '@/config/editorial.json';
 export const dynamic='force-dynamic';
-export function allPaths(){return [...new Set(['/', '/start-here','/studio','/prompts','/niches','/guides','/videos','/free-tools','/ai-tools-hub','/faceless-youtube-automation','/updates',...Object.keys(INFO_PAGES).map(s=>'/'+s),...FREE_TOOL_PAGES.map(p=>'/free-tools/'+p.slug),...modelHubs.map(hub=>'/prompts/'+hub.slug),...NICHE_PAGES.map(n=>'/niches/'+n.slug),...[...PROMPT_COLLECTION_SLUGS,...PROMPT_PAGE_SLUGS].map(s=>'/prompts/'+s),...ARTICLE_GUIDES.map(g=>'/guides/'+g.slug),...VIDEOS.map(v=>'/videos/'+v.slug)])];}
+export function allPaths(){return [...new Set(['/', '/start-here','/studio','/distrokid-studio','/prompts','/niches','/guides','/videos','/free-tools','/ai-tools-hub','/faceless-youtube-automation','/updates',...Object.keys(INFO_PAGES).map(s=>'/'+s),...FREE_TOOL_PAGES.map(p=>'/free-tools/'+p.slug),...modelHubs.map(hub=>'/prompts/'+hub.slug),...NICHE_PAGES.map(n=>'/niches/'+n.slug),...[...PROMPT_COLLECTION_SLUGS,...PROMPT_PAGE_SLUGS].map(s=>'/prompts/'+s),...ARTICLE_GUIDES.map(g=>'/guides/'+g.slug),...VIDEOS.map(v=>'/videos/'+v.slug)])];}
 const UPGRADE_DATE='2026-11-21';
 const PAGE_MODIFIED:Record<string,string>={
- '/':UPGRADE_DATE,'/free-tools':UPGRADE_DATE,'/ai-tools-hub':UPGRADE_DATE,
+ '/':UPGRADE_DATE,'/free-tools':'2026-11-27','/ai-tools-hub':UPGRADE_DATE,
  '/faceless-youtube-automation':'2026-11-03','/cookies':UPGRADE_DATE,'/start-here':'2026-10-08',
- '/studio':UPGRADE_DATE,'/prompts':UPGRADE_DATE,'/niches':UPGRADE_DATE,'/guides':'2026-10-08',
+ '/studio':UPGRADE_DATE,'/distrokid-studio':'2026-11-27','/prompts':UPGRADE_DATE,'/niches':UPGRADE_DATE,'/guides':'2026-10-08',
  '/videos':'2026-10-08','/about':UPGRADE_DATE,'/contact':'2026-10-11','/terms':'2026-10-11',
- '/updates':'2026-11-03','/editorial-policy':UPGRADE_DATE,'/privacy':UPGRADE_DATE,
+ '/updates':'2026-11-03','/editorial-policy':UPGRADE_DATE,'/privacy':'2026-11-27',
  ...Object.fromEntries(FREE_TOOL_PAGES.map(tool=>['/free-tools/'+tool.slug,UPGRADE_DATE])),
  ...Object.fromEntries(modelHubs.map(hub=>['/prompts/'+hub.slug,UPGRADE_DATE])),
 };
