@@ -38,7 +38,11 @@ function sampleRequest(audio = wav(), extra = false) {
 }
 
 export async function verifyDistrokidStudio() {
-  const keys = ['AUDD_API_TOKEN', 'AUDD_MONTHLY_MAX_REQUESTS', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'] as const;
+  const keys = [
+    'AUDD_API_TOKEN', 'AUDD_MONTHLY_MAX_REQUESTS',
+    'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN',
+    'KV_REST_API_URL', 'KV_REST_API_TOKEN',
+  ] as const;
   const originalEnv = Object.fromEntries(keys.map(key => [key, process.env[key]]));
   const originalFetch = globalThis.fetch;
   try {
@@ -49,7 +53,13 @@ export async function verifyDistrokidStudio() {
 
     process.env.AUDD_API_TOKEN = 'test-token';
     process.env.AUDD_MONTHLY_MAX_REQUESTS = '2';
+    process.env.KV_REST_API_URL = 'https://managed-limits.example';
+    assert.deepEqual(await recognitionStatus().json(), {available: false});
+    assert.equal((await recognize(sampleRequest())).status, 503);
+    process.env.KV_REST_API_TOKEN = 'test-managed-token';
     process.env.UPSTASH_REDIS_REST_URL = 'https://limits.example';
+    assert.deepEqual(await recognitionStatus().json(), {available: false});
+    assert.equal((await recognize(sampleRequest())).status, 503);
     process.env.UPSTASH_REDIS_REST_TOKEN = 'test-rate-token';
     assert.deepEqual(await recognitionStatus().json(), {available: true});
     const crossSite = new Request(recognitionUrl, {method: 'POST', headers: {origin: 'https://other.example'}});
@@ -69,6 +79,7 @@ export async function verifyDistrokidStudio() {
     let providerError = false;
     globalThis.fetch = async (input, init) => {
       if (String(input) === 'https://limits.example/') {
+        assert.equal(new Headers(init?.headers).get('authorization'), 'Bearer test-rate-token');
         const command = JSON.parse(String(init?.body));
         assert.equal(command[0], 'EVAL');
         const isGlobal = command[3].startsWith('fp:distrokid-audd-provider:');
@@ -117,6 +128,16 @@ export async function verifyDistrokidStudio() {
 
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
+    assert.deepEqual(await recognitionStatus().json(), {available: true});
+    globalThis.fetch = async (input, init) => {
+      assert.equal(String(input), 'https://managed-limits.example/');
+      assert.equal(new Headers(init?.headers).get('authorization'), 'Bearer test-managed-token');
+      return Response.json({result: 60});
+    };
+    assert.equal((await recognize(sampleRequest())).status, 429);
+
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
     assert.equal((await lookup(new Request(lookupUrl))).status, 400);
     globalThis.fetch = async input => {
       const url = new URL(String(input));

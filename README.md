@@ -39,7 +39,7 @@ Live-provider behavior cannot be verified without a configured working credentia
 
 The Vercel build prepares the browser FFmpeg assets. For development with `next dev` directly, run `node scripts/prepare-distrokid-media.mjs` first.
 
-To enable live fingerprint recognition, set `AUDD_API_TOKEN`, `AUDD_MONTHLY_MAX_REQUESTS`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` as server-only variables. Set the maximum at or below your AudD request budget. Each submitted excerpt consumes one request. The shared cap uses a rolling 30-day window, and each visitor address can submit nine excerpts in a rolling 24 hours. Other studio tools, including file inspection and reference comparison, work without this configuration.
+To enable live fingerprint recognition, set `AUDD_API_TOKEN` and `AUDD_MONTHLY_MAX_REQUESTS` as server-only variables. Configure both `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`, or use the `KV_REST_API_URL` and `KV_REST_API_TOKEN` pair injected by Vercel Marketplace Redis. The explicit Upstash pair takes precedence. Set the maximum at or below your AudD request budget. Each submitted excerpt consumes one request. The shared cap uses a rolling 30-day window, and each visitor address can submit nine excerpts in a rolling 24 hours. Other studio tools, including file inspection and reference comparison, work without this configuration.
 
 ## SEO and public launch
 

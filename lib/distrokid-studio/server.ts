@@ -1,5 +1,5 @@
 import 'server-only';
-import {requestBucket, reserveRequest} from '@/lib/studioRateLimit';
+import {rateLimitCredentials, requestBucket, reserveRequest} from '@/lib/studioRateLimit';
 
 type Track = {
   title: string;
@@ -37,8 +37,9 @@ export function recognitionConfig() {
   const token = process.env.AUDD_API_TOKEN?.trim();
   const limitText = process.env.AUDD_MONTHLY_MAX_REQUESTS?.trim() ?? '';
   const monthlyLimit = Number(limitText);
+  const redis = rateLimitCredentials();
   if (!token || !/^[1-9]\d*$/.test(limitText) || !Number.isSafeInteger(monthlyLimit)
-    || !process.env.UPSTASH_REDIS_REST_URL?.trim() || !process.env.UPSTASH_REDIS_REST_TOKEN?.trim()) {
+    || !redis.endpoint || !redis.token) {
     return null;
   }
   return {token, monthlyLimit};

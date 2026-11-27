@@ -43,11 +43,19 @@ function reserveInMemory(bucket: string, maximum: number, windowMs: number) {
   return 0;
 }
 
+export function rateLimitCredentials() {
+  const endpoint = process.env.UPSTASH_REDIS_REST_URL?.trim();
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+  if (endpoint || token) return {endpoint, token};
+  const managedEndpoint = process.env.KV_REST_API_URL?.trim();
+  const managedToken = process.env.KV_REST_API_TOKEN?.trim();
+  return {endpoint: managedEndpoint, token: managedToken};
+}
+
 // A zero result reserves one request. Other results are Retry-After seconds.
 export async function reserveRequest(scope: string, bucket: string, maximum: number, windowMs: number, {requireDurable = false} = {}) {
   const key = 'fp:' + scope + ':v1:' + createHash('sha256').update(bucket).digest('hex');
-  const endpoint = process.env.UPSTASH_REDIS_REST_URL?.trim();
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+  const {endpoint, token} = rateLimitCredentials();
   if (!endpoint && !token && !requireDurable) return reserveInMemory(key, maximum, windowMs);
   if (!endpoint || !token) throw new Error('Incomplete Studio rate limit configuration');
 
